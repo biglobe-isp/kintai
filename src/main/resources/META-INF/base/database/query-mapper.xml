@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    QueryMapperの設定を記述（META-INF/base/database/database.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- Mybatisの設定ファイル（http://mybatis.github.io/mybatis-3/ja/configuration.html） -->
+        <property name="configLocation"
+                  value="classpath:META-INF/base/database/mybatis-configuration.xml"/>
+        <!-- MapperXmlのパスを指定する。複数指定する場合は、Value要素を追加していく。 -->
+        <property name="mapperLocations">
+            <list>
+                <!-- MyBatisのマッパーXMLのファイル名は○○QueryMapper.xmlとする -->
+                <value>classpath*:/jp/co/biglobe/**/datasource/**/*QueryMapper.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- MapperClassが存在するパッケージを指定する。複数指定する場合は、カンマ区切りとする  -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="jp.co.biglobe.**.datasource.**"/>
+    </bean>
+
+</beans>

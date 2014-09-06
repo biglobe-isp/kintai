@@ -1,0 +1,22 @@
+/**
+ * Jenkinsの設定：カバレッジ取得＆メトリクス計測
+ */
+
+if ("${env}" == 'cloudHosting') {
+    apply plugin:'findbugs'
+    apply plugin: "jacoco"
+
+    apply from: 'etc/gradle/base/jenkins/cobertura.gradle'
+    apply from: 'etc/gradle/base/jenkins/jacoco.gradle'
+
+
+    findbugs {
+        toolVersion = "3.0.0"
+        sourceSets = [sourceSets.main]
+        ignoreFailures = true
+        reportsDir = file("$project.buildDir/findbugsReports")
+        effort = "max"
+        reportLevel = "low"
+//    excludeFilter = file("$rootProject.projectDir/gradle/jenkins/findbugsExcludeFilter.xml")
+    }
+}

@@ -1,0 +1,8 @@
+flyway {
+    user = 'sa'
+    url = 'jdbc:h2:./build/test'
+
+    locations = [
+        'filesystem:etc/database/flyway'
+    ]
+}

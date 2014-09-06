@@ -1,0 +1,108 @@
+/**
+ * ISP領域向けJava共通ライブラリの設定
+ */
+
+// Mavenリポジトリの設定
+repositories {
+    mavenCentral()
+
+    // プライベートレポジトリ
+    maven{
+        url 'http://54.65.64.46/'
+    }
+}
+
+/**
+ * プロダクトコードで使用する依存ライブラリの設定
+ */
+
+// 外部ライブラリ
+ext {
+    springframeworkVersion = '4.2.9.RELEASE'
+
+    groovyVersion = '2.3.7'
+
+    lombokVersion = '1.14.8'
+
+    isplibraryVersion = '1.8.2'
+
+    charsetVersion = '2.0'
+}
+
+dependencies {
+
+    // ISP領域向けJava共通ライブラリ
+    compile "jp.co.biglobe:isplibrary:${isplibraryVersion}"
+
+    // EUCからUTF-8への変換ライブラリ
+    runtime "jp.co.biglobe:charset:${charsetVersion}"
+
+    // Groovy 関連
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}" // 独自テンプレートエンジンとして活用
+
+    /**
+     * 外部ライブラリ（コンパイル時には必要だが、warファイルに含める必要なし）
+     */
+    // Getter等のボイラープレートコードの自動生成（参考URL　http://www.coppermine.jp/docs/programming/2014/01/lombok.html）
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    providedRuntime "javax.el:javax.el-api:3.0.0"
+
+    providedRuntime "javax.servlet:javax.servlet-api:3.0.1"
+}
+
+/**
+ * テストコードで使用する依存ライブラリの設定
+ */
+
+// 外部ライブラリ
+ext {
+    spockVersion = '1.1-groovy-2.4'
+
+    junitDepVersion = '4.10'
+
+    dbunitVersion = '2.4.9'
+
+    cloningVersion = '1.9.0'
+    jsonpathVersion = '0.8.1'
+
+    commonsDbcpVersion = '1.4'
+
+    h2Version = '1.4.181'
+
+    h2storedprocedureVersion = '2.0'
+
+    ojdbcVersion = '11.2.0.4'
+
+}
+
+dependencies {
+
+    // TestSuites 関連
+    testCompile "org.spockframework:spock-core:${spockVersion}"
+
+    // Springのコントローラテストで必要
+    testCompile "org.spockframework:spock-spring:${spockVersion}"
+    testCompile "org.springframework:spring-test:${springframeworkVersion}"
+
+    testCompile "junit:junit-dep:${junitDepVersion}" // 参照 http://futurismo.biz/archives/1172
+
+    // DBテストで必要
+    testCompile "org.dbunit:dbunit:${dbunitVersion}"
+
+    // List/Mapのディープクローンを行うライブラリ／Fixtureの作成で必要
+    testCompile "uk.com.robust-it:cloning:${cloningVersion}"
+
+    // コントローラのJSONのテストで必要
+    testCompile "com.jayway.jsonpath:json-path-assert:${jsonpathVersion}"
+
+    // コネクションプール用のライブラリ（DBテスト用のツールのコンパイルに使用）
+    testCompile "commons-dbcp:commons-dbcp:${commonsDbcpVersion}"
+
+    // H2 Database JDBC Driver
+    testRuntime "com.h2database:h2:${h2Version}"
+    testCompile "jp.co.biglobe:h2storedprocedure:${h2storedprocedureVersion}"
+
+    // Oracle JDBC Driver
+    testRuntime files("etc/library/local/ojdbc6-${ojdbcVersion}.jar")
+}

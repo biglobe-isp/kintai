@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    トランザクションの設定を記述（META-INF/base/database/database.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource">
+        </property>
+    </bean>
+
+    <bean id="transactionAttributeSource"
+          class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+        <property name="properties">
+            <props>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager">
+        </property>
+        <property name="transactionAttributeSource" ref="transactionAttributeSource">
+        </property>
+    </bean>
+
+    <!-- *Apiというクラス名の場合、メソッドに入ってから出るまでがトランザクションとなる。つまり、one commit とする。 -->
+    <bean id="beanNameAutoProxy" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value>
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <value>*Api</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>
