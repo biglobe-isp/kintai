@@ -1,10 +1,11 @@
 package com.naosim.dddwork.domain;
 
+import com.naosim.dddwork.datasource.RegistKintaiFileRepositoryFile;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 @EqualsAndHashCode(callSuper = false)
@@ -22,6 +23,9 @@ public class RegistData extends ProcessData {
 
     @Getter
     private int endM;
+
+//    @Autowired
+//    RegistKintaiFileRepository registKintaiFileRepository;
 
     public RegistData(InputData inputData) {
         super(inputData);
@@ -53,12 +57,16 @@ public class RegistData extends ProcessData {
         }
 
         int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-        try(FileWriter filewriter = new FileWriter(this.file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    inputData.getDate(), inputData.getStartTime(), inputData.getEndTime(),
-                    workMinutes, overWorkMinutes, inputData.getNow()));
-        }
 
+        RegistKintaiFileRepository registKintaiFileRepository = new RegistKintaiFileRepositoryFile();
+        registKintaiFileRepository.execute(this.getOutputString(workMinutes, overWorkMinutes));
+    }
+
+    private String getOutputString(int workMinutes, int overWorkMinutes) {
+        return String.format("%s,%s,%s,%s,%s,%s\n",
+                this.inputData.getDate(), this.inputData.getStartTime(), this.inputData.getEndTime(),
+                workMinutes, overWorkMinutes, this.inputData.getNow()
+        );
     }
 
     private void setFieldsWhenInputProcess(InputData inputData) {

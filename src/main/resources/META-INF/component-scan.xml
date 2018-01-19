@@ -22,5 +22,6 @@
     <context:component-scan base-package="com.naosim.dddwork.service" />
 
     <!-- DataSource層 -->
+    <context:component-scan base-package="com.naosim.dddwork.datasource" />
 
 </beans>

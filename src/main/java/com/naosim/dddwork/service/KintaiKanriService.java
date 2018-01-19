@@ -7,9 +7,6 @@ import com.naosim.dddwork.domain.TotalData;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Service
 public class KintaiKanriService {
