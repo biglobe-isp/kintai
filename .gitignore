@@ -13,3 +13,5 @@ src/main/webapp/WEB-INF/classes/
 build/
 .gradle
 classes/*
+*.csv
+*.class
