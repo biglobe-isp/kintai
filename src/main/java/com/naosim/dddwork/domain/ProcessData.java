@@ -3,8 +3,6 @@ package com.naosim.dddwork.domain;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-import java.io.IOException;
-
 @EqualsAndHashCode
 @ToString
 public abstract class ProcessData {
@@ -14,6 +12,4 @@ public abstract class ProcessData {
     public ProcessData(InputData inputData) {
         this.inputData = inputData;
     }
-
-    public abstract void execute() throws IOException;
 }

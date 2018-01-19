@@ -1,11 +1,8 @@
 package com.naosim.dddwork.domain;
 
-import com.naosim.dddwork.datasource.TotalKintaiFileRepositoryFile;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,25 +12,18 @@ import java.util.Set;
 @ToString
 public class TotalData extends ProcessData {
 
-//    @Autowired
-//    TotalKintaiFileRepository totalKintaiFileRepository;
-
     public TotalData(InputData inputData) {
         super(inputData);
     }
 
-    @Override
-    public void execute() throws IOException {
+    public void printTotalData(List<String> registLineList) {
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
-
-        TotalKintaiFileRepository totalKintaiFileRepository = new TotalKintaiFileRepositoryFile();
-        List<String> list = totalKintaiFileRepository.execute();
 
         Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
         Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
 
-        for (String line : list) {
+        for (String line : registLineList) {
             String[] columns = line.split(",");
             if(!columns[0].startsWith(inputData.getYearMonth())) {
                 continue;
@@ -49,6 +39,7 @@ public class TotalData extends ProcessData {
             totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
         }
 
+        // TODO: domainで副作用があるのは良くないので、以下の出力処理はserviceで行うよう修正する
         System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
         System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
 

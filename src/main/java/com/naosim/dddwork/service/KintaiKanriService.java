@@ -1,32 +1,41 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.InputData;
-import com.naosim.dddwork.domain.ProcessData;
-import com.naosim.dddwork.domain.RegistData;
-import com.naosim.dddwork.domain.TotalData;
+import com.naosim.dddwork.domain.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.List;
 
 @Service
 public class KintaiKanriService {
+
+    @Autowired
+    RegistKintaiFileRepository registKintaiFileRepository;
+
+    @Autowired
+    TotalKintaiFileRepository totalKintaiFileRepository;
+
 
     public void execute(String[] args) throws IOException {
 
         InputData inputData = new InputData(args);
 
-        ProcessData processData = null;
         switch (inputData.getMethodType()) {
             case INPUT:
-                processData = new RegistData(inputData);
+                RegistData registData = new RegistData(inputData);
+                this.registKintaiFileRepository.execute(registData.getOutputData());
+
                 break;
 
             case TOTAL:
-                processData = new TotalData(inputData);
+                List<String> list = totalKintaiFileRepository.execute();
+                TotalData totalData = new TotalData(inputData);
+                totalData.printTotalData(list);
+
                 break;
 
             default:
         }
-        processData.execute();
     }
 }
