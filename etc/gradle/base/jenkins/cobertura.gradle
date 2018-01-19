@@ -1,0 +1,62 @@
+/**
+ * cobertura(カバレッジ)の設定
+ */
+
+configurations{
+    cobertura
+}
+
+dependencies {
+    cobertura ("net.sourceforge.cobertura:cobertura:2.0.3") {
+        exclude group: "org.mortbay.jetty"
+    }
+    cobertura 'log4j:log4j:1.2.16', 'xml-apis:xml-apis:2.0.2'
+}
+
+def tmpDir = new File(buildDir, "tmp")
+
+def coberturaReportDirName    = "cobertura"
+def coberturaReportDir        = new File(reportsDir, coberturaReportDirName)
+def coberturaTmpDirName       = "cobertura"
+def coberturaTmpDir           = new File(tmpDir, coberturaTmpDirName)
+def coberturaInstrDirName     = "instr"
+def coberturaInstrDir         = new File(coberturaTmpDir, coberturaInstrDirName)
+def coberturaMetaDataFileName = "cobertura.ser"
+def coberturaMetaDataFile     = new File(coberturaTmpDir, coberturaMetaDataFileName)
+
+test {
+
+    jvmArgs "-Dnet.sourceforge.cobertura.datafile=${coberturaMetaDataFile}"
+
+    doFirst {
+
+        ant {
+            taskdef(resource: 'tasks.properties',
+                    classpath: configurations.cobertura.asPath)
+
+            'cobertura-instrument'(todir: coberturaInstrDir,
+                    datafile:coberturaMetaDataFile) {
+                fileset(dir: sourceSets.main.output.classesDir)
+            }
+        }
+
+        classpath = files("${coberturaInstrDir}") + configurations.cobertura + classpath
+    }
+
+    doLast {
+        ant {
+            'cobertura-report'(destdir: coberturaReportDir,
+                    datafile:coberturaMetaDataFile,
+                    format:'xml') {
+                sourceSets.main.groovy.srcDirs.each { fileset(dir: it) }
+            }
+
+            'cobertura-report'(destdir: coberturaReportDir,
+                    datafile:coberturaMetaDataFile,
+                    format:'html') {
+                sourceSets.main.groovy.srcDirs.each { fileset(dir: it)
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,2 @@
+// プロジェクトごとにユニークな名前
+rootProject.name = 'url-shortener'

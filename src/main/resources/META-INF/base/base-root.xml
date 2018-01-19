@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    全プロジェクト共通の設定を記述（WEB-INF/applicationContext.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+    <!-- 環境ごとに切り替える設定 -->
+    <import resource="classpath:META-INF/base/environment/environment.xml"/>
+
+    <!-- DB接続の設定の読込 -->
+    <import resource="classpath:META-INF/base/database/data-source.xml"/>
+
+    <!-- AOP設定の読込 -->
+    <import resource="classpath:META-INF/base/aop/aop.xml"/>
+
+    <!-- MyBatis設定の読込 -->
+    <import resource="classpath:META-INF/base/database/database.xml"/>
+
+    <!-- コントローラ設定の読込 -->
+    <import resource="classpath:META-INF/base/controller/controller.xml"/>
+
+    <!-- リクエストスコープの設定の読込 -->
+    <import resource="classpath:META-INF/base/scope/scope.xml"/>
+
+    <!-- 全プロジェクト共通のcomponent-scanの設定（Autowiredに必要） -->
+    <import resource="classpath:META-INF/base/component-scan.xml"/>
+</beans>

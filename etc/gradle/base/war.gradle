@@ -1,0 +1,16 @@
+/**
+ * gradlew war コマンド実行時の処理の設定
+ */
+apply {
+    plugin 'war'
+}
+
+// 倉庫番のリリーススクリプトにも影響を与えるため、現状は固定値にしている
+// ココを変更するとBO側でwarファイルのシンボリックリンクの張り替えなどが発生する
+ext {
+    warVersion = '1.0'
+}
+
+war {
+    version = "${warVersion}"
+}

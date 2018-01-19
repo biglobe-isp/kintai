@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    全プロジェクト共通のcomponent-scanの設定を記述
+    |    （META-INF/base/base-root.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+    <context:component-scan base-package="jp.co.biglobe.lib.component.system"/>
+
+
+    <!-- ISP領域標準API向けのJSONテンプレートを構築するコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    ・jp.co.biglobe.lib.plugin.log.LoggerWrapper
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.view"/>
+
+    <!-- バリデーション処理後に生成されるErrorsオブジェクトをverifyするコンポーネント
+
+    【Autowiredコンポーネント】
+    ・なし
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.validationverifier"/>
+
+    <!-- Exception発生時のデフォルトエラーJSONテンプレートを構築するコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.view.JsonTemplate
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.response"/>
+
+    <!-- シナリオを実行するコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    ・jp.co.biglobe.lib.essential.property.PropertyAccessor
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.scenario"/>
+
+    <!-- ロギングの共通処理を実行するコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.log"/>
+
+
+    <!-- AOPでコントローラのログの自動出力＆APIアクセスログDBへの記録を実行するコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.exceptionhandler.ExceptionLogHandler
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    ・jp.co.biglobe.lib.plugin.log.LogMessageCreator
+    ・jp.co.biglobe.lib.plugin.log.LoggerWrapper
+    ・jp.co.biglobe.lib.plugin.alarmmail.SendAlarmMail
+    ・jp.co.biglobe.lib.plugin.alarmmail.TransferMassageCreator
+    ・jp.co.biglobe.lib.plugin.db.DbGlobalCache
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.processevent.database"/>
+    <!--<context:component-scan base-package="jp.co.biglobe.lib.component.processevent.dummy"/>-->
+
+    <!-- MyBatisのグローバル二次キャッシュを無効にするコンポーネント
+
+    【Autowiredコンポーネント】
+    ・なし
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.db"/>
+
+    <!-- ExceptionHandlerを扱うコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    ・jp.co.biglobe.lib.plugin.response.ErrorResponse
+    ・jp.co.biglobe.lib.plugin.response.HasErrorListResponse
+    ・jp.co.biglobe.lib.plugin.response.HasErrorStatusResponse
+    ・jp.co.biglobe.lib.plugin.alarmmail.SendAlarmMail;
+    ・jp.co.biglobe.lib.plugin.alarmmail.TransferMassageCreator
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.handler"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.log"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.transfer"/>
+
+    <!-- アラームメールを扱うコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.scenario.ScenarioExecutor
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.alarmmail"/>
+
+</beans>

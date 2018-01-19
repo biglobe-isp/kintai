@@ -1,0 +1,10 @@
+/**
+ * gradlewコマンドを利用できるようにする
+ *
+ * 各環境にバージョンを揃えたうえでgradleをインストールするのは大変なので、
+ * ラッパーを用意し、gradle環境の統一を図る
+ */
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+}

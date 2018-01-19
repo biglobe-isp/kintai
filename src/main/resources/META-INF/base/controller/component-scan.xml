@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    コントローラのcomponent-scanの設定を記述
+    |    （META-INF/base/controller/controller.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <!-- 監視 -->
+    <context:component-scan base-package="jp.co.biglobe.lib.essential.api.monitoring"/>
+
+    <!-- エラーページ -->
+    <context:component-scan base-package="jp.co.biglobe.lib.essential.api.error"/>
+
+    <!--
+         ExceptionHandlerの定義
+
+         ExceptionHandlerの振る舞いを変更したい場合は、このcomponent-scanの
+         base-packageを差し替えることによって実現する
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.controller"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.essential.controller"/>
+
+    <bean class="jp.co.biglobe.lib.essential.api.scenario.ScenarioExecutorImpl"/>
+
+</beans>
