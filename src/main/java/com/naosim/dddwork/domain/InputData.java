@@ -32,22 +32,10 @@ public class InputData {
     private String endTime;
 
     @Getter
-    private int startH;
-
-    @Getter
-    private int startM;
-
-    @Getter
-    private int endH;
-
-    @Getter
-    private int endM;
-
-    @Getter
     private String now;
 
-    @Getter String yearMonth;
-
+    @Getter
+    private String yearMonth;
 
     public InputData(String[] args) {
         if (args.length < 1) {
@@ -76,12 +64,6 @@ public class InputData {
         this.startTime = args[2];
         this.endTime = args[3];
         this.now = LocalDateTime.now().toString();
-
-        this.startH = Integer.valueOf(this.startTime.substring(0, 2));
-        this.startM = Integer.valueOf(this.startTime.substring(2, 4));
-
-        this.endH = Integer.valueOf(this.endTime.substring(0, 2));
-        this.endM = Integer.valueOf(this.endTime.substring(2, 4));
     }
 
     private void setFieldsWhenTotalProcess(String[] args) {

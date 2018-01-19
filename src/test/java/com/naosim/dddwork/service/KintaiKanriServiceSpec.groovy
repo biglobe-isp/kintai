@@ -22,4 +22,13 @@ class KintaiKanriServiceSpec extends Specification {
         true
     }
 
+    def "totalでエラーが発生しないことを確認する"() {
+        setup:
+        when:
+        String[] args = ["total", "201801"]
+        kintaiKanriService.execute(args)
+
+        then:
+        true
+    }
 }
