@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class WorkTimeRepositoryTotal implements WorkTimeRepository{
     @Override
-    public void workTimeCalExec(String[] args) {
+    public void doExecute(String[] args) {
         String yearMonth = args[1];
         if(args.length < 2) {
             throw new RuntimeException("引数が足りません");

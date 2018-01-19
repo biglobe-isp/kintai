@@ -18,7 +18,7 @@ class WorkTimeRepositoryInputSpec extends Specification {
 
         when:
         String[] args = ["input", "20170101", "0900"]
-        workTimeRepository.workTimeCalExec(args)
+        workTimeRepository.doExecute(args)
 
         then:
         def ex = thrown(RuntimeException)
@@ -33,7 +33,7 @@ class WorkTimeRepositoryInputSpec extends Specification {
 
         when:
         String[] args = ["input", "20170101", "0900", "1800"]
-        workTimeRepository.workTimeCalExec(args)
+        workTimeRepository.doExecute(args)
 
         then:
         File dataFile = new File("data.csv")
