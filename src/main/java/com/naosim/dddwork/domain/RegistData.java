@@ -16,35 +16,54 @@ public class RegistData extends ProcessData {
 
     public RegistData(InputData inputData) {
         super(inputData);
-        if (InputData.MethodType.INPUT.equals(inputData.getMethodType()))
-            this.setFieldsWhenInputProcess(inputData);
+        this.setFields();
     }
 
     public String getOutputData() {
-        int workMinutes = this.endTime.getHour() * 60 + this.endTime.getMinute()
-                - (this.startTime.getHour() * 60 + this.startTime.getMinute());
+        int workMinutes = this.getWorkMinutes();
 
-        if(this.endTime.getHour() == 12) {
-            workMinutes -= this.endTime.getMinute();
-        } else if(this.endTime.getHour() >= 13) {
-            workMinutes -= 60;
-        }
+        workMinutes -= this.getLunchBreakMinutes();
+        workMinutes -= this.getEveningBreakMinutes();
+        workMinutes -= this.getNightBreakMinutes();
 
-        if(this.endTime.getHour() == 18) {
-            workMinutes -= this.endTime.getMinute();
-        } else if(this.endTime.getHour() >= 19) {
-            workMinutes -= 60;
-        }
-
-        if(this.endTime.getHour() == 21) {
-            workMinutes -= this.endTime.getMinute();
-        } else if(this.endTime.getHour() >= 22) {
-            workMinutes -= 60;
-        }
-
-        int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
+        int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
         return this.getOutputString(workMinutes, overWorkMinutes);
+    }
+
+    @Override
+    protected boolean isCorrectMethodType() {
+        return InputData.MethodType.INPUT.equals(this.inputData.getMethodType());
+    }
+
+    private int getOverWorkMinutes(int workMinutes) {
+        return Math.max(workMinutes - 8 * 60, 0);
+    }
+
+    private int getWorkMinutes() {
+        return this.endTime.convertTimeToMinutes() - this.startTime.convertTimeToMinutes();
+    }
+
+    private int getLunchBreakMinutes() {
+        return this.getBreakMinutes(12);
+    }
+
+    private int getEveningBreakMinutes() {
+        return this.getBreakMinutes(18);
+    }
+
+    private int getNightBreakMinutes() {
+        return this.getBreakMinutes(21);
+    }
+
+    private int getBreakMinutes(int breakStartHour) {
+        if(this.endTime.getHour() == breakStartHour) {
+            if (this.startTime.getHour() < breakStartHour) return this.endTime.getMinute();
+            if (this.startTime.getHour() == breakStartHour) return this.endTime.getMinute() - this.startTime.getMinute();
+        } else if(this.endTime.getHour() > breakStartHour) {
+            return 60;
+        }
+        return 0;
     }
 
     private String getOutputString(int workMinutes, int overWorkMinutes) {
@@ -54,16 +73,26 @@ public class RegistData extends ProcessData {
         );
     }
 
-    private void setFieldsWhenInputProcess(InputData inputData) {
+    private boolean isStartLessOrEqualEnd() {
+        int startMinutes = this.startTime.convertTimeToMinutes();
+        int endMinutes = this.endTime.convertTimeToMinutes();
+
+        return startMinutes <= endMinutes;
+    }
+
+    private void setFields() {
         this.startTime = new TimeData(
-                Integer.valueOf(inputData.getStartTime().substring(0, 2)),
-                Integer.valueOf(inputData.getStartTime().substring(2, 4))
+                Integer.valueOf(this.inputData.getStartTime().substring(0, 2)),
+                Integer.valueOf(this.inputData.getStartTime().substring(2, 4))
         );
 
         this.endTime = new TimeData(
-                Integer.valueOf(inputData.getEndTime().substring(0, 2)),
-                Integer.valueOf(inputData.getEndTime().substring(2, 4))
+                Integer.valueOf(this.inputData.getEndTime().substring(0, 2)),
+                Integer.valueOf(this.inputData.getEndTime().substring(2, 4))
         );
+
+        if (!this.isStartLessOrEqualEnd())
+            throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
     }
 
 }

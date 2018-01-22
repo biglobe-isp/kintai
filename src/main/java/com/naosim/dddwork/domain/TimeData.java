@@ -24,6 +24,10 @@ public class TimeData {
         }
     }
 
+    public int convertTimeToMinutes() {
+        return this.hour * 60 + this.minute;
+    }
+
     private boolean isCorrectAsHour(int hour) {
         if (0 <= hour && hour < 24) return true;
         return false;

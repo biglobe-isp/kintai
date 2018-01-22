@@ -11,5 +11,10 @@ public abstract class ProcessData {
 
     public ProcessData(InputData inputData) {
         this.inputData = inputData;
+        if (!this.isCorrectMethodType())
+            throw new RuntimeException("指定されたメソッドタイプが異なるため、インスタンス化できません");
+
     }
+
+    protected abstract boolean isCorrectMethodType();
 }

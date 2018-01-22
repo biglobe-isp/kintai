@@ -44,4 +44,9 @@ public class TotalData extends ProcessData {
         System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
 
     }
+
+    @Override
+    protected boolean isCorrectMethodType() {
+        return InputData.MethodType.TOTAL.equals(this.inputData.getMethodType());
+    }
 }
