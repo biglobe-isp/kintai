@@ -8,8 +8,13 @@ class WorkTimeRepositoryTotalSpec extends Specification {
 
     def setupSpec() {
         WorkTimeRepository workTimeRepository = new WorkTimeRepositoryInput()
-        String[] args = ["input", "20170101", "0900", "1800"]
-        workTimeRepository.doExecute(args)
+        //String[] args = ["input", "20170101", "0900", "1800"]
+
+        (20170101..20170131).each {
+            String[] args = ["input", "${it}", "0900", "2000"]
+
+            workTimeRepository.doExecute(args)
+        }
 
     }
 
@@ -26,27 +31,51 @@ class WorkTimeRepositoryTotalSpec extends Specification {
         def ex = thrown(RuntimeException)
     }
 
-    def "集計のテストを行う_正常パターン"() {
+    def "集計のテストを行う_正常パターン_残業なし"() {
 
         setup:
-        WorkTimeRepository inputWorkTimeRepository = new WorkTimeRepositoryInput()
-        String[] inputPram = ["input", "20170102", "0900", "1800"]
-        inputWorkTimeRepository.doExecute(inputPram);
+        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryInput()
 
-        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryTotal()
+        (20170101..20170131).each {
+            String[] argsInput = ["input", "${it}", "0900", "1800"]
+            workTimeRepository.doExecute(argsInput)
+        }
 
         when:
 
         String[] args = ["total","201701"]
+        workTimeRepository = new WorkTimeRepositoryTotal()
         WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
 
         then:
         assert workTimeTotal != null
-        assert 16 == workTimeTotal.getTotalWorkMinutes() /60
-        assert 0 == workTimeTotal.getTotalOverWorkMinutes()
+        assert 248 == workTimeTotal.getTotalWorkMinutes() /60 + workTimeTotal.getTotalWorkMinutes() % 60
+        assert 0 == workTimeTotal.getTotalOverWorkMinutes() / 60 +  workTimeTotal.getTotalOverWorkMinutes() % 60
     }
 
-    def cleanupSpec() {
+    def "集計のテストを行う_正常パターン_残業あり"() {
+
+        setup:
+        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryInput()
+
+        (20170101..20170131).each {
+            String[] argsInput = ["input", "${it}", "0900", "2000"]
+            workTimeRepository.doExecute(argsInput)
+        }
+
+        when:
+
+        String[] args = ["total","201701"]
+        workTimeRepository = new WorkTimeRepositoryTotal()
+        WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
+
+        then:
+        assert workTimeTotal != null
+        assert 279 == workTimeTotal.getTotalWorkMinutes() /60 + workTimeTotal.getTotalWorkMinutes() % 60
+        assert 31 == workTimeTotal.getTotalOverWorkMinutes() / 60 +  workTimeTotal.getTotalOverWorkMinutes() % 60
+    }
+
+    def cleanup() {
         //データファイルクリア
         File dataFile = new File("data.csv")
         dataFile.delete()
