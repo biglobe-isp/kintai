@@ -1,6 +1,7 @@
 package com.naosim.dddwork.datasource
 
 import com.naosim.dddwork.domain.WorkTimeRepository
+import com.naosim.dddwork.domain.WorkTimeTotal
 import spock.lang.Specification
 
 class WorkTimeRepositoryTotalSpec extends Specification {
@@ -37,10 +38,12 @@ class WorkTimeRepositoryTotalSpec extends Specification {
         when:
 
         String[] args = ["total","201701"]
-        workTimeRepository.doExecute(args)
+        WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
 
         then:
-        true
+        assert workTimeTotal != null
+        assert 16 == workTimeTotal.getTotalWorkMinutes() /60
+        assert 0 == workTimeTotal.getTotalOverWorkMinutes()
     }
 
     def cleanupSpec() {
