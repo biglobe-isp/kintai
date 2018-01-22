@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public class WorkTimeRepositoryInput implements WorkTimeRepository{
     @Override
-    public void doExecute(String[] args) {
+    public Void doExecute(String[] args) {
         if(args.length < 4) {
             throw new RuntimeException("引数が足りません");
         }
@@ -51,5 +51,7 @@ public class WorkTimeRepositoryInput implements WorkTimeRepository{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 }

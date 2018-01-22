@@ -1,6 +1,7 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.WorkTimeRepository;
+import com.naosim.dddwork.domain.WorkTimeTotal;
 
 import java.io.*;
 import java.util.HashMap;
@@ -9,11 +10,12 @@ import java.util.Set;
 
 public class WorkTimeRepositoryTotal implements WorkTimeRepository{
     @Override
-    public void doExecute(String[] args) {
+    public WorkTimeTotal doExecute(String[] args) {
         String yearMonth = args[1];
         if(args.length < 2) {
             throw new RuntimeException("引数が足りません");
         }
+        WorkTimeTotal workTimeTotal = null;
 
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
@@ -45,12 +47,18 @@ public class WorkTimeRepositoryTotal implements WorkTimeRepository{
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
-            System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-            System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
+            workTimeTotal = new WorkTimeTotal();
+            workTimeTotal.setTotalWorkMinutes(totalWorkMinutes);
+            workTimeTotal.setTotalOverWorkMinutes(totalOverWorkMinutes);
+
+            return workTimeTotal;
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }
