@@ -13,10 +13,8 @@ public class InputData {
 
     @AllArgsConstructor @Getter
     public enum MethodType {
-        INPUT("input"),
-        TOTAL("total");
-
-        private final String methodTypeStr;
+        INPUT,
+        TOTAL,
     }
 
     @Getter
@@ -74,8 +72,10 @@ public class InputData {
     }
 
     private MethodType getMethodTypeFromString(String methodTypeStr) {
-        if (MethodType.INPUT.methodTypeStr.equals(methodTypeStr)) return MethodType.INPUT;
-        if (MethodType.TOTAL.methodTypeStr.equals(methodTypeStr)) return MethodType.TOTAL;
-        throw new RuntimeException("methodTypeが不正です");
+        try {
+            return MethodType.valueOf(methodTypeStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("methodTypeが不正です");
+        }
     }
 }

@@ -15,3 +15,5 @@ build/
 classes/*
 *.csv
 *.class
+out/
+
