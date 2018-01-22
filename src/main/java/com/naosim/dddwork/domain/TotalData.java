@@ -1,6 +1,7 @@
 package com.naosim.dddwork.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.util.HashMap;
@@ -12,37 +13,58 @@ import java.util.Set;
 @ToString
 public class TotalData extends ProcessData {
 
-    public TotalData(InputData inputData) {
+    @Getter
+    private List<String> registLineList;
+
+    @Getter
+    private int totalWorkMinutes;
+
+    @Getter
+    private int totalOverWorkMinutes;
+
+    public TotalData(InputData inputData, List<String> registLineList) {
         super(inputData);
+        this.registLineList = registLineList;
+        this.setTotalData();
     }
 
-    public void printTotalData(List<String> registLineList) {
-        int totalWorkMinutes = 0;
-        int totalOverWorkMinutes = 0;
+    public String getPrintStringForTotalWorkTime() {
+        return getPrintString("勤務時間", this.totalWorkMinutes);
+    }
+
+    public String getPrintStringForTotalOverWorkTime() {
+        return getPrintString("残業時間", this.totalOverWorkMinutes);
+    }
+
+    private String getPrintString(String title, int totalTime) {
+        return String.format("%s: %s時間%s分", title, totalTime / 60, totalTime % 60);
+    }
+
+    private void setTotalData() {
+        this.totalWorkMinutes = 0;
+        this.totalOverWorkMinutes = 0;
 
         Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
         Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
 
         for (String line : registLineList) {
+
             String[] columns = line.split(",");
-            if(!columns[0].startsWith(inputData.getYearMonth())) {
+
+            LineData lineData = new LineData(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
+
+            if(!lineData.getWorkDate().startsWith(this.inputData.getYearMonth())) {
                 continue;
             }
-            totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-            totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-
+            totalWorkMinutesMap.put(lineData.getWorkDate(), Integer.valueOf(lineData.getWorkMinutes()));
+            totalOverWorkMinutesMap.put(lineData.getWorkDate(), Integer.valueOf(lineData.getOverWorkMinutes()));
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();
         for(String key : keySet) {
-            totalWorkMinutes += totalWorkMinutesMap.get(key);
-            totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
+            this.totalWorkMinutes += totalWorkMinutesMap.get(key);
+            this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
         }
-
-        // TODO: domainで副作用があるのは良くないので、以下の出力処理はserviceで行うよう修正する
-        System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-        System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
-
     }
 
     @Override

@@ -30,8 +30,10 @@ public class KintaiKanriService {
 
             case TOTAL:
                 List<String> list = totalKintaiFileRepository.execute();
-                TotalData totalData = new TotalData(inputData);
-                totalData.printTotalData(list);
+                TotalData totalData = new TotalData(inputData, list);
+
+                System.out.println(totalData.getPrintStringForTotalWorkTime());
+                System.out.println(totalData.getPrintStringForTotalOverWorkTime());
 
                 break;
 

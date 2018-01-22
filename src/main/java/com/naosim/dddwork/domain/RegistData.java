@@ -28,7 +28,12 @@ public class RegistData extends ProcessData {
 
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
-        return this.getOutputString(workMinutes, overWorkMinutes);
+        LineData lineData = new LineData(
+                this.inputData.getDate(), this.inputData.getStartTime(), this.inputData.getEndTime(),
+                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.inputData.getNow()
+        );
+
+        return lineData.getLineString();
     }
 
     @Override
@@ -64,13 +69,6 @@ public class RegistData extends ProcessData {
             return 60;
         }
         return 0;
-    }
-
-    private String getOutputString(int workMinutes, int overWorkMinutes) {
-        return String.format("%s,%s,%s,%s,%s,%s\n",
-                this.inputData.getDate(), this.inputData.getStartTime(), this.inputData.getEndTime(),
-                workMinutes, overWorkMinutes, this.inputData.getNow()
-        );
     }
 
     private boolean isStartLessOrEqualEnd() {
