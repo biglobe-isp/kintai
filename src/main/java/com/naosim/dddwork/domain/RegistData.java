@@ -9,16 +9,10 @@ import lombok.ToString;
 public class RegistData extends ProcessData {
 
     @Getter
-    private int startH;
+    private TimeData startTime;
 
     @Getter
-    private int startM;
-
-    @Getter
-    private int endH;
-
-    @Getter
-    private int endM;
+    private TimeData endTime;
 
     public RegistData(InputData inputData) {
         super(inputData);
@@ -27,24 +21,24 @@ public class RegistData extends ProcessData {
     }
 
     public String getOutputData() {
-        int workMinutes = this.getEndH() * 60 + this.getEndM()
-                - (this.getStartH() * 60 + this.getStartM());
+        int workMinutes = this.endTime.getHour() * 60 + this.endTime.getMinute()
+                - (this.startTime.getHour() * 60 + this.startTime.getMinute());
 
-        if(this.getEndH() == 12) {
-            workMinutes -= this.getEndM();
-        } else if(this.getEndH() >= 13) {
+        if(this.endTime.getHour() == 12) {
+            workMinutes -= this.endTime.getMinute();
+        } else if(this.endTime.getHour() >= 13) {
             workMinutes -= 60;
         }
 
-        if(this.getEndH() == 18) {
-            workMinutes -= this.getEndM();
-        } else if(this.getEndH() >= 19) {
+        if(this.endTime.getHour() == 18) {
+            workMinutes -= this.endTime.getMinute();
+        } else if(this.endTime.getHour() >= 19) {
             workMinutes -= 60;
         }
 
-        if(this.getEndH() == 21) {
-            workMinutes -= this.getEndM();
-        } else if(this.getEndH() >= 22) {
+        if(this.endTime.getHour() == 21) {
+            workMinutes -= this.endTime.getMinute();
+        } else if(this.endTime.getHour() >= 22) {
             workMinutes -= 60;
         }
 
@@ -61,11 +55,15 @@ public class RegistData extends ProcessData {
     }
 
     private void setFieldsWhenInputProcess(InputData inputData) {
-        this.startH = Integer.valueOf(inputData.getStartTime().substring(0, 2));
-        this.startM = Integer.valueOf(inputData.getStartTime().substring(2, 4));
+        this.startTime = new TimeData(
+                Integer.valueOf(inputData.getStartTime().substring(0, 2)),
+                Integer.valueOf(inputData.getStartTime().substring(2, 4))
+        );
 
-        this.endH = Integer.valueOf(inputData.getEndTime().substring(0, 2));
-        this.endM = Integer.valueOf(inputData.getEndTime().substring(2, 4));
+        this.endTime = new TimeData(
+                Integer.valueOf(inputData.getEndTime().substring(0, 2)),
+                Integer.valueOf(inputData.getEndTime().substring(2, 4))
+        );
     }
 
 }
