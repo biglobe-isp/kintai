@@ -8,6 +8,11 @@ import com.naosim.dddwork.service.WorkTimeService;
 import java.time.LocalDateTime;
 
 public class WorkTimeApi {
+    /**
+     * 勤怠処理
+     *
+     * @param args
+     */
     public void workTimeCalculate(String[] args) {
 
         //引数チェック

@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 勤怠入力入力オブジェクト
+ */
 @RequiredArgsConstructor
 public class WorkTimeInputForm implements FormToValueObject<WorkTimeInputParam> {
 

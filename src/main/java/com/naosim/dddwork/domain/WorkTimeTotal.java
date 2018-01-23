@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 import java.util.Set;
 
-
+/**
+ * 勤務時間合計、残業時間合計
+ */
 public class WorkTimeTotal {
 
     private final Map<String, Integer> totalWorkMinutesMap;
