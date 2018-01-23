@@ -11,7 +11,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class KintaiTotalPrint {
+public class KintaiTotal {
 
     @Getter
     KintaiTotalPrintInput kintaiTotalPrintInput;
@@ -26,23 +26,10 @@ public class KintaiTotalPrint {
     @Getter
     private int totalOverWorkMinutes;
 
-    public KintaiTotalPrint(KintaiTotalPrintInput kintaiTotalPrintInput, List<String> registLineList) {
+    public KintaiTotal(KintaiTotalPrintInput kintaiTotalPrintInput, List<String> registLineList) {
         this.kintaiTotalPrintInput = kintaiTotalPrintInput;
         this.registLineList = registLineList;
         this.setTotalData();
-    }
-
-    // TODO: 入出力に関する処理はdatasourceに移す
-    public String getPrintStringForTotalWorkTime() {
-        return getPrintString("勤務時間", this.totalWorkMinutes);
-    }
-
-    public String getPrintStringForTotalOverWorkTime() {
-        return getPrintString("残業時間", this.totalOverWorkMinutes);
-    }
-
-    private String getPrintString(String title, int totalTime) {
-        return String.format("%s: %s時間%s分", title, totalTime / 60, totalTime % 60);
     }
 
     private void setTotalData() {

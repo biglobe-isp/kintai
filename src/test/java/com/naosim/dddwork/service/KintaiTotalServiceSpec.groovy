@@ -7,22 +7,21 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class KintaiTotalPrintServiceSpec extends Specification {
+class KintaiTotalServiceSpec extends Specification {
 
     @Autowired
-    KintaiTotalPrintService totalKintaiPrintService
+    KintaiTotalPrintService kintaiTotalPrintService
 
     def "正常データでエラーが発生しないことを確認する"() {
         setup:
-        // TODO: data.csvを削除したほうがいいかな
 
         when:
         String[] args = ["total", "201801"]
 
-        KintaiTotalPrintInputForm totalKintaiPrintInputForm = new KintaiTotalPrintInputForm(args)
-        KintaiTotalPrintInput totalKintaiPrintInput = totalKintaiPrintInputForm.getValueObject()
+        KintaiTotalPrintInputForm kintaiTotalPrintInputForm = new KintaiTotalPrintInputForm(args)
+        KintaiTotalPrintInput kintaiTotalPrintInput = kintaiTotalPrintInputForm.getValueObject()
 
-        this.totalKintaiPrintService.printTargetMonth(totalKintaiPrintInput)
+        this.kintaiTotalPrintService.printTargetMonth(kintaiTotalPrintInput)
 
         then:
         true
