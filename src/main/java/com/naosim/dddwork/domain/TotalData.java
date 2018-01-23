@@ -22,8 +22,8 @@ public class TotalData extends ProcessData {
     @Getter
     private int totalOverWorkMinutes;
 
-    public TotalData(InputData inputData, List<String> registLineList) {
-        super(inputData);
+    public TotalData(InputKintai inputKintai, List<String> registLineList) {
+        super(inputKintai);
         this.registLineList = registLineList;
         this.setTotalData();
     }
@@ -53,7 +53,7 @@ public class TotalData extends ProcessData {
 
             LineData lineData = new LineData(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
 
-            if(!lineData.getWorkDate().startsWith(this.inputData.getYearMonth())) {
+            if(!lineData.getWorkDate().startsWith(this.inputKintai.getYearMonth())) {
                 continue;
             }
             totalWorkMinutesMap.put(lineData.getWorkDate(), Integer.valueOf(lineData.getWorkMinutes()));
@@ -69,6 +69,6 @@ public class TotalData extends ProcessData {
 
     @Override
     protected boolean isCorrectMethodType() {
-        return InputData.MethodType.TOTAL.equals(this.inputData.getMethodType());
+        return InputKintai.MethodType.TOTAL.equals(this.inputKintai.getMethodType());
     }
 }

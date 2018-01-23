@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode
 @ToString
-public class InputData {
+public class InputKintai {
 
     @AllArgsConstructor @Getter
     public enum MethodType {
@@ -35,7 +35,7 @@ public class InputData {
     @Getter
     private String yearMonth;
 
-    public InputData(String[] args) {
+    public InputKintai(String[] args) {
         if (args.length < 1) {
             throw new RuntimeException("引数が足りません");
         }

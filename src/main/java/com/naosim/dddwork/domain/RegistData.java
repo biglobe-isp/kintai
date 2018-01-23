@@ -14,8 +14,8 @@ public class RegistData extends ProcessData {
     @Getter
     private TimeData endTime;
 
-    public RegistData(InputData inputData) {
-        super(inputData);
+    public RegistData(InputKintai inputKintai) {
+        super(inputKintai);
         this.setFields();
     }
 
@@ -29,8 +29,8 @@ public class RegistData extends ProcessData {
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
         LineData lineData = new LineData(
-                this.inputData.getDate(), this.inputData.getStartTime(), this.inputData.getEndTime(),
-                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.inputData.getNow()
+                this.inputKintai.getDate(), this.inputKintai.getStartTime(), this.inputKintai.getEndTime(),
+                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.inputKintai.getNow()
         );
 
         return lineData.getLineString();
@@ -38,7 +38,7 @@ public class RegistData extends ProcessData {
 
     @Override
     protected boolean isCorrectMethodType() {
-        return InputData.MethodType.INPUT.equals(this.inputData.getMethodType());
+        return InputKintai.MethodType.INPUT.equals(this.inputKintai.getMethodType());
     }
 
     private int getOverWorkMinutes(int workMinutes) {
@@ -80,13 +80,13 @@ public class RegistData extends ProcessData {
 
     private void setFields() {
         this.startTime = new TimeData(
-                Integer.valueOf(this.inputData.getStartTime().substring(0, 2)),
-                Integer.valueOf(this.inputData.getStartTime().substring(2, 4))
+                Integer.valueOf(this.inputKintai.getStartTime().substring(0, 2)),
+                Integer.valueOf(this.inputKintai.getStartTime().substring(2, 4))
         );
 
         this.endTime = new TimeData(
-                Integer.valueOf(this.inputData.getEndTime().substring(0, 2)),
-                Integer.valueOf(this.inputData.getEndTime().substring(2, 4))
+                Integer.valueOf(this.inputKintai.getEndTime().substring(0, 2)),
+                Integer.valueOf(this.inputKintai.getEndTime().substring(2, 4))
         );
 
         if (!this.isStartLessOrEqualEnd())

@@ -7,10 +7,10 @@ import lombok.ToString;
 @ToString
 public abstract class ProcessData {
 
-    protected InputData inputData;
+    protected InputKintai inputKintai;
 
-    public ProcessData(InputData inputData) {
-        this.inputData = inputData;
+    public ProcessData(InputKintai inputKintai) {
+        this.inputKintai = inputKintai;
         if (!this.isCorrectMethodType())
             throw new RuntimeException("指定されたメソッドタイプが異なるため、インスタンス化できません");
 

@@ -19,18 +19,18 @@ public class KintaiKanriService {
 
     public void execute(String[] args) throws IOException {
 
-        InputData inputData = new InputData(args);
+        InputKintai inputKintai = new InputKintai(args);
 
-        switch (inputData.getMethodType()) {
+        switch (inputKintai.getMethodType()) {
             case INPUT:
-                RegistData registData = new RegistData(inputData);
+                RegistData registData = new RegistData(inputKintai);
                 this.registKintaiFileRepository.execute(registData.getOutputData());
 
                 break;
 
             case TOTAL:
                 List<String> list = totalKintaiFileRepository.execute();
-                TotalData totalData = new TotalData(inputData, list);
+                TotalData totalData = new TotalData(inputKintai, list);
 
                 System.out.println(totalData.getPrintStringForTotalWorkTime());
                 System.out.println(totalData.getPrintStringForTotalOverWorkTime());
