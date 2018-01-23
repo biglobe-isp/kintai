@@ -4,5 +4,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface KintaiListRepository {
-    List<String> get() throws IOException;
+    KintaiLines get() throws IOException;
 }

@@ -1,9 +1,6 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.KintaiTotal;
-import com.naosim.dddwork.domain.KintaiListRepository;
-import com.naosim.dddwork.domain.KintaiTotalPrintInput;
-import com.naosim.dddwork.domain.KintaiTotalPrintRepository;
+import com.naosim.dddwork.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +17,8 @@ public class KintaiTotalPrintService {
     KintaiTotalPrintRepository kintaiTotalPrintRepository;
 
     public void printTargetMonth(KintaiTotalPrintInput kintaiTotalPrintInput) throws IOException {
-        // TODO: ArrayListではなく、コレクションオブジェクトに変更
-        List<String> list = this.kintaiListRepository.get();
-        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintInput, list);
+        KintaiLines kintaiLines = this.kintaiListRepository.get();
+        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintInput, kintaiLines);
 
         this.kintaiTotalPrintRepository.print(kintaiTotal);
     }

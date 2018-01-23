@@ -4,10 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
@@ -17,8 +14,7 @@ public class KintaiTotal {
     KintaiTotalPrintInput kintaiTotalPrintInput;
 
     @Getter
-    // TODO: Listではなく、コレクションオブジェクトにする
-    private List<String> registLineList;
+    private KintaiLines kintaiLines;
 
     @Getter
     private int totalWorkMinutes;
@@ -26,9 +22,9 @@ public class KintaiTotal {
     @Getter
     private int totalOverWorkMinutes;
 
-    public KintaiTotal(KintaiTotalPrintInput kintaiTotalPrintInput, List<String> registLineList) {
+    public KintaiTotal(KintaiTotalPrintInput kintaiTotalPrintInput, KintaiLines kintaiLines) {
         this.kintaiTotalPrintInput = kintaiTotalPrintInput;
-        this.registLineList = registLineList;
+        this.kintaiLines = kintaiLines;
         this.setTotalData();
     }
 
@@ -39,8 +35,9 @@ public class KintaiTotal {
         Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
         Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
 
-        for (String line : registLineList) {
-
+        Iterator<String> iterator = this.kintaiLines.getIterator();
+        while (iterator.hasNext()) {
+            String line = iterator.next();
             String[] columns = line.split(",");
 
             OneDayKintai oneDayKintai = new OneDayKintai(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);

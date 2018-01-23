@@ -1,6 +1,7 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.datasource.file.KintaiFile;
+import com.naosim.dddwork.domain.KintaiLines;
 import com.naosim.dddwork.domain.KintaiListRepository;
 import org.springframework.stereotype.Component;
 
@@ -15,20 +16,19 @@ import java.util.List;
 public class KintaiListRepositoryFile implements KintaiListRepository {
 
     @Override
-    // TODO: Listではなく、コレクションオブジェクトに
-    public List<String> get() throws IOException {
+    public KintaiLines get() throws IOException {
         File kintaiCsvFile = KintaiFile.getTargetCsv();
 
         try(
                 FileReader fr = new FileReader(kintaiCsvFile);
                 BufferedReader br = new BufferedReader(fr);
         ) {
-            List<String> list = new ArrayList<>();
+            KintaiLines kintaiLines = new KintaiLines();
             String line;
             while ((line = br.readLine()) != null) {
-                list.add(line);
+                kintaiLines = kintaiLines.add(line);
             }
-            return list;
+            return kintaiLines;
         }
     }
 }
