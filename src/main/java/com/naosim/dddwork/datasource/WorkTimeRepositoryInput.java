@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class WorkTimeInputRepositoryFile implements WorkTimeRepository{
+public class WorkTimeRepositoryInput implements WorkTimeRepository{
     @Override
     public Void doExecute(String[] args) {
         if(args.length < 4) {

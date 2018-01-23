@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.datasource.WorkTimeInputRepositoryFile;
-import com.naosim.dddwork.datasource.WorkTimeTotalRepositoryFile;
+import com.naosim.dddwork.datasource.WorkTimeRepositoryInput;
+import com.naosim.dddwork.datasource.WorkTimeRepositoryTotal;
 import com.naosim.dddwork.domain.WorkTimeRepository;
 import com.naosim.dddwork.domain.WorkTimeTotal;
 
@@ -17,12 +17,12 @@ public class WorkTimeService {
 
             if("input".equals(methodType)) {
                 //勤怠入力処理
-                workTimeRepository = new WorkTimeInputRepositoryFile();
+                workTimeRepository = new WorkTimeRepositoryInput();
                 workTimeRepository.doExecute(args);
 
             } else if("total".equals(methodType)) {
                 //勤怠時間合計時間計算処理
-                workTimeRepository = new WorkTimeTotalRepositoryFile();
+                workTimeRepository = new WorkTimeRepositoryTotal();
                 WorkTimeTotal workTimeTotal = (WorkTimeTotal) workTimeRepository.doExecute(args);
 
                 System.out.println("勤務時間: " + workTimeTotal.getTotalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalWorkMinutes() % 60 + "分");
