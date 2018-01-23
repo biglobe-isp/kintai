@@ -15,9 +15,6 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeT
 
         WorkTimeTotal workTimeTotal = null;
 
-        int totalWorkMinutes = 0;
-        int totalOverWorkMinutes = 0;
-
         File file = new File("data.csv");
 
         try (
@@ -37,12 +34,6 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeT
                 totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
 
                 line = br.readLine();
-            }
-
-            Set<String> keySet = totalWorkMinutesMap.keySet();
-            for (String key : keySet) {
-                totalWorkMinutes += totalWorkMinutesMap.get(key);
-                totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
             workTimeTotal = new WorkTimeTotal(totalWorkMinutesMap, totalOverWorkMinutesMap);
