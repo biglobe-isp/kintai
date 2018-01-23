@@ -6,17 +6,32 @@ import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class RegistData extends ProcessData {
+public class RegistData {
 
     @Getter
-    private TimeData startTime;
+    private final KintaiRegistInput kintaiRegistInput;
 
     @Getter
-    private TimeData endTime;
+    private final TimeData startTime;
 
-    public RegistData(InputKintai inputKintai) {
-        super(inputKintai);
-        this.setFields();
+    @Getter
+    private final TimeData endTime;
+
+    public RegistData(KintaiRegistInput kintaiRegistInput) {
+        this.kintaiRegistInput = kintaiRegistInput;
+
+        this.startTime = new TimeData(
+                Integer.valueOf(kintaiRegistInput.getStartTime().substring(0, 2)),
+                Integer.valueOf(kintaiRegistInput.getStartTime().substring(2, 4))
+        );
+
+        this.endTime = new TimeData(
+                Integer.valueOf(kintaiRegistInput.getEndTime().substring(0, 2)),
+                Integer.valueOf(kintaiRegistInput.getEndTime().substring(2, 4))
+        );
+
+        if (!this.isStartLessOrEqualEnd())
+            throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
     }
 
     public String getOutputData() {
@@ -29,16 +44,11 @@ public class RegistData extends ProcessData {
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
         LineData lineData = new LineData(
-                this.inputKintai.getDate(), this.inputKintai.getStartTime(), this.inputKintai.getEndTime(),
-                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.inputKintai.getNow()
+                this.kintaiRegistInput.getDate(), this.kintaiRegistInput.getStartTime(), this.kintaiRegistInput.getEndTime(),
+                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.kintaiRegistInput.getNow()
         );
 
         return lineData.getLineString();
-    }
-
-    @Override
-    protected boolean isCorrectMethodType() {
-        return InputKintai.MethodType.INPUT.equals(this.inputKintai.getMethodType());
     }
 
     private int getOverWorkMinutes(int workMinutes) {
@@ -77,20 +87,4 @@ public class RegistData extends ProcessData {
 
         return startMinutes <= endMinutes;
     }
-
-    private void setFields() {
-        this.startTime = new TimeData(
-                Integer.valueOf(this.inputKintai.getStartTime().substring(0, 2)),
-                Integer.valueOf(this.inputKintai.getStartTime().substring(2, 4))
-        );
-
-        this.endTime = new TimeData(
-                Integer.valueOf(this.inputKintai.getEndTime().substring(0, 2)),
-                Integer.valueOf(this.inputKintai.getEndTime().substring(2, 4))
-        );
-
-        if (!this.isStartLessOrEqualEnd())
-            throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
-    }
-
 }

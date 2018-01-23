@@ -1,7 +1,5 @@
 package com.naosim.dddwork.api
 
-import com.naosim.dddwork.api.form.InputKintaiForm
-import com.naosim.dddwork.domain.InputKintai
 import com.naosim.dddwork.service.KintaiRegistService
 import com.naosim.dddwork.service.TotalKintaiPrintService
 import org.springframework.beans.factory.annotation.Autowired

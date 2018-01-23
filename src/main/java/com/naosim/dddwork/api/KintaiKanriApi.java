@@ -1,7 +1,9 @@
 package com.naosim.dddwork.api;
 
-import com.naosim.dddwork.api.form.InputKintaiForm;
-import com.naosim.dddwork.domain.InputKintai;
+import com.naosim.dddwork.api.form.KintaiRegistInputForm;
+import com.naosim.dddwork.api.form.TotalKintaiPrintInputForm;
+import com.naosim.dddwork.domain.KintaiRegistInput;
+import com.naosim.dddwork.domain.TotalKintaiPrintInput;
 import com.naosim.dddwork.service.KintaiRegistService;
 import com.naosim.dddwork.service.TotalKintaiPrintService;
 import lombok.RequiredArgsConstructor;
@@ -20,20 +22,31 @@ public class KintaiKanriApi {
 
     public void execute(String[] args) throws IOException {
 
-        InputKintaiForm inputKintaiForm = new InputKintaiForm(args);
-        InputKintai inputKintai = inputKintaiForm.getValueObject();
+        if (!this.isExistArgsElement(args)) {
+            throw new RuntimeException("引数が足りません");
+        }
 
-        switch (inputKintai.getMethodType()) {
+        MethodType methodType = MethodType.getMethodTypeFromString(args[0]);
+
+        switch (methodType) {
             case INPUT:
-                this.kintaiRegistService.registKintaiOfOneDay(inputKintai);
+                KintaiRegistInputForm inputKintaiForm = new KintaiRegistInputForm(args);
+                KintaiRegistInput kintaiRegistInput = inputKintaiForm.getValueObject();
+                this.kintaiRegistService.registKintaiOfOneDay(kintaiRegistInput);
                 break;
 
             case TOTAL:
-                this.totalKintaiPrintService.printTargetMonth(inputKintai);
+                TotalKintaiPrintInputForm totalKintaiPrintInputForm = new TotalKintaiPrintInputForm(args);
+                TotalKintaiPrintInput totalKintaiPrintInput = totalKintaiPrintInputForm.getValueObject();
+                this.totalKintaiPrintService.printTargetMonth(totalKintaiPrintInput);
                 break;
 
             default:
         }
+    }
+
+    private boolean isExistArgsElement(String[] args) {
+        return args.length >= 1;
     }
 
 }

@@ -11,9 +11,13 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class TotalData extends ProcessData {
+public class TotalData {
 
     @Getter
+    TotalKintaiPrintInput totalKintaiPrintInput;
+
+    @Getter
+    // TODO: Listではなく、コレクションオブジェクトにする
     private List<String> registLineList;
 
     @Getter
@@ -22,12 +26,13 @@ public class TotalData extends ProcessData {
     @Getter
     private int totalOverWorkMinutes;
 
-    public TotalData(InputKintai inputKintai, List<String> registLineList) {
-        super(inputKintai);
+    public TotalData(TotalKintaiPrintInput totalKintaiPrintInput, List<String> registLineList) {
+        this.totalKintaiPrintInput = totalKintaiPrintInput;
         this.registLineList = registLineList;
         this.setTotalData();
     }
 
+    // TODO: 入出力に関する処理はdatasourceに移す
     public String getPrintStringForTotalWorkTime() {
         return getPrintString("勤務時間", this.totalWorkMinutes);
     }
@@ -53,7 +58,7 @@ public class TotalData extends ProcessData {
 
             LineData lineData = new LineData(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
 
-            if(!lineData.getWorkDate().startsWith(this.inputKintai.getYearMonth())) {
+            if(!lineData.getWorkDate().startsWith(this.totalKintaiPrintInput.getYearMonth())) {
                 continue;
             }
             totalWorkMinutesMap.put(lineData.getWorkDate(), Integer.valueOf(lineData.getWorkMinutes()));
@@ -65,10 +70,5 @@ public class TotalData extends ProcessData {
             this.totalWorkMinutes += totalWorkMinutesMap.get(key);
             this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
         }
-    }
-
-    @Override
-    protected boolean isCorrectMethodType() {
-        return InputKintai.MethodType.TOTAL.equals(this.inputKintai.getMethodType());
     }
 }
