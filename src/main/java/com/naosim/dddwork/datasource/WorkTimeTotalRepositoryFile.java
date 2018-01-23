@@ -2,19 +2,17 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.WorkTimeRepository;
 import com.naosim.dddwork.domain.WorkTimeTotal;
+import com.naosim.dddwork.domain.WorkTimeTotalForm;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class WorkTimeTotalRepositoryFile implements WorkTimeRepository{
+public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeTotal, WorkTimeTotalForm> {
     @Override
-    public WorkTimeTotal doExecute(String[] args) {
-        String yearMonth = args[1];
-        if(args.length < 2) {
-            throw new RuntimeException("引数が足りません");
-        }
+    public WorkTimeTotal doWorktimeTaskExecute(WorkTimeTotalForm workTimeTotalForm) {
+
         WorkTimeTotal workTimeTotal = null;
 
         int totalWorkMinutes = 0;
@@ -22,7 +20,7 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository{
 
         File file = new File("data.csv");
 
-        try(
+        try (
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
         ) {
@@ -30,9 +28,9 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository{
             String line = br.readLine();
             Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-            while(line != null){
+            while (line != null) {
                 String[] columns = line.split(",");
-                if(!columns[0].startsWith(yearMonth)) {
+                if (!columns[0].startsWith(workTimeTotalForm.getYearMonth())) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
@@ -42,14 +40,12 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository{
             }
 
             Set<String> keySet = totalWorkMinutesMap.keySet();
-            for(String key : keySet) {
+            for (String key : keySet) {
                 totalWorkMinutes += totalWorkMinutesMap.get(key);
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
-            workTimeTotal = new WorkTimeTotal();
-            workTimeTotal.setTotalWorkMinutes(totalWorkMinutes);
-            workTimeTotal.setTotalOverWorkMinutes(totalOverWorkMinutes);
+            workTimeTotal = new WorkTimeTotal(totalWorkMinutesMap, totalOverWorkMinutesMap);
 
             return workTimeTotal;
 

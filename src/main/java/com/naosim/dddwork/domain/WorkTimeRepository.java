@@ -1,5 +1,5 @@
 package com.naosim.dddwork.domain;
 
-public interface WorkTimeRepository<T> {
-    T doExecute(String[] args);
+public interface WorkTimeRepository<T, S> {
+    T doWorktimeTaskExecute(S objet);
 }

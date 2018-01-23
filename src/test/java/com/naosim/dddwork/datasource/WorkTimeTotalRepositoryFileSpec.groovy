@@ -1,35 +1,14 @@
 package com.naosim.dddwork.datasource
 
+import com.naosim.dddwork.domain.WorkTimeInputForm
 import com.naosim.dddwork.domain.WorkTimeRepository
 import com.naosim.dddwork.domain.WorkTimeTotal
+import com.naosim.dddwork.domain.WorkTimeTotalForm
 import spock.lang.Specification
 
+import java.time.LocalDateTime
+
 class WorkTimeTotalRepositoryFileSpec extends Specification {
-
-    def setupSpec() {
-        WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
-        //String[] args = ["input", "20170101", "0900", "1800"]
-
-        (20170101..20170131).each {
-            String[] args = ["input", "${it}", "0900", "2000"]
-
-            workTimeRepository.doExecute(args)
-        }
-
-    }
-
-    def "集計のテストを行う_異常パターン"() {
-
-        setup:
-        WorkTimeRepository workTimeRepository = new WorkTimeTotalRepositoryFile()
-
-        when:
-        String[] args = ["total"]
-        workTimeRepository.doExecute(args)
-
-        then:
-        def ex = thrown(RuntimeException)
-    }
 
     def "集計のテストを行う_正常パターン_残業なし"() {
 
@@ -37,20 +16,22 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
 
         (20170101..20170131).each {
-            String[] argsInput = ["input", "${it}", "0900", "1800"]
-            workTimeRepository.doExecute(argsInput)
+            String[] args = ["input", "${it}", "0900", "1800"]
+            WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
+            workTimeRepository.doWorktimeTaskExecute(workTimeInputForm)
         }
 
         when:
 
-        String[] args = ["total","201701"]
+        String[] args = ["total", "201701"]
         workTimeRepository = new WorkTimeTotalRepositoryFile()
-        WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
+        WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1])
+        WorkTimeTotal workTimeTotal = workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm)
 
         then:
         assert workTimeTotal != null
-        assert 248 == workTimeTotal.getTotalWorkMinutes() /60 + workTimeTotal.getTotalWorkMinutes() % 60
-        assert 0 == workTimeTotal.getTotalOverWorkMinutes() / 60 +  workTimeTotal.getTotalOverWorkMinutes() % 60
+        assert 248 == workTimeTotal.getTotalWorkMinutes() / 60 + workTimeTotal.getTotalWorkMinutes() % 60
+        assert 0 == workTimeTotal.getTotalOverWorkMinutes() / 60 + workTimeTotal.getTotalOverWorkMinutes() % 60
     }
 
     def "集計のテストを行う_正常パターン_残業あり"() {
@@ -59,20 +40,22 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
 
         (20170101..20170131).each {
-            String[] argsInput = ["input", "${it}", "0900", "2000"]
-            workTimeRepository.doExecute(argsInput)
+            String[] args = ["input", "${it}", "0900", "2000"]
+            WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
+            workTimeRepository.doWorktimeTaskExecute(workTimeInputForm)
         }
 
         when:
 
-        String[] args = ["total","201701"]
+        String[] args = ["total", "201701"]
         workTimeRepository = new WorkTimeTotalRepositoryFile()
-        WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
+        WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1])
+        WorkTimeTotal workTimeTotal = workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm)
 
         then:
         assert workTimeTotal != null
-        assert 279 == workTimeTotal.getTotalWorkMinutes() /60 + workTimeTotal.getTotalWorkMinutes() % 60
-        assert 31 == workTimeTotal.getTotalOverWorkMinutes() / 60 +  workTimeTotal.getTotalOverWorkMinutes() % 60
+        assert 279 == workTimeTotal.getTotalWorkMinutes() / 60 + workTimeTotal.getTotalWorkMinutes() % 60
+        assert 31 == workTimeTotal.getTotalOverWorkMinutes() / 60 + workTimeTotal.getTotalOverWorkMinutes() % 60
     }
 
     def cleanup() {

@@ -1,5 +1,6 @@
 package com.naosim.dddwork;
 
+import com.naosim.dddwork.api.WorkTimeApi;
 import com.naosim.dddwork.service.WorkTimeService;
 
 import java.io.BufferedReader;
@@ -13,7 +14,7 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-        WorkTimeService workTimeService = new WorkTimeService();
-        workTimeService.workTimeCalculate(args);
+        WorkTimeApi workTimeApi = new WorkTimeApi();
+        workTimeApi.workTimeCalculate(args);
     }
 }

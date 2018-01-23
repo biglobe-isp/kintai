@@ -1,29 +1,16 @@
 package com.naosim.dddwork.datasource
 
+import com.naosim.dddwork.domain.WorkTimeInputForm
 import com.naosim.dddwork.domain.WorkTimeRepository
 import spock.lang.Specification
+
+import java.time.LocalDateTime
 
 class WorkTimeInputRepositoryFileSpec extends Specification {
     private WorkTimeRepository workTimeRepository;
 
     def setup() {
 
-
-    }
-
-    def "勤怠入力のテストを行う_入力パラメータ不正"() {
-
-        setup:
-        workTimeRepository = new WorkTimeInputRepositoryFile()
-
-        when:
-        String[] args = ["input", "20170101", "0900"]
-        workTimeRepository.doExecute(args)
-
-        then:
-        def ex = thrown(RuntimeException)
-        File dataFile = new File("data.csv")
-        !dataFile.exists()
     }
 
     def "勤怠入力のテストを行う_正常パターン"() {
@@ -33,7 +20,8 @@ class WorkTimeInputRepositoryFileSpec extends Specification {
 
         when:
         String[] args = ["input", "20170101", "0900", "1800"]
-        workTimeRepository.doExecute(args)
+        WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
+        workTimeRepository.doWorktimeTaskExecute(workTimeInputForm)
 
         then:
         File dataFile = new File("data.csv")
