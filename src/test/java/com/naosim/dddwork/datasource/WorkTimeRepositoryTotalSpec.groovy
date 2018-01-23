@@ -7,7 +7,7 @@ import spock.lang.Specification
 class WorkTimeRepositoryTotalSpec extends Specification {
 
     def setupSpec() {
-        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryInput()
+        WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
         //String[] args = ["input", "20170101", "0900", "1800"]
 
         (20170101..20170131).each {
@@ -21,7 +21,7 @@ class WorkTimeRepositoryTotalSpec extends Specification {
     def "集計のテストを行う_異常パターン"() {
 
         setup:
-        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryTotal()
+        WorkTimeRepository workTimeRepository = new WorkTimeTotalRepositoryFile()
 
         when:
         String[] args = ["total"]
@@ -34,7 +34,7 @@ class WorkTimeRepositoryTotalSpec extends Specification {
     def "集計のテストを行う_正常パターン_残業なし"() {
 
         setup:
-        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryInput()
+        WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
 
         (20170101..20170131).each {
             String[] argsInput = ["input", "${it}", "0900", "1800"]
@@ -44,7 +44,7 @@ class WorkTimeRepositoryTotalSpec extends Specification {
         when:
 
         String[] args = ["total","201701"]
-        workTimeRepository = new WorkTimeRepositoryTotal()
+        workTimeRepository = new WorkTimeTotalRepositoryFile()
         WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
 
         then:
@@ -56,7 +56,7 @@ class WorkTimeRepositoryTotalSpec extends Specification {
     def "集計のテストを行う_正常パターン_残業あり"() {
 
         setup:
-        WorkTimeRepository workTimeRepository = new WorkTimeRepositoryInput()
+        WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
 
         (20170101..20170131).each {
             String[] argsInput = ["input", "${it}", "0900", "2000"]
@@ -66,7 +66,7 @@ class WorkTimeRepositoryTotalSpec extends Specification {
         when:
 
         String[] args = ["total","201701"]
-        workTimeRepository = new WorkTimeRepositoryTotal()
+        workTimeRepository = new WorkTimeTotalRepositoryFile()
         WorkTimeTotal workTimeTotal =  workTimeRepository.doExecute(args)
 
         then:
