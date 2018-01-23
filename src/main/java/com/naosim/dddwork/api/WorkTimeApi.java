@@ -19,7 +19,7 @@ public class WorkTimeApi {
         WorkTimeService workTimeService = new WorkTimeService();
 
         if ("input".equals(methodType)) {
-
+            //勤怠入力処理
             if (args.length < 4) {
                 throw new RuntimeException("引数が足りません");
             }
@@ -28,7 +28,7 @@ public class WorkTimeApi {
             workTimeService.workTimeInput(workTimeInputParam);
 
         } else if ("total".equals(methodType)) {
-
+            //勤怠合計時間計算処理
             if (args.length < 2) {
                 throw new RuntimeException("引数が足りません");
             }
@@ -37,7 +37,6 @@ public class WorkTimeApi {
 
             System.out.println("勤務時間: " + workTimeTotal.getTotalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalWorkMinutes() % 60 + "分");
             System.out.println("残業時間: " + workTimeTotal.getTotalOverWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalOverWorkMinutes() % 60 + "分");
-
 
         } else {
             throw new RuntimeException("機能が存在しません。");
