@@ -2,16 +2,16 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.WorkTimeRepository;
 import com.naosim.dddwork.domain.WorkTimeTotal;
-import com.naosim.dddwork.domain.WorkTimeTotalForm;
+import com.naosim.dddwork.api.form.WorkTimeTotalForm;
+import com.naosim.dddwork.domain.WorkTimeTotalParam;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeTotal, WorkTimeTotalForm> {
+public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeTotal, WorkTimeTotalParam> {
     @Override
-    public WorkTimeTotal doWorktimeTaskExecute(WorkTimeTotalForm workTimeTotalForm) {
+    public WorkTimeTotal doWorktimeTaskExecute(WorkTimeTotalParam workTimeTotalParam) {
 
         WorkTimeTotal workTimeTotal = null;
 
@@ -27,7 +27,7 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeT
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(workTimeTotalForm.getYearMonth())) {
+                if (!columns[0].startsWith(workTimeTotalParam.getYearMonth())) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));

@@ -1,14 +1,10 @@
 package com.naosim.dddwork.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
-public class WorkTimeInputForm {
-
+public class WorkTimeInputParam {
     @Getter
     private final String date;
 

@@ -2,10 +2,12 @@ package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.datasource.WorkTimeInputRepositoryFile;
 import com.naosim.dddwork.datasource.WorkTimeTotalRepositoryFile;
-import com.naosim.dddwork.domain.WorkTimeInputForm;
+import com.naosim.dddwork.api.form.WorkTimeInputForm;
+import com.naosim.dddwork.domain.WorkTimeInputParam;
 import com.naosim.dddwork.domain.WorkTimeRepository;
 import com.naosim.dddwork.domain.WorkTimeTotal;
-import com.naosim.dddwork.domain.WorkTimeTotalForm;
+import com.naosim.dddwork.api.form.WorkTimeTotalForm;
+import com.naosim.dddwork.domain.WorkTimeTotalParam;
 
 public class WorkTimeService {
     WorkTimeRepository workTimeRepository;
@@ -13,22 +15,22 @@ public class WorkTimeService {
     /**
      * 勤怠入力処理
      *
-     * @param workTimeInputForm
+     * @param workTimeInputParam
      */
-    public void workTimeInput(WorkTimeInputForm workTimeInputForm) {
+    public void workTimeInput(WorkTimeInputParam workTimeInputParam) {
         workTimeRepository = new WorkTimeInputRepositoryFile();
-        workTimeRepository.doWorktimeTaskExecute(workTimeInputForm);
+        workTimeRepository.doWorktimeTaskExecute(workTimeInputParam);
     }
 
     /**
      * 勤怠合計時間表示
      *
-     * @param workTimeTotalForm
+     * @param workTimeTotalParam
      * @return
      */
-    public WorkTimeTotal workTimeTotal(WorkTimeTotalForm workTimeTotalForm) {
+    public WorkTimeTotal workTimeTotal(WorkTimeTotalParam workTimeTotalParam) {
         workTimeRepository = new WorkTimeTotalRepositoryFile();
-        WorkTimeTotal workTimeTotal = (WorkTimeTotal) workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm);
+        WorkTimeTotal workTimeTotal = (WorkTimeTotal) workTimeRepository.doWorktimeTaskExecute(workTimeTotalParam);
 
         return workTimeTotal;
     }

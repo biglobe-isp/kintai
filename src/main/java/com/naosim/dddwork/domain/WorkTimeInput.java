@@ -1,11 +1,17 @@
 package com.naosim.dddwork.domain;
 
 
+import com.naosim.dddwork.api.form.WorkTimeInputForm;
+import lombok.Getter;
+
 public class WorkTimeInput {
 
-    private WorkTimeInputForm workTimeInputForm;
+    private WorkTimeInputParam workTimeInputParam;
 
+    @Getter
     private int workMinutes;
+
+    @Getter
     private int overWorkMinutes;
 
     /**
@@ -13,8 +19,10 @@ public class WorkTimeInput {
      *
      * @param workTimeInputForm
      */
-    public WorkTimeInput(WorkTimeInputForm workTimeInputForm) {
-        this.workTimeInputForm = workTimeInputForm;
+    public WorkTimeInput(WorkTimeInputParam workTimeInputParam) {
+        this.workTimeInputParam = workTimeInputParam;
+        setWorkMinutes();
+        setOverWorkMinutes(this.workMinutes);
     }
 
     /**
@@ -22,13 +30,13 @@ public class WorkTimeInput {
      *
      * @return
      */
-    public int getWorkMinutes() {
+    private void setWorkMinutes() {
 
-        int startH = Integer.valueOf(workTimeInputForm.getStart().substring(0, 2));
-        int startM = Integer.valueOf(workTimeInputForm.getStart().substring(2, 4));
+        int startH = Integer.valueOf(workTimeInputParam.getStart().substring(0, 2));
+        int startM = Integer.valueOf(workTimeInputParam.getStart().substring(2, 4));
 
-        int endH = Integer.valueOf(workTimeInputForm.getEnd().substring(0, 2));
-        int endM = Integer.valueOf(workTimeInputForm.getEnd().substring(2, 4));
+        int endH = Integer.valueOf(workTimeInputParam.getEnd().substring(0, 2));
+        int endM = Integer.valueOf(workTimeInputParam.getEnd().substring(2, 4));
 
         workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
@@ -49,8 +57,6 @@ public class WorkTimeInput {
         } else if (endH >= 22) {
             workMinutes -= 60;
         }
-
-        return workMinutes;
     }
 
     /**
@@ -58,8 +64,7 @@ public class WorkTimeInput {
      *
      * @return
      */
-    public int getOverWorkMinutes() {
+    private void setOverWorkMinutes(int workMinutes) {
         overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-        return overWorkMinutes;
     }
 }

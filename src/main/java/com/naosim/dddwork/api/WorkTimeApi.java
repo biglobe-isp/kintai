@@ -1,8 +1,8 @@
 package com.naosim.dddwork.api;
 
-import com.naosim.dddwork.domain.WorkTimeInputForm;
+import com.naosim.dddwork.api.form.WorkTimeInputForm;
 import com.naosim.dddwork.domain.WorkTimeTotal;
-import com.naosim.dddwork.domain.WorkTimeTotalForm;
+import com.naosim.dddwork.api.form.WorkTimeTotalForm;
 import com.naosim.dddwork.service.WorkTimeService;
 
 import java.time.LocalDateTime;
@@ -24,16 +24,16 @@ public class WorkTimeApi {
                 throw new RuntimeException("引数が足りません");
             }
 
-            WorkTimeInputForm workTimeInputParam = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString());
-            workTimeService.workTimeInput(workTimeInputParam);
+            WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString());
+            workTimeService.workTimeInput(workTimeInputForm.getValueObject());
 
         } else if ("total".equals(methodType)) {
             //勤怠合計時間計算処理
             if (args.length < 2) {
                 throw new RuntimeException("引数が足りません");
             }
-            WorkTimeTotalForm workTimeTotalParam = new WorkTimeTotalForm(args[1]);
-            WorkTimeTotal workTimeTotal = workTimeService.workTimeTotal(workTimeTotalParam);
+            WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1]);
+            WorkTimeTotal workTimeTotal = workTimeService.workTimeTotal(workTimeTotalForm.getValueObject());
 
             System.out.println("勤務時間: " + workTimeTotal.getTotalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalWorkMinutes() % 60 + "分");
             System.out.println("残業時間: " + workTimeTotal.getTotalOverWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalOverWorkMinutes() % 60 + "分");

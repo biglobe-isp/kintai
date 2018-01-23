@@ -1,9 +1,9 @@
 package com.naosim.dddwork.datasource
 
-import com.naosim.dddwork.domain.WorkTimeInputForm
+import com.naosim.dddwork.api.form.WorkTimeInputForm
 import com.naosim.dddwork.domain.WorkTimeRepository
 import com.naosim.dddwork.domain.WorkTimeTotal
-import com.naosim.dddwork.domain.WorkTimeTotalForm
+import com.naosim.dddwork.api.form.WorkTimeTotalForm
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -18,7 +18,7 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         (20170101..20170131).each {
             String[] args = ["input", "${it}", "0900", "1800"]
             WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
-            workTimeRepository.doWorktimeTaskExecute(workTimeInputForm)
+            workTimeRepository.doWorktimeTaskExecute(workTimeInputForm.getValueObject())
         }
 
         when:
@@ -26,7 +26,7 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         String[] args = ["total", "201701"]
         workTimeRepository = new WorkTimeTotalRepositoryFile()
         WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1])
-        WorkTimeTotal workTimeTotal = workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm)
+        WorkTimeTotal workTimeTotal = workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm.getValueObject())
 
         then:
         assert workTimeTotal != null
@@ -42,7 +42,7 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         (20170101..20170131).each {
             String[] args = ["input", "${it}", "0900", "2000"]
             WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
-            workTimeRepository.doWorktimeTaskExecute(workTimeInputForm)
+            workTimeRepository.doWorktimeTaskExecute(workTimeInputForm.getValueObject())
         }
 
         when:
@@ -50,7 +50,7 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         String[] args = ["total", "201701"]
         workTimeRepository = new WorkTimeTotalRepositoryFile()
         WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1])
-        WorkTimeTotal workTimeTotal = workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm)
+        WorkTimeTotal workTimeTotal = workTimeRepository.doWorktimeTaskExecute(workTimeTotalForm.getValueObject())
 
         then:
         assert workTimeTotal != null

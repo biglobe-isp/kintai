@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class WorkTimeTotalForm {
-
+public class WorkTimeTotalParam {
     @Getter
     private final String yearMonth;
-
 }
