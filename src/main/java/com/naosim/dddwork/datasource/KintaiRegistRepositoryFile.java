@@ -1,8 +1,8 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.datasource.file.KintaiFile;
-import com.naosim.dddwork.domain.OneDayKintai;
 import com.naosim.dddwork.domain.KintaiRegistRepository;
+import com.naosim.dddwork.domain.OneDayKintai;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,7 +16,7 @@ public class KintaiRegistRepositoryFile implements KintaiRegistRepository {
     public void regist(OneDayKintai oneDayKintai) throws IOException {
         File kintaiCsvFile = KintaiFile.getTargetCsv();
 
-        try(FileWriter filewriter = new FileWriter(kintaiCsvFile, true)) {
+        try (FileWriter filewriter = new FileWriter(kintaiCsvFile, true)) {
             filewriter.write(this.getLineString(oneDayKintai));
         }
     }

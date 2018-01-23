@@ -4,7 +4,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
@@ -42,7 +45,7 @@ public class KintaiTotal {
 
             OneDayKintai oneDayKintai = new OneDayKintai(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
 
-            if(!oneDayKintai.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
+            if (!oneDayKintai.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
                 continue;
             }
             totalWorkMinutesMap.put(oneDayKintai.getWorkDate(), Integer.valueOf(oneDayKintai.getWorkMinutes()));
@@ -50,7 +53,7 @@ public class KintaiTotal {
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();
-        for(String key : keySet) {
+        for (String key : keySet) {
             this.totalWorkMinutes += totalWorkMinutesMap.get(key);
             this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
         }

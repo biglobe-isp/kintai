@@ -18,7 +18,7 @@ public class KintaiRegistInputForm implements FormToValueObject<KintaiRegistInpu
     @Override
     public KintaiRegistInput getValueObject() {
 
-        if(!this.isEnoughArgsLength()) {
+        if (!this.isEnoughArgsLength()) {
             throw new RuntimeException("引数が足りません");
         }
 

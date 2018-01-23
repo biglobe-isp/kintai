@@ -16,7 +16,7 @@ public class KintaiTotalPrintInputForm implements FormToValueObject<KintaiTotalP
     @Override
     public KintaiTotalPrintInput getValueObject() {
 
-        if(!this.isEnoughArgsLength()) {
+        if (!this.isEnoughArgsLength()) {
             throw new RuntimeException("引数が足りません");
         }
 

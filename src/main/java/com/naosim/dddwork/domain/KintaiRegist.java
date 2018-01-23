@@ -70,10 +70,11 @@ public class KintaiRegist {
     }
 
     private int getBreakMinutes(int breakStartHour) {
-        if(this.endTime.getHour() == breakStartHour) {
+        if (this.endTime.getHour() == breakStartHour) {
             if (this.startTime.getHour() < breakStartHour) return this.endTime.getMinute();
-            if (this.startTime.getHour() == breakStartHour) return this.endTime.getMinute() - this.startTime.getMinute();
-        } else if(this.endTime.getHour() > breakStartHour) {
+            if (this.startTime.getHour() == breakStartHour)
+                return this.endTime.getMinute() - this.startTime.getMinute();
+        } else if (this.endTime.getHour() > breakStartHour) {
             return 60;
         }
         return 0;

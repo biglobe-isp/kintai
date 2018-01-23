@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.KintaiRegistInput;
 import com.naosim.dddwork.domain.KintaiRegist;
+import com.naosim.dddwork.domain.KintaiRegistInput;
 import com.naosim.dddwork.domain.KintaiRegistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
