@@ -1,7 +1,7 @@
 package com.naosim.dddwork.api
 
 import com.naosim.dddwork.service.KintaiRegistService
-import com.naosim.dddwork.service.TotalKintaiPrintService
+import com.naosim.dddwork.service.KintaiTotalPrintService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -13,7 +13,7 @@ class KintaiKanriApiSpec extends Specification {
     KintaiRegistService kintaiRegistService
 
     @Autowired
-    TotalKintaiPrintService totalKintaiPrintService
+    KintaiTotalPrintService totalKintaiPrintService
 
     def "inputでエラーが発生しないことを確認する"() {
         setup:

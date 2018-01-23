@@ -8,13 +8,13 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class LineData {
+public class OneDayKintai {
 
     @Getter
     private final String workDate;
 
     @Getter
-    private final String startTIme;
+    private final String startTime;
 
     @Getter
     private final String endTime;
@@ -27,11 +27,4 @@ public class LineData {
 
     @Getter
     private final String now;
-
-    public String getLineString() {
-        return String.format("%s,%s,%s,%s,%s,%s\n",
-                this.workDate, this.startTIme, this.endTime,
-                this.workMinutes, this.overWorkMinutes, this.now
-        );
-    }
 }

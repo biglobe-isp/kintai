@@ -1,28 +1,26 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.TotalKintaiPrintInput;
+import com.naosim.dddwork.domain.KintaiTotalPrintInput;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
 @EqualsAndHashCode
-public class TotalKintaiPrintInputForm implements FormToValueObject<TotalKintaiPrintInput> {
+public class KintaiTotalPrintInputForm implements FormToValueObject<KintaiTotalPrintInput> {
 
     @Getter
     private final String[] args;
 
     @Override
-    public TotalKintaiPrintInput getValueObject() {
+    public KintaiTotalPrintInput getValueObject() {
 
         if(!this.isEnoughArgsLength()) {
             throw new RuntimeException("引数が足りません");
         }
 
-        return new TotalKintaiPrintInput(this.args[1]);
+        return new KintaiTotalPrintInput(this.args[1]);
     }
 
     private boolean isEnoughArgsLength() {

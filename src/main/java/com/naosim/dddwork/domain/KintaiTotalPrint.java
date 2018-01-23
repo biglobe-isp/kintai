@@ -11,10 +11,10 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class TotalData {
+public class KintaiTotalPrint {
 
     @Getter
-    TotalKintaiPrintInput totalKintaiPrintInput;
+    KintaiTotalPrintInput kintaiTotalPrintInput;
 
     @Getter
     // TODO: Listではなく、コレクションオブジェクトにする
@@ -26,8 +26,8 @@ public class TotalData {
     @Getter
     private int totalOverWorkMinutes;
 
-    public TotalData(TotalKintaiPrintInput totalKintaiPrintInput, List<String> registLineList) {
-        this.totalKintaiPrintInput = totalKintaiPrintInput;
+    public KintaiTotalPrint(KintaiTotalPrintInput kintaiTotalPrintInput, List<String> registLineList) {
+        this.kintaiTotalPrintInput = kintaiTotalPrintInput;
         this.registLineList = registLineList;
         this.setTotalData();
     }
@@ -56,13 +56,13 @@ public class TotalData {
 
             String[] columns = line.split(",");
 
-            LineData lineData = new LineData(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
+            OneDayKintai oneDayKintai = new OneDayKintai(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
 
-            if(!lineData.getWorkDate().startsWith(this.totalKintaiPrintInput.getYearMonth())) {
+            if(!oneDayKintai.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
                 continue;
             }
-            totalWorkMinutesMap.put(lineData.getWorkDate(), Integer.valueOf(lineData.getWorkMinutes()));
-            totalOverWorkMinutesMap.put(lineData.getWorkDate(), Integer.valueOf(lineData.getOverWorkMinutes()));
+            totalWorkMinutesMap.put(oneDayKintai.getWorkDate(), Integer.valueOf(oneDayKintai.getWorkMinutes()));
+            totalOverWorkMinutesMap.put(oneDayKintai.getWorkDate(), Integer.valueOf(oneDayKintai.getOverWorkMinutes()));
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();

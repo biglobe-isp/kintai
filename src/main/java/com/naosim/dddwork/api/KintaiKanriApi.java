@@ -1,11 +1,11 @@
 package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm;
-import com.naosim.dddwork.api.form.TotalKintaiPrintInputForm;
+import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm;
 import com.naosim.dddwork.domain.KintaiRegistInput;
-import com.naosim.dddwork.domain.TotalKintaiPrintInput;
+import com.naosim.dddwork.domain.KintaiTotalPrintInput;
 import com.naosim.dddwork.service.KintaiRegistService;
-import com.naosim.dddwork.service.TotalKintaiPrintService;
+import com.naosim.dddwork.service.KintaiTotalPrintService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ public class KintaiKanriApi {
 
     private final KintaiRegistService kintaiRegistService;
 
-    private final TotalKintaiPrintService totalKintaiPrintService;
+    private final KintaiTotalPrintService kintaiTotalPrintService;
 
     public void execute(String[] args) throws IOException {
 
@@ -36,9 +36,9 @@ public class KintaiKanriApi {
                 break;
 
             case TOTAL:
-                TotalKintaiPrintInputForm totalKintaiPrintInputForm = new TotalKintaiPrintInputForm(args);
-                TotalKintaiPrintInput totalKintaiPrintInput = totalKintaiPrintInputForm.getValueObject();
-                this.totalKintaiPrintService.printTargetMonth(totalKintaiPrintInput);
+                KintaiTotalPrintInputForm kintaiTotalPrintInputForm = new KintaiTotalPrintInputForm(args);
+                KintaiTotalPrintInput kintaiTotalPrintInput = kintaiTotalPrintInputForm.getValueObject();
+                this.kintaiTotalPrintService.printTargetMonth(kintaiTotalPrintInput);
                 break;
 
             default:

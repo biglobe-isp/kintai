@@ -1,16 +1,16 @@
 package com.naosim.dddwork.service
 
-import com.naosim.dddwork.api.form.TotalKintaiPrintInputForm
-import com.naosim.dddwork.domain.TotalKintaiPrintInput
+import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm
+import com.naosim.dddwork.domain.KintaiTotalPrintInput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class TotalKintaiPrintServiceSpec extends Specification {
+class KintaiTotalPrintServiceSpec extends Specification {
 
     @Autowired
-    TotalKintaiPrintService totalKintaiPrintService
+    KintaiTotalPrintService totalKintaiPrintService
 
     def "正常データでエラーが発生しないことを確認する"() {
         setup:
@@ -19,8 +19,8 @@ class TotalKintaiPrintServiceSpec extends Specification {
         when:
         String[] args = ["total", "201801"]
 
-        TotalKintaiPrintInputForm totalKintaiPrintInputForm = new TotalKintaiPrintInputForm(args)
-        TotalKintaiPrintInput totalKintaiPrintInput = totalKintaiPrintInputForm.getValueObject()
+        KintaiTotalPrintInputForm totalKintaiPrintInputForm = new KintaiTotalPrintInputForm(args)
+        KintaiTotalPrintInput totalKintaiPrintInput = totalKintaiPrintInputForm.getValueObject()
 
         this.totalKintaiPrintService.printTargetMonth(totalKintaiPrintInput)
 

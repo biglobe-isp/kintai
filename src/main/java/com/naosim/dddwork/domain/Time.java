@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @EqualsAndHashCode
 @ToString
-public class TimeData {
+public class Time {
 
     @Getter
     private int hour;
@@ -14,7 +14,7 @@ public class TimeData {
     @Getter
     private int minute;
 
-    public TimeData(int hour, int minute) {
+    public Time(int hour, int minute) {
 
         if (this.isCorrectAsHour(hour) && this.isCorrectAsMinute(minute)) {
             this.hour = hour;

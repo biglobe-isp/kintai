@@ -8,7 +8,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class TotalKintaiPrintInput {
+public class KintaiTotalPrintInput {
 
     @Getter
     private final String yearMonth;

@@ -6,26 +6,26 @@ import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class RegistData {
+public class KintaiRegist {
 
     @Getter
     private final KintaiRegistInput kintaiRegistInput;
 
     @Getter
-    private final TimeData startTime;
+    private final Time startTime;
 
     @Getter
-    private final TimeData endTime;
+    private final Time endTime;
 
-    public RegistData(KintaiRegistInput kintaiRegistInput) {
+    public KintaiRegist(KintaiRegistInput kintaiRegistInput) {
         this.kintaiRegistInput = kintaiRegistInput;
 
-        this.startTime = new TimeData(
+        this.startTime = new Time(
                 Integer.valueOf(kintaiRegistInput.getStartTime().substring(0, 2)),
                 Integer.valueOf(kintaiRegistInput.getStartTime().substring(2, 4))
         );
 
-        this.endTime = new TimeData(
+        this.endTime = new Time(
                 Integer.valueOf(kintaiRegistInput.getEndTime().substring(0, 2)),
                 Integer.valueOf(kintaiRegistInput.getEndTime().substring(2, 4))
         );
@@ -34,7 +34,7 @@ public class RegistData {
             throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
     }
 
-    public String getOutputData() {
+    public OneDayKintai getOneDayKintai() {
         int workMinutes = this.getWorkMinutes();
 
         workMinutes -= this.getLunchBreakMinutes();
@@ -43,12 +43,10 @@ public class RegistData {
 
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
-        LineData lineData = new LineData(
+        return new OneDayKintai(
                 this.kintaiRegistInput.getDate(), this.kintaiRegistInput.getStartTime(), this.kintaiRegistInput.getEndTime(),
                 Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.kintaiRegistInput.getNow()
         );
-
-        return lineData.getLineString();
     }
 
     private int getOverWorkMinutes(int workMinutes) {
