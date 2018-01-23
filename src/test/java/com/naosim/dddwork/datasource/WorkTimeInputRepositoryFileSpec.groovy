@@ -3,7 +3,7 @@ package com.naosim.dddwork.datasource
 import com.naosim.dddwork.domain.WorkTimeRepository
 import spock.lang.Specification
 
-class WorkTimeRepositoryInputSpec extends Specification {
+class WorkTimeInputRepositoryFileSpec extends Specification {
     private WorkTimeRepository workTimeRepository;
 
     def setup() {

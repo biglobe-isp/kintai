@@ -4,7 +4,7 @@ import com.naosim.dddwork.domain.WorkTimeRepository
 import com.naosim.dddwork.domain.WorkTimeTotal
 import spock.lang.Specification
 
-class WorkTimeRepositoryTotalSpec extends Specification {
+class WorkTimeTotalRepositoryFileSpec extends Specification {
 
     def setupSpec() {
         WorkTimeRepository workTimeRepository = new WorkTimeInputRepositoryFile()
