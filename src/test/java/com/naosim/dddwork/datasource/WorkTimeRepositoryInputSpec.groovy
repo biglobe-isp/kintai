@@ -14,7 +14,7 @@ class WorkTimeRepositoryInputSpec extends Specification {
     def "勤怠入力のテストを行う_入力パラメータ不正"() {
 
         setup:
-        workTimeRepository = new WorkTimeRepositoryInput()
+        workTimeRepository = new WorkTimeInputRepositoryFile()
 
         when:
         String[] args = ["input", "20170101", "0900"]
@@ -29,7 +29,7 @@ class WorkTimeRepositoryInputSpec extends Specification {
     def "勤怠入力のテストを行う_正常パターン"() {
 
         setup:
-        workTimeRepository = new WorkTimeRepositoryInput()
+        workTimeRepository = new WorkTimeInputRepositoryFile()
 
         when:
         String[] args = ["input", "20170101", "0900", "1800"]

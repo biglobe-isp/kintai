@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class WorkTimeRepositoryTotal implements WorkTimeRepository{
+public class WorkTimeTotalRepositoryFile implements WorkTimeRepository{
     @Override
     public WorkTimeTotal doExecute(String[] args) {
         String yearMonth = args[1];
