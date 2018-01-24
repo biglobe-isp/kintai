@@ -1,7 +1,7 @@
 package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.WorkTimeInputForm;
-import com.naosim.dddwork.domain.WorkTimeTotal;
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
 import com.naosim.dddwork.api.form.WorkTimeTotalForm;
 import com.naosim.dddwork.service.WorkTimeService;
 

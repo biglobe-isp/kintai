@@ -1,10 +1,10 @@
 package com.naosim.dddwork.datasource
 
 import com.naosim.dddwork.api.form.WorkTimeInputForm
-import com.naosim.dddwork.domain.WorkTimeInputRepository
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository
 import com.naosim.dddwork.api.form.WorkTimeTotalForm
-import com.naosim.dddwork.domain.WorkTimeTotalCalculation
-import com.naosim.dddwork.domain.WorkTimeTotalRepository
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotalCalculation
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository
 import spock.lang.Specification
 
 import java.time.LocalDateTime

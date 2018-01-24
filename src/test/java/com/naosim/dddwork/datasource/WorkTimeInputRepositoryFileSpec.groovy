@@ -1,7 +1,7 @@
 package com.naosim.dddwork.datasource
 
 import com.naosim.dddwork.api.form.WorkTimeInputForm
-import com.naosim.dddwork.domain.WorkTimeInputRepository
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository
 
 import spock.lang.Specification
 

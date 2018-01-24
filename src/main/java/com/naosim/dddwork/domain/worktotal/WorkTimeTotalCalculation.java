@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.worktotal;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

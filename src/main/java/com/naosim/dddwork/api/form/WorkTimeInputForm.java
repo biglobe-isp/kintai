@@ -1,18 +1,19 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.WorkTimeInputParam;
+import com.naosim.dddwork.domain.workdateandtime.WorkDate;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeEnd;
+import com.naosim.dddwork.domain.workdateandtime.WorkDateAndTime;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeNow;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeStart;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * 勤怠入力入力オブジェクト
  */
 @RequiredArgsConstructor
-public class WorkTimeInputForm implements FormToValueObject<WorkTimeInputParam> {
+public class WorkTimeInputForm implements FormToValueObject<WorkDateAndTime> {
 
     @Getter
     private final String date;
@@ -27,7 +28,7 @@ public class WorkTimeInputForm implements FormToValueObject<WorkTimeInputParam> 
     private final String now;
 
     @Override
-    public WorkTimeInputParam getValueObject() {
-        return new WorkTimeInputParam(date, start, end, now);
+    public WorkDateAndTime getValueObject() {
+        return new WorkDateAndTime(new WorkDate(date), new WorkTimeStart(start), new WorkTimeEnd(end), new WorkTimeNow(now));
     }
 }

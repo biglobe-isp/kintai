@@ -1,8 +1,8 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.WorkTimeInput;
-import com.naosim.dddwork.domain.WorkTimeInputParam;
-import com.naosim.dddwork.domain.WorkTimeInputRepository;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeCalculate;
+import com.naosim.dddwork.domain.workdateandtime.WorkDateAndTime;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,19 +10,19 @@ import java.io.IOException;
 
 public class WorkTimeInputRepositoryFile implements WorkTimeInputRepository {
     @Override
-    public void doWorktimeTaskExecute(WorkTimeInputParam workTimeInputParam) {
+    public void doWorktimeTaskExecute(WorkDateAndTime workTimeInputParam) {
 
-        WorkTimeInput workTimeInput = new WorkTimeInput(workTimeInputParam);
+        WorkTimeCalculate workTimeInput = new WorkTimeCalculate(workTimeInputParam);
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    workTimeInputParam.getDate(),
-                    workTimeInputParam.getStart(),
-                    workTimeInputParam.getEnd(),
-                    workTimeInput.getWorkMinutes(),
-                    workTimeInput.getOverWorkMinutes(),
-                    workTimeInputParam.getNow()));
+                    workTimeInputParam.getWorkDate().getValue(),
+                    workTimeInputParam.getWorkTimeStart().getValue(),
+                    workTimeInputParam.getWorkTimeEnd().getValue(),
+                    workTimeInput.getNormalWorkTimeMinutes().getValue(),
+                    workTimeInput.getOverWorkTimeMinutes().getValue(),
+                    workTimeInputParam.getWorkTimeNow().getValue()));
         } catch (IOException e) {
             e.printStackTrace();
         }

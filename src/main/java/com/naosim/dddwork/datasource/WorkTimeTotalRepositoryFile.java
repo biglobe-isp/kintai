@@ -1,9 +1,8 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.WorkTimeTotal;
-import com.naosim.dddwork.domain.WorkTimeTotalCalculation;
-import com.naosim.dddwork.domain.WorkTimeTotalParam;
-import com.naosim.dddwork.domain.WorkTimeTotalRepository;
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotalCalculation;
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
+import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
 
 import java.io.*;
 import java.util.HashMap;
@@ -11,10 +10,7 @@ import java.util.Map;
 
 public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
     @Override
-    public WorkTimeTotalCalculation doWorktimeTaskExecute(WorkTimeTotalParam workTimeTotalParam) {
-
-        WorkTimeTotal workTimeTotal = null;
-
+    public WorkTimeTotalCalculation doWorktimeTaskExecute(WorkDateAndTimeTotal workDateAndTimeTotal) {
         File file = new File("data.csv");
 
         try (
@@ -25,13 +21,14 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
             String line = br.readLine();
             Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-            Map<HashMap<String, Integer>, HashMap<String, Integer>> workTimeTotalMap = new HashMap<>();
 
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(workTimeTotalParam.getYearMonth())) {
+                if (!columns[0].startsWith(workDateAndTimeTotal.getWorkTotalYeaAndMonth().getYearMonth())) {
                     continue;
                 }
+                System.out.println(columns[0] + " >>>> " + columns[3]);
+                System.out.println(columns[0] + ">>>> " + columns[3]);
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
                 totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
 
