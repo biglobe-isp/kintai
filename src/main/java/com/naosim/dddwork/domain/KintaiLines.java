@@ -8,12 +8,8 @@ public class KintaiLines {
 
     private List<String> kintaiLines;
 
-    public KintaiLines() {
-        this.kintaiLines = new ArrayList<>();
-    }
-
-    private KintaiLines(List<String> list) {
-        this.kintaiLines = list;
+    public KintaiLines(List<String> kintaiLines) {
+        this.kintaiLines = kintaiLines;
     }
 
     public KintaiLines add(String line) {

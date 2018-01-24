@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class KintaiListRepositoryFile implements KintaiListRepository {
@@ -21,11 +23,12 @@ public class KintaiListRepositoryFile implements KintaiListRepository {
                 FileReader fr = new FileReader(kintaiCsvFile);
                 BufferedReader br = new BufferedReader(fr);
         ) {
-            KintaiLines kintaiLines = new KintaiLines();
+            List<String> kintaiLineList = new ArrayList<>();
             String line;
             while ((line = br.readLine()) != null) {
-                kintaiLines = kintaiLines.add(line);
+                kintaiLineList.add(line);
             }
+            KintaiLines kintaiLines = new KintaiLines(kintaiLineList);
             return kintaiLines;
         }
     }
