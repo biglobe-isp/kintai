@@ -8,7 +8,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class OneDayKintai {
+public class KintaiOfOneDay {
 
     @Getter
     private final String workDate;

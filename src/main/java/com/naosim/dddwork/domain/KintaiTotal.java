@@ -17,7 +17,7 @@ public class KintaiTotal {
     KintaiTotalPrintInput kintaiTotalPrintInput;
 
     @Getter
-    private KintaiLines kintaiLines;
+    private KintaiOfOneDayLines kintaiOfOneDayLines;
 
     @Getter
     private int totalWorkMinutes;
@@ -25,9 +25,9 @@ public class KintaiTotal {
     @Getter
     private int totalOverWorkMinutes;
 
-    public KintaiTotal(KintaiTotalPrintInput kintaiTotalPrintInput, KintaiLines kintaiLines) {
+    public KintaiTotal(KintaiTotalPrintInput kintaiTotalPrintInput, KintaiOfOneDayLines kintaiOfOneDayLines) {
         this.kintaiTotalPrintInput = kintaiTotalPrintInput;
-        this.kintaiLines = kintaiLines;
+        this.kintaiOfOneDayLines = kintaiOfOneDayLines;
         this.setTotalData();
     }
 
@@ -38,18 +38,16 @@ public class KintaiTotal {
         Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
         Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
 
-        Iterator<String> iterator = this.kintaiLines.getIterator();
+        Iterator<KintaiOfOneDayLine> iterator = this.kintaiOfOneDayLines.getIterator();
         while (iterator.hasNext()) {
-            String line = iterator.next();
-            String[] columns = line.split(",");
+            KintaiOfOneDayLine kintaiOfOneDayString = iterator.next();
+            KintaiOfOneDay kintaiOfOneDay = kintaiOfOneDayString.getKintaiOfOneDay();
 
-            OneDayKintai oneDayKintai = new OneDayKintai(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
-
-            if (!oneDayKintai.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
+            if (!kintaiOfOneDay.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
                 continue;
             }
-            totalWorkMinutesMap.put(oneDayKintai.getWorkDate(), Integer.valueOf(oneDayKintai.getWorkMinutes()));
-            totalOverWorkMinutesMap.put(oneDayKintai.getWorkDate(), Integer.valueOf(oneDayKintai.getOverWorkMinutes()));
+            totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), Integer.valueOf(kintaiOfOneDay.getWorkMinutes()));
+            totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), Integer.valueOf(kintaiOfOneDay.getOverWorkMinutes()));
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();

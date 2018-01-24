@@ -1,7 +1,8 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.datasource.file.KintaiFile;
-import com.naosim.dddwork.domain.KintaiLines;
+import com.naosim.dddwork.domain.KintaiOfOneDayLine;
+import com.naosim.dddwork.domain.KintaiOfOneDayLines;
 import com.naosim.dddwork.domain.KintaiListRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,20 +17,21 @@ import java.util.List;
 public class KintaiListRepositoryFile implements KintaiListRepository {
 
     @Override
-    public KintaiLines get() throws IOException {
+    // TODO: IOExceptionを返すのではなく、RuntimeExceptionを返す
+    public KintaiOfOneDayLines get() throws IOException {
         File kintaiCsvFile = KintaiFile.getTargetCsv();
 
         try (
                 FileReader fr = new FileReader(kintaiCsvFile);
                 BufferedReader br = new BufferedReader(fr);
         ) {
-            List<String> kintaiLineList = new ArrayList<>();
+            List<KintaiOfOneDayLine> kintaiOfOneDayLineList = new ArrayList<>();
             String line;
             while ((line = br.readLine()) != null) {
-                kintaiLineList.add(line);
+                kintaiOfOneDayLineList.add(new KintaiOfOneDayLine(line));
             }
-            KintaiLines kintaiLines = new KintaiLines(kintaiLineList);
-            return kintaiLines;
+            KintaiOfOneDayLines kintaiOfOneDayLines = new KintaiOfOneDayLines(kintaiOfOneDayLineList);
+            return kintaiOfOneDayLines;
         }
     }
 }

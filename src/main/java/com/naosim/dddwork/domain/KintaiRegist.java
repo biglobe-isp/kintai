@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class KintaiRegist {
 
@@ -34,7 +34,7 @@ public class KintaiRegist {
             throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
     }
 
-    public OneDayKintai getOneDayKintai() {
+    public KintaiOfOneDay getOneDayKintai() {
         int workMinutes = this.getWorkMinutes();
 
         workMinutes -= this.getLunchBreakMinutes();
@@ -43,7 +43,7 @@ public class KintaiRegist {
 
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
-        return new OneDayKintai(
+        return new KintaiOfOneDay(
                 this.kintaiRegistInput.getDate(), this.kintaiRegistInput.getStartTime(), this.kintaiRegistInput.getEndTime(),
                 Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.kintaiRegistInput.getNow()
         );

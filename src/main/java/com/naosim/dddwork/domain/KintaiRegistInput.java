@@ -8,9 +8,12 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
+// TODO: クラス名を業務寄りの名前に
+// KintaiStartTimeAndEndTimeOfOneDay
 public class KintaiRegistInput {
 
     @Getter
+    // TODO: Stringではなく独自クラスを定義
     private final String date;
 
     @Getter
