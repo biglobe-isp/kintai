@@ -1,0 +1,35 @@
+@startuml
+
+
+class WorkDateAndTime {
+    - workDate : WorkDate
+    - workStartTime : WorkStartTime
+    - workEndTime : WorkEndTime
+    - workRecordTime : WorkRecordTime
+}
+
+class WorkDate {
+    - value : String
+    + getValue() : String
+}
+
+class WorkStartTime {
+    - value : String
+    + getValue() : String
+}
+
+class WorkEndTime {
+    - value : String
+    + getValue() : String
+}
+
+class WorkRecordTime {
+    - value : String
+    + getValue() : String
+}
+
+interface WorkTimeInputRepository {
+    + doWorktimeTaskExecute(WorkDateAndTime workTimeInputParam):void
+}
+
+@enduml
