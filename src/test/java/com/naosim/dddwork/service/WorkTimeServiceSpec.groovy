@@ -1,8 +1,12 @@
 package com.naosim.dddwork.service
 
 import com.naosim.dddwork.api.form.WorkTimeInputForm
-import com.naosim.dddwork.domain.WorkTimeRepository
+
 import com.naosim.dddwork.api.form.WorkTimeTotalForm
+import com.naosim.dddwork.domain.WorkTimeInput
+import com.naosim.dddwork.domain.WorkTimeInputRepository
+import com.naosim.dddwork.domain.WorkTimeTotal
+import com.naosim.dddwork.domain.WorkTimeTotalRepository
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -12,7 +16,7 @@ class WorkTimeServiceSpec extends Specification {
     def 勤務時間入力処理_正常パターン_入力() {
         setup:
 
-        def workTimeRepository = Mock(WorkTimeRepository)
+        def workTimeInputRepository = Mock(WorkTimeInputRepository)
 
         def servie = new WorkTimeService()
 
@@ -28,7 +32,7 @@ class WorkTimeServiceSpec extends Specification {
 
     def 勤務時間入力処理_正常パターン_合計() {
         setup:
-        def workTimeRepository = Mock(WorkTimeRepository)
+        def workTimeTotalRepository = Mock(WorkTimeTotalRepository)
 
         def servie = new WorkTimeService()
 

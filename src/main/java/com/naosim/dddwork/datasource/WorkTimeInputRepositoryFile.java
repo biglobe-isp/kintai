@@ -1,17 +1,16 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.api.form.WorkTimeInputForm;
 import com.naosim.dddwork.domain.WorkTimeInput;
 import com.naosim.dddwork.domain.WorkTimeInputParam;
-import com.naosim.dddwork.domain.WorkTimeRepository;
+import com.naosim.dddwork.domain.WorkTimeInputRepository;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class WorkTimeInputRepositoryFile implements WorkTimeRepository<Void, WorkTimeInputParam> {
+public class WorkTimeInputRepositoryFile implements WorkTimeInputRepository {
     @Override
-    public Void doWorktimeTaskExecute(WorkTimeInputParam workTimeInputParam) {
+    public void doWorktimeTaskExecute(WorkTimeInputParam workTimeInputParam) {
 
         WorkTimeInput workTimeInput = new WorkTimeInput(workTimeInputParam);
 
@@ -27,7 +26,5 @@ public class WorkTimeInputRepositoryFile implements WorkTimeRepository<Void, Wor
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 }

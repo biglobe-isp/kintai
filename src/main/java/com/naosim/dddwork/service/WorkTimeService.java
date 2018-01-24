@@ -2,15 +2,19 @@ package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.datasource.WorkTimeInputRepositoryFile;
 import com.naosim.dddwork.datasource.WorkTimeTotalRepositoryFile;
-import com.naosim.dddwork.api.form.WorkTimeInputForm;
 import com.naosim.dddwork.domain.WorkTimeInputParam;
-import com.naosim.dddwork.domain.WorkTimeRepository;
+import com.naosim.dddwork.domain.WorkTimeInputRepository;
 import com.naosim.dddwork.domain.WorkTimeTotal;
-import com.naosim.dddwork.api.form.WorkTimeTotalForm;
+import com.naosim.dddwork.domain.WorkTimeTotalCalculation;
 import com.naosim.dddwork.domain.WorkTimeTotalParam;
+import com.naosim.dddwork.domain.WorkTimeTotalRepository;
 
 public class WorkTimeService {
-    WorkTimeRepository workTimeRepository;
+    //WorkTimeRepository workTimeRepository;
+
+    private WorkTimeInputRepository workTimeInputRepository;
+    private WorkTimeTotalRepository workTimeTotalRepository;
+
 
     /**
      * 勤怠入力処理
@@ -18,8 +22,8 @@ public class WorkTimeService {
      * @param workTimeInputParam
      */
     public void workTimeInput(WorkTimeInputParam workTimeInputParam) {
-        workTimeRepository = new WorkTimeInputRepositoryFile();
-        workTimeRepository.doWorktimeTaskExecute(workTimeInputParam);
+        workTimeInputRepository = new WorkTimeInputRepositoryFile();
+        workTimeInputRepository.doWorktimeTaskExecute(workTimeInputParam);
     }
 
     /**
@@ -29,8 +33,10 @@ public class WorkTimeService {
      * @return
      */
     public WorkTimeTotal workTimeTotal(WorkTimeTotalParam workTimeTotalParam) {
-        workTimeRepository = new WorkTimeTotalRepositoryFile();
-        WorkTimeTotal workTimeTotal = (WorkTimeTotal) workTimeRepository.doWorktimeTaskExecute(workTimeTotalParam);
+        workTimeTotalRepository = new WorkTimeTotalRepositoryFile();
+        WorkTimeTotalCalculation workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workTimeTotalParam);
+
+        WorkTimeTotal workTimeTotal = new WorkTimeTotal(workTimeTotalCalculation.getTotalWorkMinutesMap(), workTimeTotalCalculation.getTotalOverWorkMinutesMap());
 
         return workTimeTotal;
     }

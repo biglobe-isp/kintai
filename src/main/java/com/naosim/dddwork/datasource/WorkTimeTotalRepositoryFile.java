@@ -1,17 +1,17 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.WorkTimeRepository;
 import com.naosim.dddwork.domain.WorkTimeTotal;
-import com.naosim.dddwork.api.form.WorkTimeTotalForm;
+import com.naosim.dddwork.domain.WorkTimeTotalCalculation;
 import com.naosim.dddwork.domain.WorkTimeTotalParam;
+import com.naosim.dddwork.domain.WorkTimeTotalRepository;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeTotal, WorkTimeTotalParam> {
+public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
     @Override
-    public WorkTimeTotal doWorktimeTaskExecute(WorkTimeTotalParam workTimeTotalParam) {
+    public WorkTimeTotalCalculation doWorktimeTaskExecute(WorkTimeTotalParam workTimeTotalParam) {
 
         WorkTimeTotal workTimeTotal = null;
 
@@ -25,6 +25,8 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeT
             String line = br.readLine();
             Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
+            Map<HashMap<String, Integer>, HashMap<String, Integer>> workTimeTotalMap = new HashMap<>();
+
             while (line != null) {
                 String[] columns = line.split(",");
                 if (!columns[0].startsWith(workTimeTotalParam.getYearMonth())) {
@@ -35,10 +37,15 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeRepository<WorkTimeT
 
                 line = br.readLine();
             }
+            //TODO ここで返す。
+            WorkTimeTotalCalculation workTimeTotalCollection = new WorkTimeTotalCalculation(totalWorkMinutesMap, totalOverWorkMinutesMap);
 
-            workTimeTotal = new WorkTimeTotal(totalWorkMinutesMap, totalOverWorkMinutesMap);
+            return workTimeTotalCollection;
 
-            return workTimeTotal;
+            //TODO サービス層に記述する。
+            //       workTimeTotal = new WorkTimeTotal(totalWorkMinutesMap, totalOverWorkMinutesMap);
+
+            //return workTimeTotal;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
