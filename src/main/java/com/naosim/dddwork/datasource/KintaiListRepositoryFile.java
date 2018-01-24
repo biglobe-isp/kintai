@@ -6,10 +6,7 @@ import com.naosim.dddwork.domain.KintaiOfOneDayLines;
 import com.naosim.dddwork.domain.KintaiListRepository;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +14,12 @@ import java.util.List;
 public class KintaiListRepositoryFile implements KintaiListRepository {
 
     @Override
-    // TODO: IOExceptionを返すのではなく、RuntimeExceptionを返す
-    public KintaiOfOneDayLines get() throws IOException {
+    public KintaiOfOneDayLines get() {
         File kintaiCsvFile = KintaiFile.getTargetCsv();
 
         try (
                 FileReader fr = new FileReader(kintaiCsvFile);
-                BufferedReader br = new BufferedReader(fr);
+                BufferedReader br = new BufferedReader(fr)
         ) {
             List<KintaiOfOneDayLine> kintaiOfOneDayLineList = new ArrayList<>();
             String line;
@@ -32,6 +28,10 @@ public class KintaiListRepositoryFile implements KintaiListRepository {
             }
             KintaiOfOneDayLines kintaiOfOneDayLines = new KintaiOfOneDayLines(kintaiOfOneDayLineList);
             return kintaiOfOneDayLines;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("対象ファイルが存在しません");
+        } catch (IOException e) {
+            throw new RuntimeException("ファイルの読み込みに失敗しました");
         }
     }
 }

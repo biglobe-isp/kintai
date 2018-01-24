@@ -13,11 +13,13 @@ import java.io.IOException;
 public class KintaiRegistRepositoryFile implements KintaiRegistRepository {
 
     @Override
-    public void regist(KintaiOfOneDay kintaiOfOneDay) throws IOException {
+    public void regist(KintaiOfOneDay kintaiOfOneDay) {
         File kintaiCsvFile = KintaiFile.getTargetCsv();
 
         try (FileWriter filewriter = new FileWriter(kintaiCsvFile, true)) {
             filewriter.write(this.getLineString(kintaiOfOneDay));
+        } catch (IOException e) {
+            throw new RuntimeException("ファイルの書き込みに失敗しました");
         }
     }
 

@@ -14,7 +14,7 @@ public class KintaiRegistService {
     @Autowired
     KintaiRegistRepository kintaiRegistRepository;
 
-    public void registKintaiOfOneDay(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) throws IOException {
+    public void registKintaiOfOneDay(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) {
         KintaiRegist kintaiRegist = new KintaiRegist(workStartAndEndTimeOfOneDay);
         this.kintaiRegistRepository.regist(kintaiRegist.getKintaiOfOneDay());
     }

@@ -20,7 +20,7 @@ public class KintaiKanriApi {
 
     private final KintaiTotalPrintService kintaiTotalPrintService;
 
-    public void execute(String[] args) throws IOException {
+    public void execute(String[] args) {
 
         if (!this.isExistArgsElement(args)) {
             throw new RuntimeException("引数が足りません");

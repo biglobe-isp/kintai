@@ -15,7 +15,7 @@ public class KintaiTotalPrintService {
     @Autowired
     KintaiTotalPrintRepository kintaiTotalPrintRepository;
 
-    public void printTargetMonth(KintaiTotalPrintInput kintaiTotalPrintInput) throws IOException {
+    public void printTargetMonth(KintaiTotalPrintInput kintaiTotalPrintInput) {
         KintaiOfOneDayLines kintaiOfOneDayLines = this.kintaiListRepository.get();
         KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintInput, kintaiOfOneDayLines);
 
