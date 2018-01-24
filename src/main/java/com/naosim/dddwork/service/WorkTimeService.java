@@ -34,10 +34,10 @@ public class WorkTimeService {
      */
     public WorkTimeTotalcalculation workTimeTotal(WorkDateAndTimeTotal workDateAndTimeTotal) {
         workTimeTotalRepository = new WorkTimeTotalRepositoryFile();
-        WorkTimeTotal workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workDateAndTimeTotal);
+        WorkTimeTotal workTimeTotal = workTimeTotalRepository.doWorktimeTaskExecute(workDateAndTimeTotal);
 
-        WorkTimeTotalcalculation workTimeTotal = new WorkTimeTotalcalculation(workTimeTotalCalculation.getTotalNormalWorkMinutes(), workTimeTotalCalculation.getTotalOverWorkMinutes());
+        WorkTimeTotalcalculation workTimeTotalcalculation = new WorkTimeTotalcalculation(workTimeTotal.getTotalNormalWorkMinutes(), workTimeTotal.getTotalOverWorkMinutes());
 
-        return workTimeTotal;
+        return workTimeTotalcalculation;
     }
 }
