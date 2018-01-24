@@ -27,9 +27,6 @@ public class KintaiRegist {
 
         this.workStartTime = workStartAndEndTimeOfOneDay.getWorkStartTime();
         this.workEndTime = workStartAndEndTimeOfOneDay.getWorkEndTime();
-
-        if (!this.isStartLessOrEqualEnd())
-            throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
     }
 
     public KintaiOfOneDay getKintaiOfOneDay() {
@@ -45,12 +42,5 @@ public class KintaiRegist {
                 overWorkMinutes,
                 this.workStartAndEndTimeOfOneDay.getNow()
         );
-    }
-
-    private boolean isStartLessOrEqualEnd() {
-        int startMinutes = this.workStartTime.getTime().convertTimeToMinutes();
-        int endMinutes = this.workEndTime.getTime().convertTimeToMinutes();
-
-        return startMinutes <= endMinutes;
     }
 }
