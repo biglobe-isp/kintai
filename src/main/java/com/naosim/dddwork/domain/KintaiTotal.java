@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 @ToString
 public class KintaiTotal {
 
