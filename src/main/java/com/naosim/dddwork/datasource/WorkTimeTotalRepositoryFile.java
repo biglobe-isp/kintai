@@ -2,17 +2,15 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.worktotal.TotalNormalWorkMinutes;
 import com.naosim.dddwork.domain.worktotal.TotalOverWorkMinutes;
-import com.naosim.dddwork.domain.worktotal.WorkTimeTotalCalculation;
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
 import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
     @Override
-    public WorkTimeTotalCalculation doWorktimeTaskExecute(WorkDateAndTimeTotal workDateAndTimeTotal) {
+    public WorkTimeTotal doWorktimeTaskExecute(WorkDateAndTimeTotal workDateAndTimeTotal) {
         File file = new File("data.csv");
 
         try (
@@ -34,7 +32,7 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
 
                 line = br.readLine();
             }
-            WorkTimeTotalCalculation workTimeTotalCollection = new WorkTimeTotalCalculation(totalNormalWorkMinutes, totalOverWorkMinutes);
+            WorkTimeTotal workTimeTotalCollection = new WorkTimeTotal(totalNormalWorkMinutes, totalOverWorkMinutes);
 
             return workTimeTotalCollection;
 

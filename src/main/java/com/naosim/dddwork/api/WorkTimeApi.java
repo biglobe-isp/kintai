@@ -1,7 +1,7 @@
 package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.WorkTimeInputForm;
-import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotalcalculation;
 import com.naosim.dddwork.api.form.WorkTimeTotalForm;
 import com.naosim.dddwork.service.WorkTimeService;
 
@@ -38,7 +38,7 @@ public class WorkTimeApi {
                 throw new RuntimeException("引数が足りません");
             }
             WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1]);
-            WorkTimeTotal workTimeTotal = workTimeService.workTimeTotal(workTimeTotalForm.getValueObject());
+            WorkTimeTotalcalculation workTimeTotal = workTimeService.workTimeTotal(workTimeTotalForm.getValueObject());
 
             System.out.println("勤務時間: " + workTimeTotal.getTotalNormalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalNormalWorkMinutes() % 60 + "分");
             System.out.println("残業時間: " + workTimeTotal.getTotalOverWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalOverWorkMinutes() % 60 + "分");

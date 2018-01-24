@@ -3,7 +3,7 @@ package com.naosim.dddwork.datasource
 import com.naosim.dddwork.api.form.WorkTimeInputForm
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository
 import com.naosim.dddwork.api.form.WorkTimeTotalForm
-import com.naosim.dddwork.domain.worktotal.WorkTimeTotalCalculation
+import com.naosim.dddwork.domain.worktotal.WorkTimeTotal
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository
 import spock.lang.Specification
 
@@ -29,7 +29,7 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         String[] args = ["total", "201701"]
         WorkTimeTotalRepository workTimeTotalRepository = new WorkTimeTotalRepositoryFile()
         WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1])
-        WorkTimeTotalCalculation workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workTimeTotalForm.getValueObject())
+        WorkTimeTotal workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workTimeTotalForm.getValueObject())
 
         then:
         assert workTimeTotalCalculation != null
@@ -49,7 +49,7 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         String[] args = ["total", "201701"]
         WorkTimeTotalRepository workTimeTotalRepository = new WorkTimeTotalRepositoryFile()
         WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1])
-        WorkTimeTotalCalculation workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workTimeTotalForm.getValueObject())
+        WorkTimeTotal workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workTimeTotalForm.getValueObject())
 
         then:
         assert workTimeTotalCalculation != null
