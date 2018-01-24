@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service
 
 import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm
-import com.naosim.dddwork.domain.KintaiTotalPrintInput
+import com.naosim.dddwork.domain.KintaiTotalPrintTargetYearMonth
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -19,9 +19,9 @@ class KintaiTotalServiceSpec extends Specification {
         String[] args = ["total", "201801"]
 
         KintaiTotalPrintInputForm kintaiTotalPrintInputForm = new KintaiTotalPrintInputForm(args)
-        KintaiTotalPrintInput kintaiTotalPrintInput = kintaiTotalPrintInputForm.getValueObject()
+        KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth = kintaiTotalPrintInputForm.getValueObject()
 
-        this.kintaiTotalPrintService.printTargetMonth(kintaiTotalPrintInput)
+        this.kintaiTotalPrintService.printTargetMonth(kintaiTotalPrintTargetYearMonth)
 
         then:
         true

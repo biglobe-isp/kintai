@@ -4,8 +4,6 @@ import com.naosim.dddwork.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 public class KintaiTotalPrintService {
 
@@ -15,9 +13,9 @@ public class KintaiTotalPrintService {
     @Autowired
     KintaiTotalPrintRepository kintaiTotalPrintRepository;
 
-    public void printTargetMonth(KintaiTotalPrintInput kintaiTotalPrintInput) {
+    public void printTargetMonth(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth) {
         KintaiOfOneDayLines kintaiOfOneDayLines = this.kintaiListRepository.get();
-        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintInput, kintaiOfOneDayLines);
+        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintTargetYearMonth, kintaiOfOneDayLines);
 
         this.kintaiTotalPrintRepository.print(kintaiTotal);
     }
