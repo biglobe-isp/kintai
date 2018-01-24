@@ -1,9 +1,9 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.datasource.file.KintaiFile;
+import com.naosim.dddwork.domain.KintaiListRepository;
 import com.naosim.dddwork.domain.KintaiOfOneDayLine;
 import com.naosim.dddwork.domain.KintaiOfOneDayLines;
-import com.naosim.dddwork.domain.KintaiListRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
