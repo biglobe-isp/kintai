@@ -24,8 +24,8 @@ public class KintaiRegistRepositoryFile implements KintaiRegistRepository {
     private String getLineString(KintaiOfOneDay kintaiOfOneDay) {
         return String.format("%s,%s,%s,%s,%s,%s\n",
                 kintaiOfOneDay.getWorkDate().getValue(),
-                kintaiOfOneDay.getStartTime().getValue(),
-                kintaiOfOneDay.getEndTime().getValue(),
+                kintaiOfOneDay.getWorkStartTime().getValue(),
+                kintaiOfOneDay.getWorkEndTime().getValue(),
                 kintaiOfOneDay.getWorkMinutes().toString(),
                 kintaiOfOneDay.getOverWorkMinutes().toString(),
                 kintaiOfOneDay.getNow().getValue()

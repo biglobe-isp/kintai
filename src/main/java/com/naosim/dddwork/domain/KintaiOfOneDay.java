@@ -1,11 +1,14 @@
 package com.naosim.dddwork.domain;
 
+import com.naosim.dddwork.domain.time.Minute;
+import com.naosim.dddwork.domain.time.Now;
+import com.naosim.dddwork.domain.time.work.WorkDate;
+import com.naosim.dddwork.domain.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.time.work.WorkStartTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import java.util.Date;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -13,13 +16,13 @@ import java.util.Date;
 public class KintaiOfOneDay {
 
     @Getter
-    private final DateString workDate;
+    private final WorkDate workDate;
 
     @Getter
-    private final TimeString startTime;
+    private final WorkStartTime workStartTime;
 
     @Getter
-    private final TimeString endTime;
+    private final WorkEndTime workEndTime;
 
     @Getter
     private final Minute workMinutes;
@@ -28,5 +31,5 @@ public class KintaiOfOneDay {
     private final Minute overWorkMinutes;
 
     @Getter
-    private final NowString now;
+    private final Now now;
 }

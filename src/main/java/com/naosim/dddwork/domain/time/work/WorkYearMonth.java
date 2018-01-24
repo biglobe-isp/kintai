@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.time.work;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,12 +8,8 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class DateString {
+public class WorkYearMonth {
 
     @Getter
     private final String value;
-
-    public boolean isTargetYearMonth(YearMonth targetYearMonth) {
-        return value.startsWith(targetYearMonth.getValue());
-    }
 }

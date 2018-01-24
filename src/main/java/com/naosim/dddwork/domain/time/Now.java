@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.time;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,16 +8,16 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode
 @ToString
-public class NowString {
+public class Now {
 
     @Getter
     private final String value;
 
-    public NowString() {
+    public Now() {
         this.value = LocalDateTime.now().toString();
     }
 
-    public NowString(String value) {
+    public Now(String value) {
         this.value = value;
     }
 }

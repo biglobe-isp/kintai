@@ -1,5 +1,7 @@
 package com.naosim.dddwork.domain;
 
+import com.naosim.dddwork.domain.time.Minute;
+import com.naosim.dddwork.domain.time.Time;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,8 +22,8 @@ public class KintaiRegist {
     public KintaiRegist(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) {
         this.workStartAndEndTimeOfOneDay = workStartAndEndTimeOfOneDay;
 
-        this.startTime = workStartAndEndTimeOfOneDay.getStartTimeString().getTime();
-        this.endTime = workStartAndEndTimeOfOneDay.getEndTimeString().getTime();
+        this.startTime = workStartAndEndTimeOfOneDay.getWorkStartTime().getTime();
+        this.endTime = workStartAndEndTimeOfOneDay.getWorkEndTime().getTime();
 
         if (!this.isStartLessOrEqualEnd())
             throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
@@ -37,12 +39,12 @@ public class KintaiRegist {
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
         return new KintaiOfOneDay(
-                this.workStartAndEndTimeOfOneDay.getWorkDateString(),
-                this.workStartAndEndTimeOfOneDay.getStartTimeString(),
-                this.workStartAndEndTimeOfOneDay.getEndTimeString(),
+                this.workStartAndEndTimeOfOneDay.getWorkWorkDate(),
+                this.workStartAndEndTimeOfOneDay.getWorkStartTime(),
+                this.workStartAndEndTimeOfOneDay.getWorkEndTime(),
                 new Minute(workMinutes),
                 new Minute(overWorkMinutes),
-                this.workStartAndEndTimeOfOneDay.getNowString()
+                this.workStartAndEndTimeOfOneDay.getNow()
         );
     }
 

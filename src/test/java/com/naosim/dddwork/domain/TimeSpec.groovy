@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain
 
+import com.naosim.dddwork.domain.time.Time
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 

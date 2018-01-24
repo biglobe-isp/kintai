@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.time;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,6 +23,13 @@ public class Time {
         } else {
             throw new RuntimeException("正しい時間を設定してください");
         }
+    }
+
+    public static Time convertToTime(String value) {
+        return new Time(
+                Integer.valueOf(value.substring(0, 2)),
+                Integer.valueOf(value.substring(2, 4))
+        );
     }
 
     public int convertTimeToMinutes() {

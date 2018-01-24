@@ -1,9 +1,10 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.DateString;
-import com.naosim.dddwork.domain.NowString;
-import com.naosim.dddwork.domain.TimeString;
-import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay;
+import com.naosim.dddwork.domain.*;
+import com.naosim.dddwork.domain.time.Now;
+import com.naosim.dddwork.domain.time.work.WorkDate;
+import com.naosim.dddwork.domain.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.time.work.WorkStartTime;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class KintaiRegistInputForm implements FormToValueObject<WorkStartAndEndT
         }
 
         return new WorkStartAndEndTimeOfOneDay(
-                new DateString(args[1]), new TimeString(args[2]), new TimeString(args[3]), new NowString()
+                new WorkDate(args[1]), new WorkStartTime(args[2]), new WorkEndTime(args[3]), new Now()
         );
     }
 

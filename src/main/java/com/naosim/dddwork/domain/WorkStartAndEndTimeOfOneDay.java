@@ -1,5 +1,9 @@
 package com.naosim.dddwork.domain;
 
+import com.naosim.dddwork.domain.time.Now;
+import com.naosim.dddwork.domain.time.work.WorkDate;
+import com.naosim.dddwork.domain.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.time.work.WorkStartTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,14 +15,14 @@ import lombok.ToString;
 public class WorkStartAndEndTimeOfOneDay {
 
     @Getter
-    private final DateString workDateString;
+    private final WorkDate workWorkDate;
 
     @Getter
-    private final TimeString startTimeString;
+    private final WorkStartTime workStartTime;
 
     @Getter
-    private final TimeString endTimeString;
+    private final WorkEndTime workEndTime;
 
     @Getter
-    private final NowString nowString;
+    private final Now now;
 }

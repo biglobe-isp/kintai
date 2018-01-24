@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain;
 
+import com.naosim.dddwork.domain.time.Minute;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -43,7 +44,7 @@ public class KintaiTotal {
             KintaiOfOneDayLine kintaiOfOneDayLine = iterator.next();
             KintaiOfOneDay kintaiOfOneDay = kintaiOfOneDayLine.getKintaiOfOneDay();
 
-            if (!kintaiOfOneDay.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintInput.getYearMonth())) {
+            if (!kintaiOfOneDay.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintInput.getWorkYearMonth())) {
                 continue;
             }
             totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate().getValue(), kintaiOfOneDay.getWorkMinutes());

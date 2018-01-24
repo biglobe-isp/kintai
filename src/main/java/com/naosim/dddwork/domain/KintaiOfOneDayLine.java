@@ -1,6 +1,11 @@
 package com.naosim.dddwork.domain;
 
 
+import com.naosim.dddwork.domain.time.Minute;
+import com.naosim.dddwork.domain.time.Now;
+import com.naosim.dddwork.domain.time.work.WorkDate;
+import com.naosim.dddwork.domain.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.time.work.WorkStartTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +22,12 @@ public class KintaiOfOneDayLine {
     public KintaiOfOneDay getKintaiOfOneDay() {
         String[] columns = this.value.split(",");
         return new KintaiOfOneDay(
-                new DateString(columns[0]),
-                new TimeString(columns[1]),
-                new TimeString(columns[2]),
+                new WorkDate(columns[0]),
+                new WorkStartTime(columns[1]),
+                new WorkEndTime(columns[2]),
                 new Minute(Integer.parseInt(columns[3])),
                 new Minute(Integer.parseInt(columns[4])),
-                new NowString(columns[5])
+                new Now(columns[5])
         );
     }
 }

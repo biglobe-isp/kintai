@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.time;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
