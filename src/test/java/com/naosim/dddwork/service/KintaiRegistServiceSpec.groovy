@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm
-import com.naosim.dddwork.domain.KintaiRegistInput
+import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -20,7 +20,7 @@ class KintaiRegistServiceSpec extends Specification {
         String[] args = ["input", "20180102", "0900", "1830"]
 
         KintaiRegistInputForm inputKintaiForm = new KintaiRegistInputForm(args)
-        KintaiRegistInput kintaiRegistInput = inputKintaiForm.getValueObject()
+        WorkStartAndEndTimeOfOneDay kintaiRegistInput = inputKintaiForm.getValueObject()
 
         this.kintaiRegistService.registKintaiOfOneDay(kintaiRegistInput)
 

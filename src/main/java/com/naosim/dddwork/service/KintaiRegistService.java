@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.domain.KintaiRegist;
-import com.naosim.dddwork.domain.KintaiRegistInput;
+import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay;
 import com.naosim.dddwork.domain.KintaiRegistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ public class KintaiRegistService {
     @Autowired
     KintaiRegistRepository kintaiRegistRepository;
 
-    public void registKintaiOfOneDay(KintaiRegistInput kintaiRegistInput) throws IOException {
-        KintaiRegist kintaiRegist = new KintaiRegist(kintaiRegistInput);
+    public void registKintaiOfOneDay(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) throws IOException {
+        KintaiRegist kintaiRegist = new KintaiRegist(workStartAndEndTimeOfOneDay);
         this.kintaiRegistRepository.regist(kintaiRegist.getKintaiOfOneDay());
     }
 }

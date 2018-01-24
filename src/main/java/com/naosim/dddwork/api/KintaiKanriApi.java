@@ -2,7 +2,7 @@ package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm;
 import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm;
-import com.naosim.dddwork.domain.KintaiRegistInput;
+import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay;
 import com.naosim.dddwork.domain.KintaiTotalPrintInput;
 import com.naosim.dddwork.service.KintaiRegistService;
 import com.naosim.dddwork.service.KintaiTotalPrintService;
@@ -31,8 +31,8 @@ public class KintaiKanriApi {
         switch (methodType) {
             case INPUT:
                 KintaiRegistInputForm kintaiRegistInputForm = new KintaiRegistInputForm(args);
-                KintaiRegistInput kintaiRegistInput = kintaiRegistInputForm.getValueObject();
-                this.kintaiRegistService.registKintaiOfOneDay(kintaiRegistInput);
+                WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay = kintaiRegistInputForm.getValueObject();
+                this.kintaiRegistService.registKintaiOfOneDay(workStartAndEndTimeOfOneDay);
                 break;
 
             case TOTAL:

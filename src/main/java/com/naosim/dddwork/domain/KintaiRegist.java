@@ -9,7 +9,7 @@ import lombok.ToString;
 public class KintaiRegist {
 
     @Getter
-    private final KintaiRegistInput kintaiRegistInput;
+    private final WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay;
 
     @Getter
     private final Time startTime;
@@ -17,17 +17,17 @@ public class KintaiRegist {
     @Getter
     private final Time endTime;
 
-    public KintaiRegist(KintaiRegistInput kintaiRegistInput) {
-        this.kintaiRegistInput = kintaiRegistInput;
+    public KintaiRegist(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) {
+        this.workStartAndEndTimeOfOneDay = workStartAndEndTimeOfOneDay;
 
         this.startTime = new Time(
-                Integer.valueOf(kintaiRegistInput.getStartTime().substring(0, 2)),
-                Integer.valueOf(kintaiRegistInput.getStartTime().substring(2, 4))
+                Integer.valueOf(workStartAndEndTimeOfOneDay.getStartTime().substring(0, 2)),
+                Integer.valueOf(workStartAndEndTimeOfOneDay.getStartTime().substring(2, 4))
         );
 
         this.endTime = new Time(
-                Integer.valueOf(kintaiRegistInput.getEndTime().substring(0, 2)),
-                Integer.valueOf(kintaiRegistInput.getEndTime().substring(2, 4))
+                Integer.valueOf(workStartAndEndTimeOfOneDay.getEndTime().substring(0, 2)),
+                Integer.valueOf(workStartAndEndTimeOfOneDay.getEndTime().substring(2, 4))
         );
 
         if (!this.isStartLessOrEqualEnd())
@@ -44,8 +44,8 @@ public class KintaiRegist {
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
         return new KintaiOfOneDay(
-                this.kintaiRegistInput.getDate(), this.kintaiRegistInput.getStartTime(), this.kintaiRegistInput.getEndTime(),
-                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.kintaiRegistInput.getNow()
+                this.workStartAndEndTimeOfOneDay.getDate(), this.workStartAndEndTimeOfOneDay.getStartTime(), this.workStartAndEndTimeOfOneDay.getEndTime(),
+                Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.workStartAndEndTimeOfOneDay.getNow()
         );
     }
 
