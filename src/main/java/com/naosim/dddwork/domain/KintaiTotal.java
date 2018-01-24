@@ -1,6 +1,8 @@
 package com.naosim.dddwork.domain;
 
-import com.naosim.dddwork.domain.time.Minute;
+
+import com.naosim.dddwork.domain.time.work.OverWorkMinutes;
+import com.naosim.dddwork.domain.time.work.WorkMinutes;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -36,8 +38,8 @@ public class KintaiTotal {
         this.totalWorkMinutes = 0;
         this.totalOverWorkMinutes = 0;
 
-        Map<String, Minute> totalWorkMinutesMap = new HashMap<>();
-        Map<String, Minute> totalOverWorkMinutesMap = new HashMap<>();
+        Map<String, WorkMinutes> totalWorkMinutesMap = new HashMap<>();
+        Map<String, OverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
 
         Iterator<KintaiOfOneDayLine> iterator = this.kintaiOfOneDayLines.getIterator();
         while (iterator.hasNext()) {
@@ -53,8 +55,8 @@ public class KintaiTotal {
 
         Set<String> keySet = totalWorkMinutesMap.keySet();
         for (String key : keySet) {
-            this.totalWorkMinutes += totalWorkMinutesMap.get(key).getValue();
-            this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key).getValue();
+            this.totalWorkMinutes += totalWorkMinutesMap.get(key).getInt();
+            this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key).getInt();
         }
     }
 }

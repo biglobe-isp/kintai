@@ -1,7 +1,10 @@
 package com.naosim.dddwork.domain;
 
-import com.naosim.dddwork.domain.time.Minute;
-import com.naosim.dddwork.domain.time.Time;
+
+import com.naosim.dddwork.domain.time.work.OverWorkMinutes;
+import com.naosim.dddwork.domain.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.time.work.WorkMinutes;
+import com.naosim.dddwork.domain.time.work.WorkStartTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,16 +17,16 @@ public class KintaiRegist {
     private final WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay;
 
     @Getter
-    private final Time startTime;
+    private final WorkStartTime workStartTime;
 
     @Getter
-    private final Time endTime;
+    private final WorkEndTime workEndTime;
 
     public KintaiRegist(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) {
         this.workStartAndEndTimeOfOneDay = workStartAndEndTimeOfOneDay;
 
-        this.startTime = workStartAndEndTimeOfOneDay.getWorkStartTime().getTime();
-        this.endTime = workStartAndEndTimeOfOneDay.getWorkEndTime().getTime();
+        this.workStartTime = workStartAndEndTimeOfOneDay.getWorkStartTime();
+        this.workEndTime = workStartAndEndTimeOfOneDay.getWorkEndTime();
 
         if (!this.isStartLessOrEqualEnd())
             throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
@@ -42,8 +45,8 @@ public class KintaiRegist {
                 this.workStartAndEndTimeOfOneDay.getWorkWorkDate(),
                 this.workStartAndEndTimeOfOneDay.getWorkStartTime(),
                 this.workStartAndEndTimeOfOneDay.getWorkEndTime(),
-                new Minute(workMinutes),
-                new Minute(overWorkMinutes),
+                new WorkMinutes(workMinutes),
+                new OverWorkMinutes(overWorkMinutes),
                 this.workStartAndEndTimeOfOneDay.getNow()
         );
     }
@@ -53,7 +56,7 @@ public class KintaiRegist {
     }
 
     private int getWorkMinutes() {
-        return this.endTime.convertTimeToMinutes() - this.startTime.convertTimeToMinutes();
+        return this.workEndTime.getTime().convertTimeToMinutes() - this.workStartTime.getTime().convertTimeToMinutes();
     }
 
     private int getLunchBreakMinutes() {
@@ -69,19 +72,19 @@ public class KintaiRegist {
     }
 
     private int getBreakMinutes(int breakStartHour) {
-        if (this.endTime.getHour() == breakStartHour) {
-            if (this.startTime.getHour() < breakStartHour) return this.endTime.getMinute();
-            if (this.startTime.getHour() == breakStartHour)
-                return this.endTime.getMinute() - this.startTime.getMinute();
-        } else if (this.endTime.getHour() > breakStartHour) {
+        if (this.workEndTime.getTime().getHour().getValue() == breakStartHour) {
+            if (this.workStartTime.getTime().getHour().getValue() < breakStartHour) return this.workEndTime.getTime().getMinute().getValue();
+            if (this.workStartTime.getTime().getHour().getValue() == breakStartHour)
+                return this.workEndTime.getTime().getMinute().getValue() - this.workStartTime.getTime().getMinute().getValue();
+        } else if (this.workEndTime.getTime().getHour().getValue() > breakStartHour) {
             return 60;
         }
         return 0;
     }
 
     private boolean isStartLessOrEqualEnd() {
-        int startMinutes = this.startTime.convertTimeToMinutes();
-        int endMinutes = this.endTime.convertTimeToMinutes();
+        int startMinutes = this.workStartTime.getTime().convertTimeToMinutes();
+        int endMinutes = this.workEndTime.getTime().convertTimeToMinutes();
 
         return startMinutes <= endMinutes;
     }

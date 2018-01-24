@@ -2,14 +2,16 @@ package com.naosim.dddwork.domain.time;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @EqualsAndHashCode
 public class Minute {
 
     @Getter
     private final int value;
+
+    public Minute(int value) {
+        this.value = value;
+    }
 
     @Override
     public String toString() {

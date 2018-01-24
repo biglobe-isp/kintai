@@ -8,21 +8,19 @@ import lombok.ToString;
 @ToString
 public class Time {
 
-    // TODO: クラス化（minuteについてはMinuteクラスを利用できそう）
     @Getter
-    private int hour;
+    private Hour hour;
 
     @Getter
-    private int minute;
+    private Minute minute;
 
     public Time(int hour, int minute) {
 
-        if (this.isCorrectAsHour(hour) && this.isCorrectAsMinute(minute)) {
-            this.hour = hour;
-            this.minute = minute;
-        } else {
-            throw new RuntimeException("正しい時間を設定してください");
-        }
+        this.hour = new Hour(hour);
+
+        if (!this.isCorrectAsMinuteOfTime(minute))
+            throw new RuntimeException("時刻として扱うことができる範囲の分を設定してください");
+        this.minute = new Minute(minute);
     }
 
     public static Time convertToTime(String value) {
@@ -33,15 +31,10 @@ public class Time {
     }
 
     public int convertTimeToMinutes() {
-        return this.hour * 60 + this.minute;
+        return this.hour.getValue() * 60 + this.minute.getValue();
     }
 
-    private boolean isCorrectAsHour(int hour) {
-        if (0 <= hour && hour < 24) return true;
-        return false;
-    }
-
-    private boolean isCorrectAsMinute(int minute) {
+    private boolean isCorrectAsMinuteOfTime(int minute) {
         if (0 <= minute && minute < 60) return true;
         return false;
     }
