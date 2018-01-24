@@ -29,11 +29,16 @@ public class BreakMinutes {
     }
 
     private int getBreakMinutes(int breakStartHour) {
-        if (this.workEndTime.getTime().getHour().getValue() == breakStartHour) {
-            if (this.workStartTime.getTime().getHour().getValue() < breakStartHour) return this.workEndTime.getTime().getMinute().getValue();
-            if (this.workStartTime.getTime().getHour().getValue() == breakStartHour)
-                return this.workEndTime.getTime().getMinute().getValue() - this.workStartTime.getTime().getMinute().getValue();
-        } else if (this.workEndTime.getTime().getHour().getValue() > breakStartHour) {
+        int workStartHour = this.workStartTime.getTime().getHour().getValue();
+        int workStartMinute = this.workStartTime.getTime().getMinute().getValue();
+        int workEndHour = this.workEndTime.getTime().getHour().getValue();
+        int workEndMinute = this.workEndTime.getTime().getMinute().getValue();
+
+        if (workEndHour == breakStartHour) {
+            if (workStartHour < breakStartHour) return workEndMinute;
+            if (workStartHour == breakStartHour)
+                return workEndMinute - workStartMinute;
+        } else if (workEndHour > breakStartHour) {
             return 60;
         }
         return 0;
