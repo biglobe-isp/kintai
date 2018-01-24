@@ -9,8 +9,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WorkTimeTotalCalculation {
     @Getter
-    private final Map<String, Integer> totalWorkMinutesMap;
+    private final TotalNormalWorkMinutes totalNormalWorkMinutes;
 
     @Getter
-    private final Map<String, Integer> totalOverWorkMinutesMap;
+    private final TotalOverWorkMinutes totalOverWorkMinutes;
 }

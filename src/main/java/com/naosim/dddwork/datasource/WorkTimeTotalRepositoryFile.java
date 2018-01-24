@@ -1,5 +1,7 @@
 package com.naosim.dddwork.datasource;
 
+import com.naosim.dddwork.domain.worktotal.TotalNormalWorkMinutes;
+import com.naosim.dddwork.domain.worktotal.TotalOverWorkMinutes;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalCalculation;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
 import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
@@ -19,22 +21,20 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
         ) {
 
             String line = br.readLine();
-            Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-            Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
+            TotalNormalWorkMinutes totalNormalWorkMinutes = new TotalNormalWorkMinutes();
+            TotalOverWorkMinutes totalOverWorkMinutes = new TotalOverWorkMinutes();
 
             while (line != null) {
                 String[] columns = line.split(",");
                 if (!columns[0].startsWith(workDateAndTimeTotal.getWorkTotalYeaAndMonth().getYearMonth())) {
                     continue;
                 }
-                System.out.println(columns[0] + " >>>> " + columns[3]);
-                System.out.println(columns[0] + ">>>> " + columns[3]);
-                totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-                totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
+                totalNormalWorkMinutes.getTotalWorkMinutesMap().put(columns[0], Integer.valueOf(columns[3]));
+                totalOverWorkMinutes.getTotalOverWorkMinutesMap().put(columns[0], Integer.valueOf(columns[4]));
 
                 line = br.readLine();
             }
-            WorkTimeTotalCalculation workTimeTotalCollection = new WorkTimeTotalCalculation(totalWorkMinutesMap, totalOverWorkMinutesMap);
+            WorkTimeTotalCalculation workTimeTotalCollection = new WorkTimeTotalCalculation(totalNormalWorkMinutes, totalOverWorkMinutes);
 
             return workTimeTotalCollection;
 

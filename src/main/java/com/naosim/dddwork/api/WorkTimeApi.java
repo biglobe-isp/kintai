@@ -40,7 +40,7 @@ public class WorkTimeApi {
             WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1]);
             WorkTimeTotal workTimeTotal = workTimeService.workTimeTotal(workTimeTotalForm.getValueObject());
 
-            System.out.println("勤務時間: " + workTimeTotal.getTotalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalWorkMinutes() % 60 + "分");
+            System.out.println("勤務時間: " + workTimeTotal.getTotalNormalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalNormalWorkMinutes() % 60 + "分");
             System.out.println("残業時間: " + workTimeTotal.getTotalOverWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalOverWorkMinutes() % 60 + "分");
 
         } else {

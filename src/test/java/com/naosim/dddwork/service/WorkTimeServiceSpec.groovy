@@ -40,7 +40,7 @@ class WorkTimeServiceSpec extends Specification {
         def workTimeTotal = servie.workTimeTotal(workTimeTotalForm.getValueObject())
 
         then:
-        assert 8 == workTimeTotal.getTotalWorkMinutes() / 60 + workTimeTotal.getTotalWorkMinutes() % 60
+        assert 8 == workTimeTotal.getTotalNormalWorkMinutes() / 60 + workTimeTotal.getTotalNormalWorkMinutes() % 60
         assert 0 == workTimeTotal.getTotalOverWorkMinutes() / 60 + workTimeTotal.getTotalOverWorkMinutes()
     }
 

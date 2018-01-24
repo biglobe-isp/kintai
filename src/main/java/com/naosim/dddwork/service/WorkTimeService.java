@@ -36,7 +36,7 @@ public class WorkTimeService {
         workTimeTotalRepository = new WorkTimeTotalRepositoryFile();
         WorkTimeTotalCalculation workTimeTotalCalculation = workTimeTotalRepository.doWorktimeTaskExecute(workDateAndTimeTotal);
 
-        WorkTimeTotal workTimeTotal = new WorkTimeTotal(workTimeTotalCalculation.getTotalWorkMinutesMap(), workTimeTotalCalculation.getTotalOverWorkMinutesMap());
+        WorkTimeTotal workTimeTotal = new WorkTimeTotal(workTimeTotalCalculation.getTotalNormalWorkMinutes(), workTimeTotalCalculation.getTotalOverWorkMinutes());
 
         return workTimeTotal;
     }

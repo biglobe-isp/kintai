@@ -12,33 +12,32 @@ import java.util.Set;
  */
 public class WorkTimeTotal {
 
-    private final Map<String, Integer> totalWorkMinutesMap;
+    private final TotalNormalWorkMinutes totalNormalWorkMinutes;
 
-    private final Map<String, Integer> totalOverWorkMinutesMap;
+    private final TotalOverWorkMinutes totalOverWorkMinutes;
 
-    private int totalWorkMinutes;
-
-    private int totalOverWorkMinutes;
-
-    public WorkTimeTotal(Map<String, Integer> totalWorkMinutesMap, Map<String, Integer> totalOverWorkMinutesMap) {
-        this.totalWorkMinutesMap = totalWorkMinutesMap;
-        this.totalOverWorkMinutesMap = totalOverWorkMinutesMap;
+    public WorkTimeTotal(TotalNormalWorkMinutes totalNormalWorkMinutes, TotalOverWorkMinutes totalOverWorkMinutes) {
+        this.totalNormalWorkMinutes = totalNormalWorkMinutes;
+        this.totalOverWorkMinutes = totalOverWorkMinutes;
     }
 
-    public int getTotalWorkMinutes() {
-        Set<String> keySet = totalWorkMinutesMap.keySet();
+    public int getTotalNormalWorkMinutes() {
+        int totalWorkMinutes = 0;
+        Set<String> keySet = totalNormalWorkMinutes.getTotalWorkMinutesMap().keySet();
         for (String key : keySet) {
-            totalWorkMinutes += totalWorkMinutesMap.get(key);
+            totalWorkMinutes += totalNormalWorkMinutes.getTotalWorkMinutesMap().get(key);
         }
         return totalWorkMinutes;
     }
 
     public int getTotalOverWorkMinutes() {
-        Set<String> keySet = totalWorkMinutesMap.keySet();
+        Set<String> keySet = totalNormalWorkMinutes.getTotalWorkMinutesMap().keySet();
+        int totalOverWorkMinutesValue = 0;
+
         for (String key : keySet) {
-            totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
+            totalOverWorkMinutesValue += totalOverWorkMinutes.getTotalOverWorkMinutesMap().get(key);
         }
-        return totalOverWorkMinutes;
+        return totalOverWorkMinutesValue;
     }
 
 

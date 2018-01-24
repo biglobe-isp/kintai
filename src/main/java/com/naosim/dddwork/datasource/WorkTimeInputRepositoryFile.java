@@ -10,19 +10,19 @@ import java.io.IOException;
 
 public class WorkTimeInputRepositoryFile implements WorkTimeInputRepository {
     @Override
-    public void doWorktimeTaskExecute(WorkDateAndTime workTimeInputParam) {
+    public void doWorktimeTaskExecute(WorkDateAndTime workDateAndTime) {
 
-        WorkTimeCalculate workTimeInput = new WorkTimeCalculate(workTimeInputParam);
+        WorkTimeCalculate workTimeCalculate = new WorkTimeCalculate(workDateAndTime);
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    workTimeInputParam.getWorkDate().getValue(),
-                    workTimeInputParam.getWorkTimeStart().getValue(),
-                    workTimeInputParam.getWorkTimeEnd().getValue(),
-                    workTimeInput.getNormalWorkTimeMinutes().getValue(),
-                    workTimeInput.getOverWorkTimeMinutes().getValue(),
-                    workTimeInputParam.getWorkTimeNow().getValue()));
+                    workDateAndTime.getWorkDate().getValue(),
+                    workDateAndTime.getWorkTimeStart().getValue(),
+                    workDateAndTime.getWorkTimeEnd().getValue(),
+                    workTimeCalculate.getNormalWorkTimeMinutes().getValue(),
+                    workTimeCalculate.getOverWorkTimeMinutes().getValue(),
+                    workDateAndTime.getWorkTimeNow().getValue()));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -19,10 +19,10 @@ public class WorkTimeCalculate {
     /**
      * コンストラクタ
      *
-     * @param workTimeInputParam
+     * @param workDateAndTime
      */
-    public WorkTimeCalculate(WorkDateAndTime workTimeInputParam) {
-        this.workTimeInputParam = workTimeInputParam;
+    public WorkTimeCalculate(WorkDateAndTime workDateAndTime) {
+        this.workTimeInputParam = workDateAndTime;
         setWorkMinutes();
         setOverWorkMinutes(this.normalWorkTimeMinutes.getValue());
     }
@@ -59,19 +59,15 @@ public class WorkTimeCalculate {
             workMinutes -= 60;
         }
 
-        System.out.println(">>>> " + workMinutes);
-
         normalWorkTimeMinutes = new NormalWorkTimeMinutes(workMinutes);
     }
 
     /**
-     * 残業時間を取得する。
+     * 残業時間を計算し、変数に設定。
      *
      * @return
      */
     private void setOverWorkMinutes(int workMinutes) {
-        int overWorkTime = Math.max(workMinutes - 8 * 60, 0);
-        overWorkTimeMinutes = new OverWorkTimeMinutes(overWorkTime);
-        //overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
+        overWorkTimeMinutes = new OverWorkTimeMinutes(Math.max(workMinutes - 8 * 60, 0));
     }
 }
