@@ -44,7 +44,7 @@ public class KintaiRegist {
         int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
 
         return new KintaiOfOneDay(
-                this.workStartAndEndTimeOfOneDay.getDate(), this.workStartAndEndTimeOfOneDay.getStartTime(), this.workStartAndEndTimeOfOneDay.getEndTime(),
+                this.workStartAndEndTimeOfOneDay.getWorkDate(), this.workStartAndEndTimeOfOneDay.getStartTime(), this.workStartAndEndTimeOfOneDay.getEndTime(),
                 Integer.toString(workMinutes), Integer.toString(overWorkMinutes), this.workStartAndEndTimeOfOneDay.getNow()
         );
     }

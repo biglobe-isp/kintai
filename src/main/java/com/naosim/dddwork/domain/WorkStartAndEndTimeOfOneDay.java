@@ -11,8 +11,7 @@ import lombok.ToString;
 public class WorkStartAndEndTimeOfOneDay {
 
     @Getter
-    // TODO: Stringではなく独自クラスを定義
-    private final String date;
+    private final String workDate;
 
     @Getter
     private final String startTime;
