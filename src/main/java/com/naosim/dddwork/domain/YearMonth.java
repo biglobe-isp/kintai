@@ -8,9 +8,8 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-// TODO: クラス名を業務に即したものに修正
-public class KintaiTotalPrintInput {
+public class YearMonth {
 
     @Getter
-    private final YearMonth yearMonth;
+    private final String value;
 }

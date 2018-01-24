@@ -5,26 +5,28 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class KintaiOfOneDay {
 
     @Getter
-    private final String workDate;
+    private final DateString workDate;
 
     @Getter
-    private final String startTime;
+    private final TimeString startTime;
 
     @Getter
-    private final String endTime;
+    private final TimeString endTime;
 
     @Getter
-    private final String workMinutes;
+    private final Minute workMinutes;
 
     @Getter
-    private final String overWorkMinutes;
+    private final Minute overWorkMinutes;
 
     @Getter
-    private final String now;
+    private final NowString now;
 }

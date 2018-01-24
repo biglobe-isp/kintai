@@ -16,6 +16,13 @@ public class KintaiOfOneDayLine {
 
     public KintaiOfOneDay getKintaiOfOneDay() {
         String[] columns = this.value.split(",");
-        return new KintaiOfOneDay(columns[0], columns[1], columns[2], columns[3], columns[4], columns[5]);
+        return new KintaiOfOneDay(
+                new DateString(columns[0]),
+                new TimeString(columns[1]),
+                new TimeString(columns[2]),
+                new Minute(Integer.parseInt(columns[3])),
+                new Minute(Integer.parseInt(columns[4])),
+                new NowString(columns[5])
+        );
     }
 }

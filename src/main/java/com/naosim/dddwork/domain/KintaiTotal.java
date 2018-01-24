@@ -35,25 +35,25 @@ public class KintaiTotal {
         this.totalWorkMinutes = 0;
         this.totalOverWorkMinutes = 0;
 
-        Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-        Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
+        Map<String, Minute> totalWorkMinutesMap = new HashMap<>();
+        Map<String, Minute> totalOverWorkMinutesMap = new HashMap<>();
 
         Iterator<KintaiOfOneDayLine> iterator = this.kintaiOfOneDayLines.getIterator();
         while (iterator.hasNext()) {
             KintaiOfOneDayLine kintaiOfOneDayLine = iterator.next();
             KintaiOfOneDay kintaiOfOneDay = kintaiOfOneDayLine.getKintaiOfOneDay();
 
-            if (!kintaiOfOneDay.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
+            if (!kintaiOfOneDay.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintInput.getYearMonth())) {
                 continue;
             }
-            totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), Integer.valueOf(kintaiOfOneDay.getWorkMinutes()));
-            totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), Integer.valueOf(kintaiOfOneDay.getOverWorkMinutes()));
+            totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate().getValue(), kintaiOfOneDay.getWorkMinutes());
+            totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate().getValue(), kintaiOfOneDay.getOverWorkMinutes());
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();
         for (String key : keySet) {
-            this.totalWorkMinutes += totalWorkMinutesMap.get(key);
-            this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
+            this.totalWorkMinutes += totalWorkMinutesMap.get(key).getValue();
+            this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key).getValue();
         }
     }
 }

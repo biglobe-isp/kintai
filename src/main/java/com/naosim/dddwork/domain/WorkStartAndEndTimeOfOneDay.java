@@ -11,14 +11,14 @@ import lombok.ToString;
 public class WorkStartAndEndTimeOfOneDay {
 
     @Getter
-    private final String workDate;
+    private final DateString workDateString;
 
     @Getter
-    private final String startTime;
+    private final TimeString startTimeString;
 
     @Getter
-    private final String endTime;
+    private final TimeString endTimeString;
 
     @Getter
-    private final String now;
+    private final NowString nowString;
 }

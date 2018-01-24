@@ -8,6 +8,7 @@ import lombok.ToString;
 @ToString
 public class Time {
 
+    // TODO: クラス化（minuteについてはMinuteクラスを利用できそう）
     @Getter
     private int hour;
 

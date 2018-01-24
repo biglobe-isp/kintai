@@ -3,14 +3,16 @@ package com.naosim.dddwork.domain;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
-@ToString
-// TODO: クラス名を業務に即したものに修正
-public class KintaiTotalPrintInput {
+public class Minute {
 
     @Getter
-    private final YearMonth yearMonth;
+    private final int value;
+
+    @Override
+    public String toString() {
+        return Integer.toString(this.value);
+    }
 }

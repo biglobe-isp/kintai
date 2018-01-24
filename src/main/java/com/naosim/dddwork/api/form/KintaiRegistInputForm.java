@@ -1,12 +1,13 @@
 package com.naosim.dddwork.api.form;
 
+import com.naosim.dddwork.domain.DateString;
+import com.naosim.dddwork.domain.NowString;
+import com.naosim.dddwork.domain.TimeString;
 import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
@@ -22,7 +23,9 @@ public class KintaiRegistInputForm implements FormToValueObject<WorkStartAndEndT
             throw new RuntimeException("引数が足りません");
         }
 
-        return new WorkStartAndEndTimeOfOneDay(args[1], args[2], args[3], LocalDateTime.now().toString());
+        return new WorkStartAndEndTimeOfOneDay(
+                new DateString(args[1]), new TimeString(args[2]), new TimeString(args[3]), new NowString()
+        );
     }
 
     private boolean isEnoughArgsLength() {
