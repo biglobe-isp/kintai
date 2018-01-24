@@ -17,7 +17,7 @@ public class WorkTimeInput {
     /**
      * コンストラクタ
      *
-     * @param workTimeInputForm
+     * @param WorkTimeInput
      */
     public WorkTimeInput(WorkTimeInputParam workTimeInputParam) {
         this.workTimeInputParam = workTimeInputParam;

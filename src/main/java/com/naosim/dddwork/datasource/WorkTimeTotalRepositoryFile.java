@@ -37,15 +37,9 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
 
                 line = br.readLine();
             }
-            //TODO ここで返す。
             WorkTimeTotalCalculation workTimeTotalCollection = new WorkTimeTotalCalculation(totalWorkMinutesMap, totalOverWorkMinutesMap);
 
             return workTimeTotalCollection;
-
-            //TODO サービス層に記述する。
-            //       workTimeTotal = new WorkTimeTotal(totalWorkMinutesMap, totalOverWorkMinutesMap);
-
-            //return workTimeTotal;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
