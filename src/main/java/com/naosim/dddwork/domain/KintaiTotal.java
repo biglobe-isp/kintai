@@ -40,8 +40,8 @@ public class KintaiTotal {
 
         Iterator<KintaiOfOneDayLine> iterator = this.kintaiOfOneDayLines.getIterator();
         while (iterator.hasNext()) {
-            KintaiOfOneDayLine kintaiOfOneDayString = iterator.next();
-            KintaiOfOneDay kintaiOfOneDay = kintaiOfOneDayString.getKintaiOfOneDay();
+            KintaiOfOneDayLine kintaiOfOneDayLine = iterator.next();
+            KintaiOfOneDay kintaiOfOneDay = kintaiOfOneDayLine.getKintaiOfOneDay();
 
             if (!kintaiOfOneDay.getWorkDate().startsWith(this.kintaiTotalPrintInput.getYearMonth())) {
                 continue;

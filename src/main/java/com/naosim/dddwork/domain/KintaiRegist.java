@@ -34,7 +34,7 @@ public class KintaiRegist {
             throw new RuntimeException("開始時刻は終了時刻より前の時刻を設定してください");
     }
 
-    public KintaiOfOneDay getOneDayKintai() {
+    public KintaiOfOneDay getKintaiOfOneDay() {
         int workMinutes = this.getWorkMinutes();
 
         workMinutes -= this.getLunchBreakMinutes();

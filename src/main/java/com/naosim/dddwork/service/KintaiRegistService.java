@@ -16,6 +16,6 @@ public class KintaiRegistService {
 
     public void registKintaiOfOneDay(KintaiRegistInput kintaiRegistInput) throws IOException {
         KintaiRegist kintaiRegist = new KintaiRegist(kintaiRegistInput);
-        this.kintaiRegistRepository.regist(kintaiRegist.getOneDayKintai());
+        this.kintaiRegistRepository.regist(kintaiRegist.getKintaiOfOneDay());
     }
 }
