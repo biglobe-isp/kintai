@@ -3,7 +3,6 @@ package com.naosim.dddwork.domain.time.work;
 import com.naosim.dddwork.domain.time.Minute;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @EqualsAndHashCode
 public class OverWorkMinutes {
@@ -22,5 +21,9 @@ public class OverWorkMinutes {
     @Override
     public String toString() {
         return this.minute.toString();
+    }
+
+    public static OverWorkMinutes get(WorkMinutes workMinutes) {
+        return new OverWorkMinutes(Math.max(workMinutes.getInt() - 8 * 60, 0));
     }
 }

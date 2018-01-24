@@ -33,53 +33,18 @@ public class KintaiRegist {
     }
 
     public KintaiOfOneDay getKintaiOfOneDay() {
-        int workMinutes = this.getWorkMinutes();
+        WorkMinutes workMinutes = WorkMinutes.get(this.workStartTime, this.workEndTime);
 
-        workMinutes -= this.getLunchBreakMinutes();
-        workMinutes -= this.getEveningBreakMinutes();
-        workMinutes -= this.getNightBreakMinutes();
-
-        int overWorkMinutes = this.getOverWorkMinutes(workMinutes);
+        OverWorkMinutes overWorkMinutes = OverWorkMinutes.get(workMinutes);
 
         return new KintaiOfOneDay(
                 this.workStartAndEndTimeOfOneDay.getWorkWorkDate(),
                 this.workStartAndEndTimeOfOneDay.getWorkStartTime(),
                 this.workStartAndEndTimeOfOneDay.getWorkEndTime(),
-                new WorkMinutes(workMinutes),
-                new OverWorkMinutes(overWorkMinutes),
+                workMinutes,
+                overWorkMinutes,
                 this.workStartAndEndTimeOfOneDay.getNow()
         );
-    }
-
-    private int getOverWorkMinutes(int workMinutes) {
-        return Math.max(workMinutes - 8 * 60, 0);
-    }
-
-    private int getWorkMinutes() {
-        return this.workEndTime.getTime().convertTimeToMinutes() - this.workStartTime.getTime().convertTimeToMinutes();
-    }
-
-    private int getLunchBreakMinutes() {
-        return this.getBreakMinutes(12);
-    }
-
-    private int getEveningBreakMinutes() {
-        return this.getBreakMinutes(18);
-    }
-
-    private int getNightBreakMinutes() {
-        return this.getBreakMinutes(21);
-    }
-
-    private int getBreakMinutes(int breakStartHour) {
-        if (this.workEndTime.getTime().getHour().getValue() == breakStartHour) {
-            if (this.workStartTime.getTime().getHour().getValue() < breakStartHour) return this.workEndTime.getTime().getMinute().getValue();
-            if (this.workStartTime.getTime().getHour().getValue() == breakStartHour)
-                return this.workEndTime.getTime().getMinute().getValue() - this.workStartTime.getTime().getMinute().getValue();
-        } else if (this.workEndTime.getTime().getHour().getValue() > breakStartHour) {
-            return 60;
-        }
-        return 0;
     }
 
     private boolean isStartLessOrEqualEnd() {

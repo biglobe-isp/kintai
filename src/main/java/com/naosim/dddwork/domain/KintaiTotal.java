@@ -38,6 +38,7 @@ public class KintaiTotal {
         this.totalWorkMinutes = 0;
         this.totalOverWorkMinutes = 0;
 
+        // TODO: keyをWorkDate型に変更する
         Map<String, WorkMinutes> totalWorkMinutesMap = new HashMap<>();
         Map<String, OverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
 

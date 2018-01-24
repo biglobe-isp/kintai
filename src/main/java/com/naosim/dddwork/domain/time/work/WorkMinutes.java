@@ -22,4 +22,16 @@ public class WorkMinutes {
     public String toString() {
         return this.minute.toString();
     }
+
+    public static WorkMinutes get(WorkStartTime workStartTime, WorkEndTime workEndTime) {
+        int workMinutesInt = workEndTime.getTime().convertTimeToMinutes() - workStartTime.getTime().convertTimeToMinutes();
+
+        BreakMinutes breakMinutes = new BreakMinutes(workStartTime, workEndTime);
+        workMinutesInt -= breakMinutes.getLunchBreakMinutes();
+        workMinutesInt -= breakMinutes.getEveningBreakMinutes();
+        workMinutesInt -= breakMinutes.getNightBreakMinutes();
+
+        return new WorkMinutes(workMinutesInt);
+    }
+
 }
