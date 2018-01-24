@@ -30,8 +30,8 @@ public class KintaiKanriApi {
 
         switch (methodType) {
             case INPUT:
-                KintaiRegistInputForm inputKintaiForm = new KintaiRegistInputForm(args);
-                KintaiRegistInput kintaiRegistInput = inputKintaiForm.getValueObject();
+                KintaiRegistInputForm kintaiRegistInputForm = new KintaiRegistInputForm(args);
+                KintaiRegistInput kintaiRegistInput = kintaiRegistInputForm.getValueObject();
                 this.kintaiRegistService.registKintaiOfOneDay(kintaiRegistInput);
                 break;
 
