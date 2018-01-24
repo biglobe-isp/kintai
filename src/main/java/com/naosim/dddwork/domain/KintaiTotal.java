@@ -2,6 +2,7 @@ package com.naosim.dddwork.domain;
 
 
 import com.naosim.dddwork.domain.time.work.OverWorkMinutes;
+import com.naosim.dddwork.domain.time.work.WorkDate;
 import com.naosim.dddwork.domain.time.work.WorkMinutes;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,9 +39,8 @@ public class KintaiTotal {
         this.totalWorkMinutes = 0;
         this.totalOverWorkMinutes = 0;
 
-        // TODO: keyをWorkDate型に変更する
-        Map<String, WorkMinutes> totalWorkMinutesMap = new HashMap<>();
-        Map<String, OverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
+        Map<WorkDate, WorkMinutes> totalWorkMinutesMap = new HashMap<>();
+        Map<WorkDate, OverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
 
         Iterator<KintaiOfOneDayLine> iterator = this.kintaiOfOneDayLines.getIterator();
         while (iterator.hasNext()) {
@@ -50,12 +50,12 @@ public class KintaiTotal {
             if (!kintaiOfOneDay.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintInput.getWorkYearMonth())) {
                 continue;
             }
-            totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate().getValue(), kintaiOfOneDay.getWorkMinutes());
-            totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate().getValue(), kintaiOfOneDay.getOverWorkMinutes());
+            totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), kintaiOfOneDay.getWorkMinutes());
+            totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), kintaiOfOneDay.getOverWorkMinutes());
         }
 
-        Set<String> keySet = totalWorkMinutesMap.keySet();
-        for (String key : keySet) {
+        Set<WorkDate> keySet = totalWorkMinutesMap.keySet();
+        for (WorkDate key : keySet) {
             this.totalWorkMinutes += totalWorkMinutesMap.get(key).getInt();
             this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key).getInt();
         }
