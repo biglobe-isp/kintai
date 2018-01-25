@@ -29,7 +29,18 @@ class WorkRecordTime {
 }
 
 interface WorkTimeInputRepository {
-    + doWorktimeTaskExecute(WorkDateAndTime workTimeInputParam):void
+    + doWorktimeTaskExecute(workTimeInputParam : WorkDateAndTime):void
 }
 
+WorkDateAndTime -- WorkDate
+WorkDateAndTime -- WorkStartTime
+WorkDateAndTime -- WorkEndTime
+WorkDateAndTime -- WorkRecordTime
+WorkTimeInputRepository --> WorkDateAndTime
+
+class WorkTimeInputRepositoryFile {
+    + doWorktimeTaskExecute(workDateAndTime:WorkDateAndTime) : void
+}
+
+WorkTimeInputRepository <|.. WorkTimeInputRepositoryFile
 @enduml
