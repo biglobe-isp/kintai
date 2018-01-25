@@ -1,0 +1,71 @@
+@startuml
+
+package com.naosim.dddwork.domain.workdateandtime {
+
+    class WorkDateAndTime {
+        - workDate : WorkDate
+        - workStartTime : WorkStartTime
+        - workEndTime : WorkEndTime
+        - workRecordTime : WorkRecordTime
+    }
+
+    class WorkDate {
+        - value : String
+        + getValue() : String
+    }
+
+    class WorkStartTime {
+        - value : String
+        + getValue() : String
+    }
+
+    class WorkEndTime {
+        - value : String
+        + getValue() : String
+    }
+
+    class WorkRecordTime {
+        - value : String
+        + getValue() : String
+    }
+
+    class WorkTimeCaluculate {
+         normalWorkTimeMinutes : NormalWorkTimeMinutes
+         overWorkTimeMinutes : OverWorkTimeMinutes
+    }
+
+    class NormalWorkTimeMinutes {
+        - value : Integer
+        + getValue : Integer
+    }
+
+    class OverWorkTimeMinutes {
+        - value : Integer
+        + getValue : Integer
+    }
+
+    interface WorkTimeInputRepository {
+        + doWorktimeTaskExecute(workTimeInputParam : WorkDateAndTime):void
+    }
+}
+
+package com.naosim.dddwork.datasource {
+class WorkTimeInputRepositoryFile {
+    + doWorktimeTaskExecute(workDateAndTime:WorkDateAndTime) : void
+}
+
+WorkDateAndTime -- WorkDate
+WorkDateAndTime -- WorkStartTime
+WorkDateAndTime -- WorkEndTime
+WorkDateAndTime -- WorkRecordTime
+
+WorkTimeCaluculate -- NormalWorkTimeMinutes
+WorkTimeCaluculate -- OverWorkTimeMinutes
+
+WorkTimeInputRepository --> WorkDateAndTime
+WorkTimeInputRepository --> WorkTimeCaluculate
+
+WorkTimeInputRepository <|.. WorkTimeInputRepositoryFile
+
+
+@enduml
