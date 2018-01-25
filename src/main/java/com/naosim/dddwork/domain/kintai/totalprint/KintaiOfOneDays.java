@@ -14,9 +14,9 @@ public class KintaiOfOneDays {
         this.kintaiOfOneDayList = kintaiOfOneDayLineList;
     }
 
-    public KintaiOfOneDays add(KintaiOfOneDay kintaiOfOneDayString) {
+    public KintaiOfOneDays add(KintaiOfOneDay kintaiOfOneDay) {
         List<KintaiOfOneDay> tmpKintaiOfOneDayList = new ArrayList<>(this.kintaiOfOneDayList);
-        tmpKintaiOfOneDayList.add(kintaiOfOneDayString);
+        tmpKintaiOfOneDayList.add(kintaiOfOneDay);
         return new KintaiOfOneDays(tmpKintaiOfOneDayList);
     }
 
