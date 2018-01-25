@@ -1,0 +1,88 @@
+@startuml
+
+package com.naosim.dddwork.domain.worktotal {
+
+    class TotalWorkTimeYearAndMonthAggregate {
+        - totalWorkAggregateTargetYearAndMonth : TotalWorkAggregateTargetYearAndMonth
+    }
+
+    class TotalWorkAggregateTargetYearAndMonth {
+        - value : String
+        + getValue() : String
+    }
+
+    class TotalWorkMinutesPerYearAndMonthNormal {
+        totalWorkMinutesPerYearAndMonth : TotalWorkMinutesPerYearAndMonth
+        totalWorkMinutesPerYearAndMonthNormalValue : TotalWorkMinutesPerYearAndMonthNormalValue
+    }
+
+    class TotalWorkMinutesPerYearAndMonthOver {
+        totalWorkMinutesPerYearAndMonth : TotalWorkMinutesPerYearAndMonth
+        totalWorkMinutesPerYearAndMonthOverValue : TotalWorkMinutesPerYearAndMonthOverValue
+    }
+
+    class TotalWorkMinutesPerYearAndMonth {
+        calucutateTargetYearAndMonth : String
+    }
+
+    class TotalWorkMinutesPerYearAndMonthNormalValue {
+        calucutateNormalValue : Integer
+        + getCalucutateNormalValue() : Integer
+    }
+
+    class TotalWorkMinutesPerYearAndMonthOverValue {
+        calucutateOverValue : Integer
+        + getCalucutateOverValue() : Integer
+    }
+
+    class WorkYearAndDateTimeAggregateOriginData {
+        totalWorkMinutesPerYearAndMonthNormal : TotalWorkMinutesPerYearAndMonthNormal
+        totalWorkMinutesPerYearAndMonthOver : TotalWorkMinutesPerYearAndMonthOver
+    }
+
+    class TotalWorkYearAndMonthCaluculationData {
+        totalWorkYearAndMonthCaluculationNormalTime : TotalWorkYearAndMonthCaluculationNormalTime
+        totalWorkYearAndMonthCaluculationOverTime : TotalWorkYearAndMonthCaluculationOverTime
+    }
+
+    class TotalWorkYearAndMonthCaluculationNormalTime {
+        - value : Integer
+        + getValue() : Integer
+    }
+
+    class TotalWorkYearAndMonthCaluculationOverTime {
+        - value : Integer
+        + getValue() : Integer
+    }
+
+    interface WorkTimeTotalRepository {
+        + doWorktimeTaskExecute(ｗorkTotalAggregateTargetYearAndMonth:TotalWorkAggregateTargetYearAndMonth) : WorkYearAndDateTimeAggregateOriginData
+    }
+}
+
+package com.naosim.dddwork.datasource {
+    class WorkTimeTotalRepositoryFile {
+        + doWorktimeTaskExecute(workDateAndTimeTotal:WorkDateAndTimeTotal) : WorkYearAndDateTimeAggregateOriginData
+    }
+}
+
+TotalWorkTimeYearAndMonthAggregate -- TotalWorkAggregateTargetYearAndMonth
+WorkTimeTotalRepository -- TotalWorkTimeYearAndMonthAggregate
+WorkTimeTotalRepository -- WorkYearAndDateTimeAggregateOriginData
+
+WorkYearAndDateTimeAggregateOriginData -- TotalWorkMinutesPerYearAndMonthNormal
+WorkYearAndDateTimeAggregateOriginData -- TotalWorkMinutesPerYearAndMonthOver
+
+TotalWorkMinutesPerYearAndMonthNormal -- TotalWorkMinutesPerYearAndMonth
+TotalWorkMinutesPerYearAndMonthNormal -- TotalWorkMinutesPerYearAndMonthNormalValue
+TotalWorkMinutesPerYearAndMonthOver -- TotalWorkMinutesPerYearAndMonth
+TotalWorkMinutesPerYearAndMonthOver -- TotalWorkMinutesPerYearAndMonthOverValue
+
+TotalWorkYearAndMonthCaluculationData -- TotalWorkYearAndMonthCaluculationNormalTime
+TotalWorkYearAndMonthCaluculationData -- TotalWorkYearAndMonthCaluculationOverTime
+
+
+WorkTimeTotalRepository<..WorkTimeTotalRepositoryFile
+
+
+@enduml
