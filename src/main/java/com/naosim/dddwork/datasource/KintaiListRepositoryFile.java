@@ -2,8 +2,8 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.datasource.file.KintaiFile;
 import com.naosim.dddwork.domain.KintaiListRepository;
-import com.naosim.dddwork.domain.KintaiOfOneDayLine;
-import com.naosim.dddwork.domain.KintaiOfOneDayLines;
+import com.naosim.dddwork.domain.KintaiOfOneDay;
+import com.naosim.dddwork.domain.KintaiOfOneDays;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -14,20 +14,20 @@ import java.util.List;
 public class KintaiListRepositoryFile implements KintaiListRepository {
 
     @Override
-    public KintaiOfOneDayLines get() {
+    public KintaiOfOneDays get() {
         File kintaiCsvFile = KintaiFile.getTargetCsv();
 
         try (
                 FileReader fr = new FileReader(kintaiCsvFile);
                 BufferedReader br = new BufferedReader(fr)
         ) {
-            List<KintaiOfOneDayLine> kintaiOfOneDayLineList = new ArrayList<>();
+            List<KintaiOfOneDay> kintaiOfOneDayLineList = new ArrayList<>();
             String line;
             while ((line = br.readLine()) != null) {
-                kintaiOfOneDayLineList.add(new KintaiOfOneDayLine(line));
+                kintaiOfOneDayLineList.add(new KintaiOfOneDay(line));
             }
-            KintaiOfOneDayLines kintaiOfOneDayLines = new KintaiOfOneDayLines(kintaiOfOneDayLineList);
-            return kintaiOfOneDayLines;
+            KintaiOfOneDays kintaiOfOneDays = new KintaiOfOneDays(kintaiOfOneDayLineList);
+            return kintaiOfOneDays;
         } catch (FileNotFoundException e) {
             throw new RuntimeException("対象ファイルが存在しません");
         } catch (IOException e) {

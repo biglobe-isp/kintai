@@ -21,7 +21,7 @@ public class KintaiTotal {
     KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth;
 
     @Getter
-    private KintaiOfOneDayLines kintaiOfOneDayLines;
+    private KintaiOfOneDays kintaiOfOneDays;
 
     @Getter
     private int totalWorkMinutes;
@@ -29,9 +29,9 @@ public class KintaiTotal {
     @Getter
     private int totalOverWorkMinutes;
 
-    public KintaiTotal(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth, KintaiOfOneDayLines kintaiOfOneDayLines) {
+    public KintaiTotal(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth, KintaiOfOneDays kintaiOfOneDays) {
         this.kintaiTotalPrintTargetYearMonth = kintaiTotalPrintTargetYearMonth;
-        this.kintaiOfOneDayLines = kintaiOfOneDayLines;
+        this.kintaiOfOneDays = kintaiOfOneDays;
         this.setTotalData();
     }
 
@@ -42,14 +42,14 @@ public class KintaiTotal {
         Map<WorkDate, WorkMinutes> totalWorkMinutesMap = new HashMap<>();
         Map<WorkDate, OverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
 
-        Iterator<KintaiOfOneDayLine> iterator = this.kintaiOfOneDayLines.getIterator();
+        Iterator<KintaiOfOneDay> iterator = this.kintaiOfOneDays.getIterator();
         while (iterator.hasNext()) {
-            KintaiOfOneDayLine kintaiOfOneDayLine = iterator.next();
-            KintaiOfOneDay kintaiOfOneDay = kintaiOfOneDayLine.getKintaiOfOneDay();
+            KintaiOfOneDay kintaiOfOneDay = iterator.next();
 
             if (!kintaiOfOneDay.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintTargetYearMonth.getWorkYearMonth())) {
                 continue;
             }
+
             totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), kintaiOfOneDay.getWorkMinutes());
             totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), kintaiOfOneDay.getOverWorkMinutes());
         }

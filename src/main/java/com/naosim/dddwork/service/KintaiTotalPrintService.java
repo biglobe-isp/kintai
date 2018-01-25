@@ -14,8 +14,8 @@ public class KintaiTotalPrintService {
     KintaiTotalPrintRepository kintaiTotalPrintRepository;
 
     public void printTargetMonth(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth) {
-        KintaiOfOneDayLines kintaiOfOneDayLines = this.kintaiListRepository.get();
-        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintTargetYearMonth, kintaiOfOneDayLines);
+        KintaiOfOneDays kintaiOfOneDays = this.kintaiListRepository.get();
+        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintTargetYearMonth, kintaiOfOneDays);
 
         this.kintaiTotalPrintRepository.print(kintaiTotal);
     }

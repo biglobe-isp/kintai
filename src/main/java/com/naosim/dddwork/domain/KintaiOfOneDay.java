@@ -29,4 +29,14 @@ public class KintaiOfOneDay {
 
     @Getter
     private final Now now;
+
+    public KintaiOfOneDay(String line) {
+        String[] columns = line.split(",");
+        this.workDate = new WorkDate(columns[0]);
+        this.workStartTime = new WorkStartTime(columns[1]);
+        this.workEndTime = new WorkEndTime(columns[2]);
+        this.workMinutes = new WorkMinutes(Integer.parseInt(columns[3]));
+        this.overWorkMinutes = new OverWorkMinutes(Integer.parseInt(columns[4]));
+        this.now = new Now(columns[5]);
+    }
 }
