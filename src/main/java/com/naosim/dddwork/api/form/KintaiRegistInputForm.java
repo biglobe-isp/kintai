@@ -1,6 +1,6 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay;
+import com.naosim.dddwork.domain.kintai.WorkStartAndEndTimeOfOneDay;
 import com.naosim.dddwork.domain.time.Now;
 import com.naosim.dddwork.domain.time.work.WorkDate;
 import com.naosim.dddwork.domain.time.work.WorkEndTime;

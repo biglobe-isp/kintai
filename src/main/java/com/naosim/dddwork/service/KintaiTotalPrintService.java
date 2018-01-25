@@ -1,6 +1,6 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.*;
+import com.naosim.dddwork.domain.kintai.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

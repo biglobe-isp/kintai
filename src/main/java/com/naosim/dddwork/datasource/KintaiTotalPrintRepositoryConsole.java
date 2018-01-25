@@ -1,7 +1,7 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.KintaiTotal;
-import com.naosim.dddwork.domain.KintaiTotalPrintRepository;
+import com.naosim.dddwork.domain.kintai.KintaiTotal;
+import com.naosim.dddwork.domain.kintai.KintaiTotalPrintRepository;
 import org.springframework.stereotype.Component;
 
 @Component

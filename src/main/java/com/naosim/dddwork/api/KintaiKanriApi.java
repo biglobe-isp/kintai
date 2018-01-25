@@ -2,8 +2,8 @@ package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm;
 import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm;
-import com.naosim.dddwork.domain.KintaiTotalPrintTargetYearMonth;
-import com.naosim.dddwork.domain.WorkStartAndEndTimeOfOneDay;
+import com.naosim.dddwork.domain.kintai.KintaiTotalPrintTargetYearMonth;
+import com.naosim.dddwork.domain.kintai.WorkStartAndEndTimeOfOneDay;
 import com.naosim.dddwork.service.KintaiRegistService;
 import com.naosim.dddwork.service.KintaiTotalPrintService;
 import lombok.RequiredArgsConstructor;
