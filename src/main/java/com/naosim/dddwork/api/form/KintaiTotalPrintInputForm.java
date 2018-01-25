@@ -1,7 +1,7 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.kintai.totalprint.KintaiTotalPrintTargetYearMonth;
 import com.naosim.dddwork.domain.kintai.time.work.WorkYearMonth;
+import com.naosim.dddwork.domain.kintai.totalprint.KintaiTotalPrintTargetYearMonth;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
