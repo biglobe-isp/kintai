@@ -1,9 +1,10 @@
 @startuml
 
 package com.naosim.dddwork.domain.worktotal {
-
+    note top of TotalWorkTimeYearAndMonthAggregate : 集計したい勤怠合計時間の\n年月指定クラス
     class TotalWorkTimeYearAndMonthAggregate {
         - totalWorkAggregateTargetYearAndMonth : TotalWorkAggregateTargetYearAndMonth
+        + getValueObject() : totalWorkAggregateTargetYearAndMonth
     }
 
     class TotalWorkAggregateTargetYearAndMonth {
@@ -11,16 +12,19 @@ package com.naosim.dddwork.domain.worktotal {
         + getValue() : String
     }
 
+    note right of TotalWorkMinutesPerYearAndMonthNormal : 通常合計時間集計\n元データクラス
     class TotalWorkMinutesPerYearAndMonthNormal {
         totalWorkMinutesPerYearAndMonth : TotalWorkMinutesPerYearAndMonth
         totalWorkMinutesPerYearAndMonthNormalValue : TotalWorkMinutesPerYearAndMonthNormalValue
     }
 
+    note right of TotalWorkMinutesPerYearAndMonthOver : 残業合計時間集計\n元データクラス
     class TotalWorkMinutesPerYearAndMonthOver {
         totalWorkMinutesPerYearAndMonth : TotalWorkMinutesPerYearAndMonth
         totalWorkMinutesPerYearAndMonthOverValue : TotalWorkMinutesPerYearAndMonthOverValue
     }
 
+    note right of TotalWorkMinutesPerYearAndMonth : 合計時間集計\n年月日クラス
     class TotalWorkMinutesPerYearAndMonth {
         calucutateTargetYearAndMonth : String
     }
@@ -35,38 +39,46 @@ package com.naosim.dddwork.domain.worktotal {
         + getCalucutateOverValue() : Integer
     }
 
+    note right of WorkYearAndDateTimeAggregateOriginData : 勤怠合計時間集計\n元データクラス
     class WorkYearAndDateTimeAggregateOriginData {
         totalWorkMinutesPerYearAndMonthNormal : TotalWorkMinutesPerYearAndMonthNormal
         totalWorkMinutesPerYearAndMonthOver : TotalWorkMinutesPerYearAndMonthOver
     }
 
+
+    note top of TotalWorkYearAndMonthCaluculationData : 勤怠合計時間クラス
     class TotalWorkYearAndMonthCaluculationData {
         totalWorkYearAndMonthCaluculationNormalTime : TotalWorkYearAndMonthCaluculationNormalTime
         totalWorkYearAndMonthCaluculationOverTime : TotalWorkYearAndMonthCaluculationOverTime
     }
 
+    note left of TotalWorkYearAndMonthCaluculationNormalTime : 通常勤怠合計時間クラス
     class TotalWorkYearAndMonthCaluculationNormalTime {
         - value : Integer
         + getValue() : Integer
     }
 
+    note right of TotalWorkYearAndMonthCaluculationOverTime : 残業勤怠合計時間クラス
     class TotalWorkYearAndMonthCaluculationOverTime {
         - value : Integer
         + getValue() : Integer
     }
 
+    note top of WorkTimeTotalRepository : 勤怠合計時間集計\nインターフェイス
     interface WorkTimeTotalRepository {
         + doWorktimeTaskExecute(ｗorkTotalAggregateTargetYearAndMonth:TotalWorkAggregateTargetYearAndMonth) : WorkYearAndDateTimeAggregateOriginData
     }
 }
 
 package com.naosim.dddwork.datasource {
+    note right of WorkTimeTotalRepositoryFile : 勤怠合計時間集計\n実装クラス
     class WorkTimeTotalRepositoryFile {
         + doWorktimeTaskExecute(workDateAndTimeTotal:WorkDateAndTimeTotal) : WorkYearAndDateTimeAggregateOriginData
     }
 }
 
 TotalWorkTimeYearAndMonthAggregate -- TotalWorkAggregateTargetYearAndMonth
+
 WorkTimeTotalRepository -- TotalWorkTimeYearAndMonthAggregate
 WorkTimeTotalRepository -- WorkYearAndDateTimeAggregateOriginData
 
@@ -75,14 +87,14 @@ WorkYearAndDateTimeAggregateOriginData -- TotalWorkMinutesPerYearAndMonthOver
 
 TotalWorkMinutesPerYearAndMonthNormal -- TotalWorkMinutesPerYearAndMonth
 TotalWorkMinutesPerYearAndMonthNormal -- TotalWorkMinutesPerYearAndMonthNormalValue
+
 TotalWorkMinutesPerYearAndMonthOver -- TotalWorkMinutesPerYearAndMonth
 TotalWorkMinutesPerYearAndMonthOver -- TotalWorkMinutesPerYearAndMonthOverValue
 
 TotalWorkYearAndMonthCaluculationData -- TotalWorkYearAndMonthCaluculationNormalTime
 TotalWorkYearAndMonthCaluculationData -- TotalWorkYearAndMonthCaluculationOverTime
 
-
-WorkTimeTotalRepository<..WorkTimeTotalRepositoryFile
+WorkTimeTotalRepository<...WorkTimeTotalRepositoryFile
 
 
 @enduml

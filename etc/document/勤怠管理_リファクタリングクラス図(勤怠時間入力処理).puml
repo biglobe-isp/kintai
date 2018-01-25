@@ -2,6 +2,7 @@
 
 package com.naosim.dddwork.domain.workdateandtime {
 
+    note left of WorkDateAndTime : 勤怠時間登録\登録情報クラス
     class WorkDateAndTime {
         - workDate : WorkDate
         - workStartTime : WorkStartTime
@@ -9,49 +10,59 @@ package com.naosim.dddwork.domain.workdateandtime {
         - workRecordTime : WorkRecordTime
     }
 
+    note bottom of WorkDate : 登録年月日クラス
     class WorkDate {
         - value : String
         + getValue() : String
     }
 
+    note bottom of WorkStartTime : 勤務開始時間クラス
     class WorkStartTime {
         - value : String
         + getValue() : String
     }
 
+    note bottom of WorkEndTime : 終業時間クラス
     class WorkEndTime {
         - value : String
         + getValue() : String
     }
 
+    note bottom of WorkRecordTime : 操作時間クラス
     class WorkRecordTime {
         - value : String
         + getValue() : String
     }
 
+    note top of WorkTimeCaluculate : 勤務時間計算クラス
     class WorkTimeCaluculate {
          normalWorkTimeMinutes : NormalWorkTimeMinutes
          overWorkTimeMinutes : OverWorkTimeMinutes
     }
 
+    note bottom of NormalWorkTimeMinutes : 通常勤務時間計算クラス
     class NormalWorkTimeMinutes {
         - value : Integer
         + getValue : Integer
     }
 
+    note bottom of OverWorkTimeMinutes : 残業時間計算クラス
     class OverWorkTimeMinutes {
         - value : Integer
         + getValue : Integer
     }
 
-    interface WorkTimeInputRepository {
+    note top of WorkTimeRegistRepository : 勤怠時間登録\nインターフェイス
+    interface WorkTimeRegistRepository {
         + doWorktimeTaskExecute(workTimeInputParam : WorkDateAndTime):void
     }
 }
 
 package com.naosim.dddwork.datasource {
-class WorkTimeInputRepositoryFile {
-    + doWorktimeTaskExecute(workDateAndTime:WorkDateAndTime) : void
+    note right of WorkTimeRegistRepositoryFile : 勤怠時間登録\n実装クラス
+    class WorkTimeRegistRepositoryFile {
+        + doWorktimeTaskExecute(workDateAndTime:WorkDateAndTime) : void
+    }
 }
 
 WorkDateAndTime -- WorkDate
@@ -62,10 +73,10 @@ WorkDateAndTime -- WorkRecordTime
 WorkTimeCaluculate -- NormalWorkTimeMinutes
 WorkTimeCaluculate -- OverWorkTimeMinutes
 
-WorkTimeInputRepository --> WorkDateAndTime
-WorkTimeInputRepository --> WorkTimeCaluculate
+WorkTimeRegistRepository --> WorkDateAndTime
+WorkTimeRegistRepository --> WorkTimeCaluculate
 
-WorkTimeInputRepository <|.. WorkTimeInputRepositoryFile
+WorkTimeRegistRepository <|.. WorkTimeRegistRepositoryFile
 
 
 @enduml
