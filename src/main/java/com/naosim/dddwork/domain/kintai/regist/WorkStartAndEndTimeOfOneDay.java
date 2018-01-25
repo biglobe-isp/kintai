@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain.kintai;
+package com.naosim.dddwork.domain.kintai.regist;
 
 import com.naosim.dddwork.domain.kintai.time.Now;
 import com.naosim.dddwork.domain.kintai.time.work.WorkDate;

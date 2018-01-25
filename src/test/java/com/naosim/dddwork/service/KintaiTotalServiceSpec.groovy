@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service
 
 import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm
-import com.naosim.dddwork.domain.kintai.KintaiTotalPrintTargetYearMonth
+import com.naosim.dddwork.domain.kintai.totalprint.KintaiTotalPrintTargetYearMonth
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

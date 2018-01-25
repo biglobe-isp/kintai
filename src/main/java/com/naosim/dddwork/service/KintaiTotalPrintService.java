@@ -1,6 +1,8 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.kintai.*;
+import com.naosim.dddwork.domain.kintai.totalprint.*;
+import com.naosim.dddwork.domain.kintai.totalprint.repository.KintaiListRepository;
+import com.naosim.dddwork.domain.kintai.totalprint.repository.KintaiTotalPrintRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

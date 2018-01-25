@@ -1,7 +1,7 @@
 package com.naosim.dddwork.service
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm
-import com.naosim.dddwork.domain.kintai.WorkStartAndEndTimeOfOneDay
+import com.naosim.dddwork.domain.kintai.regist.WorkStartAndEndTimeOfOneDay
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain.kintai;
+package com.naosim.dddwork.domain.kintai.totalprint;
 
 import com.naosim.dddwork.domain.kintai.time.work.WorkYearMonth;
 import lombok.EqualsAndHashCode;

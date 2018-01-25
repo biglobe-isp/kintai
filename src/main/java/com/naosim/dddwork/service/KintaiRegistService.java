@@ -1,8 +1,8 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.kintai.KintaiRegist;
-import com.naosim.dddwork.domain.kintai.KintaiRegistRepository;
-import com.naosim.dddwork.domain.kintai.WorkStartAndEndTimeOfOneDay;
+import com.naosim.dddwork.domain.kintai.regist.KintaiRegist;
+import com.naosim.dddwork.domain.kintai.regist.repository.KintaiRegistRepository;
+import com.naosim.dddwork.domain.kintai.regist.WorkStartAndEndTimeOfOneDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

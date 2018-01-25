@@ -1,6 +1,7 @@
-package com.naosim.dddwork.domain.kintai;
+package com.naosim.dddwork.domain.kintai.totalprint;
 
 
+import com.naosim.dddwork.domain.kintai.KintaiOfOneDay;
 import com.naosim.dddwork.domain.kintai.time.work.OverWorkMinutes;
 import com.naosim.dddwork.domain.kintai.time.work.WorkDate;
 import com.naosim.dddwork.domain.kintai.time.work.WorkMinutes;

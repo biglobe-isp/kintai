@@ -2,7 +2,7 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.datasource.file.KintaiFile;
 import com.naosim.dddwork.domain.kintai.KintaiOfOneDay;
-import com.naosim.dddwork.domain.kintai.KintaiRegistRepository;
+import com.naosim.dddwork.domain.kintai.regist.repository.KintaiRegistRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
