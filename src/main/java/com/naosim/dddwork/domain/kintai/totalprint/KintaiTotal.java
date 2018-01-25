@@ -19,10 +19,10 @@ import java.util.Set;
 public class KintaiTotal {
 
     @Getter
-    KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth;
+    private final KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth;
 
     @Getter
-    private KintaiOfOneDays kintaiOfOneDays;
+    private final KintaiOfOneDays kintaiOfOneDays;
 
     @Getter
     private int totalWorkMinutes;
