@@ -1,6 +1,6 @@
-package com.naosim.dddwork.domain.time.work;
+package com.naosim.dddwork.domain.kintai.time.work;
 
-import com.naosim.dddwork.domain.time.Minute;
+import com.naosim.dddwork.domain.kintai.time.Minute;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain.kintai;
 
-import com.naosim.dddwork.domain.time.work.WorkYearMonth;
+import com.naosim.dddwork.domain.kintai.time.work.WorkYearMonth;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

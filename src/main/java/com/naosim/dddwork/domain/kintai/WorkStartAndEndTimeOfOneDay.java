@@ -1,9 +1,9 @@
 package com.naosim.dddwork.domain.kintai;
 
-import com.naosim.dddwork.domain.time.Now;
-import com.naosim.dddwork.domain.time.work.WorkDate;
-import com.naosim.dddwork.domain.time.work.WorkEndTime;
-import com.naosim.dddwork.domain.time.work.WorkStartTime;
+import com.naosim.dddwork.domain.kintai.time.Now;
+import com.naosim.dddwork.domain.kintai.time.work.WorkDate;
+import com.naosim.dddwork.domain.kintai.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.kintai.time.work.WorkStartTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

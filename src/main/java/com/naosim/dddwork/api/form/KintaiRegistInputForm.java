@@ -1,10 +1,10 @@
 package com.naosim.dddwork.api.form;
 
 import com.naosim.dddwork.domain.kintai.WorkStartAndEndTimeOfOneDay;
-import com.naosim.dddwork.domain.time.Now;
-import com.naosim.dddwork.domain.time.work.WorkDate;
-import com.naosim.dddwork.domain.time.work.WorkEndTime;
-import com.naosim.dddwork.domain.time.work.WorkStartTime;
+import com.naosim.dddwork.domain.kintai.time.Now;
+import com.naosim.dddwork.domain.kintai.time.work.WorkDate;
+import com.naosim.dddwork.domain.kintai.time.work.WorkEndTime;
+import com.naosim.dddwork.domain.kintai.time.work.WorkStartTime;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

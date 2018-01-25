@@ -1,9 +1,9 @@
 package com.naosim.dddwork.domain.kintai;
 
 
-import com.naosim.dddwork.domain.time.work.OverWorkMinutes;
-import com.naosim.dddwork.domain.time.work.WorkDate;
-import com.naosim.dddwork.domain.time.work.WorkMinutes;
+import com.naosim.dddwork.domain.kintai.time.work.OverWorkMinutes;
+import com.naosim.dddwork.domain.kintai.time.work.WorkDate;
+import com.naosim.dddwork.domain.kintai.time.work.WorkMinutes;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
