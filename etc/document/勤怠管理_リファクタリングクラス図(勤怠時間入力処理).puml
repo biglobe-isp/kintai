@@ -2,7 +2,7 @@
 
 package com.naosim.dddwork.domain.workdateandtime {
 
-    note left of WorkDateAndTime : 勤怠時間登録\n登録情報クラス
+    note top of WorkDateAndTime : 勤怠時間登録\n登録情報クラス
     class WorkDateAndTime {
         - workDate : WorkDate
         - workStartTime : WorkStartTime
@@ -30,13 +30,13 @@ package com.naosim.dddwork.domain.workdateandtime {
         - value : String
     }
 
-    note bottom of WorkTimeMinutes : 勤務時間\n計算結果クラス
+    note right of WorkTimeMinutes : 勤務時間\n計算結果クラス
     class WorkTimeMinutes {
          - normalWorkTimeMinutes : NormalWorkTimeMinutes
          - overWorkTimeMinutes : OverWorkTimeMinutes
     }
 
-    note bottom of NormalWorkTimeMinutes : 通常勤務時間\n計算クラス
+    note top of NormalWorkTimeMinutes : 通常勤務時間\n計算クラス
     class NormalWorkTimeMinutes {
         - value : Integer
     }
@@ -63,13 +63,13 @@ WorkDateAndTime --> WorkDate
 WorkDateAndTime --> WorkStartTime
 WorkDateAndTime --> WorkEndTime
 WorkDateAndTime --> WorkRecordTime
+WorkTimeMinutes --> WorkDateAndTime
 
 WorkTimeMinutes "1" *--"1" NormalWorkTimeMinutes
 WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
 
-WorkTimeRegistRepository --> WorkDateAndTime
 WorkTimeRegistRepository --> WorkTimeMinutes
 
-WorkTimeRegistRepository <|.. WorkTimeRegistRepositoryFile
+WorkTimeRegistRepository <|. WorkTimeRegistRepositoryFile
 
 @enduml
