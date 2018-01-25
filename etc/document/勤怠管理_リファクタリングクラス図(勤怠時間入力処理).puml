@@ -34,49 +34,50 @@ package com.naosim.dddwork.domain.workdateandtime {
         + getValue() : String
     }
 
-    note top of WorkTimeCaluculate : 勤務時間計算クラス
-    class WorkTimeCaluculate {
-         normalWorkTimeMinutes : NormalWorkTimeMinutes
-         overWorkTimeMinutes : OverWorkTimeMinutes
+    note top of WorkTimeMinutes : 勤務時間計算クラス
+    class WorkTimeMinutes {
+         - normalWorkTimeMinutes : NormalWorkTimeMinutes
+         - overWorkTimeMinutes : OverWorkTimeMinutes
     }
 
     note bottom of NormalWorkTimeMinutes : 通常勤務時間計算クラス
     class NormalWorkTimeMinutes {
         - value : Integer
-        + getValue : Integer
+        + getValue() : Integer
     }
 
     note bottom of OverWorkTimeMinutes : 残業時間計算クラス
     class OverWorkTimeMinutes {
         - value : Integer
-        + getValue : Integer
+        + getValue() : Integer
     }
 
     note top of WorkTimeRegistRepository : 勤怠時間登録\nインターフェイス
     interface WorkTimeRegistRepository {
-        + doWorktimeTaskExecute(workTimeInputParam : WorkDateAndTime):void
+        + registWorkTime(workTimeInputParam : WorkDateAndTime):void
     }
 }
 
 package com.naosim.dddwork.datasource {
-    note right of WorkTimeRegistRepositoryFile : 勤怠時間登録\n実装クラス
+    note bottom of WorkTimeRegistRepositoryFile : 勤怠時間登録\n実装クラス
     class WorkTimeRegistRepositoryFile {
-        + doWorktimeTaskExecute(workDateAndTime:WorkDateAndTime) : void
+        + registWorkTime(workDateAndTime:WorkDateAndTime) : void
     }
 }
 
-WorkDateAndTime -- WorkDate
-WorkDateAndTime -- WorkStartTime
-WorkDateAndTime -- WorkEndTime
-WorkDateAndTime -- WorkRecordTime
+WorkDateAndTime --> WorkDate
+WorkDateAndTime --> WorkStartTime
+WorkDateAndTime --> WorkEndTime
+WorkDateAndTime --> WorkRecordTime
 
-WorkTimeCaluculate -- NormalWorkTimeMinutes
-WorkTimeCaluculate -- OverWorkTimeMinutes
+WorkTimeMinutes "1" *--"1" NormalWorkTimeMinutes
+WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
 
 WorkTimeRegistRepository --> WorkDateAndTime
-WorkTimeRegistRepository --> WorkTimeCaluculate
+WorkTimeRegistRepository --> WorkTimeMinutes
 
 WorkTimeRegistRepository <|.. WorkTimeRegistRepositoryFile
 
+WorkTimeRegistRepositoryFile --> WorkTimeMinutes
 
 @enduml
