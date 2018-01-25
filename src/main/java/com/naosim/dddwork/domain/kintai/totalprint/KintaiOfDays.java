@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class KintaiOfOneDays {
+public class KintaiOfDays {
 
     private List<KintaiOfOneDay> kintaiOfOneDayList;
 
-    public KintaiOfOneDays(List<KintaiOfOneDay> kintaiOfOneDayLineList) {
+    public KintaiOfDays(List<KintaiOfOneDay> kintaiOfOneDayLineList) {
         this.kintaiOfOneDayList = kintaiOfOneDayLineList;
     }
 
-    public KintaiOfOneDays add(KintaiOfOneDay kintaiOfOneDay) {
+    public KintaiOfDays add(KintaiOfOneDay kintaiOfOneDay) {
         List<KintaiOfOneDay> tmpKintaiOfOneDayList = new ArrayList<>(this.kintaiOfOneDayList);
         tmpKintaiOfOneDayList.add(kintaiOfOneDay);
-        return new KintaiOfOneDays(tmpKintaiOfOneDayList);
+        return new KintaiOfDays(tmpKintaiOfOneDayList);
     }
 
     public Iterator<KintaiOfOneDay> getIterator() {

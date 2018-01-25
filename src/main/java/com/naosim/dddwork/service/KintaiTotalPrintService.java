@@ -1,6 +1,6 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.kintai.totalprint.KintaiOfOneDays;
+import com.naosim.dddwork.domain.kintai.totalprint.KintaiOfDays;
 import com.naosim.dddwork.domain.kintai.totalprint.KintaiTotal;
 import com.naosim.dddwork.domain.kintai.totalprint.KintaiTotalPrintTargetYearMonth;
 import com.naosim.dddwork.domain.kintai.totalprint.repository.KintaiListRepository;
@@ -18,8 +18,8 @@ public class KintaiTotalPrintService {
     KintaiTotalPrintRepository kintaiTotalPrintRepository;
 
     public void printTargetMonth(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth) {
-        KintaiOfOneDays kintaiOfOneDays = this.kintaiListRepository.get();
-        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintTargetYearMonth, kintaiOfOneDays);
+        KintaiOfDays kintaiOfDays = this.kintaiListRepository.get();
+        KintaiTotal kintaiTotal = new KintaiTotal(kintaiTotalPrintTargetYearMonth, kintaiOfDays);
 
         this.kintaiTotalPrintRepository.print(kintaiTotal);
     }
