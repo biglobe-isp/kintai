@@ -1,16 +1,16 @@
 package com.naosim.dddwork.service
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm
-import com.naosim.dddwork.domain.kintai.regist.WorkStartAndEndTimeOfOneDay
+import com.naosim.dddwork.domain.kintai.register.WorkStartAndEndTimeOfOneDay
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class KintaiRegistServiceSpec extends Specification {
+class KintaiRegisterServiceSpec extends Specification {
 
     @Autowired
-    KintaiRegistService kintaiRegistService
+    KintaiRegisterService kintaiRegistService
 
     def "正常データでエラーが発生しないことを確認する"() {
         setup:
@@ -22,7 +22,7 @@ class KintaiRegistServiceSpec extends Specification {
         KintaiRegistInputForm inputKintaiForm = new KintaiRegistInputForm(args)
         WorkStartAndEndTimeOfOneDay kintaiRegistInput = inputKintaiForm.getValueObject()
 
-        this.kintaiRegistService.registKintaiOfOneDay(kintaiRegistInput)
+        this.kintaiRegistService.registerKintaiOfOneDay(kintaiRegistInput)
 
         then:
         true

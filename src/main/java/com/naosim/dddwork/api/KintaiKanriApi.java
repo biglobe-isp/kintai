@@ -2,9 +2,9 @@ package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.KintaiRegistInputForm;
 import com.naosim.dddwork.api.form.KintaiTotalPrintInputForm;
-import com.naosim.dddwork.domain.kintai.regist.WorkStartAndEndTimeOfOneDay;
+import com.naosim.dddwork.domain.kintai.register.WorkStartAndEndTimeOfOneDay;
 import com.naosim.dddwork.domain.kintai.totalprint.KintaiTotalPrintTargetYearMonth;
-import com.naosim.dddwork.service.KintaiRegistService;
+import com.naosim.dddwork.service.KintaiRegisterService;
 import com.naosim.dddwork.service.KintaiTotalPrintService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class KintaiKanriApi {
 
-    private final KintaiRegistService kintaiRegistService;
+    private final KintaiRegisterService kintaiRegisterService;
 
     private final KintaiTotalPrintService kintaiTotalPrintService;
 
@@ -30,7 +30,7 @@ public class KintaiKanriApi {
             case INPUT:
                 KintaiRegistInputForm kintaiRegistInputForm = new KintaiRegistInputForm(args);
                 WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay = kintaiRegistInputForm.getValueObject();
-                this.kintaiRegistService.registKintaiOfOneDay(workStartAndEndTimeOfOneDay);
+                this.kintaiRegisterService.registerKintaiOfOneDay(workStartAndEndTimeOfOneDay);
                 break;
 
             case TOTAL:

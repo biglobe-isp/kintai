@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain.kintai.regist;
+package com.naosim.dddwork.domain.kintai.register;
 
 
 import com.naosim.dddwork.domain.kintai.KintaiOfOneDay;
@@ -10,12 +10,12 @@ import lombok.ToString;
 
 @EqualsAndHashCode
 @ToString
-public class KintaiRegist {
+public class KintaiRegister {
 
     @Getter
     private final WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay;
 
-    public KintaiRegist(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) {
+    public KintaiRegister(WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay) {
         this.workStartAndEndTimeOfOneDay = workStartAndEndTimeOfOneDay;
     }
 

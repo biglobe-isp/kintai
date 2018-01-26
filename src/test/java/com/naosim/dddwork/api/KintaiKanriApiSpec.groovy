@@ -1,6 +1,6 @@
 package com.naosim.dddwork.api
 
-import com.naosim.dddwork.service.KintaiRegistService
+import com.naosim.dddwork.service.KintaiRegisterService
 import com.naosim.dddwork.service.KintaiTotalPrintService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -10,7 +10,7 @@ import spock.lang.Specification
 class KintaiKanriApiSpec extends Specification {
 
     @Autowired
-    KintaiRegistService kintaiRegistService
+    KintaiRegisterService kintaiRegistService
 
     @Autowired
     KintaiTotalPrintService totalKintaiPrintService
