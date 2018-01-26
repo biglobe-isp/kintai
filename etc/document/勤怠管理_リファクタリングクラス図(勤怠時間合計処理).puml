@@ -39,10 +39,16 @@ package com.naosim.dddwork.domain.worktotal {
         - calucutateTargetYearAndMonth : String
     }
 
-    note right of WorkTimeAggregateDatas : 勤怠合計時間集計\n元データクラス
-    class WorkTimeAggregateDatas {
+    note top of WorkTimeAggregateOrigins : 勤怠合計時間集計\n元データクラス
+    class WorkTimeAggregateOrigins {
         - workMinutesPerYMDNormal : WorkMinutesPerYMDNormal
         - workMinutesPerYMDOver : WorkMinutesPerYMDOver
+    }
+
+    note top of TotalWorkTimeYearAndMonth : 勤務時間合計クラス
+    class TotalWorkTimeYearAndMonth {
+        - totalWorkNormalTimeYearAndMonth:TotalWorkNormalTimeYearAndMonth
+        - totalWorkOverTimeYearAndMonth:TotalWorkOverTimeYearAndMonth
     }
 
     note bottom of TotalWorkNormalTimeYearAndMonth : 通常勤務時間合計クラス
@@ -59,34 +65,37 @@ package com.naosim.dddwork.domain.worktotal {
 
     note top of WorkTimeTotalRepository : 勤怠合計時間集計\nインターフェイス
     interface WorkTimeTotalRepository {
-        + totalWorkTimeCalucurate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateDatas
+        + totalWorkTimeCalucurate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateOrigins
     }
+
 }
 
 package com.naosim.dddwork.datasource {
     note top of WorkTimeTotalRepositoryFile : 勤怠合計時間集計\n実装クラス
     class WorkTimeTotalRepositoryFile {
-        + totalWorkTimeCalucurate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateDatas
+        + totalWorkTimeCalucurate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateOrigins
     }
 }
 
-WorkTimeAggregateTargetYearAndMonth -- TargetYearAndMonth
+WorkTimeAggregateTargetYearAndMonth --> TargetYearAndMonth
 
-WorkTimeTotalRepository -- WorkTimeAggregateTargetYearAndMonth
-WorkTimeTotalRepository -- WorkTimeAggregateDatas
+WorkTimeTotalRepository --> WorkTimeAggregateTargetYearAndMonth
 
-WorkTimeAggregateDatas "1" o-- "0..*" WorkMinutesPerYMDNormal
-WorkTimeAggregateDatas "1" o--"0..*"  WorkMinutesPerYMDOver
-WorkTimeAggregateDatas "1" *--"1" TotalWorkNormalTimeYearAndMonth
-WorkTimeAggregateDatas "1" *--"1" TotalWorkOverTimeYearAndMonth
+WorkTimeTotalRepository "1" o-- "0..*" WorkTimeAggregateOrigins
+WorkTimeAggregateOrigins "1" o-- "0..*" WorkMinutesPerYMDNormal
+WorkTimeAggregateOrigins "1" o--"0..*"  WorkMinutesPerYMDOver
+WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMD
+WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMDOverValue
 
 WorkMinutesPerYMDNormal "1" *--"1" WorkMinutesPerYMD
 WorkMinutesPerYMDNormal "1" *--"1" WorkMinutesPerYMDNormalValue
 
-WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMD
-WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMDOverValue
+TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkNormalTimeYearAndMonth
+TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkOverTimeYearAndMonth
 
-WorkTimeTotalRepository<...WorkTimeTotalRepositoryFile
+WorkTimeTotalRepository "1" *--"1" TotalWorkTimeYearAndMonth
+
+WorkTimeTotalRepository<..WorkTimeTotalRepositoryFile
 
 
 @enduml
