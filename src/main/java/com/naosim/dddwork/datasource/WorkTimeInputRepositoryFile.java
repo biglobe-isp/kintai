@@ -1,6 +1,6 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.workdateandtime.WorkTimeCalculate;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes;
 import com.naosim.dddwork.domain.workdateandtime.WorkDateAndTime;
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository;
 
@@ -10,9 +10,7 @@ import java.io.IOException;
 
 public class WorkTimeInputRepositoryFile implements WorkTimeInputRepository {
     @Override
-    public void doWorktimeTaskExecute(WorkDateAndTime workDateAndTime) {
-
-        WorkTimeCalculate workTimeCalculate = new WorkTimeCalculate(workDateAndTime);
+    public void registerWork_time(WorkDateAndTime workDateAndTime, WorkTimeMinutes workTimeMinutes) {
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
@@ -20,8 +18,8 @@ public class WorkTimeInputRepositoryFile implements WorkTimeInputRepository {
                     workDateAndTime.getWorkDate().getValue(),
                     workDateAndTime.getWorkTimeStart().getValue(),
                     workDateAndTime.getWorkTimeEnd().getValue(),
-                    workTimeCalculate.getNormalWorkTimeMinutes().getValue(),
-                    workTimeCalculate.getOverWorkTimeMinutes().getValue(),
+                    workTimeMinutes.getAllWorkTimeMinutes().getValue(),
+                    workTimeMinutes.getOverWorkTimeMinutes().getValue(),
                     workDateAndTime.getWorkTimeNow().getValue()));
         } catch (IOException e) {
             e.printStackTrace();

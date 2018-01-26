@@ -32,9 +32,9 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
 
                 line = br.readLine();
             }
-            WorkTimeTotal workTimeTotalCollection = new WorkTimeTotal(totalNormalWorkMinutes, totalOverWorkMinutes);
+            WorkTimeTotal workTimeTotal = new WorkTimeTotal(totalNormalWorkMinutes, totalOverWorkMinutes);
 
-            return workTimeTotalCollection;
+            return workTimeTotal;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

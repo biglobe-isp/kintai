@@ -4,6 +4,7 @@ import com.naosim.dddwork.datasource.WorkTimeInputRepositoryFile;
 import com.naosim.dddwork.datasource.WorkTimeTotalRepositoryFile;
 import com.naosim.dddwork.domain.workdateandtime.WorkDateAndTime;
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository;
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalcalculation;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
@@ -22,8 +23,9 @@ public class WorkTimeService {
      * @param workDateAndTime
      */
     public void workTimeInput(WorkDateAndTime workDateAndTime) {
+        WorkTimeMinutes workTimeMinutes = new WorkTimeMinutes(workDateAndTime);
         workTimeInputRepository = new WorkTimeInputRepositoryFile();
-        workTimeInputRepository.doWorktimeTaskExecute(workDateAndTime);
+        workTimeInputRepository.registerWork_time(workDateAndTime, workTimeMinutes);
     }
 
     /**

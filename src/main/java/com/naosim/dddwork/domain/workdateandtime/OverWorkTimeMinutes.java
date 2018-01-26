@@ -6,7 +6,10 @@ public class OverWorkTimeMinutes {
     @Getter
     private Integer value;
 
-    public OverWorkTimeMinutes(int normalWorkTime) {
-        value = normalWorkTime;
+    private final AllWorkTimeMinutes allWorkTimeMinutes;
+
+    public OverWorkTimeMinutes(AllWorkTimeMinutes allWorkTimeMinutes) {
+        this.allWorkTimeMinutes = allWorkTimeMinutes;
+        value = Math.max(this.allWorkTimeMinutes.getValue() - 8 * 60, 0);
     }
 }
