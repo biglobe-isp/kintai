@@ -22,6 +22,6 @@ class NowSpec extends Specification {
         Now now = new Now(input)
 
         then:
-        now.getValue() == input
+        now.toString() == input
     }
 }

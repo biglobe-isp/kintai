@@ -2,22 +2,28 @@ package com.naosim.dddwork.domain.kintai.time;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @EqualsAndHashCode
-@ToString
 public class Now {
 
     @Getter
-    private final String value;
+    private final LocalDateTime value;
+
+    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public Now() {
-        this.value = LocalDateTime.now().toString();
+        this.value = LocalDateTime.now();
     }
 
     public Now(String value) {
-        this.value = value;
+        this.value = LocalDateTime.parse(value, formatter);
+    }
+
+    @Override
+    public String toString() {
+        return this.value.format(formatter);
     }
 }

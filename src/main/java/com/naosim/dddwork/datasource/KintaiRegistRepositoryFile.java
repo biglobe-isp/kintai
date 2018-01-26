@@ -30,7 +30,7 @@ public class KintaiRegistRepositoryFile implements KintaiRegistRepository {
                 kintaiOfOneDay.getWorkEndTime().getValue(),
                 kintaiOfOneDay.getWorkMinutes().toString(),
                 kintaiOfOneDay.getOverWorkMinutes().toString(),
-                kintaiOfOneDay.getNow().getValue()
+                kintaiOfOneDay.getNow().toString()
         );
     }
 
