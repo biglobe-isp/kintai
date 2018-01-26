@@ -92,7 +92,7 @@ TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkOverTimeYearAndMonth
 
 WorkTimeTotalRepository "1" *--"1" TotalWorkTimeYearAndMonth
 
-WorkTimeTotalRepository<..WorkTimeTotalRepositoryFile
+WorkTimeTotalRepository<|..WorkTimeTotalRepositoryFile
 
 
 @enduml
