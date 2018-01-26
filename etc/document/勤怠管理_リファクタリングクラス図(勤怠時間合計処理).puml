@@ -60,8 +60,8 @@ package com.naosim.dddwork.domain {
         - value : Integer
     }
 
-    note top of WorkTimeTotalRepository : 勤怠合計時間集計\nインターフェイス
-    interface WorkTimeTotalRepository {
+    note top of WorkTimeAggregateRepository : 勤怠合計時間集計\nインターフェイス
+    interface WorkTimeAggregateRepository {
         + totalWorkTimeAggregate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateOrigins
     }
 }
@@ -69,9 +69,9 @@ package com.naosim.dddwork.domain {
 
 WorkTimeAggregateTargetYearAndMonth --> TargetYearAndMonth
 
-WorkTimeTotalRepository --> WorkTimeAggregateTargetYearAndMonth
+WorkTimeAggregateRepository --> WorkTimeAggregateTargetYearAndMonth
 
-WorkTimeTotalRepository "1" o-- "0..*" WorkTimeAggregateOrigins
+WorkTimeAggregateRepository "1" o-- "0..*" WorkTimeAggregateOrigins
 WorkTimeAggregateOrigins "1" o-- "0..*" WorkMinutesPerYMDNormal
 WorkTimeAggregateOrigins "1" o--"0..*"  WorkMinutesPerYMDOver
 WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMD
