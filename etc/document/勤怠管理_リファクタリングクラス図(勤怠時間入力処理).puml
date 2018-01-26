@@ -32,12 +32,12 @@ package com.naosim.dddwork.domain {
 
     note right of WorkTimeMinutes : 勤務時間\n計算結果クラス
     class WorkTimeMinutes {
-         - normalWorkTimeMinutes : NormalWorkTimeMinutes
+         - AllWorkTimeMinutes : AllWorkTimeMinutes
          - overWorkTimeMinutes : OverWorkTimeMinutes
     }
 
-    note top of NormalWorkTimeMinutes : 通常勤務時間\n計算クラス
-    class NormalWorkTimeMinutes {
+    note top of AllWorkTimeMinutes : 通常勤務時間\n計算クラス
+    class AllWorkTimeMinutes {
         - value : Integer
     }
 
@@ -48,7 +48,7 @@ package com.naosim.dddwork.domain {
 
         note top of WorkTimeregisterRepository : 勤怠時間登録\nインターフェイス
         interface WorkTimeregisterRepository {
-            + registWorkTime(workDateAndTime : WorkDateAndTime, workTimeMinutes:WorkTimeMinutes):void
+            + registerWorkTime(workDateAndTime : WorkDateAndTime,\n workTimeMinutes:WorkTimeMinutes):void
         }
     }
 }
@@ -59,7 +59,7 @@ WorkDateAndTime --> WorkEndTime
 WorkDateAndTime --> WorkRecordTime
 WorkTimeMinutes --> WorkDateAndTime
 
-WorkTimeMinutes "1" *--"1" NormalWorkTimeMinutes
+WorkTimeMinutes "1" *--"1" AllWorkTimeMinutes
 WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
 
 WorkTimeregisterRepository --> WorkTimeMinutes
