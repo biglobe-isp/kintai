@@ -29,10 +29,10 @@ public class WorkMinutes {
 
         int workMinutesInt = workEndTime.getTime().convertTimeToMinutes() - workStartTime.getTime().convertTimeToMinutes();
 
-        BreakMinutes breakMinutes = new BreakMinutes(workStartTime, workEndTime);
-        workMinutesInt -= breakMinutes.getLunchBreakMinutes();
-        workMinutesInt -= breakMinutes.getEveningBreakMinutes();
-        workMinutesInt -= breakMinutes.getNightBreakMinutes();
+        BreakMinutesCalculator breakMinutesCalculator = new BreakMinutesCalculator(workStartTime, workEndTime);
+        workMinutesInt -= breakMinutesCalculator.getLunchBreakMinutes();
+        workMinutesInt -= breakMinutesCalculator.getEveningBreakMinutes();
+        workMinutesInt -= breakMinutesCalculator.getNightBreakMinutes();
 
         return new WorkMinutes(workMinutesInt);
     }

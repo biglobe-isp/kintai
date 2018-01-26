@@ -8,7 +8,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class BreakMinutes {
+public class BreakMinutesCalculator {
 
     @Getter
     private final WorkStartTime workStartTime;
