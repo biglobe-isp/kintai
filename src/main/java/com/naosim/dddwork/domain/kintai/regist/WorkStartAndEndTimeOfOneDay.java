@@ -15,7 +15,7 @@ import lombok.ToString;
 public class WorkStartAndEndTimeOfOneDay {
 
     @Getter
-    private final WorkDate workWorkDate;
+    private final WorkDate workDate;
 
     @Getter
     private final WorkStartTime workStartTime;
