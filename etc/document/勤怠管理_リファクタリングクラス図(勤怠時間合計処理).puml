@@ -11,52 +11,52 @@ package com.naosim.dddwork.domain {
         - value : String
     }
 
-    note top of WorkMinutesPerYMDNormal : 通常時間集計\n元データクラス
-    class WorkMinutesPerYMDNormal {
+    note top of NormalWorkMinutesPerYMD : 通常時間集計\n元データクラス
+    class NormalWorkMinutesPerYMD {
         - workMinutesPerYMD : WorkMinutesPerYMD
-        - workMinutesPerYMDNormalValue : WorkMinutesPerYMDNormalValue
+        - normalWorkMinutes : NormalWorkMinutes
     }
 
-    note bottom of WorkMinutesPerYMDNormalValue : 通常時間集計結果\n元データクラス
-    class WorkMinutesPerYMDNormalValue {
+    note bottom of NormalWorkMinutes : 通常時間集計結果\n元データクラス
+    class NormalWorkMinutes {
         - value : Integer
     }
 
-    note bottom of WorkMinutesPerYMDOver : 残業時間集計\n元データクラス
-    class WorkMinutesPerYMDOver {
+    note bottom of OverWorkMinutesPerYMD : 残業時間集計\n元データクラス
+    class OverWorkMinutesPerYMD {
         - workMinutesPerYMD : WorkMinutesPerYMD
-        - WorkMinutesPerYMDOverValue : WorkMinutesPerYMDOverValue
+        - overWorkMinutes : OverWorkMinutesPer
     }
 
-    note bottom of WorkMinutesPerYMDOverValue : 残業時間集計結果\n元データクラス
-    class WorkMinutesPerYMDOverValue {
+    note bottom of OverWorkMinutes : 残業時間集計結果\n元データクラス
+    class OverWorkMinutes {
         - value : Integer
     }
 
     note bottom of WorkMinutesPerYMD : 合計時間集計\n年月日クラス
     class WorkMinutesPerYMD {
-        - calucutateTargetYearAndMonth : String
+        - targetYearAndMonth : String
     }
 
     note top of WorkTimeAggregateOrigins : 勤怠合計時間集計\n元データクラス
     class WorkTimeAggregateOrigins {
-        - workMinutesPerYMDNormal : WorkMinutesPerYMDNormal
-        - workMinutesPerYMDOver : WorkMinutesPerYMDOver
+        - normalWorkMinutesPerYMD : NormalWorkMinutesPerYMD
+        - overWorkMinutesPerYMD : OverWorkMinutesPerYMD
     }
 
     note top of TotalWorkTimeYearAndMonth : 勤務時間合計クラス
     class TotalWorkTimeYearAndMonth {
-        - totalWorkNormalTimeYearAndMonth:TotalWorkNormalTimeYearAndMonth
-        - totalWorkOverTimeYearAndMonth:TotalWorkOverTimeYearAndMonth
+        - TotalNormalWorkTimeYearAndMonth:TotalNormalWorkTimeYearAndMonth
+        - TotalOverWorkTimeYearAndMonth:TotalOverWorkTimeYearAndMonth
     }
 
-    note bottom of TotalWorkNormalTimeYearAndMonth : 通常勤務時間合計クラス
-    class TotalWorkNormalTimeYearAndMonth {
+    note bottom of TotalNormalWorkTimeYearAndMonth : 通常勤務時間合計クラス
+    class TotalNormalWorkTimeYearAndMonth {
         - value : Integer
     }
 
-    note bottom of TotalWorkOverTimeYearAndMonth : 残業勤務時間合計クラス
-    class TotalWorkOverTimeYearAndMonth {
+    note bottom of TotalOverWorkTimeYearAndMonth : 残業勤務時間合計クラス
+    class TotalOverWorkTimeYearAndMonth {
         - value : Integer
     }
 
@@ -72,16 +72,16 @@ WorkTimeAggregateTargetYearAndMonth --> TargetYearAndMonth
 WorkTimeAggregateRepository --> WorkTimeAggregateTargetYearAndMonth
 
 WorkTimeAggregateRepository "1" o-- "0..*" WorkTimeAggregateOrigins
-WorkTimeAggregateOrigins "1" o-- "0..*" WorkMinutesPerYMDNormal
-WorkTimeAggregateOrigins "1" o--"0..*"  WorkMinutesPerYMDOver
-WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMD
-WorkMinutesPerYMDOver "1" *--"1" WorkMinutesPerYMDOverValue
+WorkTimeAggregateOrigins "1" o-- "0..*" NormalWorkMinutesPerYMD
+WorkTimeAggregateOrigins "1" o--"0..*"  OverWorkMinutesPerYMD
+OverWorkMinutesPerYMD "1" *--"1" WorkMinutesPerYMD
+OverWorkMinutesPerYMD "1" *--"1" OverWorkMinutes
 
-WorkMinutesPerYMDNormal "1" *--"1" WorkMinutesPerYMD
-WorkMinutesPerYMDNormal "1" *--"1" WorkMinutesPerYMDNormalValue
+NormalWorkMinutesPerYMD "1" *--"1" WorkMinutesPerYMD
+NormalWorkMinutesPerYMD "1" *--"1" NormalWorkMinutes
 
-TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkNormalTimeYearAndMonth
-TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkOverTimeYearAndMonth
+TotalWorkTimeYearAndMonth"1" *--"1" TotalNormalWorkTimeYearAndMonth
+TotalWorkTimeYearAndMonth"1" *--"1" TotalOverWorkTimeYearAndMonth
 
 TotalWorkTimeYearAndMonth->WorkTimeAggregateOrigins
 

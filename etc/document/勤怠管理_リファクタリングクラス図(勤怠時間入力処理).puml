@@ -46,10 +46,10 @@ package com.naosim.dddwork.domain {
         - value : Integer
     }
 
-    note top of WorkTimeRegistRepository : 勤怠時間登録\nインターフェイス
-    interface WorkTimeRegistRepository {
-        + registWorkTime(workDateAndTime : WorkDateAndTime):void
-    }
+        note top of WorkTimeregisterRepository : 勤怠時間登録\nインターフェイス
+        interface WorkTimeregisterRepository {
+            + registWorkTime(workDateAndTime : WorkDateAndTime, workTimeMinutes:WorkTimeMinutes):void
+        }
     }
 }
 
@@ -62,6 +62,6 @@ WorkTimeMinutes --> WorkDateAndTime
 WorkTimeMinutes "1" *--"1" NormalWorkTimeMinutes
 WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
 
-WorkTimeRegistRepository "1" *--"1" WorkTimeMinutes
-WorkTimeRegistRepository --> WorkDateAndTime
+WorkTimeregisterRepository --> WorkTimeMinutes
+WorkTimeregisterRepository --> WorkDateAndTime
 @enduml
