@@ -5,7 +5,6 @@ package com.naosim.dddwork.domain {
     note top of WorkTimeAggregateTargetYearAndMonth : 集計したい勤怠合計時間の\n年月指定クラス
     class WorkTimeAggregateTargetYearAndMonth {
         - targetYearAndMonth : targetYearAndMonth
-        + getValueObject() : targetYearAndMonth
     }
 
     class TargetYearAndMonth {
