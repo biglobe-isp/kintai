@@ -21,8 +21,8 @@ public class KintaiTotalPrintRepositoryConsole implements KintaiTotalPrintReposi
         return this.getPrintString("残業時間", kintaiTotal.getTotalOverWorkMinutes());
     }
 
-    private String getPrintString(String title, int totalTime) {
-        return String.format("%s: %s時間%s分", title, totalTime / 60, totalTime % 60);
+    private String getPrintString(String title, int totalMinutes) {
+        return String.format("%s: %s時間%s分", title, totalMinutes / 60, totalMinutes % 60);
     }
 
 }
