@@ -67,13 +67,6 @@ package com.naosim.dddwork.domain.worktotal {
 
 }
 
-package com.naosim.dddwork.datasource {
-    note top of WorkTimeTotalRepositoryFile : 勤怠合計時間集計\n実装クラス
-    class WorkTimeTotalRepositoryFile {
-        + totalWorkTimeCalucurate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateOrigins
-    }
-}
-
 WorkTimeAggregateTargetYearAndMonth --> TargetYearAndMonth
 
 WorkTimeTotalRepository --> WorkTimeAggregateTargetYearAndMonth
@@ -91,8 +84,6 @@ TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkNormalTimeYearAndMonth
 TotalWorkTimeYearAndMonth"1" *--"1" TotalWorkOverTimeYearAndMonth
 
 WorkTimeTotalRepository "1" *--"1" TotalWorkTimeYearAndMonth
-
-WorkTimeTotalRepository<|..WorkTimeTotalRepositoryFile
 
 
 @enduml

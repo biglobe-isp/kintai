@@ -52,13 +52,6 @@ package com.naosim.dddwork.domain.workdateandtime {
     }
 }
 
-package com.naosim.dddwork.datasource {
-    note bottom of WorkTimeRegistRepositoryFile : 勤怠時間登録\n実装クラス
-    class WorkTimeRegistRepositoryFile {
-        + registWorkTime(workDateAndTime:WorkDateAndTime) : void
-    }
-}
-
 WorkDateAndTime --> WorkDate
 WorkDateAndTime --> WorkStartTime
 WorkDateAndTime --> WorkEndTime
@@ -69,7 +62,5 @@ WorkTimeMinutes "1" *--"1" NormalWorkTimeMinutes
 WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
 
 WorkTimeRegistRepository --> WorkTimeMinutes
-
-WorkTimeRegistRepository <|. WorkTimeRegistRepositoryFile
 
 @enduml
