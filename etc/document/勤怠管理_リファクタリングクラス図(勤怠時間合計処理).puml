@@ -1,6 +1,7 @@
 @startuml
 
-package com.naosim.dddwork.domain.worktotal {
+package com.naosim.dddwork.domain {
+    package worktotal {
     note top of WorkTimeAggregateTargetYearAndMonth : 集計したい勤怠合計時間の\n年月指定クラス
     class WorkTimeAggregateTargetYearAndMonth {
         - targetYearAndMonth : targetYearAndMonth
@@ -64,7 +65,7 @@ package com.naosim.dddwork.domain.worktotal {
     interface WorkTimeTotalRepository {
         + totalWorkTimeCalucurate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateOrigins
     }
-
+}
 }
 
 WorkTimeAggregateTargetYearAndMonth --> TargetYearAndMonth

@@ -1,7 +1,7 @@
 @startuml
 
-package com.naosim.dddwork.domain.workdateandtime {
-
+package com.naosim.dddwork.domain {
+    package workdateandtime {
     note top of WorkDateAndTime : 勤怠時間登録\n登録情報クラス
     class WorkDateAndTime {
         - workDate : WorkDate
@@ -49,6 +49,7 @@ package com.naosim.dddwork.domain.workdateandtime {
     note top of WorkTimeRegistRepository : 勤怠時間登録\nインターフェイス
     interface WorkTimeRegistRepository {
         + registWorkTime(workTimeInputParam : WorkDateAndTime):void
+    }
     }
 }
 
