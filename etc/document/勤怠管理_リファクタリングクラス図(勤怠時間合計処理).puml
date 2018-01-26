@@ -9,7 +9,6 @@ package com.naosim.dddwork.domain.worktotal {
 
     class TargetYearAndMonth {
         - value : String
-        + getValue() : String
     }
 
     note bottom of WorkMinutesPerYMDNormal : 通常時間集計\n元データクラス
@@ -54,13 +53,11 @@ package com.naosim.dddwork.domain.worktotal {
     note bottom of TotalWorkNormalTimeYearAndMonth : 通常勤務時間合計クラス
     class TotalWorkNormalTimeYearAndMonth {
         - value : Integer
-        + getValue() : Integer
     }
 
     note bottom of TotalWorkOverTimeYearAndMonth : 残業勤務時間合計クラス
     class TotalWorkOverTimeYearAndMonth {
         - value : Integer
-        + getValue() : Integer
     }
 
     note top of WorkTimeTotalRepository : 勤怠合計時間集計\nインターフェイス
