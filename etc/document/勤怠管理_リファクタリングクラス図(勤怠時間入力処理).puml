@@ -30,7 +30,7 @@ package com.naosim.dddwork.domain {
         - value : String
     }
 
-    note right of WorkTimeMinutes : 勤務時間\n計算結果クラス
+    note top of WorkTimeMinutes : 勤務時間\n計算結果クラス
     class WorkTimeMinutes {
          - AllWorkTimeMinutes : AllWorkTimeMinutes
          - overWorkTimeMinutes : OverWorkTimeMinutes
@@ -61,6 +61,7 @@ WorkTimeMinutes --> WorkDateAndTime
 
 WorkTimeMinutes "1" *--"1" AllWorkTimeMinutes
 WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
+OverWorkTimeMinutes->AllWorkTimeMinutes
 
 WorkTimeregisterRepository --> WorkTimeMinutes
 WorkTimeregisterRepository --> WorkDateAndTime
