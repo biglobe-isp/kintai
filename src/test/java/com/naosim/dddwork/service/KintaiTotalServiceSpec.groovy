@@ -16,7 +16,7 @@ class KintaiTotalServiceSpec extends Specification {
         setup:
 
         when:
-        String[] args = ["total", "201801"]
+        String[] args = ["total", "201802"]
 
         KintaiTotalPrintInputForm kintaiTotalPrintInputForm = new KintaiTotalPrintInputForm(args)
         KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth = kintaiTotalPrintInputForm.getValueObject()

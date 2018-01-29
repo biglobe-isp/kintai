@@ -17,7 +17,7 @@ class KintaiRegisterServiceSpec extends Specification {
         // TODO: data.csvを削除したほうがいいかな
 
         when:
-        String[] args = ["input", "20180102", "0900", "1830"]
+        String[] args = ["input", "20180103", "0900", "1830"]
 
         KintaiRegistInputForm inputKintaiForm = new KintaiRegistInputForm(args)
         WorkStartAndEndTimeOfOneDay kintaiRegistInput = inputKintaiForm.getValueObject()
