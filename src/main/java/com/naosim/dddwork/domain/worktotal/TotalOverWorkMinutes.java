@@ -8,9 +8,13 @@ import java.util.Map;
 public class TotalOverWorkMinutes {
 
     @Getter
-    private final Map<String, Integer> totalOverWorkMinutesMap;
+    Map<String, Integer> overWorkMinutesMap;
+
+    @Getter
+    Map<WorkMinutesPerYMD, Integer> testOMap;
 
     public TotalOverWorkMinutes() {
-        totalOverWorkMinutesMap = new HashMap<String, Integer>();
+        overWorkMinutesMap = new HashMap<String, Integer>();
+        testOMap = new HashMap<WorkMinutesPerYMD, Integer>();
     }
 }

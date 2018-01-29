@@ -2,6 +2,7 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.worktotal.TotalNormalWorkMinutes;
 import com.naosim.dddwork.domain.worktotal.TotalOverWorkMinutes;
+import com.naosim.dddwork.domain.worktotal.WorkMinutesPerYMD;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
 import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
@@ -28,7 +29,9 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
                     continue;
                 }
                 totalNormalWorkMinutes.getTotalWorkMinutesMap().put(columns[0], Integer.valueOf(columns[3]));
-                totalOverWorkMinutes.getTotalOverWorkMinutesMap().put(columns[0], Integer.valueOf(columns[4]));
+                totalOverWorkMinutes.getOverWorkMinutesMap().put(columns[0], Integer.valueOf(columns[4]));
+
+                totalNormalWorkMinutes.getTestMap().put(new WorkMinutesPerYMD(columns[0]), Integer.valueOf(columns[3]));
 
                 line = br.readLine();
             }

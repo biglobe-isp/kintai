@@ -1,7 +1,7 @@
 package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.form.WorkTimeInputForm;
-import com.naosim.dddwork.domain.worktotal.WorkTimeTotalcalculation;
+import com.naosim.dddwork.domain.worktotal.TotalWorkTimeYearAndMonth;
 import com.naosim.dddwork.api.form.WorkTimeTotalForm;
 import com.naosim.dddwork.service.WorkTimeService;
 
@@ -38,10 +38,10 @@ public class WorkTimeApi {
                 throw new RuntimeException("引数が足りません");
             }
             WorkTimeTotalForm workTimeTotalForm = new WorkTimeTotalForm(args[1]);
-            WorkTimeTotalcalculation workTimeTotal = workTimeService.workTimeTotal(workTimeTotalForm.getValueObject());
+            TotalWorkTimeYearAndMonth workTimeTotal = workTimeService.workTimeTotal(workTimeTotalForm.getValueObject());
 
-            System.out.println("勤務時間: " + workTimeTotal.getTotalNormalWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalNormalWorkMinutes() % 60 + "分");
-            System.out.println("残業時間: " + workTimeTotal.getTotalOverWorkMinutes() / 60 + "時間" + workTimeTotal.getTotalOverWorkMinutes() % 60 + "分");
+            System.out.println("勤務時間: " + workTimeTotal.getTotalNormalWorkTimeYearAndMonth().getValue() / 60 + "時間" + workTimeTotal.getTotalNormalWorkTimeYearAndMonth().getValue() % 60 + "分");
+            System.out.println("残業時間: " + workTimeTotal.getTotalOverWorkTimeYearAndMonth().getValue() / 60 + "時間" + workTimeTotal.getTotalNormalWorkTimeYearAndMonth().getValue() % 60 + "分");
 
         } else {
             throw new RuntimeException("機能が存在しません。");

@@ -5,7 +5,8 @@ import com.naosim.dddwork.datasource.WorkTimeTotalRepositoryFile;
 import com.naosim.dddwork.domain.workdateandtime.WorkDateAndTime;
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository;
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes;
-import com.naosim.dddwork.domain.worktotal.WorkTimeTotalcalculation;
+import com.naosim.dddwork.domain.worktotal.TotalNormalWorkTimeYearAndMonth;
+import com.naosim.dddwork.domain.worktotal.TotalWorkTimeYearAndMonth;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
 import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
@@ -34,12 +35,12 @@ public class WorkTimeService {
      * @param workDateAndTimeTotal
      * @return
      */
-    public WorkTimeTotalcalculation workTimeTotal(WorkDateAndTimeTotal workDateAndTimeTotal) {
+    public TotalWorkTimeYearAndMonth workTimeTotal(WorkDateAndTimeTotal workDateAndTimeTotal) {
         workTimeTotalRepository = new WorkTimeTotalRepositoryFile();
         WorkTimeTotal workTimeTotal = workTimeTotalRepository.doWorktimeTaskExecute(workDateAndTimeTotal);
 
-        WorkTimeTotalcalculation workTimeTotalcalculation = new WorkTimeTotalcalculation(workTimeTotal.getTotalNormalWorkMinutes(), workTimeTotal.getTotalOverWorkMinutes());
+        TotalWorkTimeYearAndMonth totalWorkTimeYearAndMonth = new TotalWorkTimeYearAndMonth(workTimeTotal.getTotalNormalWorkMinutes(), workTimeTotal.getTotalOverWorkMinutes());
 
-        return workTimeTotalcalculation;
+        return totalWorkTimeYearAndMonth;
     }
 }
