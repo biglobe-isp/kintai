@@ -43,7 +43,7 @@ public class KintaiTotal {
         List<KintaiOfOneDay> list = this.kintaiOfDays.getKintaiOfOneDayList();
 
         // 実行日時でソートするために使用
-        Comparator<KintaiOfOneDay> comparator = Comparator.comparing(kintaiOfOneDay -> kintaiOfOneDay.getNow().getValue());
+        Comparator<KintaiOfOneDay> comparator = Comparator.comparing(kintaiOfOneDay -> kintaiOfOneDay.getRegisterDateTime().getValue());
 
         // 重複チェックのために使用するSet
         Set<WorkDate> workDateSet = new HashSet<>();
