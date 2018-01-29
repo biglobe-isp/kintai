@@ -28,7 +28,7 @@ public class KintaiOfOneDay {
     private final OverWorkMinutes overWorkMinutes;
 
     @Getter
-    private final Now now;
+    private final Now registerDateTime;
 
     public KintaiOfOneDay(String line) {
         String[] columns = line.split(",");
@@ -37,6 +37,6 @@ public class KintaiOfOneDay {
         this.workEndTime = new WorkEndTime(columns[2]);
         this.workMinutes = new WorkMinutes(Integer.parseInt(columns[3]));
         this.overWorkMinutes = new OverWorkMinutes(Integer.parseInt(columns[4]));
-        this.now = new Now(columns[5]);
+        this.registerDateTime = new Now(columns[5]);
     }
 }
