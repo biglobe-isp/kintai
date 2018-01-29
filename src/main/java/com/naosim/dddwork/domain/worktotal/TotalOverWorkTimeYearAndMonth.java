@@ -17,12 +17,8 @@ public class TotalOverWorkTimeYearAndMonth {
     private final Integer value;
 
     private int getTotalOverWorkMinutes(TotalOverWorkMinutes totalOverWorkMinutes) {
-        Set<String> keySet = totalOverWorkMinutes.getOverWorkMinutesMap().keySet();
-        int totalOverWorkMinutesValue = 0;
+        Integer totalOverWorkMinutesValue = totalOverWorkMinutes.getOverWorkMinutesMap().values().stream().mapToInt(x -> x).sum();
 
-        for (String key : keySet) {
-            totalOverWorkMinutesValue += totalOverWorkMinutes.getOverWorkMinutesMap().get(key);
-        }
         return totalOverWorkMinutesValue;
     }
 }

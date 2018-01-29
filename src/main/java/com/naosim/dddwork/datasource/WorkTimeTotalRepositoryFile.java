@@ -28,13 +28,12 @@ public class WorkTimeTotalRepositoryFile implements WorkTimeTotalRepository {
                 if (!columns[0].startsWith(workDateAndTimeTotal.getWorkTotalYeaAndMonth().getYearMonth())) {
                     continue;
                 }
-                totalNormalWorkMinutes.getTotalWorkMinutesMap().put(columns[0], Integer.valueOf(columns[3]));
-                totalOverWorkMinutes.getOverWorkMinutesMap().put(columns[0], Integer.valueOf(columns[4]));
-
-                totalNormalWorkMinutes.getTestMap().put(new WorkMinutesPerYMD(columns[0]), Integer.valueOf(columns[3]));
+                totalNormalWorkMinutes.getTotalWorkMinutesMap().put(new WorkMinutesPerYMD(columns[0]), Integer.valueOf(columns[3]));
+                totalOverWorkMinutes.getOverWorkMinutesMap().put(new WorkMinutesPerYMD(columns[0]), Integer.valueOf(columns[4]));
 
                 line = br.readLine();
             }
+
             WorkTimeTotal workTimeTotal = new WorkTimeTotal(totalNormalWorkMinutes, totalOverWorkMinutes);
 
             return workTimeTotal;

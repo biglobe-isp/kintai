@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class TotalNormalWorkMinutes {
 
-    @Getter
-    Map<String, Integer> totalWorkMinutesMap;
+    //@Getter
+    //Map<String, Integer> totalWorkMinutesMap;
 
     @Getter
-    Map<WorkMinutesPerYMD, Integer> testMap;
+    Map<WorkMinutesPerYMD, Integer> totalWorkMinutesMap;
 
     public TotalNormalWorkMinutes() {
-        totalWorkMinutesMap = new HashMap<String, Integer>();
-        testMap = new HashMap<WorkMinutesPerYMD, Integer>();
+        totalWorkMinutesMap = new HashMap<WorkMinutesPerYMD, Integer>();
+        totalWorkMinutesMap = new HashMap<WorkMinutesPerYMD, Integer>();
     }
 }
