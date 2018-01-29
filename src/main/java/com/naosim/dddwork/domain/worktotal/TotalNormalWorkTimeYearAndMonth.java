@@ -5,6 +5,7 @@ import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,9 +23,7 @@ public class TotalNormalWorkTimeYearAndMonth {
     private final Integer value;
 
     private int getTotalNormalWorkMinutes(TotalNormalWorkMinutes totalNormalWorkMinutes) {
-
-        List<Integer> normalWorkMinitesIndivisual = new ArrayList<Integer>(totalNormalWorkMinutes.getTotalWorkMinutesMap().values());
-        Integer totalWorkMinutes = normalWorkMinitesIndivisual.stream().mapToInt(x -> x).sum();
+        int totalWorkMinutes = totalNormalWorkMinutes.getTotalWorkMinutesMap().values().stream().mapToInt(x -> x).sum();
 
         return totalWorkMinutes;
     }
