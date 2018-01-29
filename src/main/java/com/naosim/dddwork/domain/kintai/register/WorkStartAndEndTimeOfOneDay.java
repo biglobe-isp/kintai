@@ -24,5 +24,5 @@ public class WorkStartAndEndTimeOfOneDay {
     private final WorkEndTime workEndTime;
 
     @Getter
-    private final Now now;
+    private final Now registerDateTime;
 }

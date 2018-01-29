@@ -33,7 +33,7 @@ public class KintaiRegister {
                 this.workStartAndEndTimeOfOneDay.getWorkEndTime(),
                 workMinutes,
                 overWorkMinutes,
-                this.workStartAndEndTimeOfOneDay.getNow()
+                this.workStartAndEndTimeOfOneDay.getRegisterDateTime()
         );
     }
 }
