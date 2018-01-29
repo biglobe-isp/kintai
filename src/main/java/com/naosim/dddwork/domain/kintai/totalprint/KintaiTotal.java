@@ -59,12 +59,10 @@ public class KintaiTotal {
 
         // 合計勤務時間
         this.totalWorkMinutes = filtered.stream()
-                .map(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt())
-                .reduce((value1, value2) -> value1 + value2).orElse(0);
+                .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum();
 
         // 合計残業時間
         this.totalOverWorkMinutes = filtered.stream()
-                .map(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt())
-                .reduce((value1, value2) -> value1 + value2).orElse(0);
+                .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum();
     }
 }
