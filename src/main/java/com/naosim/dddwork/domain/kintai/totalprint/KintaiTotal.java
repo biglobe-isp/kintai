@@ -2,14 +2,15 @@ package com.naosim.dddwork.domain.kintai.totalprint;
 
 
 import com.naosim.dddwork.domain.kintai.KintaiOfOneDay;
-import com.naosim.dddwork.domain.kintai.time.work.OverWorkMinutes;
 import com.naosim.dddwork.domain.kintai.time.work.WorkDate;
-import com.naosim.dddwork.domain.kintai.time.work.WorkMinutes;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode
@@ -38,21 +39,6 @@ public class KintaiTotal {
         this.totalWorkMinutes = 0;
         this.totalOverWorkMinutes = 0;
 
-        Map<WorkDate, WorkMinutes> totalWorkMinutesMap = new HashMap<>();
-        Map<WorkDate, OverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
-
-        Iterator<KintaiOfOneDay> iterator = this.kintaiOfDays.getIterator();
-        while (iterator.hasNext()) {
-            KintaiOfOneDay kintaiOfOneDay = iterator.next();
-
-            if (!kintaiOfOneDay.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintTargetYearMonth.getWorkYearMonth())) {
-                continue;
-            }
-
-            totalWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), kintaiOfOneDay.getWorkMinutes());
-            totalOverWorkMinutesMap.put(kintaiOfOneDay.getWorkDate(), kintaiOfOneDay.getOverWorkMinutes());
-        }
-
         // 日毎の勤怠オブジェクトをリストで取得
         List<KintaiOfOneDay> list = this.kintaiOfDays.getKintaiOfOneDayList();
 
@@ -80,25 +66,5 @@ public class KintaiTotal {
         this.totalOverWorkMinutes = filtered.stream()
                 .map(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt())
                 .reduce((value1, value2) -> value1 + value2).orElse(0);
-
-//        Set<WorkDate> workDateSet2 = new HashSet<>();
-//        this.totalWorkMinutes = list.stream()
-//                .sorted(comparator.reversed())
-//                .filter(e -> workDateSet2.add(e.getWorkDate()))
-//                .map(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt())
-//                .reduce((value1, value2) -> value1 + value2).orElse(0);
-//
-//        Set<WorkDate> workDateSet3 = new HashSet<>();
-//        this.totalOverWorkMinutes = list.stream()
-//                .sorted(comparator.reversed())
-//                .filter(e -> workDateSet3.add(e.getWorkDate()))
-//                .map(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt())
-//                .reduce((value1, value2) -> value1 + value2).orElse(0);
-
-//        Set<WorkDate> keySet = totalWorkMinutesMap.keySet();
-//        for (WorkDate key : keySet) {
-//            this.totalWorkMinutes += totalWorkMinutesMap.get(key).getInt();
-//            this.totalOverWorkMinutes += totalOverWorkMinutesMap.get(key).getInt();
-//        }
     }
 }
