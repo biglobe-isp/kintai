@@ -1,15 +1,7 @@
 package com.naosim.dddwork.domain.worktotal;
 
 
-import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
 
 
 public class TotalNormalWorkTimeYearAndMonth {

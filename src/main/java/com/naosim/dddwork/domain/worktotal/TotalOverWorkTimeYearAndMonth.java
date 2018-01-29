@@ -3,8 +3,6 @@ package com.naosim.dddwork.domain.worktotal;
 
 import lombok.Getter;
 
-import java.util.Set;
-
 
 public class TotalOverWorkTimeYearAndMonth {
 
