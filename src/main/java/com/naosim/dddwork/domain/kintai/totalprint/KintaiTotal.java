@@ -21,36 +21,29 @@ public class KintaiTotal {
     private final KintaiOfDays kintaiOfDays;
 
     @Getter
-    private TotalWorkMinutes totalWorkMinutes;
+    private final TotalWorkMinutes totalWorkMinutes;
 
     @Getter
-    private TotalOverWorkMinutes totalOverWorkMinutes;
+    private final TotalOverWorkMinutes totalOverWorkMinutes;
 
     public KintaiTotal(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth, KintaiOfDays kintaiOfDays) {
         this.kintaiTotalPrintTargetYearMonth = kintaiTotalPrintTargetYearMonth;
         this.kintaiOfDays = kintaiOfDays;
-        this.setTotalData();
-    }
-
-    private void setTotalData() {
 
         List<KintaiOfOneDay> targetMonthList = this.kintaiOfDays.getTargetMonthList(this.kintaiTotalPrintTargetYearMonth);
-
-        this.setTotalWorkMinutes(targetMonthList);
-        this.setTotalOverWorkMinutes(targetMonthList);
+        this.totalWorkMinutes = KintaiTotal.getTotalWorkMinutes(targetMonthList);
+        this.totalOverWorkMinutes = KintaiTotal.getTotalOverWorkMinutes(targetMonthList);
     }
 
-    private void setTotalWorkMinutes(List<KintaiOfOneDay> targetList) {
-        this.totalWorkMinutes =
-                new TotalWorkMinutes(targetList.stream()
-                        .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum()
-                );
+    private static TotalWorkMinutes getTotalWorkMinutes(List<KintaiOfOneDay> targetList) {
+        return new TotalWorkMinutes(targetList.stream()
+                .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum()
+        );
     }
 
-    private void setTotalOverWorkMinutes(List<KintaiOfOneDay> targetList) {
-        this.totalOverWorkMinutes =
-                new TotalOverWorkMinutes(targetList.stream()
-                        .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum()
-                );
+    private static TotalOverWorkMinutes getTotalOverWorkMinutes(List<KintaiOfOneDay> targetList) {
+        return new TotalOverWorkMinutes(targetList.stream()
+                .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum()
+        );
     }
 }
