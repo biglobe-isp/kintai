@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 @ToString
@@ -35,21 +34,15 @@ public class KintaiTotal {
         this.totalWorkMinutes = 0;
         this.totalOverWorkMinutes = 0;
 
-        // 日毎の勤怠オブジェクトをリストで取得
-        List<KintaiOfOneDay> list = this.kintaiOfDays.getUnmodifiableList();
-
-        // 対象データを抽出して新たにリスト化
-        List<KintaiOfOneDay> filtered = list.stream()
-                // 対象年月データのみ抽出
-                .filter(e -> e.getWorkDate().isTargetYearMonth(this.kintaiTotalPrintTargetYearMonth.getWorkYearMonth()))
-                .collect(Collectors.toList());
+        // 対象年月の日毎の勤怠オブジェクトをリストで取得
+        List<KintaiOfOneDay> targetMonthList = this.kintaiOfDays.getTargetMonthList(this.kintaiTotalPrintTargetYearMonth);
 
         // 合計勤務時間
-        this.totalWorkMinutes = filtered.stream()
+        this.totalWorkMinutes = targetMonthList.stream()
                 .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum();
 
         // 合計残業時間
-        this.totalOverWorkMinutes = filtered.stream()
+        this.totalOverWorkMinutes = targetMonthList.stream()
                 .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum();
     }
 }

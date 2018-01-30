@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class KintaiOfDays {
 
@@ -27,5 +28,13 @@ public class KintaiOfDays {
 
     public List<KintaiOfOneDay> getUnmodifiableList() {
         return Collections.unmodifiableList(this.kintaiOfOneDayList);
+    }
+
+    public List<KintaiOfOneDay> getTargetMonthList(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth) {
+        // 対象データを抽出して新たにリスト化
+        return this.kintaiOfOneDayList.stream()
+                // 対象年月データのみ抽出
+                .filter(e -> e.getWorkDate().isTargetYearMonth(kintaiTotalPrintTargetYearMonth.getWorkYearMonth()))
+                .collect(Collectors.toList());
     }
 }
