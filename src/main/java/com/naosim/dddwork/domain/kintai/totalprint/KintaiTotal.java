@@ -34,18 +34,22 @@ public class KintaiTotal {
 
     private void setTotalData() {
 
-        // 対象年月の日毎の勤怠オブジェクトをリストで取得
         List<KintaiOfOneDay> targetMonthList = this.kintaiOfDays.getTargetMonthList(this.kintaiTotalPrintTargetYearMonth);
 
-        // 合計勤務時間
+        this.setTotalWorkMinutes(targetMonthList);
+        this.setTotalOverWorkMinutes(targetMonthList);
+    }
+
+    private void setTotalWorkMinutes(List<KintaiOfOneDay> targetList) {
         this.totalWorkMinutes =
-                new TotalWorkMinutes(targetMonthList.stream()
+                new TotalWorkMinutes(targetList.stream()
                         .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum()
                 );
+    }
 
-        // 合計残業時間
+    private void setTotalOverWorkMinutes(List<KintaiOfOneDay> targetList) {
         this.totalOverWorkMinutes =
-                new TotalOverWorkMinutes(targetMonthList.stream()
+                new TotalOverWorkMinutes(targetList.stream()
                         .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum()
                 );
     }
