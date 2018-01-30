@@ -2,6 +2,8 @@ package com.naosim.dddwork.domain.kintai.totalprint;
 
 
 import com.naosim.dddwork.domain.kintai.KintaiOfOneDay;
+import com.naosim.dddwork.domain.kintai.totalprint.time.TotalOverWorkMinutes;
+import com.naosim.dddwork.domain.kintai.totalprint.time.TotalWorkMinutes;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,10 +21,10 @@ public class KintaiTotal {
     private final KintaiOfDays kintaiOfDays;
 
     @Getter
-    private int totalWorkMinutes;
+    private TotalWorkMinutes totalWorkMinutes;
 
     @Getter
-    private int totalOverWorkMinutes;
+    private TotalOverWorkMinutes totalOverWorkMinutes;
 
     public KintaiTotal(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth, KintaiOfDays kintaiOfDays) {
         this.kintaiTotalPrintTargetYearMonth = kintaiTotalPrintTargetYearMonth;
@@ -31,18 +33,20 @@ public class KintaiTotal {
     }
 
     private void setTotalData() {
-        this.totalWorkMinutes = 0;
-        this.totalOverWorkMinutes = 0;
 
         // 対象年月の日毎の勤怠オブジェクトをリストで取得
         List<KintaiOfOneDay> targetMonthList = this.kintaiOfDays.getTargetMonthList(this.kintaiTotalPrintTargetYearMonth);
 
         // 合計勤務時間
-        this.totalWorkMinutes = targetMonthList.stream()
-                .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum();
+        this.totalWorkMinutes =
+                new TotalWorkMinutes(targetMonthList.stream()
+                        .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getWorkMinutes().getInt()).sum()
+                );
 
         // 合計残業時間
-        this.totalOverWorkMinutes = targetMonthList.stream()
-                .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum();
+        this.totalOverWorkMinutes =
+                new TotalOverWorkMinutes(targetMonthList.stream()
+                        .mapToInt(kintaiOfOneDay -> kintaiOfOneDay.getOverWorkMinutes().getInt()).sum()
+                );
     }
 }

@@ -14,11 +14,11 @@ public class KintaiTotalPrintRepositoryConsole implements KintaiTotalPrintReposi
     }
 
     private String getPrintStringForTotalWorkTime(KintaiTotal kintaiTotal) {
-        return this.getPrintString("勤務時間", kintaiTotal.getTotalWorkMinutes());
+        return this.getPrintString("勤務時間", kintaiTotal.getTotalWorkMinutes().getValue());
     }
 
     private String getPrintStringForTotalOverWorkTime(KintaiTotal kintaiTotal) {
-        return this.getPrintString("残業時間", kintaiTotal.getTotalOverWorkMinutes());
+        return this.getPrintString("残業時間", kintaiTotal.getTotalOverWorkMinutes().getValue());
     }
 
     private String getPrintString(String title, int totalMinutes) {
