@@ -16,7 +16,6 @@ public class TotalOverWorkTimeYearAndMonth {
 
     private int getTotalOverWorkMinutes(TotalOverWorkMinutes totalOverWorkMinutes) {
         int totalOverWorkMinutesValue = totalOverWorkMinutes.getOverWorkMinutesMap().values().stream().mapToInt(x -> x).sum();
-
         return totalOverWorkMinutesValue;
     }
 }
