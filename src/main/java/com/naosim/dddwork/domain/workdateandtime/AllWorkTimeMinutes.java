@@ -15,6 +15,9 @@ public class AllWorkTimeMinutes {
         setWorkMinutes();
     }
 
+    /**
+     * 勤務時間を分に変換
+     */
     private void setWorkMinutes() {
 
         int startH = Integer.valueOf(workDateAndTime.getWorkTimeStart().getValue().substring(0, 2));

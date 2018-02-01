@@ -10,6 +10,15 @@ public class OverWorkTimeMinutes {
 
     public OverWorkTimeMinutes(AllWorkTimeMinutes allWorkTimeMinutes) {
         this.allWorkTimeMinutes = allWorkTimeMinutes;
-        value = Math.max(this.allWorkTimeMinutes.getValue() - 8 * 60, 0);
+        value = calcAllWorkTimeMinutes();
+    }
+
+    /**
+     * 残業時間の計算
+     *
+     * @return 残業時間
+     */
+    private int calcAllWorkTimeMinutes() {
+        return Math.max(this.allWorkTimeMinutes.getValue() - 8 * 60, 0);
     }
 }
