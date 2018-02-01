@@ -5,11 +5,10 @@ import com.naosim.dddwork.datasource.WorkTimeTotalRepositoryFile;
 import com.naosim.dddwork.domain.workdateandtime.WorkDateAndTime;
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository;
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes;
-import com.naosim.dddwork.domain.worktotal.TotalNormalWorkTimeYearAndMonth;
 import com.naosim.dddwork.domain.worktotal.TotalWorkTimeYearAndMonth;
+import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository;
-import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
 
 public class WorkTimeService {
     //WorkTimeRepository workTimeRepository;

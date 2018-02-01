@@ -7,9 +7,6 @@ import java.util.Map;
 
 public class TotalNormalWorkMinutes {
 
-    //@Getter
-    //Map<String, Integer> totalWorkMinutesMap;
-
     @Getter
     Map<WorkMinutesPerYMD, Integer> totalWorkMinutesMap;
 

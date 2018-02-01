@@ -1,6 +1,5 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.workdateandtime.WorkDate;
 import com.naosim.dddwork.domain.worktotal.WorkDateAndTimeTotal;
 import com.naosim.dddwork.domain.worktotal.WorkTotalYeaAndMonth;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;

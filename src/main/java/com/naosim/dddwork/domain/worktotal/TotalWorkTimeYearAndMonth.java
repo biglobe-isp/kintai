@@ -2,8 +2,6 @@ package com.naosim.dddwork.domain.worktotal;
 
 import lombok.Getter;
 
-import java.util.Set;
-
 /**
  * 勤務時間合計、残業時間合計
  */
