@@ -3,6 +3,7 @@ package com.naosim.dddwork.datasource
 import com.naosim.dddwork.api.form.WorkTimeInputForm
 import com.naosim.dddwork.domain.workdateandtime.WorkTimeInputRepository
 import com.naosim.dddwork.api.form.WorkTimeTotalForm
+import com.naosim.dddwork.domain.workdateandtime.WorkTimeMinutes
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotal
 import com.naosim.dddwork.domain.worktotal.WorkTimeTotalRepository
 import spock.lang.Specification
@@ -22,7 +23,8 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         (20170101..20170131).each {
             String[] args = ["input", "${it}", "0900", "1800"]
             WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
-            workTimeInputRepository.doWorktimeTaskExecute(workTimeInputForm.getValueObject())
+            WorkTimeMinutes workTimeMinutes = new WorkTimeMinutes(workTimeInputForm.getValueObject());
+            workTimeInputRepository.registerWork_time(workTimeInputForm.getValueObject(), workTimeMinutes)
         }
 
         when:
@@ -41,7 +43,8 @@ class WorkTimeTotalRepositoryFileSpec extends Specification {
         (20170101..20170131).each {
             String[] args = ["input", "${it}", "0900", "2000"]
             WorkTimeInputForm workTimeInputForm = new WorkTimeInputForm(args[1], args[2], args[3], LocalDateTime.now().toString())
-            workTimeInputRepository.doWorktimeTaskExecute(workTimeInputForm.getValueObject())
+            WorkTimeMinutes workTimeMinutes = new WorkTimeMinutes(workTimeInputForm.getValueObject());
+            workTimeInputRepository.registerWork_time(workTimeInputForm.getValueObject(), workTimeMinutes)
         }
 
         when:
