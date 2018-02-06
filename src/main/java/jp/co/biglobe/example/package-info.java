@@ -1,1 +1,0 @@
-package jp.co.biglobe.example;
