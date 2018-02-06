@@ -1,53 +1,11 @@
-# プロジェクト向けのカスタマイズ方法
+# 開発チュートリアル（勤怠管理）
 
-## プロジェクト固有の設定
+## 概要
 
-* Gradleファイル
- * 対象ファイル
-     * etc/gradle/project.gradle
- * 対象項目
-     * projectName
- * 注意点
-     * gradleの設定とは別に、URLの申請が必要
+勤怠管理アプリの既存コード（`./kintai_kadai_main.java`）を元に
+課題（`./kintai_kadai.md`）に取り組むためのリポジトリです。
 
-* Logbackの設定ファイル
- * 対象ファイル
-     * src/main/resources/logback.groovy
- * 対象項目
-     * LOG_DIR_NAME
+## 作業手順
 
-* クラホスのDBの接続設定
- * 対象ファイル
-     * src/test/resources/properties/environment/cloudHosting.properties
- * 対象項目
-     * jdbc.schema
-     * jdbc.username
-     * jdbc.password
- * 注意点
-     * 事前にクラホスのOracleに、プロジェクト用のスキーマ／ユーザ名／パスワードを作成しておく
-
-* アラーム識別子の設定
- * 対象ファイル
-     * src/main/resources/META-INF/properties/project.properties
- * 対象項目
-     * service.alarm.hiosIdentifier
-     * service.alarm.alarmIdentifier
-     * service.alarm.subSystemIdentifier
- * 注意点
-     * プロパティの設定とは別に、HIOSの申請が必要
-
-## サンプルの削除
-
-* サンプルのコード削除
- * 対象ファイル
-     * src/main/java/jp/co/biglobe/isp/sample/ ディレクトリ内のファイル全て
-     * src/test/java/jp/co/biglobe/isp/sample/ ディレクトリ内のファイル全て
-
-* サンプルのテーブル定義ファイル削除
- * 対象ファイル
-     * etc/database/local/createtable/sample/ ディレクトリ内のファイル全て
-     * etc/database/local/createsequence/sample/ ディレクトリ内のファイル全て
-
-* サンプルのcomponent-scanの記述削除
- * 対象ファイル
-     * src/main/resources/META-INF/component-scan.xml
+- 本リポジトリをローカルにクローンし、ブランチ名「`refactor/[メールアカウント名]`」でブランチを切って作業を行ってください
+- Githubリポジトリには、作成したブランチをプッシュするようにしてください（チュートリアル実施者の作業内容を解答例として後世に引き継ぐため）
