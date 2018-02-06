@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- ======================================================================
+|
+|    MyBatisの設定を記述（META-INF/base/database/database.xmlから読み込まれる）
+|
+=========================================================================== -->
+
+<configuration>
+    <settings>
+        <!-- LocalCacheを使用しないよう設定
+        http://mybatis.github.io/mybatis-3/ja/configuration.html
+        -->
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+    <typeHandlers>
+        <typeHandler handler="jp.co.biglobe.lib.essential.typehandler.EUCStringTypeHandler"/>
+        <typeHandler handler="jp.co.biglobe.lib.essential.typehandler.EUCStringTypeHandlerForVarchar"/>
+    </typeHandlers>
+
+</configuration>

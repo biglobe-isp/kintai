@@ -1,0 +1,4 @@
+@startuml
+!include 勤怠管理_リファクタリングクラス図(勤怠時間入力処理).puml
+!include 勤怠管理_リファクタリングクラス図(勤怠時間合計処理).puml
+@enduml

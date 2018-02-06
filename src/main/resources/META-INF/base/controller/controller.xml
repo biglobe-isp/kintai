@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    コントローラの設定を記述（META-INF/base/base-root.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <!-- SpringMVCの有効化 -->
+    <mvc:annotation-driven validator="validator">
+        <!-- ページャーの設定 -->
+        <mvc:argument-resolvers>
+            <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+
+
+    <!-- バリデーションの設定 -->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+
+    <!-- メッセージファイルの読込 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- 複数ファイルで同じkeyが定義されている場合は、最初に読み込んだファイルのkeyが有効になる -->
+                <value>classpath:/META-INF/properties/message</value>
+            </list>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+
+
+    <!-- コントローラインターセプターの設定（Controllerのメソッド処理前後に共通処理を挿入する） -->
+    <import resource="classpath:META-INF/base/controller/interceptor.xml"/>
+
+    <!-- コントローラのcomponent-scanの設定（ExceptionHandlerの定義） -->
+    <import resource="classpath:META-INF/base/controller/component-scan.xml"/>
+
+</beans>

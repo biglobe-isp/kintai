@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    データベースの設定を記述（META-INF/base/base-root.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <!-- NamedParameterJdbcTemplate -->
+    <!-- TODO コイツは昔の名残な気がする／しばらくコメントアウトの状態で問題なければ削除 -->
+    <!--bean class="org.springframework.jdbc.base.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSource"/>
+    </bean-->
+
+    <!-- Transaction Manager -->
+    <tx:annotation-driven />
+
+    <!-- ExceptionTranslatorの設定 -->
+    <import resource="classpath:META-INF/base/database/exception-translator.xml"/>
+
+    <!-- QueryMapperの設定 -->
+    <import resource="classpath:META-INF/base/database/query-mapper.xml"/>
+
+    <!-- トランザクションの設定 -->
+    <import resource="classpath:META-INF/base/database/transaction.xml"/>
+
+</beans>

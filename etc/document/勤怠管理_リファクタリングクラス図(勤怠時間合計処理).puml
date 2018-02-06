@@ -1,0 +1,89 @@
+@startuml
+
+package com.naosim.dddwork.domain {
+    package worktotal {
+    note top of WorkTimeAggregateTargetYearAndMonth : 集計したい勤怠合計時間の\n年月指定クラス
+    class WorkTimeAggregateTargetYearAndMonth {
+        - targetYearAndMonth : targetYearAndMonth
+    }
+
+    class TargetYearAndMonth {
+        - value : String
+    }
+
+    note top of NormalWorkMinutesPerYMD : 通常時間集計\n元データクラス
+    class NormalWorkMinutesPerYMD {
+        - workMinutesPerYMD : WorkMinutesPerYMD
+        - normalWorkMinutes : NormalWorkMinutes
+    }
+
+    note bottom of NormalWorkMinutes : 通常時間集計結果\n元データクラス
+    class NormalWorkMinutes {
+        - value : Integer
+    }
+
+    note bottom of OverWorkMinutesPerYMD : 残業時間集計\n元データクラス
+    class OverWorkMinutesPerYMD {
+        - workMinutesPerYMD : WorkMinutesPerYMD
+        - overWorkMinutes : OverWorkMinutesPer
+    }
+
+    note bottom of OverWorkMinutes : 残業時間集計結果\n元データクラス
+    class OverWorkMinutes {
+        - value : Integer
+    }
+
+    note bottom of WorkMinutesPerYMD : 合計時間集計\n年月日クラス
+    class WorkMinutesPerYMD {
+        - targetYearAndMonth : String
+    }
+
+    note top of WorkTimeAggregateOrigins : 勤怠合計時間集計\n元データクラス
+    class WorkTimeAggregateOrigins {
+        - normalWorkMinutesPerYMD : NormalWorkMinutesPerYMD
+        - overWorkMinutesPerYMD : OverWorkMinutesPerYMD
+    }
+
+    note top of TotalWorkTimeYearAndMonth : 勤務時間合計クラス
+    class TotalWorkTimeYearAndMonth {
+        - TotalNormalWorkTimeYearAndMonth:TotalNormalWorkTimeYearAndMonth
+        - TotalOverWorkTimeYearAndMonth:TotalOverWorkTimeYearAndMonth
+    }
+
+    note bottom of TotalNormalWorkTimeYearAndMonth : 通常勤務時間合計クラス
+    class TotalNormalWorkTimeYearAndMonth {
+        - value : Integer
+    }
+
+    note bottom of TotalOverWorkTimeYearAndMonth : 残業勤務時間合計クラス
+    class TotalOverWorkTimeYearAndMonth {
+        - value : Integer
+    }
+
+    note top of WorkTimeAggregateRepository : 勤怠合計時間集計\nインターフェイス
+    interface WorkTimeAggregateRepository {
+        + totalWorkTimeAggregate(workTimeAggregateTargetYearAndMonth:\nWorkTimeAggregateTargetYearAndMonth) : WorkTimeAggregateOrigins
+    }
+}
+}
+
+WorkTimeAggregateTargetYearAndMonth --> TargetYearAndMonth
+
+WorkTimeAggregateRepository --> WorkTimeAggregateTargetYearAndMonth
+
+WorkTimeAggregateRepository "1" o-- "0..*" WorkTimeAggregateOrigins
+WorkTimeAggregateOrigins "1" o-- "0..*" NormalWorkMinutesPerYMD
+WorkTimeAggregateOrigins "1" o--"0..*"  OverWorkMinutesPerYMD
+OverWorkMinutesPerYMD "1" *--"1" WorkMinutesPerYMD
+OverWorkMinutesPerYMD "1" *--"1" OverWorkMinutes
+
+NormalWorkMinutesPerYMD "1" *--"1" WorkMinutesPerYMD
+NormalWorkMinutesPerYMD "1" *--"1" NormalWorkMinutes
+
+TotalWorkTimeYearAndMonth"1" *--"1" TotalNormalWorkTimeYearAndMonth
+TotalWorkTimeYearAndMonth"1" *--"1" TotalOverWorkTimeYearAndMonth
+
+TotalWorkTimeYearAndMonth->WorkTimeAggregateOrigins
+
+
+@enduml

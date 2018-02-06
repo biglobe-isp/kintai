@@ -1,0 +1,49 @@
+/**
+ * Tomcatの設定
+ */
+ext {
+    // コンテキストパスの接頭辞
+    // BCOS-GWの設定でJava+Springアプリケーションであることを分かりやすくするためココは固定としている
+    prefixTomcatContextPath = '/domain'
+
+    // Tomcatのコンテキストパス（アプリケーションのルート）
+    tomcatContextPath = "${prefixTomcatContextPath}/${rootProject.name}"
+}
+
+tomcatRun {
+    httpPort = 7010
+    reloadable = true
+    contextPath = "${tomcatContextPath}"
+    configFile = file('etc/tomcat/local/context.xml')
+    stopPort = 7011
+    stopKey = 'stopkey'
+}
+
+tomcatStop {
+    stopPort = 7011
+    stopKey = 'stopkey'
+}
+
+dependencies {
+    // Tomcatの設定
+    def tomcatVersion = '7.0.53'
+
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
+    tomcat "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+
+    tomcat "jp.co.biglobe:charset:2.0"
+
+    tomcat "org.apache.tomcat:tomcat-dbcp:${tomcatVersion}"
+
+    tomcat "com.h2database:h2:1.4.181"
+    tomcat "jp.co.biglobe:h2storedprocedure:2.0"
+
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+}
+
+// "gradle clean"を実行した際に、Tomcat用の出力先も削除対象とする
+clean {
+    delete << 'src/main/webapp/WEB-INF/classes'
+}

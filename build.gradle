@@ -1,0 +1,37 @@
+// プラグイン定義 利用できるタスク(gradle tasks)が増える
+plugins {
+    id "org.flywaydb.flyway" version "4.2.0"
+    id "com.bmuschko.tomcat" version "2.2.5"
+}
+
+apply {
+    plugin 'groovy' // Viewテンプレートにgroovyを使用しているので、javaではなくgroovyを宣言
+    plugin 'idea' // IntelliJ でプロジェクトを読み込めるように宣言
+}
+
+// 環境ごとの設定を実施
+apply from: file('etc/gradle/base/environment.gradle')
+
+// プロジェクト固有の設定
+apply from: file('etc/gradle/project.gradle')
+
+// Javaのコンパイル＆テストの設定
+apply from: file('etc/gradle/base/java.gradle')
+
+// warタスクの設定
+apply from: file('etc/gradle/base/war.gradle')
+
+// Tomcatの設定
+apply from: file('etc/gradle/base/tomcat.gradle')
+
+// ISP領域向けJava共通ライブラリの設定
+apply from: file('etc/gradle/base/library.gradle')
+
+// Gradleラッパーの設定
+apply from: file('etc/gradle/base/wrapper.gradle')
+
+// Jenkinsの設定
+apply from: file('etc/gradle/base/jenkins.gradle')
+
+// Flywayの設定
+apply from: file('etc/gradle/base/flyway.gradle')

@@ -1,0 +1,68 @@
+@startuml
+
+package com.naosim.dddwork.domain {
+    package workdateandtime {
+    note top of WorkDateAndTime : 勤怠時間登録\n登録情報クラス
+    class WorkDateAndTime {
+        - workDate : WorkDate
+        - workStartTime : WorkStartTime
+        - workEndTime : WorkEndTime
+        - workRecordTime : WorkRecordTime
+    }
+
+    note bottom of WorkDate : 登録年月日クラス
+    class WorkDate {
+        - value : String
+    }
+
+    note bottom of WorkStartTime : 勤務開始時間クラス
+    class WorkStartTime {
+        - value : String
+    }
+
+    note bottom of WorkEndTime : 終業時間クラス
+    class WorkEndTime {
+        - value : String
+    }
+
+    note bottom of WorkRecordTime : 操作時間クラス
+    class WorkRecordTime {
+        - value : String
+    }
+
+    note top of WorkTimeMinutes : 勤務時間\n計算結果クラス
+    class WorkTimeMinutes {
+         - AllWorkTimeMinutes : AllWorkTimeMinutes
+         - overWorkTimeMinutes : OverWorkTimeMinutes
+    }
+
+    note top of AllWorkTimeMinutes : 通常勤務時間\n計算クラス
+    class AllWorkTimeMinutes {
+        - value : Integer
+    }
+
+    note bottom of OverWorkTimeMinutes : 残業時間計算クラス
+    class OverWorkTimeMinutes {
+        - value : Integer
+    }
+
+        note top of WorkTimeregisterRepository : 勤怠時間登録\nインターフェイス
+        interface WorkTimeregisterRepository {
+            + registerWorkTime(workDateAndTime : WorkDateAndTime,\n workTimeMinutes:WorkTimeMinutes):void
+        }
+    }
+}
+
+WorkDateAndTime --> WorkDate
+WorkDateAndTime --> WorkStartTime
+WorkDateAndTime --> WorkEndTime
+WorkDateAndTime --> WorkRecordTime
+WorkTimeMinutes --> WorkDateAndTime
+
+WorkTimeMinutes "1" *--"1" AllWorkTimeMinutes
+WorkTimeMinutes "1" *--"1" OverWorkTimeMinutes
+OverWorkTimeMinutes->AllWorkTimeMinutes
+
+WorkTimeregisterRepository --> WorkTimeMinutes
+WorkTimeregisterRepository --> WorkDateAndTime
+@enduml

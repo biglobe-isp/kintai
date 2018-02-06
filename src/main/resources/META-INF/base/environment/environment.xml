@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    環境ごとに切り替える設定を記述（META-INF/base/base-root.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <!-- TODO コイツは昔の名残な気がする／しばらくコメントアウトの状態で問題なければ削除 -->
+    <!--bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer"/-->
+    <!--bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/-->
+
+
+    <!-- 環境ごとに読み込むプロパティファイルを切り替える -->
+
+    <beans profile="local">
+        <bean id="propertyConfigurerLocal"
+              class="jp.co.biglobe.lib.essential.property.PropertyAccessor">
+            <property name="locations">
+                <list>
+                    <value>classpath:META-INF/properties/local/scenario.properties</value>
+                    <value>classpath:META-INF/properties/project.properties</value>
+                    <value>classpath:META-INF/properties/environment/local.properties</value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="development,testing">
+        <bean id="propertyConfigurerServer"
+              class="jp.co.biglobe.lib.essential.property.PropertyAccessor">
+            <property name="locations">
+                <list>
+                    <value>classpath:scenario.properties</value>
+                    <value>classpath:META-INF/properties/project.properties</value>
+                    <value>classpath:META-INF/properties/environment/testing.properties</value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <beans profile="staging,production">
+        <bean id="propertyConfigurerServer"
+              class="jp.co.biglobe.lib.essential.property.PropertyAccessor">
+            <property name="locations">
+                <list>
+                    <value>classpath:scenario.properties</value>
+                    <value>classpath:META-INF/properties/project.properties</value>
+                    <value>classpath:META-INF/properties/environment/production.properties</value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+</beans>
