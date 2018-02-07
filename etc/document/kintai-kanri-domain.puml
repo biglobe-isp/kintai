@@ -1,0 +1,168 @@
+@startuml
+
+package domain.kintai {
+
+    package register {
+
+        package register.repository {
+
+            interface KintaiRegisterRepository {
+                + void register(KintaiOfOneDay kintaiOfOneDay)
+            }
+        }
+
+        class KintaiRegister {
+            - WorkStartAndEndTimeOfOneDay workStartAndEndTimeOfOneDay
+            + KintaiOfOneDay getKintaiOfOneDay()
+        }
+        KintaiRegister --> WorkStartAndEndTimeOfOneDay
+
+        class WorkStartAndEndTimeOfOneDay {
+            - WorkDate workDate
+            - WorkStartTime workStartTime
+            - WorkEndTime workEndTime
+            - Now registerDateTime
+        }
+    }
+
+    package time {
+
+        class Hour {
+            - int value
+            + String toString()
+        }
+
+        class Minute {
+            - int value
+            + String toString()
+        }
+
+        class Now {
+            - LocalDateTime value
+            + String toString()
+        }
+        WorkStartAndEndTimeOfOneDay *-- Now
+
+        class Time {
+            - Hour hour
+            - Minute minute
+            {static} Time convertToTime(String value)
+            + int convertTimeToMinutes()
+        }
+        Time *-- Hour
+        Time *-- Minute
+
+        package work {
+
+            class BreakMinutesCalculator {
+                - WorkStartTime workStartTime
+                - WorkEndTime workEndTime
+                + int getLunchBreakMinutes()
+                + int getEveningBreakMinutes()
+                + int getNightBreakMinutes()
+            }
+            BreakMinutesCalculator --> WorkStartTime
+            BreakMinutesCalculator --> WorkEndTime
+
+            class OverWorkMinutes {
+                - Minute minute
+                + int getInt()
+                + String toString()
+                {static} OverWorkMinutes get(WorkMinutes workMinutes)
+            }
+            OverWorkMinutes *-- Minute
+            OverWorkMinutes --> WorkMinutes
+
+            class WorkDate {
+                - String value
+                + boolean isTargetYearMonth(WorkYearMonth targetWorkYearMonth)
+            }
+            WorkDate --> WorkYearMonth
+            WorkStartAndEndTimeOfOneDay *-- WorkDate
+
+            class WorkEndTime {
+                - String value
+                - Time time
+            }
+            WorkEndTime *-- Time
+            WorkStartAndEndTimeOfOneDay *-- WorkEndTime
+
+            class WorkMinutes {
+                - Minute minute
+                + int getInt()
+                + String toString()
+                + {static} WorkMinutes get(WorkStartTime workStartTime, WorkEndTime workEndTime)
+            }
+            WorkMinutes --> BreakMinutesCalculator
+            WorkMinutes *-- Minute
+
+            class WorkStartTime {
+                - String value
+                - Time time
+            }
+            WorkStartTime *-- Time
+            WorkStartAndEndTimeOfOneDay *-- WorkStartTime
+
+            class WorkYearMonth {
+                - String value
+            }
+        }
+    }
+
+    package totalprint {
+
+        package totalprint.repository {
+
+            interface KintaiListRepository {
+                + KintaiOfDays get()
+            }
+
+            interface KintaiTotalPrintRepository {
+                + void print(KintaiTotal kintaiTotal)
+            }
+        }
+
+        class KintaiOfDays {
+            + KintaiOfDays add(KintaiOfOneDay kintaiOfOneDay)
+            + Iterator<KintaiOfOneDay> getIterator()
+            + List<KintaiOfOneDay> getUnmodifiableList()
+            + List<KintaiOfOneDay> getTargetMonthList(KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth)
+        }
+        KintaiListRepository --> KintaiOfDays
+
+        class KintaiTotal{
+            - KintaiTotalPrintTargetYearMonth kintaiTotalPrintTargetYearMonth
+            - KintaiOfDays kintaiOfDays
+            - TotalWorkMinutes totalWorkMinutes
+            - TotalOverWorkMinutes totalOverWorkMinutes
+        }
+        KintaiTotal --> KintaiTotalPrintTargetYearMonth
+        KintaiTotal --> KintaiOfDays
+        KintaiTotalPrintRepository --> KintaiTotal
+
+        class KintaiTotalPrintTargetYearMonth {
+            - WorkYearMonth workYearMonth
+        }
+        KintaiTotalPrintTargetYearMonth *-- WorkYearMonth
+    }
+
+    class KintaiOfOneDay {
+        - WorkDate workDate
+        - WorkStartTime workStartTime
+        - WorkEndTime workEndTime
+        - WorkMinutes workMinutes
+        - OverWorkMinutes overWorkMinutes
+        - Now registerDateTime
+    }
+    KintaiOfOneDay *-- WorkDate
+    KintaiOfOneDay *-- WorkStartTime
+    KintaiOfOneDay *-- WorkEndTime
+    KintaiOfOneDay *-- WorkMinutes
+    KintaiOfOneDay *-- OverWorkMinutes
+    KintaiOfOneDay *-- Now
+    KintaiRegisterRepository --> KintaiOfOneDay
+    KintaiRegister --> KintaiOfOneDay
+    KintaiOfDays "1" o-- "0..*" KintaiOfOneDay
+}
+
+@enduml
