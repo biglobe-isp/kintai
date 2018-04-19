@@ -62,32 +62,32 @@ class KintaiKanriApiTest extends Specification {
         where:
         //@formatter:off
         testCase/*	*/| argsSets
-        "INPUT"/*	*/| ["input", "20180410", "0900", "1800"]
-        "INPUT"/*	*/| ["input", "20180411", "0900", "2044"]
-        "INPUT"/*	*/| ["input", "20180412", "0800", "1800"]
-        "INPUT"/*	*/| ["input", "20180413", "0000", "2359"]
-        "INPUT"/*	*/| ["input", "20180414", "0916", "1956"]
-        "INPUT"/*	*/| ["input", "20180416", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180417", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180418", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180419", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180420", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180423", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180424", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180425", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180426", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180427", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180507", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180508", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180509", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180510", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180511", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180512", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180513", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180514", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180515", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180516", "0900", "2000"]
-        "INPUT"/*	*/| ["input", "20180517", "0900", "2000"]
+        "INPUT"/*	*/| ["input", "-date:20180410", "-start:0900", "-end:1800"]
+        "INPUT"/*	*/| ["input", "-date:20180411", "-start:0900", "-end:2044"]
+        "INPUT"/*	*/| ["input", "-date:20180412", "-start:0800", "-end:1800"]
+        "INPUT"/*	*/| ["input", "-date:20180413", "-start:0000", "-end:2359"]
+        "INPUT"/*	*/| ["input", "-date:20180414", "-start:0916", "-end:1956"]
+        "INPUT"/*	*/| ["input", "-date:20180416", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180417", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180418", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180419", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180420", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180423", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180424", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180425", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180426", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180427", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180507", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180508", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180509", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180510", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180511", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180512", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180513", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180514", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180515", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180516", "-start:0900", "-end:2000"]
+        "INPUT"/*	*/| ["input", "-date:20180517", "-start:0900", "-end:2000"]
         "TOTAL"/*	*/| ["total"]
         //@formatter:on
     }
@@ -109,9 +109,9 @@ class KintaiKanriApiTest extends Specification {
         where:
         //@formatter:off
         testCase/*						*/| argsSets
-        "INPUT args数不足"/*				*/| ["input", "20180411"]
-        "TOTAL args数過多"/*				*/| ["total", "20180411", "0900", "1800"]
-        "INPUT methodTypeに既定値以外"/*	*/| ["a",     "ABCDEFGH", "0900", "1800"]
+        "INPUT args数不足"/*				*/| ["input", "-date:20180411"]
+        "TOTAL args数過多"/*				*/| ["total", "-date:20180411", "-start:0900", "-end:1800"]
+        "INPUT methodTypeに既定値以外"/*	*/| ["a",     "-date:ABCDEFGH", "-start:0900", "-end:1800"]
         "TOTAL methodTypeに既定値以外"/*	*/| ["x"]
         //@formatter:on
     }
@@ -133,9 +133,12 @@ class KintaiKanriApiTest extends Specification {
         where:
         //@formatter:off
         testCase/*						*/| argsSets
-        "INPUT 対象日付に数値以外"/*		*/| ["input", "ABCDEFGH", "0900", "1800"]
-        "INPUT 出勤時刻に数値以外"/*		*/| ["input", "20180411", "A000", "1800"]
-        "INPUT 退勤時刻に数値以外"/*		*/| ["input", "20180411", "0900", "B000"]
+        "INPUT 対象日付に数値以外"/*		*/| ["input", "-date:ABCDEFGH", "-start:0900", "-end:1800"]
+        "INPUT 出勤時刻に数値以外"/*		*/| ["input", "-date:20180411", "-start:A000", "-end:1800"]
+        "INPUT 退勤時刻に数値以外"/*		*/| ["input", "-date:20180411", "-start:0900", "-end:B000"]
+        "INPUT 対象日付の書式不正"/*		*/| ["input", "-data:ABCDEFGH", "-start:0900", "-end:1800"]
+        "INPUT 出勤時刻の書式不正"/*		*/| ["input", "-date:20180411", "-stort:A000", "-end:1800"]
+        "INPUT 退勤時刻の書式不正"/*		*/| ["input", "-date:20180411", "-start:0900", "-emd:B000"]
         //@formatter:on
     }
 }
