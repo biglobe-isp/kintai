@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    リクエストスコープの設定を記述（META-INF/base/base-root.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+
+    <!-- リクエストスコープのcomponent-scanの設定（Autowiredに必要） -->
+    <import resource="classpath:META-INF/base/scope/component-scan.xml"/>
+
+</beans>

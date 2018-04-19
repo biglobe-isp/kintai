@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    エラー応答ハンドラの設定を記述
+    |
+    =========================================================================== -->
+
+
+    <!-- ExceptionResponseHandlerを扱うコンポーネント
+
+    【有効化する公開コンポーネント】
+    ・jp.co.biglobe.lib.plugin.exceptionhandler.ExceptionResponseHandler
+
+    【有効化する非公開コンポーネント】
+    ・なし
+
+    【有効化に必要な外部コンポーネント】
+    ・jp.co.biglobe.lib.plugin.response.error.ErrorResponse
+    ・jp.co.biglobe.lib.plugin.response.error.HasErrorStatusResponse
+    ・jp.co.biglobe.lib.plugin.response.error.HasErrorListResponse
+    -->
+    <bean class="jp.co.biglobe.lib.component.exception.handler.ExceptionResponseHandlerImpl"/>
+
+
+    <!-- Exception発生時のデフォルトエラーJSONテンプレートを構築するコンポーネント
+
+    【有効化する公開コンポーネント】
+    ・jp.co.biglobe.lib.plugin.response.error.ErrorResponse
+    ・jp.co.biglobe.lib.plugin.response.error.HasErrorStatusResponse
+    ・jp.co.biglobe.lib.plugin.response.error.HasErrorListResponse
+
+    【有効化する非公開コンポーネント】
+    ・jp.co.biglobe.lib.component.response.error.ExceptionResponseVersion
+
+    【有効化に必要な外部コンポーネント】
+    ・jp.co.biglobe.lib.plugin.view.JsonErrorTemplate
+    -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.response">
+    </context:component-scan>
+
+</beans>

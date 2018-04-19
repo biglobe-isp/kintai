@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    例外通知ハンドラの設定を記述
+    |
+    =========================================================================== -->
+
+
+    <!-- ExceptionTransferHandlerを扱うコンポーネント
+
+    【有効化する公開コンポーネント】
+    ・jp.co.biglobe.lib.plugin.exceptionhandler.ExceptionTransferHandler
+
+    【有効化する非公開コンポーネント】
+    ・なし
+
+    【有効化に必要な外部コンポーネント】
+    ・jp.co.biglobe.lib.danger.exception.transfer.ExceptionTransferFactory
+    ・jp.co.biglobe.lib.danger.exception.transfer.ExceptionTransferService
+    -->
+    <bean class="jp.co.biglobe.lib.component.exception.handler.ExceptionTransferHandlerImpl"/>
+
+    <!-- Exception発生時のアラーム通知を処理するコンポーネント
+
+    【有効化する公開コンポーネント】
+    ・なし
+
+    【有効化する非公開コンポーネント】
+    ・jp.co.biglobe.lib.danger.exception.transfer.ExceptionTransferFactory
+    ・jp.co.biglobe.lib.danger.exception.transfer.ExceptionTransferService
+    ・jp.co.biglobe.lib.danger.exception.transfer.TransferMessageCreator
+
+    【有効化に必要な外部コンポーネント】
+    ・jp.co.biglobe.lib.plugin.alarmmail.SendAlarmMail
+    ・jp.co.biglobe.lib.plugin.system.Bocap
+    ・jp.co.biglobe.lib.plugin.event.RequestEventProcess
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.transfer"/>
+
+</beans>

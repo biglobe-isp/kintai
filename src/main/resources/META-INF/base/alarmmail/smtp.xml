@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       ">
+
+    <!-- SMTPベースのアラーム通知コンポーネント
+
+    【有効化されるコンポーネント】
+    ・jp.co.biglobe.lib.alarmmail.plugin.NotifyAlarmService
+    ・jp.co.biglobe.lib.alarmmail.plugin.NotifyHiosService
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.alarmmail.component.smtp"/>
+
+
+    <!-- アラーム送信元のEmailアドレス -->
+    <bean id="alarmMailSource" class="jp.co.biglobe.lib.notification.publication.mail.MailSource">
+        <constructor-arg value="${alarmmail.alarm.mail.from}"/>
+    </bean>
+    <!-- アラーム送信先のEmailアドレス -->
+    <bean id="alarmMailDestination" class="jp.co.biglobe.lib.notification.publication.mail.MailDestination">
+        <constructor-arg value="${alarmmail.alarm.mail.to}"/>
+    </bean>
+
+    <!-- HIOS送信元のEmailアドレス -->
+    <bean id="hiosMailSource" class="jp.co.biglobe.lib.notification.publication.mail.MailSource">
+        <constructor-arg value="${alarmmail.hios.mail.from}"/>
+
+    </bean>
+    <!-- HIOS送信先のEmailアドレス -->
+    <bean id="hiosMailDestination" class="jp.co.biglobe.lib.notification.publication.mail.MailDestination">
+        <constructor-arg value="${alarmmail.hios.mail.to}"/>
+    </bean>
+
+</beans>

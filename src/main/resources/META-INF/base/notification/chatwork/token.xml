@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+">
+
+    <!-- チャットワークのAPIトークンの定義 -->
+    <bean id="hunassy" class="jp.co.biglobe.lib.notification.publication.chatwork.ChatworkSource">
+        <constructor-arg>
+            <jee:jndi-lookup jndi-name="chatwork/token/hunassy"/>
+        </constructor-arg>
+    </bean>
+
+</beans>

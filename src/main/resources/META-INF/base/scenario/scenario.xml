@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       ">
+
+
+    <!-- ======================================================================
+    |
+    |    コントローラ用ScenarioExecutor の設定を記述（META-INF/base/base-root.xmlから読み込まれる）
+    |
+    =========================================================================== -->
+
+    <import resource="classpath:META-INF/base/scenario/component-scan.xml"/>
+
+</beans>
