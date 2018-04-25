@@ -14,4 +14,4 @@ build/
 .gradle
 classes/*
 out/
-data.csv
+src/data.csv

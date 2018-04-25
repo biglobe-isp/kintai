@@ -35,6 +35,13 @@ public class WorkingTime {
             workMinutes -= 60;
         }
 
+        // 休憩増える対応(増える日に合わせてモジュールリリースしてください)
+        if(endH == 15) {
+            workMinutes -= endM;
+        } else if(endH >= 16) {
+            workMinutes -= 60;
+        }
+
         if(endH == 18) {
             workMinutes -= endM;
         } else if(endH >= 19) {
