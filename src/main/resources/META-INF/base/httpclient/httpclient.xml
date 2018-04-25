@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+       ">
+
+    <beans>
+        <bean id="restTemplate" class="org.springframework.web.client.RestTemplate" primary="true">
+            <constructor-arg>
+                <bean class="org.springframework.http.client.BufferingClientHttpRequestFactory">
+                    <constructor-arg ref="simpleClientHttpRequestFactory"/>
+                </bean>
+            </constructor-arg>
+            <property name="interceptors">
+                <list>
+                    <bean class="jp.co.biglobe.lib.essential.json_api.LoggingInterceptor"/>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <!--JNDIからプロパティを取得-->
+    <beans profile="default,local">
+        <bean id="simpleClientHttpRequestFactory"
+              class="org.springframework.http.client.SimpleClientHttpRequestFactory"
+              primary="true">
+            <property name="readTimeout" value="30000"/>
+            <property name="connectTimeout" value="30000"/>
+        </bean>
+        <bean id="simpleClientHttpRequestFactoryWithoutProxy"
+              class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+            <property name="readTimeout" value="30000"/>
+            <property name="connectTimeout" value="30000"/>
+        </bean>
+    </beans>
+
+    <beans profile="development,testing,staging,production">
+        <bean id="simpleClientHttpRequestFactory"
+              class="org.springframework.http.client.SimpleClientHttpRequestFactory"
+              primary="true">
+            <property name="readTimeout" value="30000"/>
+            <property name="connectTimeout" value="30000"/>
+            <property name="proxy">
+                <bean class="java.net.Proxy">
+                    <constructor-arg>
+                        <value type="java.net.Proxy.Type">HTTP</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <bean id="proxyAddress" class="java.net.InetSocketAddress">
+                            <constructor-arg>
+                                <jee:jndi-lookup jndi-name="java:comp/env/jndi/naileLinkage.proxy.address"/>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <jee:jndi-lookup jndi-name="java:comp/env/jndi/naileLinkage.proxy.port"/>
+                            </constructor-arg>
+                        </bean>
+                    </constructor-arg>
+                </bean>
+            </property>
+        </bean>
+        <bean id="simpleClientHttpRequestFactoryWithoutProxy"
+              class="org.springframework.http.client.SimpleClientHttpRequestFactory">
+            <property name="readTimeout" value="30000"/>
+            <property name="connectTimeout" value="30000"/>
+        </bean>
+    </beans>
+
+</beans>

@@ -1,0 +1,47 @@
+// -- バージョン --
+version = "1.0"
+
+// -- グループ --
+group = "jp.co.biglobe.isp"
+
+// プラグイン定義 利用できるタスク(gradle tasks)が増える
+apply {
+    plugin 'groovy' // Viewテンプレートにgroovyを使用しているので、javaではなくgroovyを宣言
+    plugin 'idea' // IntelliJ でプロジェクトを読み込めるように宣言
+}
+
+// 環境ごとの設定を実施
+apply from: file('etc/gradle/base/environment.gradle')
+
+// プロジェクト固有の設定
+apply from: file('etc/gradle/project.gradle')
+
+// Javaのコンパイル＆テストの設定
+apply from: file('etc/gradle/base/java.gradle')
+
+// warタスクの設定
+apply from: file('etc/gradle/base/war.gradle')
+
+// ISP領域向けJava共通ライブラリの設定
+apply from: file('etc/gradle/base/library.gradle')
+
+// Tomcatの設定
+apply from: file('etc/gradle/base/tomcat.gradle')
+
+// Gradleラッパーの設定
+apply from: file('etc/gradle/base/wrapper.gradle')
+
+buildscript {
+
+    ext {
+        tomcatPluginVersion = '2.2.3'
+    }
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.bmuschko:gradle-tomcat-plugin:${tomcatPluginVersion}"
+    }
+}

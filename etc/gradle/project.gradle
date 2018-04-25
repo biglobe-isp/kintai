@@ -1,0 +1,22 @@
+/**
+ * プロジェクト固有の設定
+ */
+// == プロジェクト設定 について ==
+// * プロジェクト名は、settings.gradle ファイルの rootProject.name で指定
+// * プロダクトのバージョンは、build.gradle ファイル で指定
+
+ext {
+    projectName = 'kintai-kanri'
+    apacheCommonsLang3Version = '3.4'
+    javaslangVersion = '2.0.5'
+}
+
+// == アプリケーション固有外部ライブラリ ==
+dependencies {
+
+    // 日付関連
+    // compile "joda-time:joda-time:2.4"
+    compile "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
+    compile "io.javaslang:javaslang:${javaslangVersion}"
+
+}
