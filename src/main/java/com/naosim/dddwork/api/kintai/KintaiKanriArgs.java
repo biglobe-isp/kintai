@@ -8,7 +8,6 @@ import com.naosim.dddwork.domain.word.MethodType;
 import com.naosim.dddwork.service.input.KintaiKanriInputServiceInput;
 import com.naosim.dddwork.service.input.KintaiKanriTotalServiceInput;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -28,7 +27,6 @@ class KintaiKanriArgs {
      * methodType
      */
     @Getter
-    @Setter
     @NotNull
     @Valid
     private MethodTypeForm methodTypeForm;
@@ -36,8 +34,6 @@ class KintaiKanriArgs {
     /**
      * 対象年月日
      */
-    @Getter
-    @Setter
     @NotNull
     @Valid
     private WorkDateForm workDateForm;
@@ -45,15 +41,11 @@ class KintaiKanriArgs {
     /**
      * 出勤時間
      */
-    @Getter
-    @Setter
     private WorkTimeFromForm workTimeFromForm = new WorkTimeFromForm(null);
 
     /**
      * 退勤時間
      */
-    @Getter
-    @Setter
     private WorkTimeToForm workTimeToForm = new WorkTimeToForm(null);
 
     /**

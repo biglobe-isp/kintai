@@ -4,7 +4,6 @@ import com.naosim.dddwork.domain.word.MethodType
 import com.naosim.dddwork.domain.word.WorkDate
 import com.naosim.dddwork.domain.word.WorkTime
 import com.naosim.dddwork.service.input.KintaiKanriInputServiceInput
-import com.naosim.dddwork.service.input.KintaiKanriTotalServiceInput
 import jp.co.biglobe.lib.publication.date.CurrentLocalDateTimeCreator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration

@@ -16,13 +16,18 @@
     <import resource="classpath:META-INF/base/environment/environment.xml"/>
 
     <!-- 例外ハンドラの設定の読込 -->
+<!--
     <import resource="classpath:META-INF/base/exception/exception.xml"/>
+-->
 
     <!-- アラーム／HIOSメール設定の読込 -->
+<!--
     <import resource="classpath:META-INF/base/alarmmail/alarmmail.xml"/>
-
+-->
     <!-- アプリケーションセッションの設定の読込 -->
+<!--
     <import resource="classpath:META-INF/base/session/session.xml"/>
+-->
 
     <!-- DB接続の設定の読込 -->
     <import resource="classpath:META-INF/base/database/data-source.xml"/>
@@ -40,8 +45,9 @@
     <import resource="classpath:META-INF/base/scope/scope.xml"/>
 
     <!-- シナリオ実行環境の読込 -->
+<!--
     <import resource="classpath:META-INF/base/scenario/scenario.xml"/>
-
+-->
     <!-- メール通知設定の読込 -->
     <!-- isplibrary-notificationライブラリが必要 -->
     <!--<import resource="classpath:META-INF/base/notification/mail.xml"/>-->
@@ -58,7 +64,9 @@
     <import resource="classpath:META-INF/base/component-scan.xml"/>
 
     <!-- HTTP Client設定の読込 -->
+<!--
     <import resource="classpath:META-INF/base/httpclient/httpclient.xml"/>
+-->
 
     <beans profile="integration,integration-test">
         <!-- Spring Integration設定の読込 -->

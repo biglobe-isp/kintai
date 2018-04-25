@@ -7,7 +7,6 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
        ">
 
-
     <!-- ======================================================================
     |
     |    プロジェクト固有のcomponent-scanの設定を記述
@@ -34,20 +33,4 @@
         <constructor-arg
                 value="com.naosim.dddwork.service.kintai.KintaiKanriTotalService"/>
     </bean>
-    <!--
-    <bean id="numberingNewSubscriptionCompletedSearchServiceMock"
-          name="numberingNewSubscriptionCompletedSearchServiceMock" class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg
-                value="jp.co.biglobe.isp.sim_management.core.service.numbering.NumberingNewSubscriptionCompletedSearchService"/>
-    </bean>
-    <bean id="numberingRomWriteServiceMock" name="numberingRomWriteServiceMock" class="org.mockito.Mockito"
-          factory-method="mock">
-        <constructor-arg value="jp.co.biglobe.isp.sim_management.core.service.numbering.NumberingRomWriteService"/>
-    </bean>
-    <bean id="numberingRomWriteDisposeServiceMock" name="numberingRomWriteDisposeServiceMock"
-          class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg
-                value="jp.co.biglobe.isp.sim_management.core.service.numbering.NumberingRomWriteDisposeService"/>
-    </bean>
-    -->
 </beans>

@@ -28,7 +28,6 @@
      -->
     <context:component-scan base-package="jp.co.biglobe.lib.component.system"/>
 
-
     <!-- ロギングの共通処理を実行するコンポーネント
 
     【有効化する公開コンポーネント】
@@ -42,7 +41,6 @@
      -->
     <context:component-scan base-package="jp.co.biglobe.lib.component.log"/>
 
-
     <!-- ISP領域標準API向けのJSONテンプレートを構築するコンポーネント
 
     【Autowiredコンポーネント】
@@ -51,7 +49,6 @@
      -->
     <context:component-scan base-package="jp.co.biglobe.lib.component.view"/>
 
-
     <!-- バリデーション処理後に生成されるErrorsオブジェクトをverifyするコンポーネント
 
     【Autowiredコンポーネント】
@@ -59,33 +56,25 @@
      -->
     <context:component-scan base-package="jp.co.biglobe.lib.component.validationverifier"/>
 
-
-    <!-- lib HTTPステータス -->
-    <context:component-scan base-package="jp.co.biglobe.lib.http"/>
-
-    <!--########## lib拡張 ##########-->
-
-    <!-- ISP領域標準API向けのJSONテンプレートを構築するコンポーネント
-
-    【Autowiredコンポーネント】
-    ・jp.co.biglobe.lib.plugin.event.RequestEvent
-    ・jp.co.biglobe.lib.plugin.log.LoggerWrapper
-    -->
-    <context:component-scan base-package="jp.co.biglobe.lib.component.rest_view"/>
-
-    <!-- バリデーション処理後に生成されるErrorsオブジェクトをverifyするコンポーネント
-
-    【Autowiredコンポーネント】
-    ・なし
-     -->
-    <context:component-scan base-package="jp.co.biglobe.lib.component.rest_validationverifier"/>
-
     <!-- Exception発生時のデフォルトエラーJSONテンプレートを構築するコンポーネント
 
     【Autowiredコンポーネント】
     ・jp.co.biglobe.lib.plugin.view.JsonTemplate
      -->
-    <context:component-scan base-package="jp.co.biglobe.lib.component.rest_response"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.component.response"/>
+
+    <!-- AOPでコントローラのログの自動出力＆APIアクセスログDBへの記録を実行するコンポーネント
+
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.exceptionhandler.ExceptionLogHandler
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    ・jp.co.biglobe.lib.plugin.log.LogMessageCreator
+    ・jp.co.biglobe.lib.plugin.log.LoggerWrapper
+    ・jp.co.biglobe.lib.plugin.alarmmail.SendAlarmMail
+    ・jp.co.biglobe.lib.plugin.alarmmail.TransferMassageCreator
+    ・jp.co.biglobe.lib.plugin.db.DbGlobalCache
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.processevent.database"/>
 
     <!-- ExceptionHandlerを扱うコンポーネント
 
@@ -97,15 +86,24 @@
     ・jp.co.biglobe.lib.plugin.alarmmail.SendAlarmMail;
     ・jp.co.biglobe.lib.plugin.alarmmail.TransferMassageCreator
      -->
-    <context:component-scan base-package="jp.co.biglobe.lib.component.rest_exceptionhandler"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.handler"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.log"/>
+    <context:component-scan base-package="jp.co.biglobe.lib.component.exception.transfer"/>
 
+    <!-- シナリオを実行するコンポーネント
 
-    <context:component-scan base-package="jp.co.biglobe.lib.essential.rest_exception_handler"/>
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    ・jp.co.biglobe.lib.essential.property.PropertyAccessor
+     -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.scenario"/>
 
-    <context:component-scan base-package="jp.co.biglobe.lib.component.json_api"/>
+    <!-- アラームメールを扱うコンポーネント
 
-    <beans profile="integration,integration-test">
-        <context:component-scan base-package="jp.co.biglobe.lib.component.task"/>
+    【Autowiredコンポーネント】
+    ・jp.co.biglobe.lib.plugin.scenario.ScenarioExecutor
+    ・jp.co.biglobe.lib.plugin.event.RequestEvent
+    -->
+    <context:component-scan base-package="jp.co.biglobe.lib.component.alarmmail"/>
+
     </beans>
-
-</beans>
