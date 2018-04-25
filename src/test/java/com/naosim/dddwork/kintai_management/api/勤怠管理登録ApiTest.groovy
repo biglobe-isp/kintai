@@ -59,8 +59,10 @@ class 勤怠管理登録ApiTest extends Specification {
 
         where:
         //@formatter:off
-        testCase/*	*/| registrationDate/*	*/| workingStartTime/*	*/| workingEndTime/*	*/
-        "OK"/*		*/| "20180102a"/*		*/| "0900"/*			*/| "1830"/*			*/
+        testCase/*				*/| registrationDate/*		*/| workingStartTime/*		*/| workingEndTime/*	*/
+//        "OK"/*		*/| "20180102"/*		*/| "0900"/*			*/| "1830"/*			*/
+        "OK"/*					*/| "-date:20180102"/*		*/| "-start:0900"/*			*/| "-end:1830"/*			*/
+        "OK(順序違いでのも良い)"/*	*/| "-start:0900"/*			*/| "-end:1830"/*			*/| "-date:20180102"/*		*/
         //@formatter:on
 
     }
@@ -77,6 +79,22 @@ class 勤怠管理登録ApiTest extends Specification {
         //@formatter:off
         testCase/*		*/| registrationDate/*	*/| workingStartTime/*	*/
         "引数不足"/*		*/| "20180102"/*		*/| "0900"/*			*/
+        //@formatter:on
+
+    }
+
+    def "異常2_#testCase"() {
+        setup:
+        Mockito.doNothing().when(kintaiManagementRegistrationServiceMock).kintaiManagementRegistration(Mockito.notNull(KintaiManagementRegistrationInput.class))
+
+        expect:
+        String[] args = [registrationDate, workingStartTime, workingEndTime]
+        kintaiManagementRegistrationApi.main(args)
+
+        where:
+        //@formatter:off
+        testCase/*	*/| registrationDate/*		*/| workingStartTime/*	*/| workingEndTime/*	*/
+        "引数不正"/*	*/| "-date:20180102"/*		*/| "-XXstart:0900"/*	*/| "-end:1830"/*		*/
         //@formatter:on
 
     }

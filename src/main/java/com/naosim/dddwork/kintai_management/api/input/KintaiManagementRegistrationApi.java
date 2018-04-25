@@ -20,9 +20,6 @@ public class KintaiManagementRegistrationApi {
     @Autowired
     private KintaiManagementRegistrationService kintaiManagementRegistrationService;
 
-//    @Getter
-//    private final static String URI = "/kintai-management-registration";
-
     public void main(String[] args) {
 
         try{
@@ -31,13 +28,14 @@ public class KintaiManagementRegistrationApi {
                 throw new RuntimeException("引数が足りません");
             }
 
-            kintaiManagementRegistrationRequest.setRegistrationDateForm(new RegistrationDateForm(args[0]));
-            kintaiManagementRegistrationRequest.setWorkingStartTimeForm(new WorkingStartTimeForm(args[1]));
-            kintaiManagementRegistrationRequest.setWorkingEndTimeForm(new WorkingEndTimeForm(args[2]));
-
+//            kintaiManagementRegistrationRequest.setRegistrationDateForm(new RegistrationDateForm(args[0]));
+//            kintaiManagementRegistrationRequest.setWorkingStartTimeForm(new WorkingStartTimeForm(args[1]));
+//            kintaiManagementRegistrationRequest.setWorkingEndTimeForm(new WorkingEndTimeForm(args[2]));
+            kintaiManagementRegistrationRequest.setArgs(args);
 
             kintaiManagementRegistrationService.kintaiManagementRegistration(
-                    kintaiManagementRegistrationRequest.makeKintaiManagementRegistrationInput()
+//                    kintaiManagementRegistrationRequest.makeKintaiManagementRegistrationInput()
+                    kintaiManagementRegistrationRequest.makeKintaiManagementRegistrationInputArgs()
             );
 
         } catch (Exception e) {

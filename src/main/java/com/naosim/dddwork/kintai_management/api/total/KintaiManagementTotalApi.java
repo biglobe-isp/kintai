@@ -18,9 +18,6 @@ public class KintaiManagementTotalApi {
     @Autowired
     private KintaiManagementTotalService kintaiManagementTotalService;
 
-//    @Getter
-//    private final static String URI = "/kintai-management-total";
-
     public void main(String[] args) {
 
         try{

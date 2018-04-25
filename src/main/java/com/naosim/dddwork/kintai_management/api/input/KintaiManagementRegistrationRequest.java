@@ -20,33 +20,51 @@ public class KintaiManagementRegistrationRequest {
 
     @Getter
     @Setter
-    @NotNull
-    @Valid
+    private String[] args;
+
+    @Getter
+    @Setter
     private WorkingStartTimeForm workingStartTimeForm;
 
     @Getter
     @Setter
-    @NotNull
-    @Valid
     private WorkingEndTimeForm workingEndTimeForm;
 
     @Getter
     @Setter
-    @NotNull
-    @Valid
     private RegistrationDateForm registrationDateForm;
-
-//    @Getter
-//    @Setter
-//    @Valid
-//    private HolidayKindForm holidayKindForm = new HolidayKindForm(HolidayKind.NONE.getApiValue());
 
     public KintaiManagementRegistrationInput makeKintaiManagementRegistrationInput() {
         return new KintaiManagementRegistrationInput(
                 this.getRegistrationDateForm().getValueObject(),
                 this.getWorkingStartTimeForm().getValueObject(),
                 this.getWorkingEndTimeForm().getValueObject()
-//                this.getHolidayKindForm().getValueObject()
         );
     }
+
+    public KintaiManagementRegistrationInput makeKintaiManagementRegistrationInputArgs() {
+
+        for (String arg : args) {
+            String[] param = arg.split(":");
+            if ("-date".equals(param[0])) {
+                this.setRegistrationDateForm(new RegistrationDateForm(param[1]));
+            } else if ("-start".equals(param[0])) {
+                this.setWorkingStartTimeForm(new WorkingStartTimeForm(param[1]));
+            } else if ("-end".equals(param[0])) {
+                this.setWorkingEndTimeForm(new WorkingEndTimeForm(param[1]));
+            } else {
+                throw new RuntimeException("引数指定の誤り：未知の引数が指定されました");
+            }
+        }
+
+        return new KintaiManagementRegistrationInput(
+                this.getRegistrationDateForm().getValueObject(),
+                this.getWorkingStartTimeForm().getValueObject(),
+                this.getWorkingEndTimeForm().getValueObject()
+        );
+    }
+
+
+
+
 }
