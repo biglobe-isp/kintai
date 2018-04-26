@@ -20,16 +20,17 @@ public class KintaiManagementRegistrationInput {
     @NonNull
     private WorkingEndTime workingEndTime;
 
-//    @NonNull
-//    private HolidayKind holidayKind;
+    @NonNull
+    private HolidayKind holidayKind;
 
     public WorkingTimeRegistrationInput makeWorkingTimeRegistrationInput() {
         return new WorkingTimeRegistrationInput(
                 registrationDate,
                 workingStartTime,
                 workingEndTime,
-                WorkingTime.create(workingStartTime, workingEndTime),
-                OverWorkingTime.create(workingStartTime, workingEndTime)
+                WorkingTime.create(workingStartTime, workingEndTime, holidayKind),
+                OverWorkingTime.create(workingStartTime, workingEndTime, holidayKind),
+                holidayKind
                 );
     }
 }

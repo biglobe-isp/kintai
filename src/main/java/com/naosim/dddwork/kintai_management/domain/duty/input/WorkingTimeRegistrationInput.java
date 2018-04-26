@@ -21,4 +21,6 @@ public class WorkingTimeRegistrationInput {
 
     private OverWorkingTime overWorkingTime;
 
+    private HolidayKind holidayKind;
+
 }

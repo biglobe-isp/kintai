@@ -23,8 +23,6 @@ import spock.lang.Unroll
 @ActiveProfiles(["local", "mvc-test"])
 class 勤怠管理集計ApiTest extends Specification {
 
-//    private static final String URI = KintaiManagementTotalApi.getURI()
-
     @Autowired
     KintaiManagementTotalApi kintaiManagementTotalApi
 
@@ -69,5 +67,11 @@ class 勤怠管理集計ApiTest extends Specification {
         expect:
         String[] args = []
         kintaiManagementTotalApi.main(args)
+
+        where:
+        //@formatter:off
+        testCase/*		*/| totalYearMonth
+        "引数不足"/*		*/| "201804"
+        //@formatter:on
     }
 }

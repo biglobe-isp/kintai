@@ -5,14 +5,12 @@ import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalRe
 import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalResult;
 import com.naosim.dddwork.kintai_management.domain.word.TotalOverWorkingTime;
 import com.naosim.dddwork.kintai_management.domain.word.TotalWorkingTime;
+import com.naosim.dddwork.kintai_management.domain.word.TotalYearMonth;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -22,7 +20,7 @@ import java.util.Set;
 public class WorkingTimeTotalRepositoryFile implements WorkingTimeTotalRepository {
 
     @Override
-    public Optional<WorkingTimeTotalResult> totalWorkingTime(WorkingTimeTotalInput workingTimeTotalInput) {
+    public WorkingTimeTotalResult totalWorkingTime(WorkingTimeTotalInput workingTimeTotalInput) {
 
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
@@ -55,16 +53,36 @@ public class WorkingTimeTotalRepositoryFile implements WorkingTimeTotalRepositor
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
-//            System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-//            System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
+            System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
+            System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return Optional.ofNullable(
-             new WorkingTimeTotalResult(new TotalWorkingTime(totalWorkMinutes), new TotalOverWorkingTime(totalOverWorkMinutes))
-        );
+        return new WorkingTimeTotalResult(
+                     new TotalYearMonth(workingTimeTotalInput.getTotalYearMonth().getValue()),
+                     new TotalWorkingTime(totalWorkMinutes),
+                     new TotalOverWorkingTime(totalOverWorkMinutes)
+                );
 
     }
+
+    @Override
+    public void registTotalWorkingTime(WorkingTimeTotalResult workingTimeTotalResult) {
+
+        File file = new File("totalData.csv");
+        try (FileWriter filewriter = new FileWriter(file, true)) {
+            filewriter.write(String.format("%s,%s,%s\n",
+                    "集計年月日:" + workingTimeTotalResult.getTotalYearMonth().getValue(),
+                    "勤務時間:" + workingTimeTotalResult.getTotalWorkingTime().getValue() / 60 + "時間" + workingTimeTotalResult.getTotalWorkingTime().getValue() % 60 + "分",
+                    "残業時間:" + workingTimeTotalResult.getTotalOverWorkingTime().getValue() / 60 + "時間" + workingTimeTotalResult.getTotalOverWorkingTime().getValue() % 60 + "分"
+                    )
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

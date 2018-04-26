@@ -20,12 +20,13 @@ public class WorkingTimeRegistrationRepositoryFile implements WorkingTimeRegistr
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
+            filewriter.write(String.format("%s,%s,%s,%s,%s,%s,%s\n",
                     workingTimeRegistrationInput.getRegistrationDate().getFormatValue(),
-                    workingTimeRegistrationInput.getWorkingStartTime().getValue(),
-                    workingTimeRegistrationInput.getWorkingEndTime().getValue(),
+                    workingTimeRegistrationInput.getWorkingStartTime().getFormatValue(),
+                    workingTimeRegistrationInput.getWorkingEndTime().getFormatValue(),
                     workingTimeRegistrationInput.getWorkingTime().getValue(),
                     workingTimeRegistrationInput.getOverWorkingTime().getValue(),
+                    workingTimeRegistrationInput.getHolidayKind().getFormatValue(),
                     LocalDateTime.now().toString())
             );
         } catch (IOException e) {

@@ -19,8 +19,8 @@ public class OverWorkingTime  {
         return new OverWorkingTime(null);
     }
 
-    public static OverWorkingTime create(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime) {
-        return new OverWorkingTime(Integer.valueOf(Math.max(WorkingTime.create(workingStartTime, workingEndTime).getValue() - 8 * 60, 0)));
+    public static OverWorkingTime create(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime, HolidayKind holidayKind) {
+        return new OverWorkingTime(Integer.valueOf(Math.max(WorkingTime.create(workingStartTime, workingEndTime, holidayKind).getValue() - 8 * 60, 0)));
     }
 
 }

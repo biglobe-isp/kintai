@@ -1,6 +1,7 @@
 package com.naosim.dddwork.kintai_management.api
 
 import com.naosim.dddwork.kintai_management.api.input.KintaiManagementRegistrationApi
+import com.naosim.dddwork.kintai_management.domain.word.HolidayKind
 import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationInput
 import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationService
 import org.mockito.Mockito
@@ -22,8 +23,6 @@ import spock.lang.Unroll
 @ContextConfiguration(locations = "classpath:context-api-test.xml")
 @ActiveProfiles(["local", "mvc-test"])
 class 勤怠管理登録ApiTest extends Specification {
-
-//    private static final String URI = KintaiManagementRegistrationApi.getURI()
 
     @Autowired
     KintaiManagementRegistrationApi kintaiManagementRegistrationApi
@@ -66,6 +65,24 @@ class 勤怠管理登録ApiTest extends Specification {
         //@formatter:on
 
     }
+
+    def "正常（休暇あり）_#testCase"() {
+        setup:
+        Mockito.doNothing().when(kintaiManagementRegistrationServiceMock).kintaiManagementRegistration(Mockito.notNull(KintaiManagementRegistrationInput.class))
+
+        expect:
+        String[] args = [registrationDate, workingStartTime, workingEndTime, holidayKind]
+        kintaiManagementRegistrationApi.main(args)
+
+        where:
+        //@formatter:off
+        testCase/*		*/| registrationDate/*		*/| workingStartTime/*		*/| workingEndTime/*	*/| holidayKind
+        "OK（全休）"/*	*/| "-date:20180102"/*		*/| null/*					*/| null/*				*/| "v"
+        "OK（AM半休）"/*	*/| "-date:20180102"/*		*/| null/*					*/| "-end:1830"/*		*/| "am"
+        "OK（PM半休）"/*	*/| "-date:20180102"/*		*/| "-start:0900"/*			*/| null/*				*/| "pm"
+        //@formatter:on
+    }
+
 
     def "異常_#testCase"() {
         setup:

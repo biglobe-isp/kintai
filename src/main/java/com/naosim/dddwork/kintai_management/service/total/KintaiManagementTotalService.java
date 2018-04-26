@@ -5,8 +5,6 @@ import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 /**
  * 勤怠管理集計サービス
  */
@@ -18,14 +16,10 @@ public class KintaiManagementTotalService {
 
     public void kintaiManagementTotal(KintaiManagementTotalInput kintaiManagementTotalInput) {
 
-        Optional<WorkingTimeTotalResult> workingTimeTotalResultOptional =
+        WorkingTimeTotalResult workingTimeTotalResult =
                 workingTimeTotalRepository.totalWorkingTime(kintaiManagementTotalInput.makeWorkingTimeTotalInput());
 
-        WorkingTimeTotalResult workingTimeTotalResult = workingTimeTotalResultOptional.orElseThrow(()
-                -> new IllegalStateException("を取得できませんでした"));
-
-        System.out.println("勤務時間: " + workingTimeTotalResult.getTotalWorkingTime().getValue() / 60 + "時間" + workingTimeTotalResult.getTotalWorkingTime().getValue() % 60 + "分");
-        System.out.println("残業時間: " + workingTimeTotalResult.getTotalOverWorkingTime().getValue() / 60 + "時間" + workingTimeTotalResult.getTotalOverWorkingTime().getValue() % 60 + "分");
+        workingTimeTotalRepository.registTotalWorkingTime(workingTimeTotalResult);
 
     }
 }

@@ -19,13 +19,35 @@ public class WorkingTime {
         return new WorkingTime(null);
     }
 
-    public static WorkingTime create(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime) {
+    public static WorkingTime create(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime, HolidayKind holidayKind) {
 
-        int startH = Integer.valueOf(workingStartTime.getValue().substring(0, 2));
-        int startM = Integer.valueOf(workingStartTime.getValue().substring(2, 4));
+        int startH;
+        int startM;
+        int endH;
+        int endM;
 
-        int endH = Integer.valueOf(workingEndTime.getValue().substring(0, 2));
-        int endM = Integer.valueOf(workingEndTime.getValue().substring(2, 4));
+        if("v".equals(holidayKind.getValue())) {
+            startH = 9;
+            startM = 0;
+            endH = 20;
+            endM = 0;
+        } else if("am".equals(holidayKind.getValue())) {
+            startH = 9;
+            startM = 0;
+            endH = Integer.valueOf(workingEndTime.getValue().substring(0, 2));
+            endM = Integer.valueOf(workingEndTime.getValue().substring(2, 4));
+
+        } else if("pm".equals(holidayKind.getValue())) {
+            startH = Integer.valueOf(workingStartTime.getValue().substring(0, 2));
+            startM = Integer.valueOf(workingStartTime.getValue().substring(2, 4));
+            endH = 20;
+            endM = 0;
+        } else {
+            startH = Integer.valueOf(workingStartTime.getValue().substring(0, 2));
+            startM = Integer.valueOf(workingStartTime.getValue().substring(2, 4));
+            endH = Integer.valueOf(workingEndTime.getValue().substring(0, 2));
+            endM = Integer.valueOf(workingEndTime.getValue().substring(2, 4));
+        }
 
         int workMinutes = endH * 60 + endM - (startH * 60 + startM);
 

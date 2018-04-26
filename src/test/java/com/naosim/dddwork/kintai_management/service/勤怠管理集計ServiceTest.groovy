@@ -35,12 +35,19 @@ class 勤怠管理集計ServiceTest extends Specification {
         /** 登録Service実行 */
         kintaiManagementTotalService.kintaiManagementTotal(
                 new KintaiManagementTotalInput(
-                        new TotalYearMonth("201804")
+                        new TotalYearMonth(totalYearMonth)
                 )
         )
 
         then:
         String test = "test"
+
+        where:
+        //@formatter:off
+        testCase/*			*/| totalYearMonth/*	*/
+        "通常（201804）"/*	*/| "201804"/*		*/
+        "通常（201805）"/*	*/| "201805"/*		*/
+        //@formatter:on
 
     }
 }

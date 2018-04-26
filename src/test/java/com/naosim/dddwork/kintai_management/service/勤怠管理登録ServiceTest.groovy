@@ -1,6 +1,6 @@
 package com.naosim.dddwork.kintai_management.service
 
-
+import com.naosim.dddwork.kintai_management.domain.word.HolidayKind
 import com.naosim.dddwork.kintai_management.domain.word.RegistrationDate
 import com.naosim.dddwork.kintai_management.domain.word.WorkingEndTime
 import com.naosim.dddwork.kintai_management.domain.word.WorkingStartTime
@@ -38,14 +38,25 @@ class 勤怠管理登録ServiceTest extends Specification {
         /** 登録Service実行 */
         kintaiManagementRegistrationService.kintaiManagementRegistration(
                 new KintaiManagementRegistrationInput(
-                        new RegistrationDate("20180413"),
-                        new WorkingStartTime("0900"),
-                        new WorkingEndTime("2200")
+                        new RegistrationDate(registrationDate),
+                        new WorkingStartTime(workingStartTime),
+                        new WorkingEndTime(workingEndTime),
+                        new HolidayKind(holidayKind)
                 )
         )
 
         then:
         String test = "test"
+
+        where:
+        //@formatter:off
+        testCase/*			*/| registrationDate/*	*/| workingStartTime/*	*/| workingEndTime/*	*/| holidayKind
+        "通常（残業なし）"/*	*/| "20180501"/*		*/| "0900"/*			*/| "2000"/*			*/| null
+        "通常（残業あり）"/*	*/| "20180501"/*		*/| "0900"/*			*/| "2100"/*			*/| null
+        "全休"/*				*/| "20180501"/*		*/| null/*				*/| null/*				*/| "v"
+        "am半休"/*			*/| "20180501"/*		*/| null/*				*/| "2000"/*			*/| "am"
+        "pm半休"/*			*/| "20180501"/*		*/| "0900"/*			*/| null/*				*/| "pm"
+        //@formatter:on
 
     }
 }

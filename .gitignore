@@ -15,3 +15,4 @@ build/
 classes/*
 out/
 src/data.csv
+srv/totalData.csv
