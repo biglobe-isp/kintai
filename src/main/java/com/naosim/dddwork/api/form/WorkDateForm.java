@@ -8,7 +8,6 @@ import lombok.ToString;
 
 import javax.validation.ValidationException;
 
-
 /**
  * 出勤日Form
  */
@@ -28,10 +27,6 @@ public class WorkDateForm {
             if (tmpStr.length > 1) {
                 value = tmpStr[1];
             }
-
-            // TODO -date:がついてないとValidationエラー、とかできないだろうか？
-            // TODO form以外でチェックするとCSVに出力済みの値とかも関係してくるのでここがいい（はず）
-            // TODO Validation用のアノテーションもここにつけることだし
             if (!"-date".equals(tmpStr[0])) {
                 throw new ValidationException("指定された形式で入力してください：出勤日");
             }
