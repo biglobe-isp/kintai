@@ -1,8 +1,6 @@
 package com.naosim.dddwork.kintai_management.api.total;
 
-import com.naosim.dddwork.kintai_management.api.form.TotalYearMonthForm;
 import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -26,10 +24,10 @@ public class KintaiManagementTotalApi {
                 throw new RuntimeException("引数が足りません");
             }
 
-            kintaiManagementTotalRequest.setTotalYearMonthForm(new TotalYearMonthForm(args[0]));
+            kintaiManagementTotalRequest.setArgs(args);
 
             kintaiManagementTotalService.kintaiManagementTotal(
-                    kintaiManagementTotalRequest.makeKintaiManagementTotalInput()
+                    kintaiManagementTotalRequest.makeKintaiManagementTotalInputArgs()
             );
 
         } catch (Exception e) {

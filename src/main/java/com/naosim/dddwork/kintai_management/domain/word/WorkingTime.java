@@ -1,23 +1,16 @@
 package com.naosim.dddwork.kintai_management.domain.word;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 /**
  * 勤務時間
  */
-@ToString(includeFieldNames = false)
-@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 public class WorkingTime {
+
     @Getter
     private final Integer value;
-
-    public static WorkingTime blank() {
-        return new WorkingTime(null);
-    }
 
     public static WorkingTime create(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime, HolidayKind holidayKind) {
 
@@ -76,8 +69,6 @@ public class WorkingTime {
             workMinutes -= 60;
         }
 
-        return new WorkingTime(Integer.valueOf(workMinutes));
+        return new WorkingTime(workMinutes);
     }
-
-
 }

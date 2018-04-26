@@ -1,13 +1,11 @@
 package com.naosim.dddwork.kintai_management.api.total;
 
-
 import com.naosim.dddwork.kintai_management.api.form.*;
 import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -19,7 +17,11 @@ public class KintaiManagementTotalRequest {
     @Getter
     @Setter
     @NotNull
-    @Valid
+    private String[] args;
+
+    @Getter
+    @Setter
+    @NotNull
     private TotalYearMonthForm totalYearMonthForm;
 
     public KintaiManagementTotalInput makeKintaiManagementTotalInput() {
@@ -27,4 +29,15 @@ public class KintaiManagementTotalRequest {
                 this.getTotalYearMonthForm().getValueObject()
         );
     }
+
+    public KintaiManagementTotalInput makeKintaiManagementTotalInputArgs() {
+
+        this.totalYearMonthForm = new TotalYearMonthForm(args[0]);
+
+        return new KintaiManagementTotalInput(
+                this.getTotalYearMonthForm().getValueObject()
+        );
+    }
+
+
 }

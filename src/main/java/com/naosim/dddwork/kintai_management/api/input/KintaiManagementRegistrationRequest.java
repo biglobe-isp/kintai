@@ -1,17 +1,14 @@
 package com.naosim.dddwork.kintai_management.api.input;
 
-
 import com.naosim.dddwork.kintai_management.api.form.HolidayKindForm;
 import com.naosim.dddwork.kintai_management.api.form.RegistrationDateForm;
 import com.naosim.dddwork.kintai_management.api.form.WorkingEndTimeForm;
 import com.naosim.dddwork.kintai_management.api.form.WorkingStartTimeForm;
-import com.naosim.dddwork.kintai_management.domain.word.HolidayKind;
 import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 /**

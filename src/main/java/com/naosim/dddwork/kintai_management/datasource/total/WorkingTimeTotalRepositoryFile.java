@@ -53,8 +53,8 @@ public class WorkingTimeTotalRepositoryFile implements WorkingTimeTotalRepositor
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
-            System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-            System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
+//            System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
+//            System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
 
         } catch (Exception e) {
             e.printStackTrace();

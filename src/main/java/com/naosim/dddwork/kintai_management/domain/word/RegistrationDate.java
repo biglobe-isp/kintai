@@ -3,18 +3,15 @@ package com.naosim.dddwork.kintai_management.domain.word;
 import com.naosim.dddwork.kintai_management.domain.system.IsPresentCheckable;
 import jp.co.biglobe.lib.publication.date.DateFormatter;
 import jp.co.biglobe.lib.publication.date.DateParser;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.time.LocalDate;
 
 /**
  * 登録年月日
  */
-@ToString(includeFieldNames = false)
-@EqualsAndHashCode(callSuper = false)
 public class RegistrationDate implements IsPresentCheckable {
+
     @Getter
     private final LocalDate value;
 
@@ -24,10 +21,6 @@ public class RegistrationDate implements IsPresentCheckable {
         } else {
             value = null;
         }
-    }
-
-    public static RegistrationDate blank() {
-        return new RegistrationDate(null);
     }
 
     public String getFormatValue() {
