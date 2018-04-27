@@ -11,7 +11,7 @@ import lombok.NonNull;
  */
 @AllArgsConstructor
 @Getter
-public class KintaiManagementTotalInput {
+public class KintaiManagementTotalServiceInput {
 
     @NonNull
     private TotalYearMonth totalYearMonth;

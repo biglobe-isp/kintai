@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
+ * 勤怠集計情報ファイル出力実装
  */
 @Repository
 public class WorkingTimeTotalRepositoryFile implements WorkingTimeTotalRepository {

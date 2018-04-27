@@ -1,7 +1,7 @@
 package com.naosim.dddwork.kintai_management.service
 
 import com.naosim.dddwork.kintai_management.domain.word.TotalYearMonth
-import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalInput
+import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalServiceInput
 import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -34,7 +34,7 @@ class 勤怠管理集計ServiceTest extends Specification {
         when:
         /** 登録Service実行 */
         kintaiManagementTotalService.kintaiManagementTotal(
-                new KintaiManagementTotalInput(
+                new KintaiManagementTotalServiceInput(
                         new TotalYearMonth(totalYearMonth)
                 )
         )
@@ -48,6 +48,5 @@ class 勤怠管理集計ServiceTest extends Specification {
         "通常（201804）"/*	*/| "201804"/*		*/
         "通常（201805）"/*	*/| "201805"/*		*/
         //@formatter:on
-
     }
 }

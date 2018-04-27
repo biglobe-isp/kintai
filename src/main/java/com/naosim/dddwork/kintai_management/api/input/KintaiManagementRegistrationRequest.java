@@ -4,7 +4,7 @@ import com.naosim.dddwork.kintai_management.api.form.HolidayKindForm;
 import com.naosim.dddwork.kintai_management.api.form.RegistrationDateForm;
 import com.naosim.dddwork.kintai_management.api.form.WorkingEndTimeForm;
 import com.naosim.dddwork.kintai_management.api.form.WorkingStartTimeForm;
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationInput;
+import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationServiceInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 勤怠管理登録リクエスト
+ * 勤怠管理登録リクエスト情報
  */
 @Component
 public class KintaiManagementRegistrationRequest {
@@ -39,16 +39,11 @@ public class KintaiManagementRegistrationRequest {
     @Setter
     private HolidayKindForm holidayKindForm = new HolidayKindForm(null);
 
-    public KintaiManagementRegistrationInput makeKintaiManagementRegistrationInput() {
-        return new KintaiManagementRegistrationInput(
-                this.getRegistrationDateForm().getValueObject(),
-                this.getWorkingStartTimeForm().getValueObject(),
-                this.getWorkingEndTimeForm().getValueObject(),
-                this.getHolidayKindForm().getValueObject()
-        );
-    }
+    public void checkRequestArgs() {
 
-    public KintaiManagementRegistrationInput makeKintaiManagementRegistrationInputArgs() {
+        if(args.length < 3) {
+            throw new RuntimeException("引数指定の誤り：引数が足りません");
+        }
 
         for (String arg : args) {
             if(arg != null) {
@@ -66,8 +61,11 @@ public class KintaiManagementRegistrationRequest {
                 }
             }
         }
+    }
 
-        return new KintaiManagementRegistrationInput(
+    public KintaiManagementRegistrationServiceInput makeKintaiManagementRegistrationServiceInput() {
+
+        return new KintaiManagementRegistrationServiceInput(
                 this.getRegistrationDateForm().getValueObject(),
                 this.getWorkingStartTimeForm().getValueObject(),
                 this.getWorkingEndTimeForm().getValueObject(),

@@ -18,22 +18,16 @@ public class KintaiManagementRegistrationApi {
 
     public void main(String[] args) {
 
-        try{
-
-            if(args.length < 3) {
-                throw new RuntimeException("引数が足りません");
-            }
-
+        try {
+            // 入力パラメータのバリデーション処理未実装
             kintaiManagementRegistrationRequest.setArgs(args);
+            kintaiManagementRegistrationRequest.checkRequestArgs();
 
             kintaiManagementRegistrationService.kintaiManagementRegistration(
-                    kintaiManagementRegistrationRequest.makeKintaiManagementRegistrationInputArgs()
+                    kintaiManagementRegistrationRequest.makeKintaiManagementRegistrationServiceInput()
             );
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return;
     }
 }

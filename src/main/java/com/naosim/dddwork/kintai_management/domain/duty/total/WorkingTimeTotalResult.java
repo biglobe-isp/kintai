@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- *
+ * 勤怠集計結果情報
  */
 @AllArgsConstructor
 @Getter
@@ -18,5 +18,4 @@ public class WorkingTimeTotalResult {
     private TotalWorkingTime totalWorkingTime;
 
     private TotalOverWorkingTime totalOverWorkingTime;
-
 }

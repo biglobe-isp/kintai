@@ -9,7 +9,7 @@ import lombok.*;
  */
 @AllArgsConstructor
 @Getter
-public class KintaiManagementRegistrationInput {
+public class KintaiManagementRegistrationServiceInput {
 
     @NonNull
     private RegistrationDate registrationDate;
@@ -28,8 +28,6 @@ public class KintaiManagementRegistrationInput {
                 registrationDate,
                 workingStartTime,
                 workingEndTime,
-                WorkingTime.create(workingStartTime, workingEndTime, holidayKind),
-                OverWorkingTime.create(workingStartTime, workingEndTime, holidayKind),
                 holidayKind
                 );
     }

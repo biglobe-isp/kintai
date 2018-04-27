@@ -1,7 +1,7 @@
 package com.naosim.dddwork.kintai_management.api
 
 import com.naosim.dddwork.kintai_management.api.total.KintaiManagementTotalApi
-import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalInput
+import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalServiceInput
 import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalService
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,12 +29,12 @@ class 勤怠管理集計ApiTest extends Specification {
     @Autowired
     KintaiManagementTotalService kintaiManagementTotalServiceMock
 
-    @Autowired
-    private WebApplicationContext wac
-    private MockMvc mockMvc
+//    @Autowired
+//    private WebApplicationContext wac
+//    private MockMvc mockMvc
 
     def setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build()
+//        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build()
     }
 
     def cleanup() {
@@ -43,7 +43,7 @@ class 勤怠管理集計ApiTest extends Specification {
 
     def "正常_#testCase"() {
         setup:
-        Mockito.doNothing().when(kintaiManagementTotalServiceMock).kintaiManagementTotal(Mockito.notNull(KintaiManagementTotalInput.class))
+        Mockito.doNothing().when(kintaiManagementTotalServiceMock).kintaiManagementTotal(Mockito.notNull(KintaiManagementTotalServiceInput.class))
 
         expect:
 //        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(URI)
@@ -62,7 +62,7 @@ class 勤怠管理集計ApiTest extends Specification {
 
     def "異常_#testCase"() {
         setup:
-        Mockito.doNothing().when(kintaiManagementTotalServiceMock).kintaiManagementTotal(Mockito.notNull(KintaiManagementTotalInput.class))
+        Mockito.doNothing().when(kintaiManagementTotalServiceMock).kintaiManagementTotal(Mockito.notNull(KintaiManagementTotalServiceInput.class))
 
         expect:
         String[] args = []

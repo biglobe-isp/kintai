@@ -4,7 +4,7 @@ import com.naosim.dddwork.kintai_management.domain.word.HolidayKind
 import com.naosim.dddwork.kintai_management.domain.word.RegistrationDate
 import com.naosim.dddwork.kintai_management.domain.word.WorkingEndTime
 import com.naosim.dddwork.kintai_management.domain.word.WorkingStartTime
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationInput
+import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationServiceInput
 import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
@@ -37,7 +37,7 @@ class 勤怠管理登録ServiceTest extends Specification {
         when:
         /** 登録Service実行 */
         kintaiManagementRegistrationService.kintaiManagementRegistration(
-                new KintaiManagementRegistrationInput(
+                new KintaiManagementRegistrationServiceInput(
                         new RegistrationDate(registrationDate),
                         new WorkingStartTime(workingStartTime),
                         new WorkingEndTime(workingEndTime),

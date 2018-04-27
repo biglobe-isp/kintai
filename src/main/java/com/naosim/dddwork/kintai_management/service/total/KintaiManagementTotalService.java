@@ -14,12 +14,11 @@ public class KintaiManagementTotalService {
     @Autowired
     private WorkingTimeTotalRepository workingTimeTotalRepository;
 
-    public void kintaiManagementTotal(KintaiManagementTotalInput kintaiManagementTotalInput) {
+    public void kintaiManagementTotal(KintaiManagementTotalServiceInput kintaiManagementTotalServiceInput) {
 
         WorkingTimeTotalResult workingTimeTotalResult =
-                workingTimeTotalRepository.totalWorkingTime(kintaiManagementTotalInput.makeWorkingTimeTotalInput());
+                workingTimeTotalRepository.totalWorkingTime(kintaiManagementTotalServiceInput.makeWorkingTimeTotalInput());
 
         workingTimeTotalRepository.registTotalWorkingTime(workingTimeTotalResult);
-
     }
 }

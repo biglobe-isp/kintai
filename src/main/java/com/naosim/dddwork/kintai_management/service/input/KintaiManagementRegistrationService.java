@@ -13,9 +13,8 @@ public class KintaiManagementRegistrationService {
     @Autowired
     private WorkingTimeRegistrationRepository workingTimeRegistrationRepository;
 
-    public void kintaiManagementRegistration(KintaiManagementRegistrationInput kintaiManagementRegistrationInput) {
+    public void kintaiManagementRegistration(KintaiManagementRegistrationServiceInput kintaiManagementRegistrationServiceInput) {
 
-        workingTimeRegistrationRepository.registWorkingTime(kintaiManagementRegistrationInput.makeWorkingTimeRegistrationInput());
-
+        workingTimeRegistrationRepository.registWorkingTime(kintaiManagementRegistrationServiceInput.makeWorkingTimeRegistrationInput());
     }
 }

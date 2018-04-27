@@ -1,15 +1,21 @@
 package com.naosim.dddwork.kintai_management.domain.word;
 
 import com.naosim.dddwork.kintai_management.domain.system.IsPresentCheckable;
-import jp.co.biglobe.lib.publication.date.DateFormatter;
-import jp.co.biglobe.lib.publication.date.DateParser;
+import com.naosim.dddwork.kintai_management.domain.system.date.DateFormatter;
+import com.naosim.dddwork.kintai_management.domain.system.date.DateParser;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 /**
  * 登録年月日
  */
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 public class RegistrationDate implements IsPresentCheckable {
 
     @Getter

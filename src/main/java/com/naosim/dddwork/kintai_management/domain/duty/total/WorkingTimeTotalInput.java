@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- *
+ * 勤怠集計入力情報
  */
 @AllArgsConstructor
 @Getter

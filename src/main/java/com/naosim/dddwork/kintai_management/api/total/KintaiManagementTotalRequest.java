@@ -1,7 +1,7 @@
 package com.naosim.dddwork.kintai_management.api.total;
 
 import com.naosim.dddwork.kintai_management.api.form.*;
-import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalInput;
+import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalServiceInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.constraints.NotNull;
 
 /**
- * 勤怠管理集計リクエスト
+ * 勤怠管理集計リクエスト情報
  */
 @Component
 public class KintaiManagementTotalRequest {
@@ -24,20 +24,19 @@ public class KintaiManagementTotalRequest {
     @NotNull
     private TotalYearMonthForm totalYearMonthForm;
 
-    public KintaiManagementTotalInput makeKintaiManagementTotalInput() {
-        return new KintaiManagementTotalInput(
-                this.getTotalYearMonthForm().getValueObject()
-        );
-    }
+    public void checkRequestArgs() {
 
-    public KintaiManagementTotalInput makeKintaiManagementTotalInputArgs() {
+        if(args.length < 1) {
+            throw new RuntimeException("引数指定の誤り：引数が足りません");
+        }
 
         this.totalYearMonthForm = new TotalYearMonthForm(args[0]);
+    }
 
-        return new KintaiManagementTotalInput(
+    public KintaiManagementTotalServiceInput makeKintaiManagementTotalServiceInput() {
+
+        return new KintaiManagementTotalServiceInput(
                 this.getTotalYearMonthForm().getValueObject()
         );
     }
-
-
 }
