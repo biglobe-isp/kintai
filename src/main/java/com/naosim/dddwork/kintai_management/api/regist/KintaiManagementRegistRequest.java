@@ -1,21 +1,20 @@
-package com.naosim.dddwork.kintai_management.api.input;
+package com.naosim.dddwork.kintai_management.api.regist;
 
 import com.naosim.dddwork.kintai_management.api.form.HolidayKindForm;
 import com.naosim.dddwork.kintai_management.api.form.RegistrationDateForm;
 import com.naosim.dddwork.kintai_management.api.form.WorkingEndTimeForm;
 import com.naosim.dddwork.kintai_management.api.form.WorkingStartTimeForm;
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationServiceInput;
+import com.naosim.dddwork.kintai_management.service.regist.KintaiManagementRegistServiceInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-
 import javax.validation.constraints.NotNull;
 
 /**
  * 勤怠管理登録リクエスト情報
  */
 @Component
-public class KintaiManagementRegistrationRequest {
+public class KintaiManagementRegistRequest {
 
     @Getter
     @Setter
@@ -63,9 +62,9 @@ public class KintaiManagementRegistrationRequest {
         }
     }
 
-    public KintaiManagementRegistrationServiceInput makeKintaiManagementRegistrationServiceInput() {
+    public KintaiManagementRegistServiceInput makeKintaiManagementRegistServiceInput() {
 
-        return new KintaiManagementRegistrationServiceInput(
+        return new KintaiManagementRegistServiceInput(
                 this.getRegistrationDateForm().getValueObject(),
                 this.getWorkingStartTimeForm().getValueObject(),
                 this.getWorkingEndTimeForm().getValueObject(),

@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 勤怠集計結果情報
+ * 勤怠集計情報結果
  */
 @AllArgsConstructor
 @Getter
-public class WorkingTimeTotalResult {
+public class WorkingTimeTotalDataResult {
 
     private TotalYearMonth totalYearMonth;
 

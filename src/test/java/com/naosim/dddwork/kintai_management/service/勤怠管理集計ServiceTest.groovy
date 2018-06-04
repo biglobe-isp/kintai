@@ -45,8 +45,8 @@ class 勤怠管理集計ServiceTest extends Specification {
         where:
         //@formatter:off
         testCase/*			*/| totalYearMonth/*	*/
-        "通常（201804）"/*	*/| "201804"/*		*/
-        "通常（201805）"/*	*/| "201805"/*		*/
+        "通常（201804）"/*	*/| "201804"/*			*/
+        "通常（201805）"/*	*/| "201805"/*			*/
         //@formatter:on
     }
 }

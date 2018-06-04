@@ -18,15 +18,15 @@
     <!-- Service層 -->
     <context:component-scan base-package="com.naosim.dddwork.kintai_management.service">
         <context:exclude-filter type="regex"
-                                expression="com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationService"/>
+                                expression="com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistService"/>
         <context:exclude-filter type="regex"
                                 expression="com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalService"/>
     </context:component-scan>
 
-    <bean id="kintaiManagementRegistrationServiceMock" name="kintaiManagementRegistrationServiceMock"
+    <bean id="kintaiManagementRegistServiceMock" name="kintaiManagementRegistServiceMock"
           class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg
-                value="com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationService"/>
+                value="com.naosim.dddwork.kintai_management.service.regist.KintaiManagementRegistService"/>
     </bean>
     <bean id="kintaiManagementTotalServiceMock" name="kintaiManagementTotalServiceMock"
           class="org.mockito.Mockito" factory-method="mock">

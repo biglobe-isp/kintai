@@ -1,15 +1,20 @@
-package com.naosim.dddwork.kintai_management.domain.duty.input;
+package com.naosim.dddwork.kintai_management.domain.duty.regist;
 
-import com.naosim.dddwork.kintai_management.domain.word.*;
+import com.naosim.dddwork.kintai_management.domain.word.HolidayKind;
+import com.naosim.dddwork.kintai_management.domain.word.RegistrationDate;
+import com.naosim.dddwork.kintai_management.domain.word.WorkingEndTime;
+import com.naosim.dddwork.kintai_management.domain.word.WorkingStartTime;
+import com.naosim.dddwork.kintai_management.domain.word.WorkingTime;
+import com.naosim.dddwork.kintai_management.domain.word.OverWorkingTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 勤怠登録入力情報
+ * 勤怠情報入力
  */
 @AllArgsConstructor
 @Getter
-public class WorkingTimeRegistrationInput {
+public class WorkingTimeDataInput {
 
     private RegistrationDate registrationDate;
 
@@ -19,7 +24,7 @@ public class WorkingTimeRegistrationInput {
 
     private HolidayKind holidayKind;
 
-    public WorkingTime createWorkingTime(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime, HolidayKind holidayKind) {
+    public WorkingTime createWorkingTime() {
 
         // このメソッド綺麗にしたい
         int startH;
@@ -80,7 +85,7 @@ public class WorkingTimeRegistrationInput {
         return new WorkingTime(workMinutes);
     }
 
-    public OverWorkingTime createOverWoringTime(WorkingStartTime workingStartTime, WorkingEndTime workingEndTime, HolidayKind holidayKind) {
-        return new OverWorkingTime(Math.max(this.createWorkingTime(workingStartTime, workingEndTime, holidayKind).getValue() - 8 * 60, 0));
+    public OverWorkingTime createOverWoringTime() {
+        return new OverWorkingTime(Math.max(this.createWorkingTime().getValue() - 8 * 60, 0));
     }
 }

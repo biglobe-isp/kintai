@@ -1,7 +1,8 @@
 package com.naosim.dddwork.kintai_management.service.total;
 
-import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalRepository;
-import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalResult;
+import com.naosim.dddwork.kintai_management.domain.duty.regist.WorkingTimeDataRepository;
+import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalDataRepository;
+import com.naosim.dddwork.kintai_management.domain.duty.total.WorkingTimeTotalDataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,16 @@ import org.springframework.stereotype.Service;
 public class KintaiManagementTotalService {
 
     @Autowired
-    private WorkingTimeTotalRepository workingTimeTotalRepository;
+    private WorkingTimeTotalDataRepository workingTimeTotalDataRepository;
+
+    @Autowired
+    private WorkingTimeDataRepository workingTimeDateRepository;
 
     public void kintaiManagementTotal(KintaiManagementTotalServiceInput kintaiManagementTotalServiceInput) {
 
-        WorkingTimeTotalResult workingTimeTotalResult =
-                workingTimeTotalRepository.totalWorkingTime(kintaiManagementTotalServiceInput.makeWorkingTimeTotalInput());
+        WorkingTimeTotalDataResult workingTimeTotalResult =
+                workingTimeDateRepository.getTotalWorkingTime(kintaiManagementTotalServiceInput.makeWorkingTimeTotalInput());
 
-        workingTimeTotalRepository.registTotalWorkingTime(workingTimeTotalResult);
+        workingTimeTotalDataRepository.registTotalWorkingTime(workingTimeTotalResult);
     }
 }

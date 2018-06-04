@@ -1,16 +1,13 @@
 package com.naosim.dddwork.kintai_management.api
 
-import com.naosim.dddwork.kintai_management.api.input.KintaiManagementRegistrationApi
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationServiceInput
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationService
+import com.naosim.dddwork.kintai_management.api.regist.KintaiManagementRegistApi
+import com.naosim.dddwork.kintai_management.service.regist.KintaiManagementRegistServiceInput
+import com.naosim.dddwork.kintai_management.service.regist.KintaiManagementRegistService
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -24,10 +21,10 @@ import spock.lang.Unroll
 class 勤怠管理登録ApiTest extends Specification {
 
     @Autowired
-    KintaiManagementRegistrationApi kintaiManagementRegistrationApi
+    KintaiManagementRegistApi kintaiManagementRegistApi
 
     @Autowired
-    KintaiManagementRegistrationService kintaiManagementRegistrationServiceMock
+    KintaiManagementRegistService kintaiManagementRegistServiceMock
 
 //    @Autowired
 //    private WebApplicationContext wac
@@ -38,12 +35,12 @@ class 勤怠管理登録ApiTest extends Specification {
     }
 
     def cleanup() {
-        Mockito.reset(kintaiManagementRegistrationServiceMock)
+        Mockito.reset(kintaiManagementRegistServiceMock)
     }
 
     def "正常_#testCase"() {
         setup:
-        Mockito.doNothing().when(kintaiManagementRegistrationServiceMock).kintaiManagementRegistration(Mockito.notNull(KintaiManagementRegistrationServiceInput.class))
+        Mockito.doNothing().when(kintaiManagementRegistServiceMock).kintaiManagementRegist(Mockito.notNull(KintaiManagementRegistServiceInput.class))
 
         expect:
 //        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(URI)
@@ -51,27 +48,25 @@ class 勤怠管理登録ApiTest extends Specification {
 //                .param("workingStartTimeForm", "0900")
 //                .param("workingEndTimeForm", "1800")
 //        )
-
-            String[] args = [registrationDate, workingStartTime, workingEndTime]
-            kintaiManagementRegistrationApi.main(args)
+        String[] args = [registrationDate, workingStartTime, workingEndTime]
+        kintaiManagementRegistApi.main(args)
 
         where:
         //@formatter:off
-        testCase/*				*/| registrationDate/*		*/| workingStartTime/*		*/| workingEndTime/*	*/
+        testCase/*			*/| registrationDate/*		*/| workingStartTime/*		*/| workingEndTime/*		*/
 //        "OK"/*		*/| "20180102"/*		*/| "0900"/*			*/| "1830"/*			*/
-        "OK"/*					*/| "-date:20180102"/*		*/| "-start:0900"/*			*/| "-end:1830"/*			*/
-        "OK(順序違いでのも良い)"/*	*/| "-start:0900"/*			*/| "-end:1830"/*			*/| "-date:20180102"/*		*/
+        "OK"/*				*/| "-date:20180102"/*		*/| "-start:0900"/*			*/| "-end:1830"/*			*/
+        "OK(順序違い)"/*		*/| "-start:0900"/*			*/| "-end:1830"/*			*/| "-date:20180102"/*		*/
         //@formatter:on
-
     }
 
     def "正常（休暇あり）_#testCase"() {
         setup:
-        Mockito.doNothing().when(kintaiManagementRegistrationServiceMock).kintaiManagementRegistration(Mockito.notNull(KintaiManagementRegistrationServiceInput.class))
+        Mockito.doNothing().when(kintaiManagementRegistServiceMock).kintaiManagementRegist(Mockito.notNull(KintaiManagementRegistServiceInput.class))
 
         expect:
         String[] args = [registrationDate, workingStartTime, workingEndTime, holidayKind]
-        kintaiManagementRegistrationApi.main(args)
+        kintaiManagementRegistApi.main(args)
 
         where:
         //@formatter:off
@@ -82,37 +77,33 @@ class 勤怠管理登録ApiTest extends Specification {
         //@formatter:on
     }
 
-
     def "異常_#testCase"() {
         setup:
-        Mockito.doNothing().when(kintaiManagementRegistrationServiceMock).kintaiManagementRegistration(Mockito.notNull(KintaiManagementRegistrationServiceInput.class))
+        Mockito.doNothing().when(kintaiManagementRegistServiceMock).kintaiManagementRegist(Mockito.notNull(KintaiManagementRegistServiceInput.class))
 
         expect:
         String[] args = [registrationDate, workingStartTime]
-        kintaiManagementRegistrationApi.main(args)
+        kintaiManagementRegistApi.main(args)
 
         where:
         //@formatter:off
         testCase/*		*/| registrationDate/*	*/| workingStartTime/*	*/
         "引数不足"/*		*/| "20180102"/*		*/| "0900"/*			*/
         //@formatter:on
-
     }
 
     def "異常2_#testCase"() {
         setup:
-        Mockito.doNothing().when(kintaiManagementRegistrationServiceMock).kintaiManagementRegistration(Mockito.notNull(KintaiManagementRegistrationServiceInput.class))
+        Mockito.doNothing().when(kintaiManagementRegistServiceMock).kintaiManagementRegist(Mockito.notNull(KintaiManagementRegistServiceInput.class))
 
         expect:
         String[] args = [registrationDate, workingStartTime, workingEndTime]
-        kintaiManagementRegistrationApi.main(args)
+        kintaiManagementRegistApi.main(args)
 
         where:
         //@formatter:off
         testCase/*	*/| registrationDate/*		*/| workingStartTime/*	*/| workingEndTime/*	*/
         "引数不正"/*	*/| "-date:20180102"/*		*/| "-XXstart:0900"/*	*/| "-end:1830"/*		*/
         //@formatter:on
-
     }
-
 }

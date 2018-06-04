@@ -1,11 +1,10 @@
 package com.naosim.dddwork.kintai_management.api.total;
 
-import com.naosim.dddwork.kintai_management.api.form.*;
+import com.naosim.dddwork.kintai_management.api.form.TotalYearMonthForm;
 import com.naosim.dddwork.kintai_management.service.total.KintaiManagementTotalServiceInput;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
-
 import javax.validation.constraints.NotNull;
 
 /**

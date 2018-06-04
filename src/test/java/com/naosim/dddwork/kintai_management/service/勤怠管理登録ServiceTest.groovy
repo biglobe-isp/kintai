@@ -4,8 +4,8 @@ import com.naosim.dddwork.kintai_management.domain.word.HolidayKind
 import com.naosim.dddwork.kintai_management.domain.word.RegistrationDate
 import com.naosim.dddwork.kintai_management.domain.word.WorkingEndTime
 import com.naosim.dddwork.kintai_management.domain.word.WorkingStartTime
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationServiceInput
-import com.naosim.dddwork.kintai_management.service.input.KintaiManagementRegistrationService
+import com.naosim.dddwork.kintai_management.service.regist.KintaiManagementRegistServiceInput
+import com.naosim.dddwork.kintai_management.service.regist.KintaiManagementRegistService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -23,7 +23,7 @@ import spock.lang.Unroll
 class 勤怠管理登録ServiceTest extends Specification {
 
     @Autowired
-    private KintaiManagementRegistrationService kintaiManagementRegistrationService;
+    private KintaiManagementRegistService kintaiManagementRegistService;
 
     def setup() {
     }
@@ -36,8 +36,8 @@ class 勤怠管理登録ServiceTest extends Specification {
 
         when:
         /** 登録Service実行 */
-        kintaiManagementRegistrationService.kintaiManagementRegistration(
-                new KintaiManagementRegistrationServiceInput(
+        kintaiManagementRegistService.kintaiManagementRegist(
+                new KintaiManagementRegistServiceInput(
                         new RegistrationDate(registrationDate),
                         new WorkingStartTime(workingStartTime),
                         new WorkingEndTime(workingEndTime),
@@ -57,6 +57,5 @@ class 勤怠管理登録ServiceTest extends Specification {
         "am半休"/*			*/| "20180501"/*		*/| null/*				*/| "2000"/*			*/| "am"
         "pm半休"/*			*/| "20180501"/*		*/| "0900"/*			*/| null/*				*/| "pm"
         //@formatter:on
-
     }
 }

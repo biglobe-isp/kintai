@@ -5,7 +5,6 @@ import jp.co.biglobe.lib.publication.validation.FormatDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-
 @AllArgsConstructor
 public class RegistrationDateForm {
 

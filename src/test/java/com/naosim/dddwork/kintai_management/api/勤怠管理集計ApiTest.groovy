@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.web.WebAppConfiguration
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -49,9 +46,8 @@ class 勤怠管理集計ApiTest extends Specification {
 //        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post(URI)
 //                .param("totalYearMonthForm", "201804")
 //        )
-
-            String[] args = [totalYearMonth]
-            kintaiManagementTotalApi.main(args)
+        String[] args = [totalYearMonth]
+        kintaiManagementTotalApi.main(args)
 
         where:
         //@formatter:off
