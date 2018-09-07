@@ -1,0 +1,16 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework:spring-context:4.0.0.RELEASE'
+    testCompile "org.spockframework:spock-spring:1.0-groovy-2.4"
+    testCompile "org.springframework:spring-test:4.2.0.RELEASE"
+}

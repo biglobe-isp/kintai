@@ -1,0 +1,129 @@
+@startuml
+
+class main {
+
+}
+
+package api {
+  class 勤怠入力チェック {
+    勤怠入力チェックservice(日付, 開始時刻, 終了時刻)
+  }
+  class 勤怠入力 {
+    勤怠入力service(日付, 開始時刻, 終了時刻)
+  }
+  class 勤怠集計 {
+    List<勤怠> 勤怠集計service(抽出月)
+  }
+}
+
+package service {
+  class 勤怠入力チェックservice {
+    勤怠チェック チェック(日付, 開始時刻, 終了時刻)
+  }
+  class 勤怠入力service {
+    void 登録(日付, 開始時刻, 終了時刻)
+  }
+  class 勤怠集計service {
+    List<勤怠> 参照(抽出月)
+  }
+}
+
+package domain {
+  package company {
+    class 始業時刻 {
+      9:00
+    }
+    class 就業時刻 {
+      18:00
+    }
+    enum 休憩開始時間 {
+    }
+    enum 休憩終了時間 {
+    }
+    enum 勤怠チェック {
+      OK
+      出勤日がありえない
+      開始時刻が始業時刻を超えてる
+      終了時刻が日をまたいじゃう
+      終了時刻より開始時刻の方遅い
+    }
+
+    始業時刻 -[hidden]> 就業時刻
+    休憩開始時間 -[hidden]> 休憩終了時間
+  }
+
+  class チェックポリシー {
+    勤怠チェック check(日付, 開始時刻, 終了時刻)
+  }
+  class 勤怠 {
+    boolean 勤怠を登録していいか?()
+    労働時間 算出(開始時刻, 終了時刻)
+  }
+  class 出勤日 {
+    String
+  }
+  class 開始時刻 {
+    String
+  }
+  class 終了時刻 {
+    String
+  }
+  class 労働時間 {
+    時間型
+    定時時間 算出(開始時刻, 終了時刻)
+    残業時間 算出(定時時間, 合計休憩時間)
+  }
+  class 定時時間 {
+  }
+  class 残業時間 {
+  }
+  class 合計休憩時間 {
+    int 昼休憩時間算出(終了時刻)
+    int 夕方休憩時間算出(終了時刻)
+    int 夜休憩時間算出(終了時刻)
+  }
+
+  勤怠 "1" --> "1" 出勤日
+  勤怠 "1" --> "1" 開始時刻
+  勤怠 "1" --> "1" 終了時刻
+  勤怠 "1" --> "1" 労働時間
+  勤怠 "1" --> "1" 合計休憩時間
+  休憩開始時間 --> 合計休憩時間
+  休憩終了時間 --> 合計休憩時間
+  労働時間 "1" --> "1" 定時時間
+  労働時間 "1" --> "1" 残業時間
+  チェックポリシー --> 始業時刻
+  チェックポリシー --> 就業時刻
+  チェックポリシー --> 勤怠チェック
+
+  interface 勤怠Repository {
+  }
+}
+
+package datasource {
+
+   class 勤怠RepositoryEvent {
+     登録(日付, 開始時刻, 終了時刻)
+     勤怠 参照(抽出月)
+  }
+
+}
+
+main --> 勤怠入力チェック
+main --> 勤怠入力
+main --> 勤怠集計
+
+勤怠入力チェック --> 勤怠入力チェックservice
+勤怠入力 -> 勤怠入力service
+勤怠集計 -> 勤怠集計service
+
+勤怠入力チェックservice --> 勤怠チェック
+勤怠入力チェックservice --> チェックポリシー
+勤怠入力service --> 勤怠Repository
+勤怠集計service --> 勤怠Repository
+勤怠RepositoryEvent --|> 勤怠Repository
+
+勤怠集計service --> 勤怠
+勤怠RepositoryEvent --> 勤怠
+
+@enduml
