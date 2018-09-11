@@ -1,0 +1,84 @@
+/**
+ * gradlew soukoban コマンド実行時の処理の設定
+ */
+def soukobanMap = [
+        "dev": [
+                // online abiko1
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006268/branches/AP_00006268_3_dev_trunk/",
+                // batch abiko
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006274/branches/AP_00006274_3_dev_trunk/",
+        ],
+        "release": [
+                // online abiko1
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006268/branches/AP_00006268_3_release_trunk/",
+                // online abiko2
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006269/branches/AP_00006269_3_release_trunk/",
+                // online shibaura1
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006270/branches/AP_00006270_3_release_trunk/",
+                // online shibaura2
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006271/branches/AP_00006271_3_release_trunk/",
+                // batch abiko
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006274/branches/AP_00006274_3_release_trunk/",
+                // batch shibaura
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006273/branches/AP_00006273_3_release_trunk/",
+                // java_batch
+                "https://api.souko.bcos.biglobe.ne.jp/svn/AP_00006272/branches/AP_00006272_3_release_trunk/",
+        ],
+]
+
+task soukoban(dependsOn: war) << {
+    def warFile = file("build/libs/" + projectName + "-" + warVersion + ".war")
+    if (!warFile.exists()) {
+        assert warFile + " not found"
+    }
+
+    def gitinfo = new GitInfo()
+    String commitText = "Build by ${gitinfo.branch} with message ${gitinfo.last}"
+
+    def smode = "dev"
+    if (gitinfo.isRelease()) {
+        smode = "release"
+    }
+
+    def svndir = "build/soukoban/"+smode
+    def svnlist = soukobanMap[smode]
+    file(svndir).mkdirs()
+
+    for (String svnpath: svnlist) {
+        def checkoutdir = svndir+"/"+svnpath.split("/").last()
+
+        if (file(checkoutdir).exists()) {
+            println "update " + checkoutdir
+            ["svn","update",checkoutdir].execute().waitFor()
+        } else {
+            println "checkout " + checkoutdir
+            ["svn","co",svnpath,checkoutdir].execute().waitFor()
+        }
+        copy {
+            from warFile
+            into checkoutdir + "/webapps/"
+        }
+        println "commit " + checkoutdir + " with message " + commitText
+        ["svn","ci","-m",commitText,checkoutdir].execute().waitFor()
+    }
+}
+
+class GitInfo {
+    String branch
+    String last
+    GitInfo() {
+        this.branch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
+        Process p = [
+                'git',
+                'log',
+                '-n 1',
+                '--date=format:%m/%d %H:%M',
+                '--pretty=format:%h %ad'
+        ].execute()
+        p.waitFor()
+        this.last = p.text.trim()
+    }
+    boolean isRelease() {
+        return branch.startsWith("release")
+    }
+}

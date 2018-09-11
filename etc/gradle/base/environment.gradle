@@ -1,0 +1,54 @@
+/**
+ * 環境ごとの設定
+ */
+
+// 実行環境の判定をどこでもできるように、グローバル変数に入れてる
+ext {
+    environmentChecker = new EnvironmentChecker()
+}
+
+def envList = ['localMac', 'localWindows',
+               'cloudHosting',
+               'development', 'testing', 'staging', 'production']
+
+if (!hasProperty('env') || env == "") {
+    if (environmentChecker.isMac()) {
+        ext.env = envList[0]
+    } else if (environmentChecker.isWindows()) {
+        ext.env = envList[1]
+    } else {
+        ext.env = envList[2]
+    }
+}
+
+/**
+ * 実行環境の判定クラス
+ *
+ * OS判定のロジックは、apache-commonsのSystemUtilsから拝借
+ * 参考　https://github.com/apache/commons-lang
+ */
+final class EnvironmentChecker {
+    /** ローカル環境かどうか判定 */
+    final boolean isLocal() {
+        return isMac() || isWindows()
+    }
+
+    /** Macかどうか判定 */
+    final boolean isMac() {
+        return isOSNameMatch("Mac")
+    }
+
+    /** Windowsかどうか判定 */
+    final boolean isWindows() {
+        return isOSNameMatch("Windows")
+    }
+
+    private final boolean isOSNameMatch(final String osNamePrefix) {
+        if (OS_NAME == null) {
+            return false
+        }
+        return OS_NAME.startsWith(osNamePrefix)
+    }
+
+    private final String OS_NAME = System.getProperty("os.name")
+}

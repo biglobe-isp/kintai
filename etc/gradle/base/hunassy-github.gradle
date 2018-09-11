@@ -1,0 +1,78 @@
+/**
+ * Huなっしー 一括登録タスク for Github
+ *
+ * 使い方：
+ * 0. 事前準備（認証関連）
+ *   1. GitHubの自分のプロファイルメニュー（右上のアイコン）で Settings 画面に移動する
+ *
+ *   2. 次に、左の Personal settings メニューの Personal access tokens を選択し、
+ *      アクセストークンを発行する。
+ *      アクセストークンを発行するとき、"Select scopes"項目の"repo"、"admin:repo_hook" にチェックを入れる。
+ *
+ *   3. ホームディレクトリに .github というファイルを作り、下記のようにユーザ名、
+ *      アクセストークン を指定する
+ *
+ *      login=GitHubのアカウント名
+ *      oauth=手順２で発行したアクセストークン
+ *
+ * 1. build.gradle に以下を追加
+ *
+ * apply from: file('etc/gradle/base/hunassy-github.gradle')
+ *
+ * 2. このファイルの repositoryName, roomId を修正
+ *
+ * 3. 以下のコマンドを実行
+ *
+ * % gradle hunassy_github
+ *
+ *
+ * 注意：二重登録チェックとかしてないです。
+ */
+buildscript {
+
+    repositories {
+        mavenCentral()
+
+        maven {
+            url 'http://maven.jenkins-ci.org/content/repositories/releases/'
+        }
+    }
+
+    dependencies {
+        def gitHubApiVersion = '1.70'
+
+        classpath "org.kohsuke:github-api:${gitHubApiVersion}"
+    }
+}
+
+ext {
+    // Hook を設定するレポジトリ名
+    repositoryName = 'biglobe-isp/base-project'
+
+    // Hook を設定するルームID
+    roomId = '31481983'
+}
+
+import org.kohsuke.github.*
+
+//
+task hunassy_github << {
+
+    // 登録するHuなっしーフックの一覧
+    def hooks = [
+            ['path': 'hook-pull-request', 'events': [GHEvent.PULL_REQUEST]],
+            ['path': 'hook-issue', 'events': [GHEvent.ISSUES]],
+            ['path': 'hook-issue-comment', 'events': [GHEvent.ISSUE_COMMENT]],
+            ['path': 'hook-pull-request-comment', 'events': [GHEvent.PULL_REQUEST_REVIEW_COMMENT]],
+            ['path': 'hook-commit-comment', 'events': [GHEvent.COMMIT_COMMENT]]
+    ]
+
+    GitHub github = GitHub.connect()
+    GHRepository repository = github.getRepository(repositoryName)
+
+    hooks.each {
+        def url = "https://52.69.134.189/funassyi/github/${it.path}?room=${roomId}".toString()
+
+        repository.createHook('web', ['url': url, 'content_type': 'json', 'insecure_ssl': 1,], it.events, true)
+    }
+}
