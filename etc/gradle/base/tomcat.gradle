@@ -1,0 +1,58 @@
+/**
+ * Tomcatの設定
+ */
+
+apply plugin: 'com.bmuschko.tomcat'
+
+ext {
+    // Tomcatのバージョン
+    tomcatVersion = '7.0.53'
+    // Tomcatのコンテキストパス（アプリケーションのルート）
+    tomcatContextPath = "/domain/${rootProject.name}"
+}
+
+tomcatRun {
+    httpPort = 7010
+    reloadable = true
+    contextPath = "${tomcatContextPath}"
+    configFile = file('etc/tomcat/local/context.xml')
+    stopPort = 7011
+    stopKey = 'stopkey'
+}
+tomcatStop {
+    stopPort = 7011
+    stopKey = 'stopkey'
+}
+
+dependencies {
+    // Tomcatの設定
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
+    tomcat "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
+
+    /* Database の設定 */
+    // 接続プール
+    tomcat "org.apache.tomcat:tomcat-dbcp:${tomcatVersion}"
+
+    // H2 Database JDBC Driver
+    tomcat "com.h2database:h2:${h2Version}"
+    // H2 Database用StoredProcedure ライブラリ
+    tomcat "jp.co.biglobe:h2storedprocedure:${h2storedprocedureVersion}"
+
+    // Oracle JDBC Driver
+//    tomcat files("etc/library/local/ojdbc6-${ojdbcVersion}.jar")
+}
+
+// TomcatがContextを自動リロードするために、クラスファイルの出力先を変更
+sourceSets {
+    main {
+        output.classesDir = 'src/main/webapp/WEB-INF/classes'
+    }
+}
+
+// clean タスクを実行した際に、Tomcat用の出力先も削除対象とする
+clean {
+    delete << 'src/main/webapp/WEB-INF/classes'
+}

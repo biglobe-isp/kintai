@@ -1,0 +1,47 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+/**
+ * gradlew war コマンド実行時の処理の設定
+ */
+
+apply {
+    plugin 'war'
+}
+
+// 倉庫番のリリーススクリプトにも影響を与えるため、現状は固定値にしている
+// ココを変更するとBO側でwarファイルのシンボリックリンクの張り替えなどが発生する
+ext {
+    warVersion = '1.0'
+    componentVersion = 2.0
+}
+
+class GitInfo {
+    String now
+    String branch
+    String last
+    GitInfo() {
+        this.branch = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
+        Process p = [
+                'git',
+                'log',
+                '-n 1',
+                '--date=format:%m/%d %H:%M',
+                '--pretty=format:[%ad] %h %an %s'
+        ].execute()
+        p.waitFor()
+        this.last = p.text.trim()
+        this.now = LocalDateTime.now().format(DateTimeFormatter.ofPattern('MM/dd HH:mm'))
+        println "built at: $now, branch: $branch, last commit: $last"
+    }
+}
+
+war {
+    baseName = "${projectName}"
+    version = "${warVersion}"
+    def gitinfo = new GitInfo()
+    manifest { attributes "Implementation-Version": "${componentVersion}" }
+    manifest { attributes "Biglobe-Component-Built-At": "${gitinfo.now}" }
+    manifest { attributes "Biglobe-Component-Branch": "${gitinfo.branch}" }
+    manifest { attributes "Biglobe-Component-Last-Commit": "${gitinfo.last}" }
+}
