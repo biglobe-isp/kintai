@@ -1,13 +1,13 @@
-package jp.co.biglobe.kintai.domain;
+package jp.co.biglobe.kintai.service;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class KintaiManager {
+public class KintaiService {
 
-    public void input(String date, String start, String end, String now){
+    public static void input(String date, String start, String end, String now) {
         int startH = Integer.valueOf(start.substring(0, 2));
         int startM = Integer.valueOf(start.substring(2, 4));
 
@@ -16,41 +16,41 @@ public class KintaiManager {
 
         int workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
-        if(endH == 12) {
+        if (endH == 12) {
             workMinutes -= endM;
-        } else if(endH >= 13) {
+        } else if (endH >= 13) {
             workMinutes -= 60;
         }
 
-        if(endH == 18) {
+        if (endH == 18) {
             workMinutes -= endM;
-        } else if(endH >= 19) {
+        } else if (endH >= 19) {
             workMinutes -= 60;
         }
 
-        if(endH == 21) {
+        if (endH == 21) {
             workMinutes -= endM;
-        } else if(endH >= 22) {
+        } else if (endH >= 22) {
             workMinutes -= 60;
         }
 
         int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
         File file = new File("data.csv");
-        try(FileWriter filewriter = new FileWriter(file, true)) {
+        try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void total(String yearMonth){
+    public static void total(String yearMonth) {
 
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
 
         File file = new File("data.csv");
 
-        try(
+        try (
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
         ) {
@@ -58,9 +58,9 @@ public class KintaiManager {
             String line = br.readLine();
             Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-            while(line != null){
+            while (line != null) {
                 String[] columns = line.split(",");
-                if(!columns[0].startsWith(yearMonth)) {
+                if (!columns[0].startsWith(yearMonth)) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
@@ -70,7 +70,7 @@ public class KintaiManager {
             }
 
             Set<String> keySet = totalWorkMinutesMap.keySet();
-            for(String key : keySet) {
+            for (String key : keySet) {
                 totalWorkMinutes += totalWorkMinutesMap.get(key);
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
@@ -82,6 +82,5 @@ public class KintaiManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-}
+    }
 }

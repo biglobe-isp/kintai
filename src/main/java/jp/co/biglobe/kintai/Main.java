@@ -1,6 +1,6 @@
 package jp.co.biglobe.kintai;
 
-import jp.co.biglobe.kintai.domain.KintaiManager;
+import jp.co.biglobe.kintai.api.KintaiApi;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +21,6 @@ public class Main {
             if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
             }
-            KintaiManager manager = new KintaiManager();
 
             String methodType = args[InputArgsIndex_MethodType];
 
@@ -34,15 +33,14 @@ public class Main {
                 String end = args[InputArgsIndex_EndTime];
                 String now = LocalDateTime.now().toString();
 
-                manager.input(date, start, end, now);
+                KintaiApi.input(date, start, end, now);
 
             } else if (MethodType_Total.equals(methodType)) {
                 String yearMonth = args[InputArgsIndex_YearMonth];
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
-
-                manager.total(yearMonth);
+                KintaiApi.total(yearMonth);
 
             } else {
                 throw new RuntimeException("methodTypeが不正です");
