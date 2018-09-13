@@ -1,4 +1,4 @@
-package com.naosim.dddwork;
+package jp.co.biglobe.kintai;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -72,7 +72,7 @@ public class Main {
                 try(
                         FileReader fr = new FileReader(file);
                         BufferedReader br = new BufferedReader(fr);
-                        ) {
+                ) {
 
                     String line = br.readLine();
                     Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
