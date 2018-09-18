@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
-Biglobe-Component-Last-Commit: [09/12 13:23] 81d17dc wmanabu Base
+Biglobe-Component-Last-Commit: [09/13 14:17] c1e0f00 wmanabu モデル
+ 設計追加
 Implementation-Version: 2.0
 Biglobe-Component-Branch: refactor/man-watanabe
-Biglobe-Component-Built-At: 09/12 13:25
+Biglobe-Component-Built-At: 09/18 11:35
 
