@@ -5,7 +5,7 @@ title 勤怠管理　ドメイン設計
 
 package 勤怠{
 
-    enum 勤務状態 as "WorkState"{
+    enum 勤務状態 as "WorkState" {
      通常
      遅刻
      早退
@@ -14,25 +14,6 @@ package 勤怠{
      予定休
      有給
     }
-
-    class 打刻時間 as "Timestamp"{
-     - int 年月日
-     - int 時
-     – int 分
-    }
-
-    勤務時間算出者 ..> 打刻時間
-
-
-    class 終業時間 as "EndTime"{
-     - 打刻時間 終業時間
-    }
-    打刻時間 *-- "終業時間" : use
-
-    class 就業時間 as "StartTime" {
-     - 打刻時間 就業時間
-    }
-    打刻時間 *-- "就業時間" : use
 
     class 勤務時間 as "WorkTime"{
      - int 時間
