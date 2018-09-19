@@ -16,10 +16,12 @@ package 勤怠{
     }
 
     class 打刻時間 as "TimeStamp"{
-     - int 日付
+     - int 年月日
      - int 時
      – int 分
     }
+
+    勤務時間算出者 ..> 打刻時間
 
 
     class 終業時間 as "EndTime"{
@@ -46,13 +48,14 @@ package 勤怠{
     　- 配列　休憩終了時間
     --
      + 勤務時間 calcWorkTime(就業時間, 終業時間)
-
     }
+
 
     class 月勤務時間 as "MonthlyWorkTime"{
      - List<勤務時間>　勤務時間リスト
+     - int 年月
      --
-
+     +
     }
 
 
@@ -61,9 +64,20 @@ package 勤怠{
       + 月勤務時間　total(int yearMonth)
     }
 
+    勤務時間リポジトリ -- 月勤務時間
+    勤務時間リポジトリ -- 勤務時間
+
     class コンソール出力 as "ConsoleViewer"{
      + void outPutView(月勤務時間)
     }
+
+    interface 出力インターフェイス as "Viewer"{
+     + void outPutView(月勤務時間)
+    }
+
+    出力インターフェイス <|.. コンソール出力
+
+    コンソール出力 -- 月勤務時間
 }
 @enduml
 
