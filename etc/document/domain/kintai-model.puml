@@ -1,0 +1,69 @@
+@startuml
+
+title 勤怠管理　ドメイン設計
+
+
+package 勤怠{
+
+    enum 勤務状態 as "WorkState"{
+     通常
+     遅刻
+     早退
+     欠勤
+     忌引
+     予定休
+     有給
+    }
+
+    class 打刻時間 as "TimeStamp"{
+     - int 日付
+     - int 時
+     – int 分
+    }
+
+
+    class 終業時間 as "EndTime"{
+     - 打刻時間 終業時間
+    }
+    打刻時間 *-- "終業時間" : use
+
+    class 就業時間 as "StartTime" {
+     - 打刻時間 就業時間
+    }
+    打刻時間 *-- "就業時間" : use
+
+    class 勤務時間 as "WorkTime"{
+     - int 時間
+     – int 分
+     - int 残業時間
+     - int 残業分
+     - int 残業総分
+     - 勤務状態 状態
+    }
+
+    class 勤務時間算出者 as "WorkTimeCalculator"{
+    　- 配列　休憩開始時間
+    　- 配列　休憩終了時間
+    --
+     + 勤務時間 calcWorkTime(就業時間, 終業時間)
+
+    }
+
+    class 月勤務時間 as "MonthlyWorkTime"{
+     - List<勤務時間>　勤務時間リスト
+     --
+
+    }
+
+
+    interface 勤務時間リポジトリ as "WorkTimeRepository"{
+      + void input(勤務時間)
+      + 月勤務時間　total(int yearMonth)
+    }
+
+    class コンソール出力 as "ConsoleViewer"{
+     + void outPutView(月勤務時間)
+    }
+}
+@enduml
+
