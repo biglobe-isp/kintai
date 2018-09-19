@@ -15,7 +15,7 @@ package 勤怠{
      有給
     }
 
-    class 打刻時間 as "TimeStamp"{
+    class 打刻時間 as "Timestamp"{
      - int 年月日
      - int 時
      – int 分
@@ -78,6 +78,13 @@ package 勤怠{
     出力インターフェイス <|.. コンソール出力
 
     コンソール出力 -- 月勤務時間
+
+    class 月勤務時間集計 {
+    }
+    class 月勤務時間集計者 {
+    }
+    class TimeKeeper {
+    }
 }
 @enduml
 
