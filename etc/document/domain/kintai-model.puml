@@ -67,18 +67,6 @@ package 勤怠{
     勤務時間リポジトリ -- 月勤務時間
     勤務時間リポジトリ -- 勤務時間
 
-    class コンソール出力 as "ConsoleViewer"{
-     + void outPutView(月勤務時間)
-    }
-
-    interface 出力インターフェイス as "Viewer"{
-     + void outPutView(月勤務時間)
-    }
-
-    出力インターフェイス <|.. コンソール出力
-
-    コンソール出力 -- 月勤務時間
-
     class 月勤務時間集計 {
     }
     class 月勤務時間集計者 {
