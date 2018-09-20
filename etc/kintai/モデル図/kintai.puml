@@ -1,106 +1,174 @@
 @startuml
 
 package api {
+    package form {
+        class "勤務月From[WorkingMonthFrom]" as WorkingMonthFrom {
+            String
+        }
+        class "勤務日From[WorkDayFrom]" as WorkDayFrom {
+            LocalDate
+        }
+        class "始業時間From[StartingHoursFrom]" as StartingHoursFrom {
+            LocalTime
+        }
+        class "終業時間From[ClosingTimeFrom]" as ClosingTimeFrom {
+            LocalTime
+        }
+    }
 
     class "勤怠管理[AttendanceManagementApi]" as AttendanceManagementApi {
         +勤務時間登録(勤務日[WorkDay], 始業時間[StartingHours], 終業時間[ClosingTime])
-        +勤務時間集計(勤務月 : (WorkDay))
+        +勤務時間集計&出力(勤務月[WorkDay])
     }
+
+    WorkingMonthFrom -do-> AttendanceManagementApi
+    WorkDayFrom -do-> AttendanceManagementApi
+    StartingHoursFrom -do-> AttendanceManagementApi
+    ClosingTimeFrom -do-> AttendanceManagementApi
+
 }
 
 package service {
 
     class "勤務時間集計サービス[TotalWorkingHoursService]" as TotalWorkingHoursService {
-        +勤務時間集計
-
-        勤務月 : (WorkDay)
+        勤務月[WorkingMonth]
+        +勤務時間集計(TotalWorkingHoursApplication)
     }
 
     class "勤務時間登録サービス[WorkTimeRegistrationService]" as WorkTimeRegistrationService {
-        +勤務時間登録
-
-        勤務月 : (WorkingMonth)
-        勤務時間 : (WorkingHours)
-        残業時間 : (OvertimeHours)
-    }
-
-}
-
-package domain {
-
-    interface "勤務時間登録リポジトリ[WorkTimeRegistrationRepository]" as WorkTimeRegistrationRepository {
-        + void registered(RegisteredWorkingHours) //永続化
-    }
-
-    class "登録済勤務時間[RegisteredWorkingHours]" as RegisteredWorkingHours {
         勤務日[WorkDay]
         始業時間[StartingHours]
         終業時間[ClosingTime]
+        +勤務時間登録(TotalWorkingHoursApplication)
     }
 
-    class "勤務日[WorkDay]" as WorkDay {
-        LocalDate
-    }
-    class "始業時間[StartingHours]" as StartingHours {
-        LocalTime
-    }
-    class "終業時間[ClosingTime]" as ClosingTime {
-        LocalTime
-    }
-
-    WorkTimeRegistrationRepository -down-> RegisteredWorkingHours
-    RegisteredWorkingHours -down-> WorkDay
-    RegisteredWorkingHours -down-> StartingHours
-    RegisteredWorkingHours -down-> ClosingTime
-
-
-    interface "勤務時間集計リポジトリ[TotalWorkingHoursRepository]" as TotalWorkingHoursRepository {
-        + TotalMonthlyWorkingHours TotalWorkingHours(WorkingMonth) // 集計
-    }
-
-    class "月勤務時間集計[TotalMonthlyWorkingHours]" as TotalMonthlyWorkingHours {
-        勤務月[WorkingMonth]
-        勤務時間[WorkingHours]
-        残業時間[OvertimeHours]
-    }
-
-    class "勤務月[WorkingMonth]" as WorkingMonth {
-        String
-    }
-    class "勤務時間[WorkingHours]" as WorkingHours {
-        Integer
-    }
-    class "残業時間[OvertimeHours]" as OvertimeHours {
-        Integer
-    }
-
-    TotalWorkingHoursRepository -down-> TotalMonthlyWorkingHours
-
-    TotalMonthlyWorkingHours -down-> WorkingMonth
-    TotalMonthlyWorkingHours -down-> WorkingHours
-    TotalMonthlyWorkingHours -down-> OvertimeHours
 }
+
+AttendanceManagementApi -do-> TotalWorkingHoursService
+AttendanceManagementApi -do-> WorkTimeRegistrationService
+
+
+package domain {
+
+    package UseCase {
+        class "勤務時間集計アプリケーション[TotalWorkingHoursApplication(WorkingMonth)]" as TotalWorkingHoursApplication {
+            勤務月[WorkingMonth]
+        }
+
+        class "月勤務時間集計結果[TotalWorkingHoursResult(List<AttendanceManagement>)]" as TotalWorkingHoursResult {
+            勤務月[WorkingMonth]
+            勤務時間[WorkingHours]
+            残業時間[OvertimeHours]
+        }
+
+        class "勤務月[WorkingMonth]" as WorkingMonth {
+            String
+        }
+        class "勤務時間[WorkingHours]" as WorkingHours {
+            Integer
+        }
+        class "残業時間[OvertimeHours]" as OvertimeHours {
+            Integer
+        }
+
+        TotalWorkingHoursApplication o-- WorkingMonth
+        TotalWorkingHoursResult o-- WorkingMonth
+        TotalWorkingHoursResult o-- WorkingHours
+        TotalWorkingHoursResult o-- OvertimeHours
+
+        class "勤務時間アプリケーション[WorkTimeRegistrationApplication(WorkDay,StartingHours,ClosingTime)]" as WorkTimeRegistrationApplication {
+            勤務日[WorkDay]
+            始業時間[StartingHours]
+            終業時間[ClosingTime]
+            +勤務時間[getWorkingHours(StartingHours,ClosingTime)]
+            +残業時間[getOvertimeHours(StartingHours,ClosingTime)]
+        }
+
+        class "始業時間[StartingHours]" as StartingHours {
+            LocalTime
+        }
+        class "終業時間[ClosingTime]" as ClosingTime {
+            LocalTime
+        }
+        class "勤務日[WorkDay]" as WorkDay {
+            LocalDate
+        }
+
+        WorkTimeRegistrationApplication o-do- ClosingTime
+        WorkTimeRegistrationApplication o-do- StartingHours
+        WorkTimeRegistrationApplication o-do- WorkDay
+
+        class "勤怠管理[AttendanceManagement(WorkingMonth,WorkDay,StartingHours,ClosingTime,WorkingHours,OvertimeHours)]" as AttendanceManagement {
+            勤務月[WorkingMonth]
+            勤務日[WorkDay]
+            始業時間[StartingHours]
+            終業時間[ClosingTime]
+            勤務時間[WorkingHours]
+            残業時間[OvertimeHours]
+        }
+
+        OvertimeHours -do-o AttendanceManagement
+        WorkingHours -do-o AttendanceManagement
+        ClosingTime -do-o AttendanceManagement
+        StartingHours -do-o AttendanceManagement
+        WorkDay -do-o AttendanceManagement
+        WorkingMonth -do-o AttendanceManagement
+
+        enum "処理区分[ProcessingDivision]" as ProcessingDivision {
+            INPUT : input
+            TOTAL : total
+            +登録[isInput()]
+            +集計[isTotal()]
+        }
+
+    }
+    package Repository {
+
+        interface "勤務時間集計リポジトリ[TotalWorkingHoursRepository]" as TotalWorkingHoursRepository {
+            + List<AttendanceManagement> get(TotalWorkingHoursApplication) // 取得
+            + TotalWorkingHoursResult summary(List<AttendanceManagement>) // 集計
+        }
+
+        interface "勤務時間登録リポジトリ[WorkTimeRegistrationRepository]" as WorkTimeRegistrationRepository {
+            + void register(RegisteredWorkingHoursApplication) //登録
+        }
+    }
+
+    TotalWorkingHoursRepository .do. TotalWorkingHoursApplication
+    TotalWorkingHoursRepository .do. TotalWorkingHoursResult
+    TotalWorkingHoursRepository .do. AttendanceManagement
+
+    WorkTimeRegistrationRepository .do. WorkTimeRegistrationApplication
+
+}
+
+WorkTimeRegistrationService -do-> WorkTimeRegistrationRepository
+WorkTimeRegistrationService .do. WorkTimeRegistrationApplication
+TotalWorkingHoursService -do-> TotalWorkingHoursRepository
+TotalWorkingHoursService .do. TotalWorkingHoursApplication
+
+AttendanceManagementApi .do. ProcessingDivision
 
 package datasource {
 
-    class "勤務時間登録イベント[WorkTimeRegistrationEvent]"  as WorkTimeRegistrationEvent {
-        registered()
-        find()
+    class "勤務時間登録リポジトリ[WorkTimeRegistrationRepositoryImpl]"  as WorkTimeRegistrationRepositoryImpl {
+        register()
     }
 
-    class "勤務時間集計イベント[TotalWorkingHoursEvent]" as TotalWorkingHoursEvent {
-        summary(<List>)
+    class "勤務時間集計リポジトリ[TotalWorkingHoursRepositoryImpl]" as TotalWorkingHoursRepositoryImpl {
+        get()
+        summary()
     }
 
 }
 
-AttendanceManagementApi -down-> WorkTimeRegistrationService
-AttendanceManagementApi -down-> TotalWorkingHoursService
+WorkTimeRegistrationRepositoryImpl <|-- WorkTimeRegistrationRepository
+TotalWorkingHoursRepositoryImpl <|-- TotalWorkingHoursRepository
 
-WorkTimeRegistrationService -down-> WorkTimeRegistrationRepository
-TotalWorkingHoursService -down-> TotalWorkingHoursRepository
+WorkTimeRegistrationRepositoryImpl .. WorkTimeRegistrationApplication
+TotalWorkingHoursRepositoryImpl .. TotalWorkingHoursApplication
+TotalWorkingHoursRepositoryImpl .. TotalWorkingHoursResult
+TotalWorkingHoursRepositoryImpl .. AttendanceManagement
 
-WorkTimeRegistrationRepository -down-> WorkTimeRegistrationEvent
-TotalWorkingHoursRepository -down-> TotalWorkingHoursEvent
 
 @enduml
