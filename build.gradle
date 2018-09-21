@@ -1,6 +1,10 @@
 plugins {
     id 'java'
+    id 'groovy'
 }
+
+apply plugin: "groovy"
+apply plugin: "idea"
 
 version '1.0-SNAPSHOT'
 
@@ -11,5 +15,6 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "org.codehaus.groovy:groovy-all:2.4.15"
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
 }
