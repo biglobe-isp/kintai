@@ -17,41 +17,55 @@ package 勤怠{
 
     class WorkTime as "勤務時間"  << Entity >> {
      - int 日付
-     - int 時間
-     – int 分
-     - int 残業分
+     – int 勤務時間分
+     - int 残業時間分
+     - StartWorkTime 始業時間
+     - EndWorkTime 終業時間
      - 勤務状態 状態
     }
 
-    class TimeKeeper as "タイムキーパー" << Entity >>{
-     - 配列　休憩開始時間
-     - 配列　休憩終了時間
-     - int 日付
-     - int 始業時間
-     - int 終業時間
-     - WorkTime 勤務時間
-    --
-     - 勤務時間 calcWorkTime(始業時間, 終業時間)
-     + TimeKeeper(日付,始業時間,終業時間)
-    }
-
-    TimeKeeper o-- WorkTime
-
-    class MonthlyWorkTimeCard as "月勤務タイムカード"{
+    class MonthlyWorkTimeCard as "月勤務タイムカード" << Entity >>{
      - List<勤務時間>　勤務時間リスト
-     - int 年月
+     - WorkDate 年月
      --
      + int 総勤務時間(分)を取得する
      + int 総残業時間(分)を取得する
     }
 
+    MonthlyWorkTimeCard *-- WorkTime
+
 
     interface WorkTimeRepository as "勤務時間リポジトリ"{
       + void input(勤務時間)
-      + MonthlyWorkTimeCard　total(int yearMonth)
+      + MonthlyWorkTimeCard　findTimeCard(int yearMonth)
     }
 
     WorkTimeRepository -- MonthlyWorkTimeCard
+
+    class StartWorkTime as "始業時間" << value object >>{
+     - int StartTime
+    }
+    WorkTime --> StartWorkTime
+
+    class EndWorkTime as "終業時間" << value object >>{
+     - int EndTime
+    }
+    WorkTime --> EndWorkTime
+
+    class WorkDate as "勤務日" << value object >>{
+     - int date
+     - int yearMonth
+    }
+    WorkTime --> WorkDate
+    MonthlyWorkTimeCard --> WorkDate
+
+    class WorkingRule as "就業規則" << Singleton >>{
+     - 配列　休憩開始時間
+     - 配列　休憩終了時間
+    --
+     + 勤務時間 calcWorkTime(WorkDate,StartWorkTime,EndWorkTime)
+    }
+    WorkingRule -- WorkTime
 
 }
 @enduml
