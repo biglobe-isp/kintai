@@ -1,4 +1,4 @@
 package com.naosim.dddwork.api.form;
 
-public class MethodTypeForm {
+public class EndTimeForm {
 }

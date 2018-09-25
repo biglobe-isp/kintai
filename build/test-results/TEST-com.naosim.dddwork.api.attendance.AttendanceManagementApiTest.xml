@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.naosim.dddwork.api.attendance.AttendanceManagementApiTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-09-25T01:14:30" hostname="aokishingonoMacBook-puro.local" time="2.665">
+  <properties/>
+  <testcase name="正常_INPUT" classname="com.naosim.dddwork.api.attendance.AttendanceManagementApiTest" time="2.652"/>
+  <testcase name="正常_TOTAL" classname="com.naosim.dddwork.api.attendance.AttendanceManagementApiTest" time="0.013"/>
+  <system-out><![CDATA[10:14:29,455 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.groovy] at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
+10:14:29,455 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs multiple times on the classpath.
+10:14:29,455 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/main/logback.groovy]
+10:14:29,455 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
+10:14:30,352 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+10:14:30,353 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Naming appender as [FILE]
+10:14:30,434 |-ERROR in ch.qos.logback.classic.gaffer.ComponentDelegate@120ad68 - Component  of type [ch.qos.logback.core.rolling.TimeBasedRollingPolicy] has no appplicable [file] property 
+10:14:30,438 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - No compression will be used
+10:14:30,439 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - Will use the pattern null.%d{yyyy-MM-dd} for the active file
+10:14:30,443 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - The date pattern is 'yyyy-MM-dd' from file name pattern 'null.%d{yyyy-MM-dd}'.
+10:14:30,443 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Roll-over at midnight.
+10:14:30,446 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Setting initial period to Tue Sep 25 10:14:30 JST 2018
+10:14:30,449 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: build/tomcat/logs/test.log
+10:14:30,449 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [build/tomcat/logs/test.log]
+10:14:30,454 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+10:14:30,454 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Naming appender as [STDOUT]
+10:14:30,459 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Setting level of logger [ROOT] to ERROR
+10:14:30,464 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Attaching appender named [FILE] to Logger[ROOT]
+10:14:30,465 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Attaching appender named [STDOUT] to Logger[ROOT]
+
+isInput
+write: 20180901,0900,1800,480,0,2018-09-25T10:14:33.305
+isTotal
+勤務時間: 8時間0分
+残業時間: 0時間0分
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

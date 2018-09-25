@@ -7,7 +7,7 @@
 - 修正したい場合は、同じ日付で再投入すればok
 - 入力例
 ```
-java Main input 20170101 0900 1800
+java com.naosim.dddwork.Main input 20170101 0900 1800
 ```
 
 ### 集計
@@ -18,7 +18,7 @@ java Main input 20170101 0900 1800
   - ※休憩時間をちゃんと除くこと
 - 入力例
 ```
-java Main total
+java com.naosim.dddwork.Main total 201809
 ```
 
 ## 就業規則

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.naosim.dddwork.api.attendance.AttendanceManagementApiTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.naosim.dddwork.api.attendance.AttendanceManagementApiTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.naosim.dddwork.api.attendance.html">com.naosim.dddwork.api.attendance</a> &gt; AttendanceManagementApiTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">2</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">2.665s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">正常_INPUT</td>
+<td>2.652s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">正常_TOTAL</td>
+<td>0.013s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>10:14:29,455 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.groovy] at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
+10:14:29,455 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs multiple times on the classpath.
+10:14:29,455 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/main/logback.groovy]
+10:14:29,455 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
+10:14:30,352 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+10:14:30,353 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Naming appender as [FILE]
+10:14:30,434 |-ERROR in ch.qos.logback.classic.gaffer.ComponentDelegate@120ad68 - Component  of type [ch.qos.logback.core.rolling.TimeBasedRollingPolicy] has no appplicable [file] property 
+10:14:30,438 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - No compression will be used
+10:14:30,439 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - Will use the pattern null.%d{yyyy-MM-dd} for the active file
+10:14:30,443 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - The date pattern is 'yyyy-MM-dd' from file name pattern 'null.%d{yyyy-MM-dd}'.
+10:14:30,443 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Roll-over at midnight.
+10:14:30,446 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Setting initial period to Tue Sep 25 10:14:30 JST 2018
+10:14:30,449 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: build/tomcat/logs/test.log
+10:14:30,449 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [build/tomcat/logs/test.log]
+10:14:30,454 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+10:14:30,454 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Naming appender as [STDOUT]
+10:14:30,459 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Setting level of logger [ROOT] to ERROR
+10:14:30,464 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Attaching appender named [FILE] to Logger[ROOT]
+10:14:30,465 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@73ffa9bd - Attaching appender named [STDOUT] to Logger[ROOT]
+
+isInput
+write: 20180901,0900,1800,480,0,2018-09-25T10:14:33.305
+isTotal
+勤務時間: 8時間0分
+残業時間: 0時間0分
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 2.14.1</a> at 2018/09/25 10:14:33</p>
+</div>
+</div>
+</body>
+</html>
