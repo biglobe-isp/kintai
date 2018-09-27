@@ -23,7 +23,7 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">2</div>
+<div class="counter">3</div>
 <p>tests</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">3.288s</div>
+<div class="counter">2.848s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,12 +79,17 @@
 </thead>
 <tr>
 <td class="success">正常_INPUT</td>
-<td>3.223s</td>
+<td>0.019s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">正常_INPUT</td>
+<td>2.790s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">正常_TOTAL</td>
-<td>0.065s</td>
+<td>0.039s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -92,28 +97,32 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>09:24:51,404 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.groovy] at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
-09:24:51,405 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs multiple times on the classpath.
-09:24:51,405 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/main/logback.groovy]
-09:24:51,405 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
-09:24:52,086 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
-09:24:52,087 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - Naming appender as [FILE]
-09:24:52,213 |-ERROR in ch.qos.logback.classic.gaffer.ComponentDelegate@f512d22 - Component  of type [ch.qos.logback.core.rolling.TimeBasedRollingPolicy] has no appplicable [file] property 
-09:24:52,218 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - No compression will be used
-09:24:52,219 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - Will use the pattern null.%d{yyyy-MM-dd} for the active file
-09:24:52,224 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - The date pattern is 'yyyy-MM-dd' from file name pattern 'null.%d{yyyy-MM-dd}'.
-09:24:52,224 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Roll-over at midnight.
-09:24:52,227 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Setting initial period to Thu Sep 27 09:24:52 JST 2018
-09:24:52,229 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: build/tomcat/logs/test.log
-09:24:52,229 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [build/tomcat/logs/test.log]
-09:24:52,234 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-09:24:52,236 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - Naming appender as [STDOUT]
-09:24:52,242 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - Setting level of logger [ROOT] to ERROR
-09:24:52,247 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - Attaching appender named [FILE] to Logger[ROOT]
-09:24:52,248 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@4f210218 - Attaching appender named [STDOUT] to Logger[ROOT]
+<pre>11:21:20,804 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.groovy] at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
+11:21:20,805 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs multiple times on the classpath.
+11:21:20,805 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/main/logback.groovy]
+11:21:20,805 |-WARN in ch.qos.logback.classic.LoggerContext[default] - Resource [logback.groovy] occurs at [file:/Users/aokishingo/kintai/build/resources/test/logback.groovy]
+11:21:21,539 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+11:21:21,540 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - Naming appender as [FILE]
+11:21:21,638 |-ERROR in ch.qos.logback.classic.gaffer.ComponentDelegate@4cd7b9c7 - Component  of type [ch.qos.logback.core.rolling.TimeBasedRollingPolicy] has no appplicable [file] property 
+11:21:21,643 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - No compression will be used
+11:21:21,644 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy - Will use the pattern null.%d{yyyy-MM-dd} for the active file
+11:21:21,648 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - The date pattern is 'yyyy-MM-dd' from file name pattern 'null.%d{yyyy-MM-dd}'.
+11:21:21,648 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Roll-over at midnight.
+11:21:21,650 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Setting initial period to Thu Sep 27 11:21:21 JST 2018
+11:21:21,653 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: build/tomcat/logs/test.log
+11:21:21,653 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [build/tomcat/logs/test.log]
+11:21:21,658 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+11:21:21,658 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - Naming appender as [STDOUT]
+11:21:21,664 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - Setting level of logger [ROOT] to ERROR
+11:21:21,669 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - Attaching appender named [FILE] to Logger[ROOT]
+11:21:21,670 |-INFO in ch.qos.logback.classic.gaffer.ConfigurationDelegate@16107355 - Attaching appender named [STDOUT] to Logger[ROOT]
 
-20180901,0900,1800,480,0,2018-09-27T09:24:55.686
+20180901,0900,1800,480,0,2018-09-27T11:21:24.589
 
+ファイルのリネームに失敗しました。
+20180902,0900,1800,480,0,2018-09-27T11:21:24.625
+
+ファイルのリネームに失敗しました。
 勤務時間: 16時間0分
 残業時間: 0時間0分
 </pre>
@@ -127,7 +136,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 2.14.1</a> at 2018/09/27 9:24:55</p>
+<a href="http://www.gradle.org">Gradle 2.14.1</a> at 2018/09/27 11:21:24</p>
 </div>
 </div>
 </body>

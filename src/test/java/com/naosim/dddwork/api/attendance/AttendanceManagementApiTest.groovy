@@ -59,6 +59,7 @@ class AttendanceManagementApiTest extends Specification {
         //@formatter:off
         testCase/*	*/| params                                                  | inputCallCounts | totalCallCounts
         "INPUT"/*	*/| ["input", "20180901", "0900", "1800"]                   | 1               | 0
+        "INPUT"/*	*/| ["input", "20180902", "0900", "1800"]                   | 1               | 0
         "TOTAL"/*	*/| ["total", "201809"]                                     | 0               | 1
         //@formatter:on
     }

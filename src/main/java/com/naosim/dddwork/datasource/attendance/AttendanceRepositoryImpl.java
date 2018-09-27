@@ -18,9 +18,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -31,10 +28,48 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
     @Override
     public void input(Attendance attendance) {
 
-        File file = new File("data.csv");
+        File writeFile = new File("data_tmp.csv");
 
-        try (FileWriter filewriter = new FileWriter(file, true)) {
+        File readFile = new File("data.csv");
 
+        try (FileWriter filewriter = new FileWriter(writeFile, true)) {
+
+            try (
+                    FileReader fileReader = new FileReader(readFile);
+                    BufferedReader bufferedReader = new BufferedReader(fileReader)
+            ) {
+
+                // 重複日付行を除外した一時ファイルを作成
+                bufferedReader.lines()
+                        .map(line -> line.split(","))
+                        .forEach(columns ->
+                                {
+                                    try {
+                                        if (!DateFormatter.format_yyyyMMdd(attendance.getWorkDate().getValue())
+                                                .equals(columns[0])) {
+
+                                            filewriter.write(
+                                                    String.format(
+                                                            "%s,%s,%s,%s,%s,%s\n",
+                                                            columns[0],
+                                                            columns[1],
+                                                            columns[2],
+                                                            columns[3],
+                                                            columns[4],
+                                                            columns[5])
+                                            );
+                                        }
+                                    } catch (Exception exception) {
+                                        exception.printStackTrace();
+                                    }
+                                }
+                        );
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+
+            // 一時ファイルに新規行を追加
             filewriter.write(
                     String.format(
                             "%s,%s,%s,%s,%s,%s\n",
@@ -58,6 +93,15 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+
+        // 元ファイルを削除し、一時ファイルを保存ファイル名にリネーム
+        if (!readFile.delete()) {
+            System.out.println("ファイル削除に失敗しました。");
+        }
+
+        if (writeFile.renameTo(readFile)) {
+            System.out.println("ファイルのリネームに失敗しました。");
+        }
     }
 
     @Override
@@ -69,8 +113,6 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
                 FileReader fileReader = new FileReader(file);
                 BufferedReader bufferedReader = new BufferedReader(fileReader)
         ) {
-
-            //TODO 重複日付が取得される問題あり
 
             return Optional.of(
                     new AttendanceList(
