@@ -70,15 +70,6 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
                 BufferedReader bufferedReader = new BufferedReader(fileReader)
         ) {
 
-//            List<Map<String, String[]>> attendanceMapList = bufferedReader.lines()
-//                    .map(line -> line.split(","))
-//                    .map(columns ->
-//                            new LinkedHashMap<String, String[]>() {{
-//                                put(columns[0], columns);
-//                            }}
-//                    )
-//                    .collect(Collectors.toList());
-
             return Optional.of(
                     new AttendanceList(
                             bufferedReader.lines()

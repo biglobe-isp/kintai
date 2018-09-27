@@ -22,10 +22,11 @@ public class AttendanceTotalService {
     public void refer(AttendanceTotalInquiry attendanceTotalInquiry) throws Exception {
 
         // 勤怠リストの取得
-        AttendanceHistory attendanceHistory = new AttendanceHistory(
-                attendanceRepository.find()
-                        .orElseThrow(() -> new Exception("ファイルが見つかりません"))
-        );
+        AttendanceHistory attendanceHistory =
+                new AttendanceHistory(
+                        attendanceRepository.find()
+                                .orElseThrow(() -> new Exception("ファイルが見つかりません"))
+                );
 
         // 労働時間、残業時間の集計
         TotalWorkMinutesByMonth totalWorkMinutesByMonth =
