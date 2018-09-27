@@ -70,6 +70,8 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
                 BufferedReader bufferedReader = new BufferedReader(fileReader)
         ) {
 
+            //TODO 重複日付が取得される問題あり
+
             return Optional.of(
                     new AttendanceList(
                             bufferedReader.lines()
