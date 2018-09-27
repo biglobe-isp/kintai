@@ -1,5 +1,10 @@
 package com.naosim.dddwork.api.attendance;
 
+import com.naosim.dddwork.api.form.EndTimeForm;
+import com.naosim.dddwork.api.form.MethodTypeForm;
+import com.naosim.dddwork.api.form.StartTimeForm;
+import com.naosim.dddwork.api.form.TotalYearMonthForm;
+import com.naosim.dddwork.api.form.WorkDateForm;
 import com.naosim.dddwork.domain.attendance.MethodType;
 import com.naosim.dddwork.service.attendance.AttendanceInputService;
 import com.naosim.dddwork.service.attendance.AttendanceTotalService;
@@ -24,25 +29,32 @@ public class AttendanceManagementApi {
 
         try {
 
-            MethodType methodType = new MethodType(args);
+            MethodType methodType = new MethodTypeForm(args).getValueObject();
 
             if (methodType.isInput()) {
 
-                System.out.println("isInput");
-
-                attendanceInputService.input(args);
+                // 入力(input)
+                attendanceInputService.input(
+                        new AttendanceManagementInputRequest(
+                                new WorkDateForm(args).getValueObject(),
+                                new StartTimeForm(args).getValueObject(),
+                                new EndTimeForm(args).getValueObject()
+                        ).makeAttendanceInputApplication()
+                );
 
             } else if (methodType.isTotal()) {
 
-                System.out.println("isTotal");
+                // 集計(total)
+                attendanceTotalService.refer(
+                        new AttendanceManagementTotalRequest(
+                                new TotalYearMonthForm(args).getValueObject()
+                        ).makeAttendanceTotalInquiry()
+                );
 
-                attendanceTotalService.refer(args);
-
-            } else {
-                throw new RuntimeException("methodTypeが不正です");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 }

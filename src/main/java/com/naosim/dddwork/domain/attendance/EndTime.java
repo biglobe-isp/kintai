@@ -14,6 +14,15 @@ import java.time.LocalTime;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 public class EndTime {
+
     @Getter
     private final LocalTime value;
+
+    public EndTimeHours makeEndTimeHours() {
+        return new EndTimeHours(this.getValue().getHour());
+    }
+
+    public EndTimeMinutes makeEndTimeMinutes() {
+        return new EndTimeMinutes(this.getValue().getMinute());
+    }
 }

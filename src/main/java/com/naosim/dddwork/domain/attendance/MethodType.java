@@ -1,33 +1,26 @@
 package com.naosim.dddwork.domain.attendance;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+/**
+ * メソッドタイプ
+ */
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
+@AllArgsConstructor
 public class MethodType {
 
-    private String value;
-
-    public MethodType(String[] args) {
-
-        if (args == null || args.length < 1) {
-            throw new RuntimeException("引数が足りません");
-        }
-
-        this.value = args[0];
-
-        if (this.isInput()) {
-            if (args.length < 4) {
-                throw new RuntimeException("引数が足りません");
-            }
-        } else if (this.isTotal()) {
-            if (args.length < 2) {
-                throw new RuntimeException("引数が足りません");
-            }
-        }
-    }
+    @Getter
+    private final String value;
 
     public boolean isInput() {
-        return "input".equals(this.value);
+        return "input".equals(this.getValue());
     }
 
     public boolean isTotal() {
-        return "total".equals(this.value);
+        return "total".equals(this.getValue());
     }
 }

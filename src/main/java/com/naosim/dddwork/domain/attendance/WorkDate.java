@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * 出勤日
@@ -15,5 +15,5 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class WorkDate {
     @Getter
-    private final LocalDateTime value;
+    private final LocalDate value;
 }

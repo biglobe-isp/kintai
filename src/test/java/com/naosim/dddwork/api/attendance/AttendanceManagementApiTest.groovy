@@ -1,5 +1,7 @@
 package com.naosim.dddwork.api.attendance
 
+import com.naosim.dddwork.domain.use_case.FixtureAttendanceInputApplication
+import com.naosim.dddwork.domain.use_case.FixtureAttendanceTotalInquiry
 import com.naosim.dddwork.service.attendance.AttendanceInputService
 import com.naosim.dddwork.service.attendance.AttendanceTotalService
 import jp.co.biglobe.lib.publication.date.CurrentLocalDateTimeCreator
@@ -50,13 +52,12 @@ class AttendanceManagementApiTest extends Specification {
         then:
         true
         //TODO 呼び出し回数を評価
-//        inputCallCounts * attendanceInputService.input(args)
-//        totalCallCounts * attendanceTotalService.refer(args)
+//        inputCallCounts * attendanceInputService.input(FixtureAttendanceInputApplication.get())
+//        totalCallCounts * attendanceTotalService.refer(FixtureAttendanceTotalInquiry.get())
 
         where:
         //@formatter:off
         testCase/*	*/| params                                                  | inputCallCounts | totalCallCounts
-//        "INPUT"/*	*/| ["input", "-date:20180901", "-start:0900", "-end:1800"] | 1               | 0
         "INPUT"/*	*/| ["input", "20180901", "0900", "1800"]                   | 1               | 0
         "TOTAL"/*	*/| ["total", "201809"]                                     | 0               | 1
         //@formatter:on

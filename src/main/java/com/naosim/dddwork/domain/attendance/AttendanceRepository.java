@@ -1,8 +1,10 @@
 package com.naosim.dddwork.domain.attendance;
 
+import java.util.Optional;
+
 public interface AttendanceRepository {
 
-    void inputAttendant();
+    void input(Attendance attendance);
 
-    AttendanceDetail findAttendant();
+    Optional<AttendanceList> find();
 }

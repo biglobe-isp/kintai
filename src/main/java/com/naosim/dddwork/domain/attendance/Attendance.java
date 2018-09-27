@@ -1,6 +1,7 @@
 package com.naosim.dddwork.domain.attendance;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -12,10 +13,31 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public class Attendance {
 
-    public void input(AttendanceDetail attendanceDetail) {
-    }
+    @Getter
+    private final WorkDate workDate;
 
-    public WorkMinutesByMonth total() {
-        return null;
+    @Getter
+    private final StartTime startTime;
+
+    @Getter
+    private final EndTime endTime;
+
+    @Getter
+    private final WorkMinutes workMinutes;
+
+    @Getter
+    private final OverWorkMinutes overWorkMinutes;
+
+    public static Attendance create(WorkDate workDate, StartTime startTime, EndTime endTime) {
+
+        WorkMinutes workMinutes = new WorkMinutes(startTime, endTime);
+
+        return new Attendance(
+                workDate,
+                startTime,
+                endTime,
+                workMinutes,
+                new OverWorkMinutes(workMinutes)
+        );
     }
 }
