@@ -38,7 +38,7 @@ class "残業時間[OverWorkMinutes]" as OverWorkMinutes {
 }
 
 AttendanceRepository -down-> Attendance
-AttendanceRepository -down-> AttendanceHistory
+AttendanceRepository -down-> AttendanceList
 AttendanceHistory -down-> AttendanceList
 AttendanceList -down-> Attendance
 Attendance -down-> WorkMinutes
