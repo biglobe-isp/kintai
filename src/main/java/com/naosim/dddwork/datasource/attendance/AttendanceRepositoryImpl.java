@@ -99,7 +99,7 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
             System.out.println("ファイル削除に失敗しました。");
         }
 
-        if (writeFile.renameTo(readFile)) {
+        if (!writeFile.renameTo(readFile)) {
             System.out.println("ファイルのリネームに失敗しました。");
         }
     }
