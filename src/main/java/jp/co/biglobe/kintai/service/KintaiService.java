@@ -9,7 +9,11 @@ public class KintaiService {
     private WorkTimeRepository workTimeRepository;
 
     public KintaiService(){
-        workTimeRepository = new WorkTimeRepositoryDb();
+        this(new WorkTimeRepositoryDb());
+    }
+
+    public KintaiService(WorkTimeRepository repository){
+        workTimeRepository = repository;
     }
 
     public void input(String date, String start, String end, String now) {
