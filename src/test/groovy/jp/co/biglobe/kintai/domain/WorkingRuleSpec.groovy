@@ -1,8 +1,9 @@
 package jp.co.biglobe.kintai.domain
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
-
+@Unroll
 class WorkingRuleSpec extends Specification {
 
 
