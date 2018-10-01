@@ -4,11 +4,21 @@ import jp.co.biglobe.kintai.service.KintaiService;
 
 public class KintaiApi {
 
-    public static void input(String date, String start, String end, String now) {
-        KintaiService.input(date, start, end, now);
+    private KintaiService kintaiService;
+
+    public KintaiApi(){
+        this(new KintaiService());
     }
 
-    public static void total(String yearMonth) {
-        KintaiService.total(yearMonth);
+    public KintaiApi(KintaiService service){
+        kintaiService = service;
+    }
+
+    public void input(String date, String start, String end, String now) {
+        kintaiService.input(date, start, end, now);
+    }
+
+    public void total(String yearMonth) {
+        kintaiService.total(yearMonth);
     }
 }

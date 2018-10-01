@@ -6,9 +6,13 @@ import jp.co.biglobe.kintai.domain.*;
 public class KintaiService {
 
 
-    private static WorkTimeRepository workTimeRepository = new WorkTimeRepositoryDb();
+    private WorkTimeRepository workTimeRepository;
 
-    public static void input(String date, String start, String end, String now) {
+    public KintaiService(){
+        workTimeRepository = new WorkTimeRepositoryDb();
+    }
+
+    public void input(String date, String start, String end, String now) {
         workTimeRepository.input(WorkingRule.getInstance().calculateWorkTime(new WorkDate(date),
                 new StartWorkTime(start),
                 new EndWorkTime(end),
@@ -17,7 +21,7 @@ public class KintaiService {
 
     }
 
-    public static void total(String yearMonth) {
+    public void total(String yearMonth) {
         workTimeRepository.findWorkTimeCard(yearMonth).ifPresent(timeCard -> {
                     System.out.println("勤務時間: " + timeCard.getTotalMinutes() / 60 + "時間" + timeCard.getTotalMinutes() % 60 + "分");
                     System.out.println("残業時間: " + timeCard.getTotalOverWorkMinutes() / 60 + "時間" + timeCard.getTotalOverWorkMinutes() % 60 + "分");
