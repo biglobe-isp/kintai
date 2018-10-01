@@ -30,6 +30,8 @@ package 勤怠{
      --
      + int 総勤務時間(分)を取得する
      + int 総残業時間(分)を取得する
+     + void 打刻する(勤務時間)
+     + bool 打刻の有無を取得する
     }
 
     MonthlyWorkTimeCard *-- WorkTime
