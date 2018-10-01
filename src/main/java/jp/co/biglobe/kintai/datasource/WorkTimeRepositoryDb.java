@@ -22,7 +22,8 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
     public void input(final WorkTime workTime) {
         File file = new File(FileName);
         try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate(), workTime.getStartTime(), workTime.getEndTime(),
+            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate().getWorkDate(),
+                    workTime.getStartTime().getTime(), workTime.getEndTime().getTime(),
                     workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,9 +52,9 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
             e.printStackTrace();
         }
 
-        if(timeCard.isPunched()){
+        if (timeCard.isPunched()) {
             return Optional.ofNullable(timeCard);
-        }else{
+        } else {
             return Optional.empty();
         }
     }
