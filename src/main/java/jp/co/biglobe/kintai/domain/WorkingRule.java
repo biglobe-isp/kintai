@@ -40,8 +40,8 @@ public class WorkingRule {
         WorkTime workTime = new WorkTime();
         workTime.setNow(now);
         workTime.setDate(workDate);
-        workTime.setStart(startWorkTime);
-        workTime.setEnd(endWorkTime);
+        workTime.setStartTime(startWorkTime);
+        workTime.setEndTime(endWorkTime);
         workTime.setMinutes(workMinutes);
         workTime.setOverWorkMinutes(Math.max(workMinutes - 8 * 60, 0));
 

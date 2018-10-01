@@ -4,8 +4,8 @@ public class WorkTime {
 
     private WorkDate date;
 
-    private StartWorkTime start;
-    private EndWorkTime end;
+    private StartWorkTime startTime;
+    private EndWorkTime endTime;
 
     private int minutes;
 
@@ -22,20 +22,20 @@ public class WorkTime {
         this.date = date;
     }
 
-    public StartWorkTime getStart() {
-        return start;
+    public StartWorkTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart(StartWorkTime start) {
-        this.start = start;
+    public void setStartTime(StartWorkTime start) {
+        this.startTime = start;
     }
 
-    public EndWorkTime getEnd() {
-        return end;
+    public EndWorkTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnd(EndWorkTime end) {
-        this.end = end;
+    public void setEndTime(EndWorkTime end) {
+        this.endTime = end;
     }
 
     public int getMinutes() {

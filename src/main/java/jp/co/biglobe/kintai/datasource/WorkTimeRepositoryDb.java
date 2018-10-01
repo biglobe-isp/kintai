@@ -20,9 +20,9 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
 
     @Override
     public void input(final WorkTime workTime) {
-        File file = new File("data.csv");
+        File file = new File(FileName);
         try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate(), workTime.getStart(), workTime.getEnd(),
+            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate(), workTime.getStartTime(), workTime.getEndTime(),
                     workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow()));
         } catch (IOException e) {
             e.printStackTrace();
