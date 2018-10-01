@@ -1,10 +1,10 @@
 package com.naosim.dddwork.domain.attendance;
 
-import java.util.Optional;
+import java.io.IOException;
 
 public interface AttendanceRepository {
 
     void input(Attendance attendance);
 
-    Optional<AttendanceList> find();
+    AttendanceHistory find() throws IOException;
 }

@@ -9,6 +9,8 @@ import java.time.YearMonth;
 
 /**
  * 勤怠履歴
+ * 2018/09/27 新規作成
+ * 2018/09/28 レビュー指摘事項反映 UI関連のメソッドをService層からUI層に移動する対応 print()を削除
  */
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
@@ -42,17 +44,5 @@ public class AttendanceHistory {
                         .mapToInt(attendance -> attendance.getOverWorkMinutes().getValue())
                         .sum()
         );
-    }
-
-    public void print(TotalWorkMinutesByMonth totalWorkMinutesByMonth,
-                      TotalOverWorkMinutesByMonth totalOverWorkMinutesByMonth) {
-
-        System.out.println("勤務時間: " +
-                totalWorkMinutesByMonth.getValue() / 60 + "時間" +
-                totalWorkMinutesByMonth.getValue() % 60 + "分");
-
-        System.out.println("残業時間: " +
-                totalOverWorkMinutesByMonth.getValue() / 60 + "時間" +
-                totalOverWorkMinutesByMonth.getValue() % 60 + "分");
     }
 }

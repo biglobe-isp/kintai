@@ -5,15 +5,17 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-//TODO 不要
+import java.time.LocalTime;
+
 /**
- * 退勤時刻（分）
- * 2018/10/01 レビュー指摘事項反映 就業時間に開始時刻、終了時刻を含めるように修正
+ * 定時
+ * 2018/10/01 新規作成
  */
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class EndTimeMinutes {
+public class StipulatedTime {
+
     @Getter
-    private final int value;
+    private final LocalTime value;
 }

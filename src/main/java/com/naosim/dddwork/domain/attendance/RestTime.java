@@ -7,15 +7,19 @@ import lombok.ToString;
 
 import java.time.LocalTime;
 
-//TODO 不要
 /**
- * 出勤時刻（時）
- * 2018/10/01 レビュー指摘事項反映 就業時間に開始時刻、終了時刻を含めるように修正
+ * 休憩時間
+ * 2018/10/01 新規作成
+ * 　　　レビュー指摘事項反映 休憩時間、残業時間の業務仕様を表現
  */
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class StartTimeHours {
+public class RestTime {
+
     @Getter
-    private final int value;
+    private final LocalTime startTime;
+
+    @Getter
+    private final LocalTime endTime;
 }

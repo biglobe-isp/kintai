@@ -1,6 +1,6 @@
 package com.naosim.dddwork.api.form;
 
-import com.naosim.dddwork.domain.attendance.MethodType;
+import com.naosim.dddwork.api.attendance.MethodType;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

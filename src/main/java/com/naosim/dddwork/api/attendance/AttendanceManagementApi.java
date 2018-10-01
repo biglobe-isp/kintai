@@ -5,7 +5,6 @@ import com.naosim.dddwork.api.form.MethodTypeForm;
 import com.naosim.dddwork.api.form.StartTimeForm;
 import com.naosim.dddwork.api.form.TotalYearMonthForm;
 import com.naosim.dddwork.api.form.WorkDateForm;
-import com.naosim.dddwork.domain.attendance.MethodType;
 import com.naosim.dddwork.service.attendance.AttendanceInputService;
 import com.naosim.dddwork.service.attendance.AttendanceTotalService;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 勤怠管理API
+ * 2018/09/27 新規作成
+ * 2018/09/28 レビュー指摘事項反映 UI関連のメソッドをService層からUI層に移動する対応
  */
 @RestController
 @NoArgsConstructor
@@ -44,13 +45,14 @@ public class AttendanceManagementApi {
 
             } else if (methodType.isTotal()) {
 
-                // 集計(total)
-                attendanceTotalService.refer(
-                        new AttendanceManagementTotalRequest(
-                                new TotalYearMonthForm(args).getValueObject()
-                        ).makeAttendanceTotalInquiry()
-                );
-
+                // 集計(total)、および、労働時間・残業時間の表示
+                new AttendanceManagementTotalResponse(
+                        attendanceTotalService.refer(
+                                new AttendanceManagementTotalRequest(
+                                        new TotalYearMonthForm(args).getValueObject()
+                                ).makeAttendanceTotalInquiry()
+                        )
+                ).print();
             }
 
         } catch (Exception exception) {

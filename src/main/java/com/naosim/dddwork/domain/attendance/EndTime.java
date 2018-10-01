@@ -9,6 +9,7 @@ import java.time.LocalTime;
 
 /**
  * 退勤時刻
+ * 2018/10/01 レビュー指摘事項反映 就業時間に開始時刻、終了時刻を含めるように修正。左記により不要メソッドを削除
  */
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
@@ -17,12 +18,13 @@ public class EndTime {
 
     @Getter
     private final LocalTime value;
-
-    public EndTimeHours makeEndTimeHours() {
-        return new EndTimeHours(this.getValue().getHour());
-    }
-
-    public EndTimeMinutes makeEndTimeMinutes() {
-        return new EndTimeMinutes(this.getValue().getMinute());
-    }
+    // 不要メソッドを削除
+//
+//    public EndTimeHours makeEndTimeHours() {
+//        return new EndTimeHours(this.getValue().getHour());
+//    }
+//
+//    public EndTimeMinutes makeEndTimeMinutes() {
+//        return new EndTimeMinutes(this.getValue().getMinute());
+//    }
 }
