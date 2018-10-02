@@ -20,7 +20,7 @@ public class WorkingRule {
         return INSTANCE;
     }
 
-    public WorkTime calculateWorkTime(WorkDate workDate, StartWorkTime startWorkTime, EndWorkTime endWorkTime, String now){
+    public WorkTime calculateWorkTime(WorkDate workDate, StartWorkTime startWorkTime, EndWorkTime endWorkTime, NowTime nowTime){
 
         int startH = Integer.valueOf(startWorkTime.getTime().substring(0, 2));
         int startM = Integer.valueOf(startWorkTime.getTime().substring(2, 4));
@@ -39,7 +39,7 @@ public class WorkingRule {
         }
 
         WorkTime workTime = new WorkTime();
-        workTime.setNow(now);
+        workTime.setNow(nowTime);
         workTime.setDate(workDate);
         workTime.setStartTime(startWorkTime);
         workTime.setEndTime(endWorkTime);

@@ -16,15 +16,6 @@ public class KintaiService {
         workTimeRepository = repository;
     }
 
-    public void input(String date, String start, String end, String now) {
-        workTimeRepository.input(WorkingRule.getInstance().calculateWorkTime(new WorkDate(date),
-                new StartWorkTime(start),
-                new EndWorkTime(end),
-                now
-        ));
-
-    }
-
     // yearMonthはバリュー
     public void total(String yearMonth) {
         workTimeRepository.findWorkTimeCard(yearMonth).ifPresent(timeCard -> {
@@ -34,5 +25,14 @@ public class KintaiService {
                     System.out.println("残業時間: " + timeCard.getTotalOverWorkMinutes() / 60 + "時間" + timeCard.getTotalOverWorkMinutes() % 60 + "分");
                 }
         );
+    }
+
+    public void input(WorkDate workDate, StartWorkTime startTime, EndWorkTime endTime, NowTime nowTime) {
+        workTimeRepository.input(WorkingRule.getInstance().calculateWorkTime(
+                workDate,
+                startTime,
+                endTime,
+                nowTime
+        ));
     }
 }

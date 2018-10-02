@@ -14,7 +14,7 @@ public class WorkTime {
 
     private int overWorkMinutes;
 
-    private String now;
+    private NowTime now;
 
     public WorkTime(){}
 
@@ -64,11 +64,11 @@ public class WorkTime {
         this.overWorkMinutes = overWorkMinutes;
     }
 
-    public String getNow() {
+    public NowTime getNow() {
         return now;
     }
 
-    public void setNow(String now) {
+    public void setNow(NowTime now) {
         this.now = now;
     }
 
