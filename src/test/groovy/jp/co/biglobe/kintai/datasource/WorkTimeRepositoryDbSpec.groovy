@@ -31,4 +31,14 @@ class WorkTimeRepositoryDbSpec extends Specification{
         then:
         true
     }
+
+    def "findWorkTimerCardの処理テスト"(){
+        setup:
+
+        when:
+        def result =workTimeRepositoryDb.findWorkTimeCard("201810")
+
+        then:
+        true
+    }
 }
