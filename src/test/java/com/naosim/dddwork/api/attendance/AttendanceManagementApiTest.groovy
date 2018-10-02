@@ -1,9 +1,5 @@
 package com.naosim.dddwork.api.attendance
 
-import com.naosim.dddwork.domain.use_case.FixtureAttendanceInputApplication
-import com.naosim.dddwork.domain.use_case.FixtureAttendanceTotalInquiry
-import com.naosim.dddwork.service.attendance.AttendanceInputService
-import com.naosim.dddwork.service.attendance.AttendanceTotalService
 import jp.co.biglobe.lib.publication.date.CurrentLocalDateTimeCreator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -58,9 +54,11 @@ class AttendanceManagementApiTest extends Specification {
         where:
         //@formatter:off
         testCase/*	*/| params                                                  | inputCallCounts | totalCallCounts
-        "INPUT"/*	*/| ["input", "20180901", "0900", "2100"]                   | 1               | 0
-        "INPUT"/*	*/| ["input", "20180902", "0900", "2100"]                   | 1               | 0
-        "TOTAL"/*	*/| ["total", "201809"]                                     | 0               | 1
+//        "INPUT"/*	*/| ["input", "20180901", "0900", "2100"]                   | 1               | 0
+//        "INPUT"/*	*/| ["input", "-start:0900", "0900", "2100"]                | 1               | 0
+        "INPUT"/*	*/| ["-date:20181114", "-start:0900", "-end:1800"]          | 1               | 0
+        "INPUT"/*	*/| ["-date:20181115", "-start:0900", "-end:1800"]          | 1               | 0
+        "TOTAL"/*	*/| ["total", "201811"]                                     | 0               | 1
         //@formatter:on
     }
 }

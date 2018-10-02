@@ -34,14 +34,37 @@ public class Attendance {
 
         DutyTime dutyTime = new DutyTime(startTime.getValue(), endTime.getValue());
 
+        // 20181002 仕様変更 ADD START
+        // 仕様変更 来月の途中から休憩時間が増える
+        // 来月15日から休憩が増えます。時間は15:00-16:00。
+        // 2018/11/15以降では、休憩時間ルールに15:00-16:00を追加する。
+        RestTimeRulesFactory restTimeRulesFactory = new RestTimeRulesFactory();
+
+        if (workDate.is20181115Later()) {
+            restTimeRulesFactory
+                    .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
+                    .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
+                    .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
+                    .add(LocalTime.of(15, 0, 0), LocalTime.of(16, 0, 0));
+        } else {
+            restTimeRulesFactory
+                    .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
+                    .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
+                    .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0));
+        }
+        // 20181002 仕様変更 ADD END
+
         WorkMinutes workMinutes = new WorkMinutes(
                 calcWorkTime(
                         dutyTime,
-                        new RestTimeRulesFactory()
-                                .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
-                                .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
-                                .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
-                                .build()
+                        // 20181002 仕様変更 MOD START
+//                        new RestTimeRulesFactory()
+//                                .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
+//                                .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
+//                                .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
+//                                .build()
+                        restTimeRulesFactory.build()
+                        // 20181002 仕様変更 MOD END
                 )
         );
 
