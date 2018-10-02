@@ -47,6 +47,12 @@ public class KintaiApi {
     }
 
     public void total(String yearMonth) {
-        kintaiService.total(yearMonth);
+        YearMonth month;
+        if(StringUtil.isNullorEmpty(yearMonth)){
+            throw new RuntimeException("データに不備があります。");
+        }
+        month = new YearMonth(yearMonth);
+
+        kintaiService.total(month);
     }
 }
