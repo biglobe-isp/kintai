@@ -15,6 +15,8 @@ public class KintaiApi {
     }
 
     public void input(String date, String start, String end, String now) {
+        //クラスの変換
+        // valueオブジェクトへの変換で綺麗なデータに
         kintaiService.input(date, start, end, now);
     }
 

@@ -25,8 +25,11 @@ public class KintaiService {
 
     }
 
+    // yearMonthはバリュー
     public void total(String yearMonth) {
         workTimeRepository.findWorkTimeCard(yearMonth).ifPresent(timeCard -> {
+            //タイムカードで時間と分の区分けを
+            // 表示処理もApi層でここではTimeCardのみを返すように
                     System.out.println("勤務時間: " + timeCard.getTotalMinutes() / 60 + "時間" + timeCard.getTotalMinutes() % 60 + "分");
                     System.out.println("残業時間: " + timeCard.getTotalOverWorkMinutes() / 60 + "時間" + timeCard.getTotalOverWorkMinutes() % 60 + "分");
                 }

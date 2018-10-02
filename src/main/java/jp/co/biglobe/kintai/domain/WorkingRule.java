@@ -6,6 +6,7 @@ public class WorkingRule {
     private static final int coolTimeIndex_StartTime = 0;
     private static final int coolTimeIndex_EntTime = 1;
 
+    //休憩時間クラスで表現を変更する
 
     private static WorkingRule INSTANCE;
 

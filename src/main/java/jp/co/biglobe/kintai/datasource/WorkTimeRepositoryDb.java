@@ -25,8 +25,10 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate().getWorkDate(),
                     workTime.getStartTime().getTime(), workTime.getEndTime().getTime(),
                     workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow()));
+            //filewriter.write(workTime.getFormat());
         } catch (IOException e) {
             e.printStackTrace();
+            //スローしてRunTimeExceptionでCatch
         }
     }
 
@@ -46,12 +48,14 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
                 workTime.setMinutes(Integer.valueOf(columns[Csv_Column_Minutes_Index]));
                 workTime.setOverWorkMinutes(Integer.valueOf(columns[Csv_Column_OverWorkMinutes_Index]));
 
+                // ビルダーで作って
                 timeCard.punch(columns[Csv_Column_Date_Index], workTime);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // 三項演算子へ　else忘れ防止のために
         if (timeCard.isPunched()) {
             return Optional.ofNullable(timeCard);
         } else {

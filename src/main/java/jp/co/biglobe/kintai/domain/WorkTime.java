@@ -2,6 +2,9 @@ package jp.co.biglobe.kintai.domain;
 
 public class WorkTime {
 
+
+    //セッターを除去してコンストラクタへ
+
     private WorkDate date;
 
     private StartWorkTime startTime;

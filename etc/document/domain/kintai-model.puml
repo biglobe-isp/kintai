@@ -44,6 +44,8 @@ package 勤怠{
 
     WorkTimeRepository -- MonthlyWorkTimeCard
 
+    WorkTimeRepository --> WorkTime
+
     class StartWorkTime as "始業時間" << value object >>{
      - int StartTime
     }
@@ -67,7 +69,7 @@ package 勤怠{
     --
      + 勤務時間 calcWorkTime(WorkDate,StartWorkTime,EndWorkTime)
     }
-    WorkingRule -- WorkTime
+    WorkingRule --> WorkTime
 
 }
 @enduml
