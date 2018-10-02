@@ -55,11 +55,6 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
             e.printStackTrace();
         }
 
-        // 三項演算子へ　else忘れ防止のために
-        if (timeCard.isPunched()) {
-            return Optional.ofNullable(timeCard);
-        } else {
-            return Optional.empty();
-        }
+        return timeCard.isPunched() ? Optional.ofNullable(timeCard) : Optional.empty();
     }
 }
