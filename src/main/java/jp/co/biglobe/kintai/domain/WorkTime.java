@@ -16,6 +16,13 @@ public class WorkTime {
 
     private String now;
 
+    public WorkTime(){}
+
+    public WorkTime(int minutes, int overMinutes){
+        this.minutes = minutes;
+        this.overWorkMinutes = overMinutes;
+    }
+
 
     public WorkDate getDate() {
         return date;
