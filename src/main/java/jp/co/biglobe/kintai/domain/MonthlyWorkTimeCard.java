@@ -22,12 +22,12 @@ public class MonthlyWorkTimeCard {
     }
 
     public int getTotalMinutes() {
-        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.entrySet());
-        return timesList.stream().collect(Collectors.summingInt(workTime -> workTime.getMinutes()));
+        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.values());
+        return timesList.stream().mapToInt(WorkTime::getMinutes).sum();
     }
 
     public int getTotalOverWorkMinutes() {
-        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.entrySet());
-        return timesList.stream().collect(Collectors.summingInt(workTime->workTime.getOverWorkMinutes()));
+        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.values());
+        return timesList.stream().mapToInt(WorkTime::getOverWorkMinutes).sum();
     }
 }
