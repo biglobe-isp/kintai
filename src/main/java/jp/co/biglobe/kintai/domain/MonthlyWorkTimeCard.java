@@ -12,8 +12,8 @@ public class MonthlyWorkTimeCard {
         this.timeCard = new HashMap<>();
     }
 
-    public WorkTime punch(String now, WorkTime workTime) {
-        this.timeCard.put(now, workTime);
+    public WorkTime punch(String date, WorkTime workTime) {
+        this.timeCard.put(date, workTime);
         return workTime;
     }
 
