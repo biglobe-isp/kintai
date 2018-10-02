@@ -17,7 +17,7 @@ public class KintaiService {
     }
 
     // yearMonthはバリュー
-    public void total(String yearMonth) {
+    public void total(YearMonth yearMonth) {
         workTimeRepository.findWorkTimeCard(yearMonth).ifPresent(timeCard -> {
             //タイムカードで時間と分の区分けを
             // 表示処理もApi層でここではTimeCardのみを返すように

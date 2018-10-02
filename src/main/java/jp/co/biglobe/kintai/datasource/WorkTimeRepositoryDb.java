@@ -3,6 +3,7 @@ package jp.co.biglobe.kintai.datasource;
 import jp.co.biglobe.kintai.domain.MonthlyWorkTimeCard;
 import jp.co.biglobe.kintai.domain.WorkTime;
 import jp.co.biglobe.kintai.domain.WorkTimeRepository;
+import jp.co.biglobe.kintai.domain.YearMonth;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -32,7 +33,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
     }
 
     @Override
-    public Optional<MonthlyWorkTimeCard> findWorkTimeCard(final String yearMonth) {
+    public Optional<MonthlyWorkTimeCard> findWorkTimeCard(final YearMonth yearMonth) {
 
         MonthlyWorkTimeCard timeCard = new MonthlyWorkTimeCard();
 
@@ -40,7 +41,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] columns = line.split(",");
-                if (!columns[Csv_Column_Date_Index].startsWith(yearMonth)) {
+                if (!columns[Csv_Column_Date_Index].startsWith(yearMonth.getYearMonth())) {
                     continue;
                 }
                 WorkTime workTime = new WorkTime();
