@@ -3,6 +3,8 @@ package jp.co.biglobe.kintai.service;
 import jp.co.biglobe.kintai.datasource.WorkTimeRepositoryDb;
 import jp.co.biglobe.kintai.domain.*;
 
+import java.util.Optional;
+
 public class KintaiService {
 
 
@@ -17,14 +19,8 @@ public class KintaiService {
     }
 
     // yearMonthはバリュー
-    public void total(YearMonth yearMonth) {
-        workTimeRepository.findWorkTimeCard(yearMonth).ifPresent(timeCard -> {
-            //タイムカードで時間と分の区分けを
-            // 表示処理もApi層でここではTimeCardのみを返すように
-                    System.out.println("勤務時間: " + timeCard.getTotalMinutes() / 60 + "時間" + timeCard.getTotalMinutes() % 60 + "分");
-                    System.out.println("残業時間: " + timeCard.getTotalOverWorkMinutes() / 60 + "時間" + timeCard.getTotalOverWorkMinutes() % 60 + "分");
-                }
-        );
+    public Optional<MonthlyWorkTimeCard> total(YearMonth yearMonth) {
+        return workTimeRepository.findWorkTimeCard(yearMonth);
     }
 
     public void input(WorkDate workDate, StartWorkTime startTime, EndWorkTime endTime, NowTime nowTime) {
