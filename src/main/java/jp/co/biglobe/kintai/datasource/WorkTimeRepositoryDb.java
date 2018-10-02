@@ -27,8 +27,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
                     workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow()));
             //filewriter.write(workTime.getFormat());
         } catch (IOException e) {
-            e.printStackTrace();
-            //スローしてRunTimeExceptionでCatch
+            throw new RuntimeException(e);
         }
     }
 
@@ -52,7 +51,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
                 timeCard.punch(columns[Csv_Column_Date_Index], workTime);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return timeCard.isPunched() ? Optional.ofNullable(timeCard) : Optional.empty();
