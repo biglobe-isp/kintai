@@ -13,8 +13,14 @@ import lombok.ToString;
 @EqualsAndHashCode
 @AllArgsConstructor
 public class WorkMinutes {
+
     @Getter
     private final int value;
+
+    public boolean isOverWork() {
+        return this.value > 480;
+    }
+
     // 不要メソッドを削除
 //    public WorkMinutes(StartTime startTime, EndTime endTime) {
 //

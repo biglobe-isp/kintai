@@ -1,0 +1,97 @@
+@startuml
+
+package Attendance {
+
+interface AttendanceRepository {
+    +void input(Attendance) //勤怠の永続化
+    +AttendanceList find() //勤怠リストの取得
+}
+
+class "勤怠[Attendance]" as Attendance {
+    出勤日[WorkDate]
+    出勤時刻[StartTime]
+    退勤時刻[EndTime]
+    労働時間[WorkMinutes]
+    残業時間[OverWorkMinutes]
+    + 作成する[Attendance create(WorkDate, StartTime, EndTime)]
+}
+
+class "勤怠履歴[AttendanceHistory]" as AttendanceHistory {
+    勤怠リスト[AttendanceList]
+    + 労働時間を集計する[TotalWorkMinutesByMonth totalWorkMinutesByMonth(TotalYearMonth)]
+    + 残業時間を集計する[TotalOverWorkMinutesByMonth totalOverWorkMinutesByMonth(TotalYearMonth)]
+    + 労働時間と残業時間を出力する[void print(TotalWorkMinutesByMonth, TotalOverWorkMinutesByMonth)]
+}
+
+class "勤怠リスト[AttendanceList]" as AttendanceList {
+    勤怠リスト[List<Attendance>]
+}
+
+class "出勤日[WorkDate]" as WorkDate {
+}
+
+class "出勤時刻[StartTime]" as StartTime {
+    + 出勤時を作成する[StartTimeHours makeStartTimeHours()]
+    + 出勤分を作成する[StartTimeMinutes makeStartTimeMinutes()]
+}
+
+class "出勤時[StartTimeHours]" as StartTimeHours {
+}
+
+class "出勤分[StartTimeMinutes]" as StartTimeMinutes {
+}
+
+class "退勤時刻[EndTime]" as EndTime {
+    + 退勤時を作成する[EndTimeHours makeEndTimeHours()]
+    + 退勤分を作成する[EndTimeMinutes makeEndTimeMinutes()]
+}
+
+class "退勤時[EndTimeHours]" as EndTimeHours {
+    + 12時を超過している[boolean isOver12Hours()]
+    + 18時を超過している[boolean isOver18Hours()]
+    + 21時を超過している[boolean isOver21Hours()]
+    + 休憩時間中である[boolean isBreak()]
+}
+
+class "退勤分[EndTimeMinutes]" as EndTimeMinutes {
+}
+
+class "労働時間[WorkMinutes]" as WorkMinutes {
+    + 作成する[WorkMinutes(StartTime, EndTime)]
+    + 労働時間を算出する[int calcWorkMinutes(StartTimeHours, StartTimeMinutes, EndTimeHours, EndTimeMinutes)]
+}
+
+class "残業時間[OverWorkMinutes]" as OverWorkMinutes {
+    + 作成する[OverWorkMinutes(WorkMinutes)]
+    + 残業時間を算出する[int calcOverWorkMinutes(WorkMinutes)]
+}
+
+AttendanceRepository -down-> Attendance
+AttendanceRepository -down-> AttendanceList
+AttendanceHistory -down-> AttendanceList
+AttendanceList -down-> Attendance
+
+Attendance -down-> WorkDate
+Attendance -down-> StartTime
+Attendance -down-> EndTime
+Attendance -down-> WorkMinutes
+Attendance -down-> OverWorkMinutes
+
+OverWorkMinutes -down-> WorkMinutes
+
+WorkMinutes -down-> StartTime
+WorkMinutes -down-> EndTime
+WorkMinutes -down-> StartTimeHours
+WorkMinutes -down-> StartTimeMinutes
+WorkMinutes -down-> EndTimeHours
+WorkMinutes -down-> EndTimeMinutes
+
+StartTime -down-> StartTimeHours
+StartTime -down-> StartTimeMinutes
+
+EndTime -down-> EndTimeHours
+EndTime -down-> EndTimeMinutes
+
+}
+
+@enduml

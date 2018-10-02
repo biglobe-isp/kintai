@@ -1,0 +1,156 @@
+@startuml
+
+package Attendance {
+
+interface AttendanceRepository {
+    +void input(Attendance) //勤怠の永続化
+    +AttendanceHistory find() //勤怠履歴の取得
+}
+
+class "勤怠[Attendance]" as Attendance {
+    出勤日[WorkDate]
+/'----------------------------------------------
+    出勤時刻[StartTime]
+    退勤時刻[EndTime]
+----------------------------------------------'/
+    就業時間[DutyTime]
+    労働時間[WorkMinutes]
+    残業時間[OverWorkMinutes]
+    + {static} 作成する[Attendance create(WorkDate, StartTime, EndTime)]
+    - {static} 労働時間を計算する int calcWorkTime(DutyTime dutyTime, List<RestTime> restTimeList)
+    - {static} 就業時間を計算する int calcDutyTime(DutyTime dutyTime)
+    - {static} 休憩時間合計を計算する int calcTotalRestTime(DutyTime dutyTime, List<RestTime> restTimeList)
+    - {static} 休憩時間を計算する int calcRestTime(DutyTime dutyTime, RestTime restTime)
+    - {static} 時刻を比較しより早い時刻 LocalTime earlyTime(LocalTime one, LocalTime other)
+    - {static} 時刻を比較しより遅い時刻 LocalTime lateTime(LocalTime one, LocalTime other)
+    - {static} 残業時間を計算する int calcOverWorkMinutes(DutyTime dutyTime, StipulatedTime stipulatedTime)
+}
+
+class "勤怠履歴[AttendanceHistory]" as AttendanceHistory {
+    勤怠リスト[AttendanceList]
+    + 労働時間を集計する[TotalWorkMinutesByMonth totalWorkMinutesByMonth(TotalYearMonth)]
+    + 残業時間を集計する[TotalOverWorkMinutesByMonth totalOverWorkMinutesByMonth(TotalYearMonth)]
+/'
+    + 労働時間と残業時間を出力する[void print(TotalWorkMinutesByMonth, TotalOverWorkMinutesByMonth)]
+'/
+}
+
+class "勤怠リスト[AttendanceList]" as AttendanceList {
+    勤怠リスト[List<Attendance>]
+}
+
+class "出勤日[WorkDate]" as WorkDate {
+    出勤日[LocalDate]
+}
+
+class "出勤時刻[StartTime]" as StartTime {
+    出勤時刻[LocalTime]
+}
+
+class "退勤時刻[EndTime]" as EndTime {
+    退勤時刻[LocalTime]
+}
+
+/'----------------------------------------------
+class "出勤時刻[StartTime]" as StartTime {
+    + 出勤時を作成する[StartTimeHours makeStartTimeHours()]
+    + 出勤分を作成する[StartTimeMinutes makeStartTimeMinutes()]
+}
+
+class "出勤時[StartTimeHours]" as StartTimeHours {
+}
+
+class "出勤分[StartTimeMinutes]" as StartTimeMinutes {
+}
+
+class "退勤時刻[EndTime]" as EndTime {
+    + 退勤時を作成する[EndTimeHours makeEndTimeHours()]
+    + 退勤分を作成する[EndTimeMinutes makeEndTimeMinutes()]
+}
+
+class "退勤時[EndTimeHours]" as EndTimeHours {
+    + 12時を超過している[boolean isOver12Hours()]
+    + 18時を超過している[boolean isOver18Hours()]
+    + 21時を超過している[boolean isOver21Hours()]
+    + 休憩時間中である[boolean isBreak()]
+}
+
+class "退勤分[EndTimeMinutes]" as EndTimeMinutes {
+}
+----------------------------------------------'/
+
+class "就業時間[DutyTime] " as DutyTime {
+    開始時刻[LocalTime]
+    終了時刻[LocalTime]
+    + 就業時間の範囲内に休憩時間を含む[boolean withinRange(RestTime restTime)]
+}
+
+class "休憩時間[RestTime]" as RestTime {
+    開始時刻[LocalTime]
+    終了時刻[LocalTime]
+}
+
+class "労働時間[WorkMinutes]" as WorkMinutes {
+    労働時間[int]
+    + 働き過ぎ[boolean isOverWork()]
+/'
+    + 作成する[WorkMinutes(StartTime, EndTime)]
+    + 労働時間を算出する[int calcWorkMinutes(StartTimeHours, StartTimeMinutes, EndTimeHours, EndTimeMinutes)]
+'/
+}
+
+class "残業時間[OverWorkMinutes]" as OverWorkMinutes {
+    残業時間[int]
+/'
+    + 作成する[OverWorkMinutes(WorkMinutes)]
+    + 残業時間を算出する[int calcOverWorkMinutes(WorkMinutes)]
+'/
+}
+
+class "休憩時間規則ファクトリ[RestTimeRulesFactory] " as RestTimeRulesFactory {
+    休憩時間リスト[List<RestTime>]
+    + 作成する[RestTimeRulesFactory()]
+    + 追加する[RestTimeRulesFactory add(LocalTime startTime, LocalTime endTime)]
+    + 構築する[List<RestTime> build()]
+}
+
+AttendanceRepository -down-> Attendance
+AttendanceRepository -down-> AttendanceHistory
+
+AttendanceHistory -down-> AttendanceList
+AttendanceList -down-> Attendance
+
+Attendance -down-> WorkDate
+Attendance -down-> StartTime
+Attendance -down-> EndTime
+Attendance -down-> DutyTime
+Attendance -down-> RestTime
+Attendance -down-> WorkMinutes
+Attendance -down-> OverWorkMinutes
+
+/'
+OverWorkMinutes -down-> WorkMinutes
+'/
+
+DutyTime -down-> RestTime
+
+/'
+WorkMinutes -down-> StartTime
+WorkMinutes -down-> EndTime
+
+WorkMinutes -down-> StartTimeHours
+WorkMinutes -down-> StartTimeMinutes
+WorkMinutes -down-> EndTimeHours
+WorkMinutes -down-> EndTimeMinutes
+
+StartTime -down-> StartTimeHours
+StartTime -down-> StartTimeMinutes
+
+EndTime -down-> EndTimeHours
+EndTime -down-> EndTimeMinutes
+'/
+
+RestTimeRulesFactory -up-> RestTime
+}
+
+@enduml

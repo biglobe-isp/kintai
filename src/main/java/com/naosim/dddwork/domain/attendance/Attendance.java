@@ -34,30 +34,31 @@ public class Attendance {
 
         DutyTime dutyTime = new DutyTime(startTime.getValue(), endTime.getValue());
 
-        return new Attendance(
-                workDate,
-                dutyTime,
+        WorkMinutes workMinutes = new WorkMinutes(
                 calcWorkTime(
                         dutyTime,
                         new RestTimeRulesFactory()
                                 .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
                                 .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
                                 .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
-                                .create()
-                ),
-                calcOverWorkMinutes(
-                        dutyTime,
-                        new StipulatedTime(LocalTime.of(18, 0, 0))
+                                .build()
+                )
+        );
+
+        return new Attendance(
+                workDate,
+                dutyTime,
+                workMinutes,
+                new OverWorkMinutes(
+                        calcOverWorkMinutes(workMinutes)
                 )
         );
     }
 
-    private static WorkMinutes calcWorkTime(DutyTime dutyTime, List<RestTime> restTimeList) {
+    private static int calcWorkTime(DutyTime dutyTime, List<RestTime> restTimeList) {
 
         // 労働時間＝就業時間－休憩時間
-        return new WorkMinutes(
-                calcDutyTime(dutyTime) - calcTotalRestTime(dutyTime, restTimeList)
-        );
+        return calcDutyTime(dutyTime) - calcTotalRestTime(dutyTime, restTimeList);
     }
 
     private static int calcDutyTime(DutyTime dutyTime) {
@@ -95,14 +96,12 @@ public class Attendance {
         return other;
     }
 
-    private static OverWorkMinutes calcOverWorkMinutes(DutyTime dutyTime, StipulatedTime stipulatedTime) {
+    private static int calcOverWorkMinutes(WorkMinutes workMinutes) {
 
-        // 残業時間＝退勤時間ー定時
-        if (dutyTime.getEndTime().isAfter(stipulatedTime.getValue())) {
-            return new OverWorkMinutes(
-                    (int) stipulatedTime.getValue().until(dutyTime.getEndTime(), ChronoUnit.MINUTES)
-            );
+        // 作業開始から8時間経過以降を残業とする
+        if (workMinutes.isOverWork()) {
+            return workMinutes.getValue() - 480;
         }
-        return new OverWorkMinutes(0);
+        return 0;
     }
 }

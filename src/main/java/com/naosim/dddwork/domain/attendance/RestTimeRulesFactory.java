@@ -29,7 +29,7 @@ public class RestTimeRulesFactory {
         return this;
     }
 
-    public List<RestTime> create() {
+    public List<RestTime> build() {
         return this.getRestTimeRules();
     }
 }
