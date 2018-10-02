@@ -1,13 +1,8 @@
 package jp.co.biglobe.kintai.api;
 
-import jp.co.biglobe.kintai.domain.EndWorkTime;
-import jp.co.biglobe.kintai.domain.NowTime;
-import jp.co.biglobe.kintai.domain.StartWorkTime;
-import jp.co.biglobe.kintai.domain.WorkDate;
+import jp.co.biglobe.kintai.domain.*;
 import jp.co.biglobe.kintai.service.KintaiService;
 import jp.co.biglobe.kintai.util.StringUtil;
-
-import java.util.Optional;
 
 public class KintaiApi {
 
