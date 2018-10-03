@@ -38,13 +38,14 @@ public class WorkingRule {
             }
         }
 
-        WorkTime workTime = new WorkTime();
-        workTime.setNow(nowTime);
-        workTime.setDate(workDate);
-        workTime.setStartTime(startWorkTime);
-        workTime.setEndTime(endWorkTime);
-        workTime.setMinutes(workMinutes);
-        workTime.setOverWorkMinutes(Math.max(workMinutes - 8 * 60, 0));
+        WorkTime workTime = new WorkTime(
+                workDate,
+                startWorkTime,
+                endWorkTime,
+                workMinutes,
+                Math.max(workMinutes - 8 * 60, 0),
+                nowTime
+        );
 
         return workTime;
     }
