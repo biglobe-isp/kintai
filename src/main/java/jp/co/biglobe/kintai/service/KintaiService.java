@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public class KintaiService {
 
-
     private WorkTimeRepository workTimeRepository;
 
     public KintaiService(){
@@ -18,7 +17,6 @@ public class KintaiService {
         workTimeRepository = repository;
     }
 
-    // yearMonthはバリュー
     public Optional<MonthlyWorkTimeCard> total(YearMonth yearMonth) {
         return workTimeRepository.findWorkTimeCard(yearMonth);
     }
