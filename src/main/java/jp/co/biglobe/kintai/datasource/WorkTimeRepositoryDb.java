@@ -41,9 +41,6 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
                 if (!columns[Csv_Column_Date_Index].startsWith(yearMonth.getYearMonth())) {
                     continue;
                 }
-                WorkTime workTime = new WorkTime();
-                workTime.setMinutes(Integer.valueOf(columns[Csv_Column_Minutes_Index]));
-                workTime.setOverWorkMinutes(Integer.valueOf(columns[Csv_Column_OverWorkMinutes_Index]));
                 WorkTime workTime = new WorkTime(Integer.valueOf(columns[Csv_Column_Minutes_Index]),
                         Integer.valueOf(columns[Csv_Column_OverWorkMinutes_Index]));
 
