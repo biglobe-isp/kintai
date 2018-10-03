@@ -7,7 +7,6 @@ import lombok.ToString;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 /**
  * 勤怠
@@ -38,32 +37,21 @@ public class Attendance {
         // 仕様変更 来月の途中から休憩時間が増える
         // 来月15日から休憩が増えます。時間は15:00-16:00。
         // 2018/11/15以降では、休憩時間ルールに15:00-16:00を追加する。
-        RestTimeRulesFactory restTimeRulesFactory = new RestTimeRulesFactory();
-
-        if (workDate.is20181115Later()) {
-            restTimeRulesFactory
-                    .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
-                    .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
-                    .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
-                    .add(LocalTime.of(15, 0, 0), LocalTime.of(16, 0, 0));
-        } else {
-            restTimeRulesFactory
-                    .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
-                    .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
-                    .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0));
-        }
+        RestTimeRule restTimeRule = makeRestTimeRule(workDate);
         // 20181002 仕様変更 ADD END
 
         WorkMinutes workMinutes = new WorkMinutes(
                 calcWorkTime(
                         dutyTime,
                         // 20181002 仕様変更 MOD START
+                        // 仕様変更 来月の途中から休憩時間が増える
 //                        new RestTimeRulesFactory()
 //                                .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
 //                                .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
 //                                .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
 //                                .build()
-                        restTimeRulesFactory.build()
+//                        restTimeRulesFactory.build()
+                        restTimeRule
                         // 20181002 仕様変更 MOD END
                 )
         );
@@ -78,29 +66,45 @@ public class Attendance {
         );
     }
 
-    private static int calcWorkTime(DutyTime dutyTime, List<RestTime> restTimeList) {
+    // 20181003 仕様変更 MOD START
+//    private static int calcWorkTime(DutyTime dutyTime, List<RestTime> restTimeList) {
+//
+//        // 労働時間＝就業時間－休憩時間
+//        return calcDutyTime(dutyTime) - calcTotalRestTime(dutyTime, restTimeList);
+//    }
+//
+    private static int calcWorkTime(DutyTime dutyTime, RestTimeRule restTimeRule) {
 
         // 労働時間＝就業時間－休憩時間
-        return calcDutyTime(dutyTime) - calcTotalRestTime(dutyTime, restTimeList);
+        return calcDutyTime(dutyTime) - calcTotalRestTime(dutyTime, restTimeRule);
     }
+    // 20181003 仕様変更 MOD END
 
     private static int calcDutyTime(DutyTime dutyTime) {
 
         return (int) dutyTime.getStartTime().until(dutyTime.getEndTime(), ChronoUnit.MINUTES);
     }
 
-    private static int calcTotalRestTime(DutyTime dutyTime, List<RestTime> restTimeList) {
+    // 20181003 仕様変更 MOD START
+    //    private static int calcTotalRestTime(DutyTime dutyTime, List<RestTime> restTimeList) {
+//
+//        return restTimeList.stream()
+//                .mapToInt(restTime -> calcRestTime(dutyTime, restTime))
+//                .sum();
+//    }
+    private static int calcTotalRestTime(DutyTime dutyTime, RestTimeRule restTimeRule) {
 
-        return restTimeList.stream()
+        return restTimeRule.getValue().stream()
                 .mapToInt(restTime -> calcRestTime(dutyTime, restTime))
                 .sum();
     }
+    // 20181003 仕様変更 MOD END
 
     private static int calcRestTime(DutyTime dutyTime, RestTime restTime) {
 
         if (dutyTime.withinRange(restTime)) {
-            return (int) lateTime(dutyTime.getStartTime(), restTime.getStartTime()).until(
-                    earlyTime(dutyTime.getEndTime(), restTime.getEndTime()), ChronoUnit.MINUTES);
+            return (int) lateTime(dutyTime.getStartTime(), restTime.getStartTime())
+                    .until(earlyTime(dutyTime.getEndTime(), restTime.getEndTime()), ChronoUnit.MINUTES);
         }
         return 0;
     }
@@ -127,4 +131,34 @@ public class Attendance {
         }
         return 0;
     }
+
+    // 20181003 仕様変更 ADD START
+    private static RestTimeRule makeRestTimeRule(WorkDate workDate) {
+
+        if (workDate.is20181115Later()) {
+            return makeRestTimeRule20181115Later();
+        }
+
+        return makeRestTimeRuleUntil20181114();
+    }
+
+    private static RestTimeRule makeRestTimeRuleUntil20181114() {
+
+        return new RestTimeRuleFactory()
+                .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
+                .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
+                .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
+                .build();
+    }
+
+    private static RestTimeRule makeRestTimeRule20181115Later() {
+
+        return new RestTimeRuleFactory()
+                .add(LocalTime.of(12, 0, 0), LocalTime.of(13, 0, 0))
+                .add(LocalTime.of(15, 0, 0), LocalTime.of(16, 0, 0))
+                .add(LocalTime.of(18, 0, 0), LocalTime.of(19, 0, 0))
+                .add(LocalTime.of(21, 0, 0), LocalTime.of(22, 0, 0))
+                .build();
+    }
+    // 20181003 仕様変更 ADD END
 }

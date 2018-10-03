@@ -3,36 +3,41 @@
 package Attendance {
 
 interface AttendanceRepository {
-    +void input(Attendance) //勤怠の永続化
-    +AttendanceHistory find() //勤怠履歴の取得
+    + 勤怠を永続化する[void input(Attendance)]
+    + 勤怠履歴を取得する[<color:red>AttendanceHistory</color> find()]
 }
 
 class "勤怠[Attendance]" as Attendance {
     出勤日[WorkDate]
-/'----------------------------------------------
-    出勤時刻[StartTime]
-    退勤時刻[EndTime]
-----------------------------------------------'/
-    就業時間[DutyTime]
+    <color:red>就業時間[DutyTime]</color>
     労働時間[WorkMinutes]
     残業時間[OverWorkMinutes]
     + {static} 作成する[Attendance create(WorkDate, StartTime, EndTime)]
-    - {static} 労働時間を計算する int calcWorkTime(DutyTime dutyTime, List<RestTime> restTimeList)
-    - {static} 就業時間を計算する int calcDutyTime(DutyTime dutyTime)
-    - {static} 休憩時間合計を計算する int calcTotalRestTime(DutyTime dutyTime, List<RestTime> restTimeList)
-    - {static} 休憩時間を計算する int calcRestTime(DutyTime dutyTime, RestTime restTime)
-    - {static} 時刻を比較しより早い時刻 LocalTime earlyTime(LocalTime one, LocalTime other)
-    - {static} 時刻を比較しより遅い時刻 LocalTime lateTime(LocalTime one, LocalTime other)
-    - {static} 残業時間を計算する int calcOverWorkMinutes(DutyTime dutyTime, StipulatedTime stipulatedTime)
+    - {static} <color:red>労働時間を計算する int calcWorkTime(DutyTime, List<RestTime>)</color>
+    - {static} <color:red>就業時間を計算する int calcDutyTime(DutyTime)</color>
+    - {static} <color:red>休憩時間合計を計算する int calcTotalRestTime(DutyTime, List<RestTime>)</color>
+    - {static} <color:red>休憩時間を計算する int calcRestTime(DutyTime, RestTime)</color>
+    - {static} <color:red>時刻を比較しより早い時刻 LocalTime earlyTime(LocalTime, LocalTime)</color>
+    - {static} <color:red>時刻を比較しより遅い時刻 LocalTime lateTime(LocalTime, LocalTime)</color>
+    - {static} <color:red>残業時間を計算する int calcOverWorkMinutes(WorkMinutes)</color>
 }
 
 class "勤怠履歴[AttendanceHistory]" as AttendanceHistory {
     勤怠リスト[AttendanceList]
     + 労働時間を集計する[TotalWorkMinutesByMonth totalWorkMinutesByMonth(TotalYearMonth)]
     + 残業時間を集計する[TotalOverWorkMinutesByMonth totalOverWorkMinutesByMonth(TotalYearMonth)]
-/'
-    + 労働時間と残業時間を出力する[void print(TotalWorkMinutesByMonth, TotalOverWorkMinutesByMonth)]
-'/
+}
+
+class "月別労働時間[TotalWorkMinutesByMonth]" as TotalWorkMinutesByMonth {
+    月別労働時間[int]
+}
+
+class "月別残業時間[TotalOverWorkMinutesByMonth]" as TotalOverWorkMinutesByMonth {
+    月別残業時間[int]
+}
+
+class "集計年月[TotalYearMonth]" as TotalYearMonth {
+    集計年月[YearMonth]
 }
 
 class "勤怠リスト[AttendanceList]" as AttendanceList {
@@ -51,67 +56,55 @@ class "退勤時刻[EndTime]" as EndTime {
     退勤時刻[LocalTime]
 }
 
-/'----------------------------------------------
-class "出勤時刻[StartTime]" as StartTime {
-    + 出勤時を作成する[StartTimeHours makeStartTimeHours()]
-    + 出勤分を作成する[StartTimeMinutes makeStartTimeMinutes()]
+class "<color:red>就業時間[DutyTime]</color>" as DutyTime {
+    <color:red>開始時刻[LocalTime]</color>
+    <color:red>終了時刻[LocalTime]</color>
+    + <color:red>就業時間の範囲内に休憩時間を含む[boolean withinRange(RestTime)]</color>
 }
 
-class "出勤時[StartTimeHours]" as StartTimeHours {
-}
-
-class "出勤分[StartTimeMinutes]" as StartTimeMinutes {
-}
-
-class "退勤時刻[EndTime]" as EndTime {
-    + 退勤時を作成する[EndTimeHours makeEndTimeHours()]
-    + 退勤分を作成する[EndTimeMinutes makeEndTimeMinutes()]
-}
-
-class "退勤時[EndTimeHours]" as EndTimeHours {
-    + 12時を超過している[boolean isOver12Hours()]
-    + 18時を超過している[boolean isOver18Hours()]
-    + 21時を超過している[boolean isOver21Hours()]
-    + 休憩時間中である[boolean isBreak()]
-}
-
-class "退勤分[EndTimeMinutes]" as EndTimeMinutes {
-}
-----------------------------------------------'/
-
-class "就業時間[DutyTime] " as DutyTime {
-    開始時刻[LocalTime]
-    終了時刻[LocalTime]
-    + 就業時間の範囲内に休憩時間を含む[boolean withinRange(RestTime restTime)]
-}
-
-class "休憩時間[RestTime]" as RestTime {
-    開始時刻[LocalTime]
-    終了時刻[LocalTime]
+class "<color:red>休憩時間[RestTime]</color>" as RestTime {
+    <color:red>開始時刻[LocalTime]</color>
+    <color:red>終了時刻[LocalTime]</color>
 }
 
 class "労働時間[WorkMinutes]" as WorkMinutes {
     労働時間[int]
-    + 働き過ぎ[boolean isOverWork()]
-/'
-    + 作成する[WorkMinutes(StartTime, EndTime)]
-    + 労働時間を算出する[int calcWorkMinutes(StartTimeHours, StartTimeMinutes, EndTimeHours, EndTimeMinutes)]
-'/
+    + <color:red><s>作成する[WorkMinutes(StartTime, EndTime)]</s></color>
+    - <color:red><s>労働時間を算出する[int calcWorkMinutes(StartTimeHours, StartTimeMinutes, EndTimeHours, EndTimeMinutes)]</s></color>
+    + <color:red>働き過ぎ[boolean isOverWork()]</color>
 }
 
 class "残業時間[OverWorkMinutes]" as OverWorkMinutes {
     残業時間[int]
-/'
-    + 作成する[OverWorkMinutes(WorkMinutes)]
-    + 残業時間を算出する[int calcOverWorkMinutes(WorkMinutes)]
-'/
+    + <color:red><s>作成する[OverWorkMinutes(WorkMinutes)]</s></color>
+    - <color:red><s>残業時間を算出する[int calcOverWorkMinutes(WorkMinutes)]</s></color>
 }
 
-class "休憩時間規則ファクトリ[RestTimeRulesFactory] " as RestTimeRulesFactory {
-    休憩時間リスト[List<RestTime>]
-    + 作成する[RestTimeRulesFactory()]
-    + 追加する[RestTimeRulesFactory add(LocalTime startTime, LocalTime endTime)]
-    + 構築する[List<RestTime> build()]
+class "<color:red>休憩時間規則ファクトリ[RestTimeRulesFactory]</color>" as RestTimeRulesFactory {
+    <color:red>休憩時間リスト[List<RestTime>]</color>
+    + <color:red>作成する[RestTimeRulesFactory()]</color>
+    + <color:red>追加する[RestTimeRulesFactory add(LocalTime, LocalTime)]</color>
+    + <color:red>構築する[List<RestTime> build()]</color>
+}
+
+class "<s>出勤時[StartTimeHours]</s>" as StartTimeHours {
+    <s>出勤時[int]</s>
+}
+
+class "<s>出勤分[StartTimeMinutes]</s>" as StartTimeMinutes {
+    <s>出勤分[int]</s>
+}
+
+class "<s>退勤時[EndTimeHours]</s>" as EndTimeHours {
+    <s>退勤時[int]</s>
+    + <s>12時を超過している[boolean isOver12Hours()]</s>
+    + <s>18時を超過している[boolean isOver18Hours()]</s>
+    + <s>21時を超過している[boolean isOver21Hours()]</s>
+    + <s>休憩時間中である[boolean isBreak()]</s>
+}
+
+class "<s>退勤分[EndTimeMinutes]</s>" as EndTimeMinutes {
+    <s>退勤分[int]</s>
 }
 
 AttendanceRepository -down-> Attendance
@@ -119,6 +112,10 @@ AttendanceRepository -down-> AttendanceHistory
 
 AttendanceHistory -down-> AttendanceList
 AttendanceList -down-> Attendance
+
+AttendanceHistory -down-> TotalWorkMinutesByMonth
+AttendanceHistory -down-> TotalOverWorkMinutesByMonth
+AttendanceHistory -down-> TotalYearMonth
 
 Attendance -down-> WorkDate
 Attendance -down-> StartTime
@@ -128,29 +125,10 @@ Attendance -down-> RestTime
 Attendance -down-> WorkMinutes
 Attendance -down-> OverWorkMinutes
 
-/'
-OverWorkMinutes -down-> WorkMinutes
-'/
-
 DutyTime -down-> RestTime
 
-/'
-WorkMinutes -down-> StartTime
-WorkMinutes -down-> EndTime
-
-WorkMinutes -down-> StartTimeHours
-WorkMinutes -down-> StartTimeMinutes
-WorkMinutes -down-> EndTimeHours
-WorkMinutes -down-> EndTimeMinutes
-
-StartTime -down-> StartTimeHours
-StartTime -down-> StartTimeMinutes
-
-EndTime -down-> EndTimeHours
-EndTime -down-> EndTimeMinutes
-'/
-
 RestTimeRulesFactory -up-> RestTime
+
 }
 
 @enduml

@@ -13,7 +13,7 @@ class "勤怠[Attendance]" as Attendance {
     退勤時刻[EndTime]
     労働時間[WorkMinutes]
     残業時間[OverWorkMinutes]
-    + 作成する[Attendance create(WorkDate, StartTime, EndTime)]
+    + {static} 作成する[Attendance create(WorkDate, StartTime, EndTime)]
 }
 
 class "勤怠履歴[AttendanceHistory]" as AttendanceHistory {
@@ -23,11 +23,24 @@ class "勤怠履歴[AttendanceHistory]" as AttendanceHistory {
     + 労働時間と残業時間を出力する[void print(TotalWorkMinutesByMonth, TotalOverWorkMinutesByMonth)]
 }
 
+class "月別労働時間[TotalWorkMinutesByMonth]" as TotalWorkMinutesByMonth {
+    月別労働時間[int]
+}
+
+class "月別残業時間[TotalOverWorkMinutesByMonth]" as TotalOverWorkMinutesByMonth {
+    月別残業時間[int]
+}
+
+class "集計年月[TotalYearMonth]" as TotalYearMonth {
+    集計年月[YearMonth]
+}
+
 class "勤怠リスト[AttendanceList]" as AttendanceList {
     勤怠リスト[List<Attendance>]
 }
 
 class "出勤日[WorkDate]" as WorkDate {
+    出勤日[LocalDate]
 }
 
 class "出勤時刻[StartTime]" as StartTime {
@@ -36,17 +49,21 @@ class "出勤時刻[StartTime]" as StartTime {
 }
 
 class "出勤時[StartTimeHours]" as StartTimeHours {
+    出勤時[int]
 }
 
 class "出勤分[StartTimeMinutes]" as StartTimeMinutes {
+    出勤分[int]
 }
 
 class "退勤時刻[EndTime]" as EndTime {
+    退勤時刻[LocalTime]
     + 退勤時を作成する[EndTimeHours makeEndTimeHours()]
     + 退勤分を作成する[EndTimeMinutes makeEndTimeMinutes()]
 }
 
 class "退勤時[EndTimeHours]" as EndTimeHours {
+    退勤時[int]
     + 12時を超過している[boolean isOver12Hours()]
     + 18時を超過している[boolean isOver18Hours()]
     + 21時を超過している[boolean isOver21Hours()]
@@ -54,22 +71,29 @@ class "退勤時[EndTimeHours]" as EndTimeHours {
 }
 
 class "退勤分[EndTimeMinutes]" as EndTimeMinutes {
+    退勤分[int]
 }
 
 class "労働時間[WorkMinutes]" as WorkMinutes {
+    労働時間[int]
     + 作成する[WorkMinutes(StartTime, EndTime)]
-    + 労働時間を算出する[int calcWorkMinutes(StartTimeHours, StartTimeMinutes, EndTimeHours, EndTimeMinutes)]
+    - 労働時間を算出する[int calcWorkMinutes(StartTimeHours, StartTimeMinutes, EndTimeHours, EndTimeMinutes)]
 }
 
 class "残業時間[OverWorkMinutes]" as OverWorkMinutes {
+    残業時間[int]
     + 作成する[OverWorkMinutes(WorkMinutes)]
-    + 残業時間を算出する[int calcOverWorkMinutes(WorkMinutes)]
+    - 残業時間を算出する[int calcOverWorkMinutes(WorkMinutes)]
 }
 
 AttendanceRepository -down-> Attendance
 AttendanceRepository -down-> AttendanceList
 AttendanceHistory -down-> AttendanceList
 AttendanceList -down-> Attendance
+
+AttendanceHistory -down-> TotalWorkMinutesByMonth
+AttendanceHistory -down-> TotalOverWorkMinutesByMonth
+AttendanceHistory -down-> TotalYearMonth
 
 Attendance -down-> WorkDate
 Attendance -down-> StartTime
