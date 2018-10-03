@@ -1,5 +1,6 @@
 package jp.co.biglobe.kintai.datasource;
 
+import jp.co.biglobe.kintai.datasource.format.WorkTimeFormatter;
 import jp.co.biglobe.kintai.domain.*;
 
 import java.io.*;
@@ -20,11 +21,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
     public void input(final WorkTime workTime) {
         File file = new File(FileName);
         try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate().getWorkDate(),
-                    workTime.getStartTime().getTime(), workTime.getEndTime().getTime(),
-                    workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow()));
-                    workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow().getNow()));
-            //filewriter.write(workTime.getFormat());
+            filewriter.write(WorkTimeFormatter.format(workTime));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
