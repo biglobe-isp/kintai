@@ -6,28 +6,34 @@ import java.util.stream.Collectors;
 
 public class MonthlyWorkTimeCard {
 
-    private HashMap<String, WorkTime> timeCard;
+    private int workHours;
+    private int workMinutes;
 
-    public MonthlyWorkTimeCard() {
-        this.timeCard = new HashMap<>();
+    private int overWorkHours;
+    private int overWorkMinutes;
+
+
+    public MonthlyWorkTimeCard(int totalWorkMinutes, int totalOverWorkMinutes){
+        this.workHours = totalWorkMinutes / 60;
+        this.workMinutes = totalWorkMinutes % 60;
+        this.overWorkHours = totalOverWorkMinutes / 60;
+        this.overWorkMinutes = totalOverWorkMinutes % 60;
     }
 
-    public WorkTime punch(String date, WorkTime workTime) {
-        this.timeCard.put(date, workTime);
-        return workTime;
+    public int getWorkHours() {
+        return workHours;
     }
 
-    public boolean isPunched() {
-        return !this.timeCard.isEmpty();
+    public int getWorkMinutes() {
+        return workMinutes;
     }
 
-    public int getTotalMinutes() {
-        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.values());
-        return timesList.stream().mapToInt(WorkTime::getMinutes).sum();
+    public int getOverWorkHours() {
+        return overWorkHours;
     }
 
-    public int getTotalOverWorkMinutes() {
-        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.values());
-        return timesList.stream().mapToInt(WorkTime::getOverWorkMinutes).sum();
+    public int getOverWorkMinutes() {
+        return overWorkMinutes;
     }
+
 }

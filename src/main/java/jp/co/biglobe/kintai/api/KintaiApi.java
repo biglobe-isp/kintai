@@ -54,9 +54,8 @@ public class KintaiApi {
         month = new YearMonth(yearMonth);
 
         kintaiService.total(month).ifPresent(timeCard -> {
-                    //タイムカードで時間と分の区分けを
-                    System.out.println("勤務時間: " + timeCard.getTotalMinutes() / 60 + "時間" + timeCard.getTotalMinutes() % 60 + "分");
-                    System.out.println("残業時間: " + timeCard.getTotalOverWorkMinutes() / 60 + "時間" + timeCard.getTotalOverWorkMinutes() % 60 + "分");
+                    System.out.println("勤務時間: " + timeCard.getWorkHours() + "時間" + timeCard.getWorkMinutes() + "分");
+                    System.out.println("残業時間: " + timeCard.getOverWorkHours() + "時間" + timeCard.getOverWorkMinutes() + "分");
                 }
         );
     }

@@ -30,7 +30,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
     @Override
     public Optional<MonthlyWorkTimeCard> findWorkTimeCard(final YearMonth yearMonth) {
 
-        MonthlyWorkTimeCard timeCard = new MonthlyWorkTimeCard();
+        WorkTimeCardBuilder builder = new WorkTimeCardBuilder();
 
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(FileName))) {
             String line;
@@ -42,13 +42,12 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
                 WorkTime workTime = new WorkTime(Integer.valueOf(columns[Csv_Column_Minutes_Index]),
                         Integer.valueOf(columns[Csv_Column_OverWorkMinutes_Index]));
 
-                // ビルダーで作って
-                timeCard.punch(columns[Csv_Column_Date_Index], workTime);
+                builder.punch(columns[Csv_Column_Date_Index], workTime);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return timeCard.isPunched() ? Optional.ofNullable(timeCard) : Optional.empty();
+        return builder.getMonthlyWorkTimCard();
     }
 }
