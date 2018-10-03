@@ -9,6 +9,8 @@ interface AttendanceRepository {
 
 class "勤怠[Attendance]" as Attendance {
     出勤日[WorkDate]
+    <color:red><s>出勤時刻[StartTime]</s></color>
+    <color:red><s>退勤時刻[EndTime]</s></color>
     <color:red>就業時間[DutyTime]</color>
     労働時間[WorkMinutes]
     残業時間[OverWorkMinutes]
