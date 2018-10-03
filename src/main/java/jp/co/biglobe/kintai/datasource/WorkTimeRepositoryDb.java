@@ -23,6 +23,7 @@ public class WorkTimeRepositoryDb implements WorkTimeRepository {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", workTime.getDate().getWorkDate(),
                     workTime.getStartTime().getTime(), workTime.getEndTime().getTime(),
                     workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow()));
+                    workTime.getMinutes(), workTime.getOverWorkMinutes(), workTime.getNow().getNow()));
             //filewriter.write(workTime.getFormat());
         } catch (IOException e) {
             throw new RuntimeException(e);
