@@ -1,16 +1,22 @@
 package jp.co.biglobe.kintai.domain;
 
+import jp.co.biglobe.kintai.datasource.BreakTimeRepositoryDb;
+import jp.co.biglobe.kintai.domain.breaktime.DailyBreakTimes;
+
 public class WorkingRule {
 
     private static final int coolTimes[][] ={{12,13}, {18,19},{21,22}};
     private static final int coolTimeIndex_StartTime = 0;
     private static final int coolTimeIndex_EntTime = 1;
 
+    private final BreakTimeRepository breakTimeRepository;
+
     //休憩時間クラスで表現を変更する
 
     private static WorkingRule INSTANCE;
 
     private WorkingRule(){
+        this.breakTimeRepository = new BreakTimeRepositoryDb();
     }
 
     public static  WorkingRule getInstance(){
@@ -24,6 +30,7 @@ public class WorkingRule {
 
         int startH = Integer.valueOf(startWorkTime.getTime().substring(0, 2));
         int startM = Integer.valueOf(startWorkTime.getTime().substring(2, 4));
+        DailyBreakTimes breakTimes = breakTimeRepository.findBreakTimes();
 
         int endH = Integer.valueOf(endWorkTime.getTime().substring(0, 2));
         int endM = Integer.valueOf(endWorkTime.getTime().substring(2, 4));
