@@ -21,12 +21,7 @@ public class KintaiService {
         return workTimeRepository.findWorkTimeCard(yearMonth);
     }
 
-    public void input(WorkDate workDate, StartWorkTime startTime, EndWorkTime endTime, NowTime nowTime) {
-        workTimeRepository.input(WorkingRule.getInstance().calculateWorkTime(
-                workDate,
-                startTime,
-                endTime,
-                nowTime
-        ));
+    public void input(WorkTime workTime) {
+        workTimeRepository.input(WorkingRule.getInstance().calculateWorkTime(workTime));
     }
 }
