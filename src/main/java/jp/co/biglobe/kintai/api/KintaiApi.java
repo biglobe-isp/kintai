@@ -42,8 +42,17 @@ public class KintaiApi {
         }
         nowTime = new NowTime(now);
 
-        kintaiService.input(workDate, startTime, endTime, nowTime);
 
+        WorkTime workTime = new WorkTime(
+                workDate,
+                startTime,
+                endTime,
+                0,
+                0,
+                nowTime
+        );
+
+        kintaiService.input(workTime);
     }
 
     public void total(String yearMonth) {
