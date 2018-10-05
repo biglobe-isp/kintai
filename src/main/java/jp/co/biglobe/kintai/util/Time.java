@@ -4,6 +4,7 @@ public final class Time {
 
     private final int hours;
 
+
     private final int minutes;
 
 
@@ -53,4 +54,11 @@ public final class Time {
         return minutes+this.minutes;
     }
 
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
 }

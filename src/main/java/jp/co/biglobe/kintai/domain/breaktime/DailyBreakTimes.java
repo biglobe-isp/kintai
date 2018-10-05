@@ -2,6 +2,7 @@ package jp.co.biglobe.kintai.domain.breaktime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class DailyBreakTimes {
@@ -20,9 +21,7 @@ public class DailyBreakTimes {
         this.breakTimes.add(breakTime);
     }
 
-    public Stream stream(){
-        return  this.breakTimes.stream();
+    public List<BreakTime> getBreakTimes(){
+        return this.breakTimes;
     }
-
-
 }
