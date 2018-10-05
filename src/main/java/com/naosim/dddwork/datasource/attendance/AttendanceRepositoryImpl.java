@@ -33,35 +33,31 @@ import java.util.stream.Collectors;
 public class AttendanceRepositoryImpl implements AttendanceRepository {
 
     @Override
-    public void input(Attendance attendance) {
+    public void input(Attendance attendance) throws IOException {
 
         File file = new File("data.csv");
 
-        try (FileWriter filewriter = new FileWriter(file, true)) {
+        FileWriter filewriter = new FileWriter(file, true);
 
-            filewriter.write(
-                    String.format(
-                            "%s,%s,%s,%s,%s,%s\n",
-                            DateFormatter.format_yyyyMMdd(attendance.getWorkDate().getValue()),
-                            DateFormatter.format_HHmmss(attendance.getDutyTime().getStartTime()).substring(0, 4),
-                            DateFormatter.format_HHmmss(attendance.getDutyTime().getEndTime()).substring(0, 4),
-                            attendance.getWorkMinutes().getValue(),
-                            attendance.getOverWorkMinutes().getValue(),
-                            LocalDateTime.now().toString()));
+        filewriter.write(
+                String.format(
+                        "%s,%s,%s,%s,%s,%s\n",
+                        DateFormatter.format_yyyyMMdd(attendance.getWorkDate().getValue()),
+                        DateFormatter.format_HHmmss(attendance.getDutyTime().getStartTime()).substring(0, 4),
+                        DateFormatter.format_HHmmss(attendance.getDutyTime().getEndTime()).substring(0, 4),
+                        attendance.getWorkMinutes().getValue(),
+                        attendance.getOverWorkMinutes().getValue(),
+                        LocalDateTime.now().toString()));
 
-            System.out.println(
-                    String.format(
-                            "%s,%s,%s,%s,%s,%s\n",
-                            DateFormatter.format_yyyyMMdd(attendance.getWorkDate().getValue()),
-                            DateFormatter.format_HHmmss(attendance.getDutyTime().getStartTime()).substring(0, 4),
-                            DateFormatter.format_HHmmss(attendance.getDutyTime().getEndTime()).substring(0, 4),
-                            attendance.getWorkMinutes().getValue(),
-                            attendance.getOverWorkMinutes().getValue(),
-                            LocalDateTime.now().toString()));
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+        System.out.println(
+                String.format(
+                        "%s,%s,%s,%s,%s,%s\n",
+                        DateFormatter.format_yyyyMMdd(attendance.getWorkDate().getValue()),
+                        DateFormatter.format_HHmmss(attendance.getDutyTime().getStartTime()).substring(0, 4),
+                        DateFormatter.format_HHmmss(attendance.getDutyTime().getEndTime()).substring(0, 4),
+                        attendance.getWorkMinutes().getValue(),
+                        attendance.getOverWorkMinutes().getValue(),
+                        LocalDateTime.now().toString()));
     }
 
     @Override
@@ -69,38 +65,31 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
 
         File file = new File("data.csv");
 
-        try (
-                FileReader fileReader = new FileReader(file);
-                BufferedReader bufferedReader = new BufferedReader(fileReader)
-        ) {
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
 
-            Map<String, String[]> noDuplicationMap = new LinkedHashMap<>();
+        Map<String, String[]> noDuplicationMap = new LinkedHashMap<>();
 
-            bufferedReader.lines()
-                    .map(line -> line.split(","))
-                    .forEach(columns ->
-                            noDuplicationMap.put(columns[0], columns)
-                    );
+        bufferedReader.lines()
+                .map(line -> line.split(","))
+                .forEach(columns ->
+                        noDuplicationMap.put(columns[0], columns)
+                );
 
-            return new AttendanceHistory(
-                    new AttendanceList(
-                            noDuplicationMap.values().stream()
-                                    .map(columns ->
-                                            new Attendance(
-                                                    new WorkDate(DateParser.parse_yyyyMMdd(columns[0])),
-                                                    new DutyTime(DateParser.parse_HHmmss(columns[1] + "00"),
-                                                            DateParser.parse_HHmmss(columns[2] + "00")),
-                                                    new WorkMinutes(Integer.parseInt(columns[3])),
-                                                    new OverWorkMinutes(Integer.parseInt(columns[4]))
-                                            )
-                                    )
-                                    .collect(Collectors.toList())
-                    )
-            );
-
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-            throw ioException;
-        }
+        return new AttendanceHistory(
+                new AttendanceList(
+                        noDuplicationMap.values().stream()
+                                .map(columns ->
+                                        new Attendance(
+                                                new WorkDate(DateParser.parse_yyyyMMdd(columns[0])),
+                                                new DutyTime(DateParser.parse_HHmmss(columns[1] + "00"),
+                                                        DateParser.parse_HHmmss(columns[2] + "00")),
+                                                new WorkMinutes(Integer.parseInt(columns[3])),
+                                                new OverWorkMinutes(Integer.parseInt(columns[4]))
+                                        )
+                                )
+                                .collect(Collectors.toList())
+                )
+        );
     }
 }

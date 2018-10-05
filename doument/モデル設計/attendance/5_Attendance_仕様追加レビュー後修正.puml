@@ -1,0 +1,139 @@
+@startuml
+
+package domain.attendance {
+
+interface AttendanceRepository {
+    + 勤怠を永続化する[void input(Attendance)]
+    + 勤怠履歴を取得する[AttendanceHistory find()]
+}
+
+class "勤怠[Attendance]" as Attendance {
+    出勤日[WorkDate]
+    就業時間[DutyTime]
+    労働時間[WorkMinutes]
+    残業時間[OverWorkMinutes]
+    - <color:red>作成する[Attendance(WorkDate, StartTime, EndTime)]</color>
+    + {static} 作成する[Attendance create(WorkDate, StartTime, EndTime)]
+    - 休憩時間規則を作成する[RestTimeRule makeRestTimeRule(WorkDate)]
+    - {static} <color:red><s>就業時間を計算する int calcDutyTime(DutyTime)</s></color>
+    - {static} <color:red><s>休憩時間合計を計算する int calcTotalRestTime(DutyTime, RestTimeRule)</s></color>
+    - {static} <color:red><s>休憩時間を計算する int calcRestTime(DutyTime, RestTime)</s></color>
+    - {static} <color:red><s>時刻を比較しより早い時刻 LocalTime earlyTime(LocalTime, LocalTime)</s></color>
+    - {static} <color:red><s>時刻を比較しより遅い時刻 LocalTime lateTime(LocalTime, LocalTime)</s></color>
+    - {static} <color:red><s>残業時間を計算する int calcOverWorkMinutes(WorkMinutes)</s></color>
+    - {static} <color:red><s>2018/11/14までの休憩時間規則を作成する[RestTimeRule makeRestTimeRuleUntil20181114()]</s></color>
+    - {static} <color:red><s>2018/11/15以降の休憩時間規則を作成する[RestTimeRule makeRestTimeRule20181115Later()]</s></color>
+}
+
+class "勤怠履歴[AttendanceHistory]" as AttendanceHistory {
+    勤怠リスト[AttendanceList]
+    + 労働時間を集計する[TotalWorkMinutesByMonth totalWorkMinutesByMonth(TotalYearMonth)]
+    + 残業時間を集計する[TotalOverWorkMinutesByMonth totalOverWorkMinutesByMonth(TotalYearMonth)]
+}
+
+class "月別労働時間[TotalWorkMinutesByMonth]" as TotalWorkMinutesByMonth {
+    月別労働時間[int]
+}
+
+class "月別残業時間[TotalOverWorkMinutesByMonth]" as TotalOverWorkMinutesByMonth {
+    月別残業時間[int]
+}
+
+class "集計年月[TotalYearMonth]" as TotalYearMonth {
+    集計年月[YearMonth]
+}
+
+class "勤怠リスト[AttendanceList]" as AttendanceList {
+    勤怠リスト[List<Attendance>]
+}
+
+class "出勤日[WorkDate]" as WorkDate {
+    出勤日[LocalDate]
+}
+
+class "出勤時刻[StartTime]" as StartTime {
+    出勤時刻[LocalTime]
+}
+
+class "退勤時刻[EndTime]" as EndTime {
+    退勤時刻[LocalTime]
+}
+
+class "就業時間[DutyTime] " as DutyTime {
+    開始時刻[LocalTime]
+    終了時刻[LocalTime]
+    + <color:red>労働時間を計算する WorkMinutes calcWorkTime(WorkDate, RestTimeRule)</color>
+    - <color:red>就業時間(分)を計算する int calcDutyTime()</color>
+    - <color:red>休憩時間(分)合計を計算する int calcTotalRestTime(WorkDate workDate, RestTimeRule)</color>
+    - <color:red>休憩時間(分)を計算する int calcRestTime(RestTime)</color>
+    - 就業時間の範囲内に休憩時間を含む[boolean withinRange(RestTime)]
+}
+
+class "休憩時間[RestTime]" as RestTime {
+    開始時刻[LocalTime]
+    終了時刻[LocalTime]
+    <color:red>有効開始日[LocalDate]</color>
+    <color:red>有効終了日[LocalDate]</color>
+}
+
+class "労働時間[WorkMinutes]" as WorkMinutes {
+    労働時間[int]
+    + <color:red>残業時間を計算する OverWorkMinutes calcOverWorkMinutes(WorkMinutes)</color>
+    - 働き過ぎ[boolean isOverWork()]
+}
+
+class "残業時間[OverWorkMinutes]" as OverWorkMinutes {
+    残業時間[int]
+}
+
+class "休憩時間規則[RestTimeRule]" as RestTimeRule {
+    休憩時間規則[List<RestTime>]
+}
+
+class "休憩時間規則ファクトリ[RestTimeRuleFactory]" as RestTimeRuleFactory {
+    休憩時間リスト[List<RestTime>]
+    + 作成する[RestTimeRuleFactory()]
+    + 追加する[RestTimeRuleFactory add(LocalTime, LocalTime)]
+    + 構築する[RestTimeRule build()]
+}
+
+AttendanceRepository -down-> Attendance
+AttendanceRepository -down-> AttendanceHistory
+
+AttendanceHistory -down-> AttendanceList
+AttendanceList -down-> Attendance
+
+AttendanceHistory -down-> TotalWorkMinutesByMonth
+AttendanceHistory -down-> TotalOverWorkMinutesByMonth
+AttendanceHistory -down-> TotalYearMonth
+
+Attendance -down-> WorkDate
+Attendance -down-> StartTime
+Attendance -down-> EndTime
+Attendance -down-> DutyTime
+Attendance -right-> WorkMinutes
+Attendance -right-> OverWorkMinutes
+Attendance -down-> RestTimeRule
+
+DutyTime -down-> RestTime
+DutyTime -down-> RestTimeRule
+DutyTime -up-> WorkMinutes
+
+WorkMinutes -up-> OverWorkMinutes
+
+RestTimeRuleFactory -up-> RestTimeRule
+RestTimeRuleFactory -up-> RestTime
+RestTimeRule -up-> RestTime
+
+}
+
+package utility {
+
+class "時間ユーティリティ" as TimeUtility {
+    + {static} <color:red>時刻を比較しより早い時刻 LocalTime earlyTime(LocalTime, LocalTime)</color>
+    + {static} <color:red>時刻を比較しより遅い時刻 LocalTime lateTime(LocalTime, LocalTime)</color>
+}
+
+}
+
+@enduml

@@ -17,45 +17,16 @@ public class WorkMinutes {
     @Getter
     private final int value;
 
-    public boolean isOverWork() {
-        return this.value > 480;
+    public OverWorkMinutes calcOverWorkMinutes() {
+
+        // 作業開始から8時間経過以降を残業とする
+        if (this.isOverWork()) {
+            return new OverWorkMinutes(this.getValue() - 480);
+        }
+        return new OverWorkMinutes(0);
     }
 
-    // 不要メソッドを削除
-//    public WorkMinutes(StartTime startTime, EndTime endTime) {
-//
-//        this.value = calcWorkMinutes(
-//                startTime.makeStartTimeHours(),
-//                startTime.makeStartTimeMinutes(),
-//                endTime.makeEndTimeHours(),
-//                endTime.makeEndTimeMinutes());
-//    }
-//
-//    private int calcWorkMinutes(StartTimeHours startTimeHours,
-//                                StartTimeMinutes startTimeMinutes,
-//                                EndTimeHours endTimeHours,
-//                                EndTimeMinutes endTimeMinutes) {
-//
-//        int workMinutes =
-//                endTimeHours.getValue() * 60 + endTimeMinutes.getValue()
-//                        - (startTimeHours.getValue() * 60 + startTimeMinutes.getValue());
-//
-//        if (endTimeHours.isOver12Hours()) {
-//            workMinutes -= 60;
-//        }
-//
-//        if (endTimeHours.isOver18Hours()) {
-//            workMinutes -= 60;
-//        }
-//
-//        if (endTimeHours.isOver21Hours()) {
-//            workMinutes -= 60;
-//        }
-//
-//        if (endTimeHours.isBreak()) {
-//            workMinutes -= endTimeMinutes.getValue();
-//        }
-//
-//        return workMinutes;
-//    }
+    private boolean isOverWork() {
+        return this.value > 480;
+    }
 }

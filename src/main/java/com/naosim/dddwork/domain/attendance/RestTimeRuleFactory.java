@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +25,12 @@ public class RestTimeRuleFactory {
         this.restTimeList = new ArrayList<>();
     }
 
-    public RestTimeRuleFactory add(LocalTime startTime, LocalTime endTime) {
+    public RestTimeRuleFactory add(LocalTime startTime,
+                                   LocalTime endTime,
+                                   LocalDate expirationStartDate,
+                                   LocalDate expirationEndDate) {
 
-        this.getRestTimeList().add(new RestTime(startTime, endTime));
+        this.getRestTimeList().add(new RestTime(startTime, endTime, expirationStartDate, expirationEndDate));
 
         return this;
     }

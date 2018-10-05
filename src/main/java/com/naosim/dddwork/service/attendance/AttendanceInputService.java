@@ -17,7 +17,7 @@ public class AttendanceInputService {
     @Autowired
     private AttendanceRepository attendanceRepository;
 
-    public void input(AttendanceInputApplication attendanceInputApplication) {
+    public void input(AttendanceInputApplication attendanceInputApplication) throws Exception {
 
         // 勤怠の永続化
         attendanceRepository.input(

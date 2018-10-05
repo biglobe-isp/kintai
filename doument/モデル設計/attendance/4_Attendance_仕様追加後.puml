@@ -103,6 +103,7 @@ AttendanceHistory -down-> TotalYearMonth
 Attendance -down-> WorkDate
 Attendance -down-> StartTime
 Attendance -down-> EndTime
+
 Attendance -down-> DutyTime
 Attendance -down-> RestTime
 Attendance -down-> WorkMinutes
