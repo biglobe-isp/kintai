@@ -40,15 +40,13 @@ public class DutyTime {
         return (int) this.getStartTime().until(this.getEndTime(), ChronoUnit.MINUTES);
     }
 
-    //@SuppressWarnings("Convert2MethodRef")
     private int calcTotalRestTime(WorkDate workDate, RestTimeRule restTimeRule) {
 
         return restTimeRule.getValue().stream()
                 .filter(restTime ->
                         workDate.getValue().isAfter(restTime.getExpirationStartDate().minusDays(1L)) &&
                                 workDate.getValue().isBefore(restTime.getExpirationEndDate().plusDays(1L)))
-                .mapToInt(restTime -> this.calcRestTime(restTime))
-                //.mapToInt(DutyTime::calcRestTime)
+                .mapToInt(this::calcRestTime)
                 .sum();
     }
 

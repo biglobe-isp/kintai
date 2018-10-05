@@ -12,6 +12,7 @@ import java.time.LocalTime;
  * 勤怠
  * 2018/09/28 レビュー指摘事項反映 休憩時間、残業時間の業務仕様を表現。休憩時間を範囲として捉えるように修正
  * 2018/10/05 レビュー指摘事項反映 Attendanceがファット過ぎるため、DutyTimeに労働時間関連のメソッドを移動＋ValueObjectを返すように修正
+ * 2018/10/05 レビュー指摘事項反映 Attendanceがファット過ぎるため、WorkMinutesに残業時間関連のメソッドを移動＋ValueObjectを返すように修正
  * 2018/10/05 レビュー指摘事項反映 RestTimeを有効期限付きとして、休憩時間変更があってもコード上のロジックに影響がないように修正
  */
 @ToString(includeFieldNames = false)

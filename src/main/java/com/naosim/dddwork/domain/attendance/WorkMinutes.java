@@ -8,6 +8,7 @@ import lombok.ToString;
 /**
  * 労働時間
  * 2018/10/01 レビュー指摘事項反映 休憩時間、残業時間の業務仕様を表現。左記により不要メソッドを削除
+ * 2018/10/05 レビュー指摘事項反映 Attendanceがファット過ぎるため、WorkMinutesに残業時間関連のメソッドを移動＋ValueObjectを返すように修正
  */
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
