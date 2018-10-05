@@ -4,13 +4,7 @@ import jp.co.biglobe.kintai.datasource.BreakTimeRepositoryDb;
 import jp.co.biglobe.kintai.domain.breaktime.BreakTime;
 import jp.co.biglobe.kintai.domain.breaktime.DailyBreakTimes;
 
-import java.util.List;
-
 public class WorkingRule {
-
-    private static final int coolTimes[][] = {{12, 13}, {18, 19}, {21, 22}};
-    private static final int coolTimeIndex_StartTime = 0;
-    private static final int coolTimeIndex_EntTime = 1;
 
     private final BreakTimeRepository breakTimeRepository;
 
