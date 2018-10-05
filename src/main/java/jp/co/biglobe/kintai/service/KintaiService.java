@@ -1,5 +1,6 @@
 package jp.co.biglobe.kintai.service;
 
+import jp.co.biglobe.kintai.datasource.TimeCardRepositoryDb;
 import jp.co.biglobe.kintai.datasource.WorkTimeRepositoryDb;
 import jp.co.biglobe.kintai.domain.*;
 
@@ -9,16 +10,19 @@ public class KintaiService {
 
     private WorkTimeRepository workTimeRepository;
 
-    public KintaiService(){
-        this(new WorkTimeRepositoryDb());
+    private TimeCardRepository timeCardRepository;
+
+    public KintaiService() {
+        this(new WorkTimeRepositoryDb(), new TimeCardRepositoryDb());
     }
 
-    public KintaiService(WorkTimeRepository repository){
-        workTimeRepository = repository;
+    public KintaiService(WorkTimeRepository workTimeRepository, TimeCardRepository timeCardRepository) {
+        this.workTimeRepository = workTimeRepository;
+        this.timeCardRepository = timeCardRepository;
     }
 
     public Optional<MonthlyWorkTimeCard> total(YearMonth yearMonth) {
-        return workTimeRepository.findWorkTimeCard(yearMonth);
+        return timeCardRepository.findWorkTimeCard(yearMonth);
     }
 
     public void input(WorkTime workTime) {
