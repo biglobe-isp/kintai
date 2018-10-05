@@ -12,7 +12,7 @@ class "勤怠[Attendance]" as Attendance {
     就業時間[DutyTime]
     労働時間[WorkMinutes]
     残業時間[OverWorkMinutes]
-    - <color:red>作成する[Attendance(WorkDate, StartTime, EndTime)]</color>
+    - <color:red>生成する[Attendance(WorkDate, StartTime, EndTime)]</color>
     + {static} 作成する[Attendance create(WorkDate, StartTime, EndTime)]
     - 休憩時間規則を作成する[RestTimeRule makeRestTimeRule(WorkDate)]
     - {static} <color:red><s>就業時間を計算する int calcDutyTime(DutyTime)</s></color>
@@ -59,26 +59,27 @@ class "退勤時刻[EndTime]" as EndTime {
     退勤時刻[LocalTime]
 }
 
+class "<color:red>期間[TimeSpan]</color>" as TimeSpan {
+    <color:red>開始時刻[LocalTime]</color>
+    <color:red>終了時刻[LocalTime]</color>
+    + <color:red>期間が重複しているか[boolean overlap(TimeSpan)]</color>
+    + <color:red>重複期間の時間分を計算する[int calcOverlapMinutes(TimeSpan)]</color>
+    + <color:red>期間の時間分を計算する[int calcSpanTime()]</color>
+}
+
 class "就業時間[DutyTime] " as DutyTime {
-    開始時刻[LocalTime]
-    終了時刻[LocalTime]
     + <color:red>労働時間を計算する WorkMinutes calcWorkTime(WorkDate, RestTimeRule)</color>
-    - <color:red>就業時間(分)を計算する int calcDutyTime()</color>
-    - <color:red>休憩時間(分)合計を計算する int calcTotalRestTime(WorkDate workDate, RestTimeRule)</color>
-    - <color:red>休憩時間(分)を計算する int calcRestTime(RestTime)</color>
-    - 就業時間の範囲内に休憩時間を含む[boolean withinRange(RestTime)]
+    - <color:red>休憩時間(分)合計を計算する int calcTotalRestTime(WorkDate, RestTimeRule)</color>
 }
 
 class "休憩時間[RestTime]" as RestTime {
-    開始時刻[LocalTime]
-    終了時刻[LocalTime]
     <color:red>有効開始日[LocalDate]</color>
     <color:red>有効終了日[LocalDate]</color>
 }
 
 class "労働時間[WorkMinutes]" as WorkMinutes {
     労働時間[int]
-    + <color:red>残業時間を計算する OverWorkMinutes calcOverWorkMinutes(WorkMinutes)</color>
+    + <color:red>残業時間を計算する OverWorkMinutes calcOverWorkMinutes()</color>
     - 働き過ぎ[boolean isOverWork()]
 }
 
@@ -92,7 +93,7 @@ class "休憩時間規則[RestTimeRule]" as RestTimeRule {
 
 class "休憩時間規則ファクトリ[RestTimeRuleFactory]" as RestTimeRuleFactory {
     休憩時間リスト[List<RestTime>]
-    + 作成する[RestTimeRuleFactory()]
+    + 生成する[RestTimeRuleFactory()]
     + 追加する[RestTimeRuleFactory add(LocalTime, LocalTime)]
     + 構築する[RestTimeRule build()]
 }
@@ -115,9 +116,13 @@ Attendance -right-> WorkMinutes
 Attendance -right-> OverWorkMinutes
 Attendance -down-> RestTimeRule
 
+TimeSpan -up-|> DutyTime
+TimeSpan -up-|> RestTime
+
 DutyTime -down-> RestTime
 DutyTime -down-> RestTimeRule
 DutyTime -up-> WorkMinutes
+DutyTime -up-> WorkDate
 
 WorkMinutes -up-> OverWorkMinutes
 

@@ -38,7 +38,7 @@ public class Attendance {
 
         this.dutyTime = new DutyTime(startTime.getValue(), endTime.getValue());
 
-        this.workMinutes = this.getDutyTime().calcWorkTime(this.getWorkDate(), makeRestTimeRule());
+        this.workMinutes = this.getDutyTime().calcWorkMinutes(this.getWorkDate(), this.makeRestTimeRule());
 
         this.overWorkMinutes = this.getWorkMinutes().calcOverWorkMinutes();
     }

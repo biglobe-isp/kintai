@@ -1,6 +1,6 @@
 package com.naosim.dddwork.api.attendance;
 
-import com.naosim.dddwork.domain.attendance.TotalYearMonth;
+import com.naosim.dddwork.api.form.TotalYearMonthForm;
 import com.naosim.dddwork.domain.use_case.AttendanceTotalInquiry;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,11 +16,11 @@ public class AttendanceManagementTotalRequest {
     @Setter
     @NotNull
     @Valid
-    private TotalYearMonth totalYearMonth;
+    private TotalYearMonthForm totalYearMonthForm;
 
     AttendanceTotalInquiry makeAttendanceTotalInquiry() {
         return new AttendanceTotalInquiry(
-                this.getTotalYearMonth()
+                this.getTotalYearMonthForm().getValueObject()
         );
     }
 }

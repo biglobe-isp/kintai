@@ -23,7 +23,6 @@ public class MethodTypeForm implements FormToValueObject<MethodType> {
             throw new RuntimeException("引数が足りません");
         }
 
-        // 20181002 仕様変更 MOD START
         // 仕様変更 入力方法変更
         // java Main -date:20170101 -start:0900 -end:1800
         // 「-date:」「-start:」「-end:」が指定されている場合は、
@@ -34,12 +33,10 @@ public class MethodTypeForm implements FormToValueObject<MethodType> {
 
             return;
         }
-        // 20181002 仕様変更 MOD END
 
         this.value = args[0];
     }
 
-    // 20181002 仕様変更 ADD START
     private boolean isInputError(String[] args) {
 
         return args == null || args.length < 1;
@@ -81,7 +78,6 @@ public class MethodTypeForm implements FormToValueObject<MethodType> {
                         arg.startsWith("-end:")
                 );
     }
-    // 20181002 仕様変更 ADD END
 
     @Override
     public MethodType getValueObject() {

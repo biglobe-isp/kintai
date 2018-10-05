@@ -1,8 +1,8 @@
 package com.naosim.dddwork.api.attendance;
 
-import com.naosim.dddwork.domain.attendance.EndTime;
-import com.naosim.dddwork.domain.attendance.StartTime;
-import com.naosim.dddwork.domain.attendance.WorkDate;
+import com.naosim.dddwork.api.form.EndTimeForm;
+import com.naosim.dddwork.api.form.StartTimeForm;
+import com.naosim.dddwork.api.form.WorkDateForm;
 import com.naosim.dddwork.domain.use_case.AttendanceInputApplication;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,25 +18,25 @@ public class AttendanceManagementInputRequest {
     @Setter
     @NotNull
     @Valid
-    private WorkDate workDate;
+    private WorkDateForm workDateForm;
 
     @Getter
     @Setter
     @NotNull
     @Valid
-    private StartTime startTime;
+    private StartTimeForm startTimeForm;
 
     @Getter
     @Setter
     @NotNull
     @Valid
-    private EndTime endTime;
+    private EndTimeForm endTimeForm;
 
     AttendanceInputApplication makeAttendanceInputApplication() {
         return new AttendanceInputApplication(
-                this.getWorkDate(),
-                this.getStartTime(),
-                this.getEndTime()
+                this.getWorkDateForm().getValueObject(),
+                this.getStartTimeForm().getValueObject(),
+                this.getEndTimeForm().getValueObject()
         );
     }
 }

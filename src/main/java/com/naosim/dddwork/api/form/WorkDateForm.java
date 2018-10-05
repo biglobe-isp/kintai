@@ -21,15 +21,9 @@ public class WorkDateForm implements FormToValueObject<WorkDate> {
 
     public WorkDateForm(String[] args) {
 
-        // 20181002 仕様変更 MOD START
         // 仕様変更 入力方法変更
         // java Main -date:20170101 -start:0900 -end:1800
         // 「-date:」が指定されている場合に、date要素を抽出する。
-//        if (args == null || args.length < 2) {
-//            throw new RuntimeException("引数が足りません");
-//        }
-//
-//        this.value = args[1];
         if (isInputAttributeDateAssigned(args)) {
 
             this.value = Arrays.stream(args)
@@ -44,10 +38,8 @@ public class WorkDateForm implements FormToValueObject<WorkDate> {
         }
 
         throw new RuntimeException("引数が足りません");
-        // 20181002 仕様変更 MOD START
     }
 
-    // 20181002 仕様変更 ADD START
     private boolean isInputAttributeDateAssigned(String[] args) {
 
         return Arrays.stream(args)
@@ -55,7 +47,6 @@ public class WorkDateForm implements FormToValueObject<WorkDate> {
                         arg.startsWith("-date:")
                 );
     }
-    // 20181002 仕様変更 ADD END
 
     @Override
     public WorkDate getValueObject() {

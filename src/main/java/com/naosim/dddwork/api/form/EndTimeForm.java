@@ -21,15 +21,9 @@ public class EndTimeForm implements FormToValueObject<EndTime> {
 
     public EndTimeForm(String[] args) {
 
-        // 20181002 仕様変更 MOD START
         // 仕様変更 入力方法変更
         // java Main -date:20170101 -start:0900 -end:1800
         // 「-end:」が指定されている場合に、end要素を抽出する。
-//        if (args == null || args.length < 4) {
-//            throw new RuntimeException("引数が足りません");
-//        }
-//
-//        this.value = args[3] + "00";
         if (isInputAttributeEndAssigned(args)) {
 
             this.value = Arrays.stream(args)
@@ -44,10 +38,8 @@ public class EndTimeForm implements FormToValueObject<EndTime> {
         }
 
         throw new RuntimeException("引数が足りません");
-        // 20181002 仕様変更 MOD START
     }
 
-    // 20181002 仕様変更 ADD START
     private boolean isInputAttributeEndAssigned(String[] args) {
 
         return Arrays.stream(args)
@@ -55,7 +47,6 @@ public class EndTimeForm implements FormToValueObject<EndTime> {
                         arg.startsWith("-end:")
                 );
     }
-    // 20181002 仕様変更 ADD END
 
     @Override
     public EndTime getValueObject() {

@@ -37,9 +37,9 @@ public class AttendanceManagementApi {
                 // 入力(input)
                 attendanceInputService.input(
                         new AttendanceManagementInputRequest(
-                                new WorkDateForm(args).getValueObject(),
-                                new StartTimeForm(args).getValueObject(),
-                                new EndTimeForm(args).getValueObject()
+                                new WorkDateForm(args),
+                                new StartTimeForm(args),
+                                new EndTimeForm(args)
                         ).makeAttendanceInputApplication()
                 );
 
@@ -49,7 +49,7 @@ public class AttendanceManagementApi {
                 new AttendanceManagementTotalResponse(
                         attendanceTotalService.refer(
                                 new AttendanceManagementTotalRequest(
-                                        new TotalYearMonthForm(args).getValueObject()
+                                        new TotalYearMonthForm(args)
                                 ).makeAttendanceTotalInquiry()
                         )
                 ).print();

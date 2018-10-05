@@ -18,13 +18,4 @@ public class EndTime {
 
     @Getter
     private final LocalTime value;
-    // 不要メソッドを削除
-//
-//    public EndTimeHours makeEndTimeHours() {
-//        return new EndTimeHours(this.getValue().getHour());
-//    }
-//
-//    public EndTimeMinutes makeEndTimeMinutes() {
-//        return new EndTimeMinutes(this.getValue().getMinute());
-//    }
 }

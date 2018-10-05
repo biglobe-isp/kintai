@@ -16,15 +16,4 @@ public class OverWorkMinutes {
 
     @Getter
     private final int value;
-    // 不要メソッドを削除
-//
-//    public OverWorkMinutes(WorkMinutes workMinutes) {
-//
-//        this.value = this.calcOverWorkMinutes(workMinutes);
-//    }
-//
-//    private int calcOverWorkMinutes(WorkMinutes workMinutes) {
-//
-//        return Math.max(workMinutes.getValue() - 8 * 60, 0);
-//    }
 }

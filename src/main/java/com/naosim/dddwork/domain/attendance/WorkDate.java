@@ -16,12 +16,4 @@ import java.time.LocalDate;
 public class WorkDate {
     @Getter
     private final LocalDate value;
-
-    // 20181002 仕様変更 ADD START
-    // 仕様変更 来月の途中から休憩時間が増える
-    public boolean is20181115Later() {
-
-        return this.getValue().isAfter(LocalDate.of(2018, 11, 14));
-    }
-    // 20181002 仕様変更 ADD END
 }
