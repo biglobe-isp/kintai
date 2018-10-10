@@ -1,5 +1,6 @@
 package jp.co.biglobe.kintai.service
 
+import jp.co.biglobe.kintai.datasource.TimeCardRepositoryDb
 import jp.co.biglobe.kintai.domain.WorkTimeRepository
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -17,5 +18,18 @@ class KintaiServiceSpec extends Specification {
 
         then:
         1 * repository.input(_)
+    }
+
+    def "total呼び出しのテスト"(){
+        setup:
+        def repository = new TimeCardRepositoryDb()
+        def service = new KintaiService(repository)
+
+        when:
+        service.total("201810")
+
+        then:
+        1 * repository.findWorkTimeCard(_)
+
     }
 }
