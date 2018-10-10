@@ -1,9 +1,14 @@
 package jp.co.biglobe.kintai.domain;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+@ToString
+@EqualsAndHashCode
 public class MonthlyWorkTimeCard {
 
     private int workHours;
