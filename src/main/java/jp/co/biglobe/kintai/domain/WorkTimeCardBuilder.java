@@ -27,11 +27,11 @@ public class WorkTimeCardBuilder {
                 )) : Optional.empty();
     }
 
-    private boolean isPunched() {
+    boolean isPunched() {
         return !this.timeCard.isEmpty();
     }
 
-    private int getSummary(ToIntFunction<? super WorkTime> mapper){
+    int getSummary(ToIntFunction<? super WorkTime> mapper){
         ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.values());
         return timesList.stream().mapToInt(mapper).sum();
     }
