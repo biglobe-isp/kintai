@@ -27,7 +27,6 @@ public class WorkingMonthFrom implements FormToValueObject<WorkingMonth> {
 
     @Override
     public WorkingMonth getValueObject() {
-
         return new  WorkingMonth(YearMonth.parse(this.value, DateTimeFormatter.ofPattern("yyyyMM")));
     }
 }
