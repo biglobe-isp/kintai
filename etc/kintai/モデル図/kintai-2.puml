@@ -1,0 +1,353 @@
+@startuml
+
+package api {
+    package form {
+        class "処理区分From[ProcessingDivisionForm]" as ProcessingDivisionForm {
+            -処理区分:[String]
+            +ProcessingDivisionForm(String processingDivision)
+            +ProcessingDivision getValueObject()
+        }
+        class "勤務日From[WorkDayFrom]" as WorkDayFrom {
+            -勤務日[String]
+            +WorkDayFrom(String workDay)
+            +WorkDay getValueObject()
+        }
+        class "始業時間From[StartingHoursFrom]" as StartingHoursFrom {
+            -始業時間[String]
+            +StartingHoursFrom(String startingHours)
+            +StartingHours getValueObject()
+        }
+        class "終業時間From[ClosingHoursFrom]" as ClosingHoursFrom {
+            -終業時間:[String]
+            +ClosingHoursFrom(String closingHours)
+            +ClosingHours getValueObject()
+        }
+        class "勤務月From[WorkingMonthFrom]" as WorkingMonthFrom {
+            -勤務月[String]
+            +WorkingMonthFrom(String workingMonth)
+            +WorkingMonth getValueObject()
+        }
+
+        ProcessingDivisionForm -[hidden]r- WorkDayFrom
+        WorkDayFrom -[hidden]r- StartingHoursFrom
+        StartingHoursFrom -[hidden]r- ClosingHoursFrom
+        ClosingHoursFrom -[hidden]r- WorkingMonthFrom
+    }
+
+
+    class "処理区分[ProcessingDivision]" as ProcessingDivision {
+        -String
+        +boolean isInput()  //登録
+        +boolean isTotal()  //集計
+    }
+
+    class "勤怠管理[AttendanceManagementApi]" as AttendanceManagementApi {
+        +void main(String args)  //勤怠管理メイン
+        -String[] getParameterString(String[] args)
+    }
+
+    class "勤怠時間登録リクエスト[WorkTimeRegistrationRequest]" as WorkTimeRegistrationRequest {
+        -勤務日[WorkDay]
+        -始業時間[StartingHours]
+        -終業時間[ClosingTime]
+        +WorkTimeRegistrationApplication makeWorkTimeRegistrationApplication()
+    }
+
+    class "勤怠時間集計リクエスト[TotalWorkingHoursRequest]" as TotalWorkingHoursRequest {
+        -勤務月[WorkingMonth]
+        +TotalWorkingHoursApplication makeTotalWorkingHoursApplication()
+    }
+
+    class "勤怠時間集計結果出力[TotalWorkingHoursResultOutput]" as TotalWorkingHoursResultOutput {
+        +TotalWorkingHoursResultOutput(TotalWorkingHoursResult totalWorkingHoursResult)
+        +void print() //出力
+    }
+
+    ProcessingDivisionForm -[hidden]d- ProcessingDivision
+    ProcessingDivision -[hidden]r- AttendanceManagementApi
+    AttendanceManagementApi -[hidden]r- WorkTimeRegistrationRequest
+    WorkTimeRegistrationRequest -[hidden]r- TotalWorkingHoursRequest
+    TotalWorkingHoursRequest -[hidden]r- TotalWorkingHoursResultOutput
+
+    ProcessingDivisionForm <-u- ProcessingDivision
+    ProcessingDivision <-l- AttendanceManagementApi
+    AttendanceManagementApi -r-> WorkTimeRegistrationRequest
+    AttendanceManagementApi -r-> TotalWorkingHoursRequest
+    AttendanceManagementApi -r-> TotalWorkingHoursResultOutput
+
+    WorkTimeRegistrationRequest -u-> WorkDayFrom
+    WorkTimeRegistrationRequest -u-> StartingHoursFrom
+    WorkTimeRegistrationRequest -u-> ClosingHoursFrom
+
+    TotalWorkingHoursRequest -u-> WorkingMonthFrom
+}
+
+package service {
+
+    class "勤務時間登録サービス[WorkTimeRegistrationService]" as WorkTimeRegistrationService {
+        +void input(WorkTimeRegistrationApplication workTimeRegistrationApplication)
+    }
+
+    class "勤務時間集計サービス[TotalWorkingHoursService]" as TotalWorkingHoursService {
+        +TotalWorkingHoursResult refer(TotalWorkingHoursApplication totalWorkingHoursApplication)
+    }
+
+    WorkTimeRegistrationService -[hidden]r- TotalWorkingHoursService
+}
+
+ProcessingDivision -[hidden]d- WorkTimeRegistrationService
+AttendanceManagementApi -d-> WorkTimeRegistrationService
+AttendanceManagementApi -d-> TotalWorkingHoursService
+
+package datasource {
+
+    class "勤務時間登録リポジトリ[AttendanceRepositoryImpl]"  as AttendanceRepositoryImpl {
+        +void register(DailyAttendance attendance) //登録
+        +MonthlyAttendance get(TotalWorkingHoursApplication totalWorkingHoursApplication) //取得
+    }
+
+    package "Attendance.csv" {
+
+    }
+
+    AttendanceRepositoryImpl <-r-> "Attendance.csv"
+
+
+    class "就業規則リポジトリ[LaborRegulationsRepositoryImpl]"  as LaborRegulationsRepositoryImpl {
+        +LaborRegulations get(WorkTimeRegistrationApplication workTimeRegistrationApplication) //就業規則取得
+        -FixedTime getFixedTime() //定時時間取得
+        -BreakTimeList getBreakTimeList(WorkDay workDay) //休憩時間取得
+    }
+
+    package "FixedTime.csv" {
+
+    }
+
+    LaborRegulationsRepositoryImpl <-r- "FixedTime.csv"
+
+
+    package "BreakTime.csv" {
+
+    }
+
+    LaborRegulationsRepositoryImpl <-r- "BreakTime.csv"
+
+    AttendanceRepositoryImpl -[hidden]d- LaborRegulationsRepositoryImpl
+
+}
+
+
+TotalWorkingHoursService -[hidden]r- AttendanceRepositoryImpl
+
+package domain {
+
+    interface "就業規則リポジトリ[LaborRegulationsRepository]" as LaborRegulationsRepository {
+        +LaborRegulations get(WorkTimeRegistrationApplication workTimeRegistrationApplication) //就業規則取得
+    }
+
+    interface "勤怠リポジトリ[AttendanceRepository]" as AttendanceRepository {
+        +void register(DailyAttendance attendance) //登録
+        +MonthlyAttendance get(TotalWorkingHoursApplication totalWorkingHoursApplication) //取得
+    }
+
+    class "日別勤怠[DailyAttendance]" as DailyAttendance {
+        -勤務日[WorkDay]
+        -始業時間[StartingHours]
+        -終業時間[ClosingHours]
+        -勤務時間[WorkingHours]
+        -残業時間[OvertimeHours]
+    }
+
+    class "日別勤怠リスト[DailyAttendanceList]" as DailyAttendanceList {
+        -List<日別勤怠[DailyAttendance]>
+    }
+
+    class "月別勤怠[MonthlyAttendance]" as MonthlyAttendance {
+        -勤務月[WorkingMonth]
+        -日別勤怠リスト[AttendanceByDayList]
+        +TotalWorkingHoursResult makeTotalWorkingHoursResult() //集計
+    }
+
+    class "就業規則[LaborRegulations]" as  LaborRegulations {
+        -定時時刻[FixedTime]
+        -休憩時刻リスト[BreakTimeList]
+    }
+
+    class "定時時刻[FixedTime]" as  FixedTime {
+        -始業時刻[StartingTme]
+        -終業時刻[ClosingTime]
+        -勤務時間[WorkingTime]
+    }
+
+    class "休憩時刻リスト[BreakTimeList]" as  BreakTimeList {
+        -List<休憩時刻[BreakTime]>
+    }
+
+    class "休憩時刻[BreakTime]" as  BreakTime {
+        -適用開始日[ApplyStartDate]
+        -適用終了日[ApplyEndDate]
+        -休憩開始時刻[BreakStartTime]
+        -休憩終了時刻[BreakEndTime]
+    }
+
+    AttendanceRepository -[hidden]d- DailyAttendanceList
+    MonthlyAttendance -[hidden]r- DailyAttendanceList
+
+    MonthlyAttendance -[hidden]d- LaborRegulations
+    LaborRegulations -[hidden]d- FixedTime
+    FixedTime -[hidden]d- BreakTimeList
+    BreakTimeList -[hidden]d- BreakTime
+
+    package UseCase {
+        class "勤務時間登録アプリケーション[WorkTimeRegistrationApplication]" as WorkTimeRegistrationApplication {
+            -勤務日[WorkDay]
+            -始業時間[StartingHours]
+            -終業時間[ClosingTime]
+            +DailyAttendance makeDailyAttendance(LaborRegulations laborRegulations) //日別勤怠作成
+            -WorkingHours getWorkingHours(LaborRegulations laborRegulations)  //勤務時間計算
+            -OvertimeHours getOvertimeHours(WorkingHours workingHours, WorkingTime workingTime)  //残業時間計算
+        }
+
+        class "勤務時間集計アプリケーション[TotalWorkingHoursApplication]" as TotalWorkingHoursApplication {
+            -勤務月[WorkingMonth]
+        }
+
+        class "勤務時間集計結果[TotalWorkingHoursResult]" as TotalWorkingHoursResult {
+            -勤務月[WorkingMonth]
+            -勤務時間[WorkingHours]
+            -残業時間[OvertimeHours]
+        }
+
+        WorkTimeRegistrationApplication -[hidden]d- TotalWorkingHoursApplication
+        TotalWorkingHoursApplication -[hidden]d- TotalWorkingHoursResult
+
+    }
+
+    package 　{
+
+        class "勤務日[WorkDay]" as WorkDay {
+            -LocalDate
+        }
+        class "始業時間[StartingHours]" as StartingHours {
+            -LocalTime
+            +StartingHoursMinutes getMinutes()
+        }
+        class "終業時間[ClosingHours]" as ClosingHours {
+            -LocalTime
+            +ClosingHoursMinutes getMinutes()
+        }
+
+        class "勤務時間[WorkingHours]" as WorkingHours {
+            -Integer
+            +WorkingHoursMinutes getMinutes()
+        }
+        class "残業時間[OvertimeHours]" as OvertimeHours {
+            -Integer
+            +OvertimeHoursMinutes getMinutes()
+        }
+
+        class "始業時刻[StartingTime]" as StartingTime {
+            -LocalTime
+        }
+        class "終業時刻[ClosingTime]" as ClosingTime {
+            -LocalTime
+        }
+        class "勤務時刻[WorkingTime]" as WorkingTime {
+            -Integer
+        }
+
+        class "休憩開始時刻[BreakStartTime]" as BreakStartTime {
+            -LocalTime
+            +BreakStartTimeMinutes getMinutes()
+        }
+        class "休憩終了時刻[BreakEndTime]" as BreakEndTime {
+            -LocalTime
+            +BreakEndTimeMinutes getMinutes()
+        }
+
+        class "勤務月[WorkingMonth]" as WorkingMonth {
+            -YearMonth
+        }
+
+        WorkDay -[hidden]d- StartingHours
+        StartingHours -[hidden]d- ClosingHours
+        ClosingHours -[hidden]d- WorkingHours
+        WorkingHours -[hidden]d- OvertimeHours
+        StartingHours -[hidden]r- StartingTime
+        StartingTime -[hidden]d- ClosingTime
+        ClosingTime -[hidden]d- BreakStartTime
+        BreakStartTime -[hidden]d- BreakEndTime
+
+
+
+        class "始業時間（分）[StartingHoursMinutes]" as StartingHoursMinutes {
+            -Integer
+        }
+        class "終業時間（分）[ClosingHoursMinutes]" as ClosingHoursMinutes {
+            -Integer
+        }
+
+
+        class "休憩開始時刻（分）[BreakStartTimeMinutes]" as BreakStartTimeMinutes {
+            -Integer
+        }
+        class "休憩終了時刻（分）[BreakEndTimeMinutes]" as BreakEndTimeMinutes {
+            -Integer
+        }
+
+
+        StartingHours -[hidden]r- StartingHoursMinutes
+        ClosingHours -[hidden]r- ClosingHoursMinutes
+
+        BreakStartTime -[hidden]r- BreakStartTimeMinutes
+        BreakEndTime -[hidden]r- BreakEndTimeMinutes
+
+    }
+
+
+}
+
+LaborRegulations -[hidden]r- LaborRegulationsRepositoryImpl
+
+WorkTimeRegistrationService -[hidden]d- AttendanceRepository
+
+TotalWorkingHoursResult -[hidden]d- WorkDay
+
+
+WorkTimeRegistrationService --> AttendanceRepository
+WorkTimeRegistrationService --> LaborRegulationsRepository
+
+TotalWorkingHoursService --> AttendanceRepository
+
+AttendanceRepository -u-> AttendanceRepositoryImpl
+LaborRegulationsRepository -u-> LaborRegulationsRepositoryImpl
+
+AttendanceRepository --> DailyAttendance
+AttendanceRepository --> MonthlyAttendance
+
+BreakTimeList --> BreakTime
+
+AttendanceRepository --> WorkTimeRegistrationApplication
+AttendanceRepository --> TotalWorkingHoursApplication
+AttendanceRepository --> TotalWorkingHoursResult
+
+DailyAttendance <-- WorkTimeRegistrationApplication
+MonthlyAttendance --> TotalWorkingHoursResult
+
+LaborRegulations --> WorkTimeRegistrationApplication
+
+LaborRegulationsRepository --> LaborRegulations
+
+LaborRegulations --> FixedTime
+LaborRegulations --> BreakTimeList
+
+StartingHours .r.> StartingHoursMinutes
+ClosingHours .r.> ClosingHoursMinutes
+
+BreakStartTime .r.> BreakStartTimeMinutes
+BreakEndTime .r.> BreakEndTimeMinutes
+
+MonthlyAttendance -r-> DailyAttendanceList
+DailyAttendanceList -r-> DailyAttendance
+
+@enduml

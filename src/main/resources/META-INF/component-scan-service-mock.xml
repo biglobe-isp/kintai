@@ -16,13 +16,15 @@
 
     <!-- Service層 -->
     <context:component-scan base-package="com.naosim.dddwork.service">
-        <context:exclude-filter type="regex"
+<!--        <context:exclude-filter type="regex"
                                 expression="com.naosim.dddwork.service.kintai.KintaiKanriInputService"/>
         <context:exclude-filter type="regex"
                                 expression="com.naosim.dddwork.service.kintai.KintaiKanriTotalService"/>
+-->
     </context:component-scan>
 
     <!-- Mockの定義 -->
+<!--
     <bean id="kintaiKanriInputServiceMock"
           name="kintaiKanriInputServiceMock" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg
@@ -33,4 +35,5 @@
         <constructor-arg
                 value="com.naosim.dddwork.service.kintai.KintaiKanriTotalService"/>
     </bean>
+-->
 </beans>

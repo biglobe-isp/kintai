@@ -18,14 +18,19 @@ package api {
 
     class "勤怠管理[AttendanceManagementApi]" as AttendanceManagementApi {
         +勤務時間登録(勤務日[WorkDay], 始業時間[StartingHours], 終業時間[ClosingTime])
-        +勤務時間集計&出力(勤務月[WorkDay])
+        +勤務時間集計 & 出力(勤務月[WorkingMonth])
+    }
+
+    class "処理区分[ProcessingDivisionType]" as ProcessingDivisionType {
+        +登録[isInput()]
+        +集計[isTotal()]
     }
 
     WorkingMonthFrom -do-> AttendanceManagementApi
     WorkDayFrom -do-> AttendanceManagementApi
     StartingHoursFrom -do-> AttendanceManagementApi
     ClosingTimeFrom -do-> AttendanceManagementApi
-
+    ProcessingDivisionType -r-> AttendanceManagementApi
 }
 
 package service {
@@ -62,7 +67,7 @@ package domain {
         }
 
         class "勤務月[WorkingMonth]" as WorkingMonth {
-            String
+            YearMonth
         }
         class "勤務時間[WorkingHours]" as WorkingHours {
             Integer
@@ -80,8 +85,8 @@ package domain {
             勤務日[WorkDay]
             始業時間[StartingHours]
             終業時間[ClosingTime]
-            +勤務時間[getWorkingHours(StartingHours,ClosingTime)]
-            +残業時間[getOvertimeHours(StartingHours,ClosingTime)]
+            勤務時間[getWorkingHours(StartingHours,ClosingTime)]
+            残業時間[getOvertimeHours(StartingHours,ClosingTime)]
         }
 
         class "始業時間[StartingHours]" as StartingHours {
@@ -98,7 +103,7 @@ package domain {
         WorkTimeRegistrationApplication o-do- StartingHours
         WorkTimeRegistrationApplication o-do- WorkDay
 
-        class "勤怠管理[AttendanceManagement(WorkingMonth,WorkDay,StartingHours,ClosingTime,WorkingHours,OvertimeHours)]" as AttendanceManagement {
+        class "勤怠管理情報[AttendanceManagement(WorkingMonth,WorkDay,StartingHours,ClosingTime,WorkingHours,OvertimeHours)]" as AttendanceManagement {
             勤務月[WorkingMonth]
             勤務日[WorkDay]
             始業時間[StartingHours]
@@ -117,8 +122,6 @@ package domain {
         enum "処理区分[ProcessingDivision]" as ProcessingDivision {
             INPUT : input
             TOTAL : total
-            +登録[isInput()]
-            +集計[isTotal()]
         }
 
     }
