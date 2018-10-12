@@ -1,15 +1,17 @@
 package com.naosim.dddwork.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.YearMonth;
 
+
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class WorkingMonth {
     @Getter
-    private final String value;
-
-    public WorkingMonth (String workingMonth) {
-        this.value = LocalDate.parse(workingMonth, DateTimeFormatter.ofPattern("yyyy/MM")).toString();
-    }
+    private final YearMonth value;
 }

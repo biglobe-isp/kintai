@@ -1,15 +1,16 @@
 package com.naosim.dddwork.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class WorkDay {
     @Getter
     private final LocalDate value;
-
-    public WorkDay (String workDay) {
-        this.value = LocalDate.parse(workDay, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-    }
 }
