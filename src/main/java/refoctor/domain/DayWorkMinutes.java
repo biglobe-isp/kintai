@@ -1,0 +1,36 @@
+package refoctor.domain;
+
+public class DayWorkMinutes {
+    public static int calc (String[] args) {
+
+        String start = args[2];
+        String end = args[3];
+
+        int startH = Integer.valueOf(start.substring(0, 2));
+        int startM = Integer.valueOf(start.substring(2, 4));
+
+        int endH = Integer.valueOf(end.substring(0, 2));
+        int endM = Integer.valueOf(end.substring(2, 4));
+
+        int workMinutes = endH * 60 + endM - (startH * 60 + startM);
+
+        if (endH == 12) {
+            workMinutes -= endM;
+        } else if (endH >= 13) {
+            workMinutes -= 60;
+        }if (endH == 18) {
+            workMinutes -= endM;
+        } else if (endH >= 19) {
+            workMinutes -= 60;
+        }if (endH == 21) {
+            workMinutes -= endM;
+        } else if (endH >= 22) {
+            workMinutes -= 60;
+        }
+        int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
+
+        int dayWorkMinutes = workMinutes + overWorkMinutes;
+
+        return dayWorkMinutes;
+    }
+}
