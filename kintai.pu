@@ -1,0 +1,57 @@
+@startuml
+'コメントアウト
+
+class Main {
+
+}
+
+class InputApi {
+
+}
+
+class TotalApi {
+
+}
+
+
+class CalcWorkMinutes {
+
+
+}
+
+
+
+class CalcOverWorkMinutes {
+
+
+}
+
+class CsvWriter {
+
+
+}
+
+
+class CsvReader {
+
+
+
+}
+
+
+
+Main ..> InputApi
+Main ..> TotalApi
+
+InputApi ..> CalcWorkMinutes
+InputApi ..> CalcOverWorkMinutes
+InputApi ..> CsvWriter
+
+TotalApi ..> CsvReader
+CsvReader ..> EntityWorkMinutesMap
+CsvReader ..> EntityOverWorkMinutesMap
+TotalApi ..> TotalMinutes
+TotalMinutes ..> EntiyTotalMinutes
+TotalApi ..> OutputTotal
+
+@enduml
