@@ -1,107 +1,52 @@
 package refoctor.api;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class Main {
+
+    private static String MethodType_Input = "input";
+    private static String MethodType_Total = "total";
+
+    private static int InputArgsIndex_MethodType = 0;
+    private static int InputArgsIndex_Date = 1;
+    private static int InputArgsIndex_StartTime = 2;
+    private static int InputArgsIndex_EndTime = 3;
+
+    private static int InputArgsIndex_YearMonth = 1;
+
     public static void main(String[] args) {
 
         try {
             if(args.length < 1) {
                 throw new RuntimeException("引数が足りません");
             }
-            String methodType = args[0];
 
-            if("input".equals(methodType)) {
+            String methodType = args[InputArgsIndex_MethodType];
+
+            if(MethodType_Input.equals(methodType)) {
                 if(args.length < 4) {
                     throw new RuntimeException("引数が足りません");
                 }
-                String date = args[1];
-                String start = args[2];
-                String end = args[3];
+                String date = args[InputArgsIndex_Date];
+                String start = args[InputArgsIndex_StartTime];
+                String end = args[InputArgsIndex_EndTime];
                 String now = LocalDateTime.now().toString();
 
-                int startH = Integer.valueOf(start.substring(0, 2));
-                int startM = Integer.valueOf(start.substring(2, 4));
+                DayWorkMinutesApi.inputApi(date, start, end, now);
 
-                int endH = Integer.valueOf(end.substring(0, 2));
-                int endM = Integer.valueOf(end.substring(2, 4));
+            } else if(MethodType_Total.equals(methodType)) {
+                String yearMonth = args[InputArgsIndex_YearMonth];
 
-                int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-                if(endH == 12) {
-                    workMinutes -= endM;
-                } else if(endH >= 13) {
-                    workMinutes -= 60;
-                }
-
-                if(endH == 18) {
-                    workMinutes -= endM;
-                } else if(endH >= 19) {
-                    workMinutes -= 60;
-                }
-
-                if(endH == 21) {
-                    workMinutes -= endM;
-                } else if(endH >= 22) {
-                    workMinutes -= 60;
-                }
-
-                int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-                File file = new File("data.csv");
-                try(FileWriter filewriter = new FileWriter(file, true)) {
-                    filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
-                }
-
-            } else if("total".equals(methodType)) {
-                String yearMonth = args[1];
                 if(args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
 
-                int totalWorkMinutes = 0;
-                int totalOverWorkMinutes = 0;
-
-                File file = new File("data.csv");
-
-                try(
-                        FileReader fr = new FileReader(file);
-                        BufferedReader br = new BufferedReader(fr);
-                ) {
-
-                    String line = br.readLine();
-                    Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-                    Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-                    while(line != null){
-                        String[] columns = line.split(",");
-                        if(!columns[0].startsWith(yearMonth)) {
-                            continue;
-                        }
-                        totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-                        totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-
-                        line = br.readLine();
-                    }
-
-                    Set<String> keySet = totalWorkMinutesMap.keySet();
-                    for(String key : keySet) {
-                        totalWorkMinutes += totalWorkMinutesMap.get(key);
-                        totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
-                    }
-
-                    System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-                    System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
-                }
+                TotalWorkMinutesApi.totalApi(yearMonth);
 
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
