@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import datasource.FileOutDatasource;
 import api.TimeApi;
+import datasource.FileOutDatasource2;
 
 public class CalculateDomein {
 
@@ -19,9 +20,9 @@ public class CalculateDomein {
     private int    workMinutes;
     private int    overWorkMinutes;
 
-    FileOutDatasource fileOutDatasource = new FileOutDatasource();
+//    FileOutDatasource fileOutDatasource = new FileOutDatasource();
 
-    public void input(String[] args) {
+    public void input(String[] args, FileOutDatasource2 fileOutDatasource2) {
         if (args.length < 4) {
             throw new RuntimeException("引数が足りません");
         }
@@ -57,17 +58,17 @@ public class CalculateDomein {
 
         overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
 
-        fileOutDatasource.kintaiOutPut(date, start, end, workMinutes, overWorkMinutes, now);
+        fileOutDatasource2.kintaiOutPut(date, start, end, workMinutes, overWorkMinutes, now);
 
     }
 
-    public void total(String[] args) {
+    public void total(String[] args, FileOutDatasource2 fileOutDatasource2) {
         String yearMonth = args[1];
         if (args.length < 2) {
             throw new RuntimeException("引数が足りません");
         }
 
-        fileOutDatasource.totalOutPut(yearMonth);
+        fileOutDatasource2.totalOutPut(yearMonth);
 
     }
 

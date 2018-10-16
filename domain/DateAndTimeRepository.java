@@ -1,8 +1,8 @@
-package api;
+package domain;
 
 import java.time.LocalDateTime;
 
-public class DateAndTimeApi {
+public class DateAndTimeRepository {
     private int startM;
     private int startH;
     private int endH;
@@ -12,7 +12,7 @@ public class DateAndTimeApi {
     private int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
     private String now = LocalDateTime.now().toString();
 
-    public DateAndTimeApi(String start, String end, String date) {
+    public DateAndTimeRepository(String start, String end, String date) {
         this.startH = Integer.valueOf(start.substring(0, 2));
         this.startM = Integer.valueOf(start.substring(2, 4));
         this.endH = Integer.valueOf(end.substring(0, 2));
