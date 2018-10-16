@@ -2,7 +2,7 @@ package domain;
 
 import java.time.LocalDateTime;
 
-public class DateAndTimeRepository {
+public class DateAndTimeDomain {
 
     private final String methodType;
     private final String date;
@@ -17,7 +17,7 @@ public class DateAndTimeRepository {
     private final int overWorkMinutes;
     private int tmpWorkMinutes;
 
-    public DateAndTimeRepository(String methodType, String date, String start, String end) {
+    public DateAndTimeDomain(String methodType, String date, String start, String end) {
         this.methodType = methodType;
         this.date = date;
         this.start = start;
@@ -45,7 +45,7 @@ public class DateAndTimeRepository {
     }
 
 
-    public DateAndTimeRepository(String methodType, String date) {
+    public DateAndTimeDomain(String methodType, String date) {
         this.methodType = methodType;
         this.date = date;
         this.start = null;

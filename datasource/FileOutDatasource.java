@@ -1,7 +1,6 @@
 package datasource;
 
-import domain.DateAndTimeRepository;
-import domain.FileOutInterface;
+import domain.*;
 
 public class FileOutDatasource implements FileOutInterface {
 
@@ -12,12 +11,12 @@ public class FileOutDatasource implements FileOutInterface {
 //    public void totalOutPut(String yearMonth) {
 //        FileOutInterface.super.totalOutPut(yearMonth);
 //    }
-    public void kintaiOutPut(DateAndTimeRepository dt) {
-        FileOutInterface.super.kintaiOutPut(dt);
+    public void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd) {
+        FileOutInterface.super.kintaiOutPut(dd, sd, ed, wd);
     }
 
-    public void totalOutPut(DateAndTimeRepository dt) {
-        FileOutInterface.super.totalOutPut(dt);
+    public void totalOutPut(DateDomain dd) {
+        FileOutInterface.super.totalOutPut(dd);
     }
 
 }

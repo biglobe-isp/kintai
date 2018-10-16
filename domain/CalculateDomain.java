@@ -1,10 +1,7 @@
 package domain;
 
 
-import java.time.LocalDateTime;
-
-
-public class CalculateDomein {
+public class CalculateDomain {
 
 //    private String date;
 //    private String start;
@@ -69,15 +66,16 @@ public class CalculateDomein {
 //    }
 
 
-    public void input(DateAndTimeRepository dt, FileOutInterface fileOutDatasource) {
+    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd, FileOutInterface fileOutDatasource) {
 
-        fileOutDatasource.kintaiOutPut(dt);
+
+        fileOutDatasource.kintaiOutPut(dd, sd, ed, wd);
 
     }
 
-    public void total(DateAndTimeRepository dt, FileOutInterface fileOutDatasource) {
+    public void total(DateDomain dd, FileOutInterface fileOutDatasource) {
 
-        fileOutDatasource.totalOutPut(dt);
+        fileOutDatasource.totalOutPut(dd);
 
     }
 

@@ -1,37 +1,36 @@
 package service;
 
-import domain.CalculateDomein;
-import domain.DateAndTimeRepository;
-import domain.FileOutInterface;
+import domain.*;
 
 
 public class DatetimeService {
 
     //    public void kintai(String[] args, FileOutInterface fileOutDatasource) {
-//        CalculateDomein calculateDomein = new CalculateDomein();
+//        CalculateDomain calculateDomain = new CalculateDomain();
 //        if ("input".equals(args[0])) {
 //
-//            calculateDomein.input(args, fileOutDatasource);
+//            calculateDomain.input(args, fileOutDatasource);
 //
 //        } else if ("total".equals(args[0])) {
 //
-//            calculateDomein.total(args, fileOutDatasource);
+//            calculateDomain.total(args, fileOutDatasource);
 //
 //        } else {
 //            throw new RuntimeException("methodTypeが不正です");
 //        }
 //    }
-    CalculateDomein calculateDomein = new CalculateDomein();
 
-    public void input(DateAndTimeRepository dt, FileOutInterface fileOutDatasource) {
+    CalculateDomain calculateDomain = new CalculateDomain();
 
-        calculateDomein.input(dt, fileOutDatasource);
+    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd, FileOutInterface fo) {
+
+        calculateDomain.input(dd, sd, ed, wd, fo);
 
     }
 
-    public void total(DateAndTimeRepository dt, FileOutInterface fileOutDatasource) {
+    public void total(DateDomain dd, FileOutInterface fileOutDatasource) {
 
-        calculateDomein.total(dt, fileOutDatasource);
+        calculateDomain.total(dd, fileOutDatasource);
 
     }
 

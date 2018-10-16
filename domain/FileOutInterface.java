@@ -61,18 +61,18 @@ public interface FileOutInterface {
 //        }
 //    }
 
-    default void kintaiOutPut(DateAndTimeRepository dt) {
+    default void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd) {
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    dt.getDate(), dt.getStart(), dt.getEnd(), dt.getWorkMinutes(), dt.getOverWorkMinutes(), dt.getNow()));
+                    dd.getDate(), sd.getStart(), ed.getEnd(), wd.getWorkMinutes(), wd.getOverWorkMinutes(), dd.getNow()));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    default void totalOutPut(DateAndTimeRepository dt) {
+    default void totalOutPut(DateDomain dd) {
 
         File file = new File("data.csv");
 
@@ -86,7 +86,7 @@ public interface FileOutInterface {
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(dt.getDate())) {
+                if (!columns[0].startsWith(dd.getDate())) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
