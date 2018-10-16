@@ -3,103 +3,104 @@ package domain;
 import java.time.LocalDateTime;
 
 public class DateAndTimeRepository {
-    private int startM;
-    private int startH;
-    private int endH;
-    private int endM;
-    private String date;
-    private int workMinutes;
-    private int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-    private String now = LocalDateTime.now().toString();
 
-    public DateAndTimeRepository(String start, String end, String date) {
-        this.startH = Integer.valueOf(start.substring(0, 2));
-        this.startM = Integer.valueOf(start.substring(2, 4));
-        this.endH = Integer.valueOf(end.substring(0, 2));
-        this.endM = Integer.valueOf(end.substring(2, 4));
+    private final String methodType;
+    private final String date;
+    private final String now = LocalDateTime.now().toString();
+    private final String start;
+    private final String end;
+    private final int startH;
+    private final int startM;
+    private final int endH;
+    private final int endM;
+    private final int workMinutes;
+    private final int overWorkMinutes;
+    private int tmpWorkMinutes;
+
+    public DateAndTimeRepository(String methodType, String date, String start, String end) {
+        this.methodType = methodType;
         this.date = date;
-        this.workMinutes = this.endH * 60 + this.endM - (this.startH * 60 + this.startM);
+        this.start = start;
+        this.end = end;
+        this.startH = Integer.valueOf(this.start.substring(0, 2));
+        this.startM = Integer.valueOf(this.start.substring(2, 4));
+        this.endH = Integer.valueOf(this.end.substring(0, 2));
+        this.endM = Integer.valueOf(this.end.substring(2, 4));
+        this.tmpWorkMinutes = this.endH * 60 + this.endM - (this.startH * 60 + this.startM);
+        if (endH == 12) {
+            this.tmpWorkMinutes -= endM;
+        } else if (endH >= 13) {
+            this.tmpWorkMinutes -= 60;
+        } else if  (endH == 18) {
+            this.tmpWorkMinutes -= endM;
+        } else if (endH >= 19) {
+            this.tmpWorkMinutes -= 60;
+        } else if  (endH == 21) {
+            this.tmpWorkMinutes -= endM;
+        } else if (endH >= 22) {
+            this.tmpWorkMinutes -= 60;
+        }
+        this.workMinutes = this.tmpWorkMinutes;
+        this.overWorkMinutes = Math.max(getWorkMinutes() - 8 * 60, 0);
+    }
+
+
+    public DateAndTimeRepository(String methodType, String date) {
+        this.methodType = methodType;
+        this.date = date;
+        this.start = null;
+        this.end = null;
+        this.startH = 0;
+        this.startM = 0;
+        this.endH = 0;
+        this.endM = 0;
+        this.workMinutes = 0;
+        this.overWorkMinutes = 0;
+    }
+
+
+
+    public String getMethodType() {
+        return methodType;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public String getEnd() {
+        return end;
     }
 
     public int getStartM() {
         return startM;
     }
 
-    public void setStartM(int startM) {
-        this.startM = startM;
-    }
-
     public int getStartH() {
         return startH;
-    }
-
-    public void setStartH(int startH) {
-        this.startH = startH;
     }
 
     public int getEndH() {
         return endH;
     }
 
-    public void setEndH(int endH) {
-        this.endH = endH;
-    }
-
     public int getEndM() {
         return endM;
-    }
-
-    public void setEndM(int endM) {
-        this.endM = endM;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public int getOverWorkMinutes() {
         return overWorkMinutes;
     }
 
-    public void setOverWorkMinutes(int overWorkMinutes) {
-        this.overWorkMinutes = overWorkMinutes;
-    }
-
     public int getWorkMinutes() {
-        if (endH == 12) {
-            workMinutes -= endM;
-        } else if (endH >= 13) {
-            workMinutes -= 60;
-        }
-
-        if (endH == 18) {
-            workMinutes -= endM;
-        } else if (endH >= 19) {
-            workMinutes -= 60;
-        }
-
-        if (endH == 21) {
-            workMinutes -= endM;
-        } else if (endH >= 22) {
-            workMinutes -= 60;
-        }
-
         return workMinutes;
-    }
-
-    public void setWorkMinutes(int workMinutes) {
-        this.workMinutes = workMinutes;
     }
 
     public String getNow() {
         return now;
-    }
-
-    public void setNow(String now) {
-        this.now = now;
     }
 }
