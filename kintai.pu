@@ -1,57 +1,35 @@
 @startuml
 'コメントアウト
 
-class Main {
-
-}
-
-class InputApi {
-
-}
-
-class TotalApi {
-
+class Api {
+プロパティ
+メソッド()
 }
 
 
-class CalcWorkMinutes {
-
-
-}
-
-
-
-class CalcOverWorkMinutes {
-
+class  Service {
 
 }
 
-class CsvWriter {
+class Domain {
 
+}
+
+class IReposityCsv {
 
 }
 
 
-class CsvReader {
+class ReposityCsv {
+
+} 
 
 
 
-}
+Api ..> Service
+Service ..> Domain
+Domain ..> IReposityCsv
 
 
-
-Main ..> InputApi
-Main ..> TotalApi
-
-InputApi ..> CalcWorkMinutes
-InputApi ..> CalcOverWorkMinutes
-InputApi ..> CsvWriter
-
-TotalApi ..> CsvReader
-CsvReader ..> EntityWorkMinutesMap
-CsvReader ..> EntityOverWorkMinutesMap
-TotalApi ..> TotalMinutes
-TotalMinutes ..> EntiyTotalMinutes
-TotalApi ..> OutputTotal
 
 @enduml
