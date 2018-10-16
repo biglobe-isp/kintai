@@ -1,5 +1,7 @@
 package datasource;
 
+import domain.DataSourceInterface;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -8,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Datasource {
+public class Datasource implements DataSourceInterface {
 
     //労働時間合計（M)と残業時間合計（M）を持つ配列
     private int[] totalNums = null;

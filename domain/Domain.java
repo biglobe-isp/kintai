@@ -39,7 +39,7 @@ public class Domain {
         }
     }
 
-    public void registryData(int argsNum, String date1, String date2, String date3) {
+    public void registryData(int argsNum, String date1, String date2, String date3, Datasource ds) {
         if (argsNum < 4) {
             throw new RuntimeException("引数が足りません");
         }
@@ -93,19 +93,19 @@ public class Domain {
         //残業時間（DD）
         overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
 
-        Datasource ds = new Datasource();
-        ds.writeData(date, start, end, workMinutes, overWorkMinutes, now);
+        DataSourceInterface dsif = ds;
+        dsif.writeData(date, start, end, workMinutes, overWorkMinutes, now);
 
     }
 
-    public void displayData(int argsNum, String yearMonth){
+    public void displayData(int argsNum, String yearMonth, Datasource ds){
 
         if(argsNum < 2) {
             throw new RuntimeException("引数が足りません");
         }
 
-        Datasource ds = new Datasource();
-        totalNums = ds.readData(yearMonth);
+        DataSourceInterface dsif = ds;
+        totalNums = dsif.readData(yearMonth);
 
         //労働時間合計（M）を取得
         totalWorkMinutes = totalNums[0];
