@@ -1,6 +1,6 @@
 package datasource;
 
-import domain.DataSourceInterface;
+import domain.DatasourceRepository;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,16 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Datasource implements DataSourceInterface {
+public class Datasource implements DatasourceRepository {
 
-    //労働時間合計（M)と残業時間合計（M）を持つ配列
-    private int[] totalNums = null;
-    //１ヶ月分の労働時間合計（M）
-    int totalWorkMinutes = 0;
-    //１ヵ月分の残業時間合計（M）
-    int totalOverWorkMinutes = 0;
+//    //労働時間合計（M)と残業時間合計（M）を持つ配列
+//    private int[] totalNums = null;
+//    //１ヶ月分の労働時間合計（M）
+//    int totalWorkMinutes = 0;
+//    //１ヵ月分の残業時間合計（M）
+//    int totalOverWorkMinutes = 0;
 
-    public void writeData(String date, String start, String end, int workMinutes, int overWorkMinutes, String now) {
+    public void writeData(String date, int start, int end, int workMinutes, int overWorkMinutes, String now) {
         try {
             File file = new File("data.csv");
             try(FileWriter filewriter = new FileWriter(file, true)) {
@@ -32,6 +32,7 @@ public class Datasource implements DataSourceInterface {
 
     public int[] readData(String yearMonth) {
 
+        int[] totalNums = new int[2];
         try {
 
             File file = new File("data.csv");
@@ -65,14 +66,17 @@ public class Datasource implements DataSourceInterface {
 
                 Set<String> keySet = totalWorkMinutesMap.keySet();
 
+                int totalWorkMinute = 0;
+                int totalOverWorkMinute = 0;
+
                 for (String key : keySet) {
                     //労働時間合計（M）を取得
-                    totalWorkMinutes += totalWorkMinutesMap.get(key);
+                    totalWorkMinute += totalWorkMinutesMap.get(key);
                     //残業時間合計（M）を取得
-                    totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
+                    totalOverWorkMinute += totalOverWorkMinutesMap.get(key);
                 }
 
-                totalNums = new int[]{totalWorkMinutes, totalOverWorkMinutes};
+                totalNums = new int[]{totalWorkMinute, totalOverWorkMinute};
             }
 
         } catch (Exception e) {
