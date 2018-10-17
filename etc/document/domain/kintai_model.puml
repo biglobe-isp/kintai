@@ -1,0 +1,55 @@
+@startuml
+title DDD塾　勤怠
+
+package 勤怠{
+
+  class Main {
+
+  }
+  class DayWorkMinutesApi {
+
+  }
+  class TotalWorkMinutesApi {
+
+  }
+  Main --> DayWorkMinutesApi
+  Main --> TotalWorkMinutesApi
+
+  class DayWorkMinutesService {
+
+  }
+  class TotalWorkMinutesService {
+
+  }
+  DayWorkMinutesApi --> DayWorkMinutesService
+  TotalWorkMinutesApi --> TotalWorkMinutesService
+
+  class DayWorkMinutesDomain {
+
+  }
+  class TotalWorkMinutesDomain {
+
+  }
+  DayWorkMinutesService --> DayWorkMinutesDomain
+  TotalWorkMinutesService --> TotalWorkMinutesDomain
+
+  class DayWorkMinutesRepository <<interface>> {
+
+  }
+  class TotalWorkMinutesRepository <<interface>> {
+
+  }
+  DayWorkMinutesDomain --> DayWorkMinutesRepository
+  TotalWorkMinutesDomain --> TotalWorkMinutesRepository
+
+  class DayWorkMinutesDb {
+
+  }
+  class TotalWorkMinutesDb {
+
+  }
+  DayWorkMinutesDb ..> DayWorkMinutesRepository
+  TotalWorkMinutesDb ..> TotalWorkMinutesRepository
+
+}
+@enduml

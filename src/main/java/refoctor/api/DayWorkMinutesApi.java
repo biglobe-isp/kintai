@@ -3,9 +3,10 @@ package refoctor.api;
 import refoctor.service.DayWorkMinutesService;
 
 public class DayWorkMinutesApi {
-    public static void inputApi(String date, String start, String end, String now) {
+    public static void inputApi(String[] args) {
 
-        DayWorkMinutesService.inputService(date, start, end, now);
+        DayWorkMinutesService dayWorkMinutesService = new DayWorkMinutesService();
+        dayWorkMinutesService.workService(args);
 
     }
 }
