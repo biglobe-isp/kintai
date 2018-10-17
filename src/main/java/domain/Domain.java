@@ -1,89 +1,53 @@
 package domain;
 
-import java.io.FileReader;
-import java.time.LocalDateTime;
+
+import service.EndHourVO;
+import service.EndMinutesVO;
 
 public class Domain {
 
-    //日付（YYYYMMDD）
-    private String date = null;
-    //開始時刻（MMDD）
-    private String start = null;
-    //終了時刻（MMDD）
-    private String end = null;
-    //現在日時
-    private String now = null;
-    //開始時刻（MM）
-    private int startH = 0;
-    //開始時刻（DD）
-    private int startM = 0;
-    //終了時刻（MM）
-    private int endH = 0;
-    //終了時刻（DD）
-    private int endM = 0;
-    //労働時間（DD）
-    private int workMinutes = 0;
-    //残業時間（DD）
-    private int overWorkMinutes = 0;
-    //労働時間合計（M）
-    private int totalWorkMinutes = 0;
-    //残業時間合計（M）
-    private int totalOverWorkMinutes = 0;
-    //労働時間合計（M)と残業時間合計（M）を持つ配列
-    private int[] totalNums = null;
-
     /*
      *
      *
      */
-    public void checkArgsLength(int length) {
-        //引数0個ならエラー
-        if (length < 1) {
-            throw new RuntimeException("引数が足りません");
-        }
-    }
+    public void inputData(IRepository iRepository, TermVO termVO) { //TODO  Service層を使わないようにする
 
-    /*
-     *
-     *
-     */
-    public void inputData(String[] args, IRepository iRepository) {
-        if (args.length < 4) {
-            throw new RuntimeException("引数が足りません");
-        }
-        date = args[1];
-        start = args[2];
-        end = args[3];
-        now = LocalDateTime.now().toString();
-        startH = Integer.valueOf(start.substring(0, 2));
-        startM = Integer.valueOf(start.substring(2, 4));
-        endH = Integer.valueOf(end.substring(0, 2));
-        endM = Integer.valueOf(end.substring(2, 4));
 
-        workMinutes = endH * 60 + endM - (startH * 60 + startM);
+//        StartHourVO startH = new StartHourVO(Integer.valueOf(argsVO.getArgs()[2].substring(0, 2)));
+//        StartM_VO startM = new StartM_VO(Integer.valueOf(argsVO.getArgs()[2].substring(2, 4)));
+//        EndH_VO endH = new EndH_VO(Integer.valueOf(argsVO.getArgs()[3].substring(0, 2)));
+//        EndM_VO endM = new EndM_VO(Integer.valueOf(argsVO.getArgs()[3].substring(2, 4)));
 
-        if(endH == 12) {
-            workMinutes -= endM;
-        } else if(endH >= 13) {
-            workMinutes -= 60;
-        }
 
-        if(endH == 18) {
-            workMinutes -= endM;
-        } else if(endH >= 19) {
-            workMinutes -= 60;
-        }
+        //TODO VO内で計算するロジックにし削除。EndTimeからStartTimeを引いたもの
+        //workMinutes = endH * 60 + endM - (startH.getStartHour() * 60 + startM);
+        termVO.getWorkTime();
 
-        if(endH == 21) {
-            workMinutes -= endM;
-        } else if(endH >= 22) {
-            workMinutes -= 60;
-        }
 
+//        if (endH == 12) {
+//            workMinutes -= endM;
+//        } else if (endH >= 13) {
+//            workMinutes -= 60;
+//        }
+//
+//        if (endH == 18) {
+//            workMinutes -= endM;
+//        } else if (endH >= 19) {
+//            workMinutes -= 60;
+//        }
+//
+//        if (endH == 21) {
+//            workMinutes -= endM;
+//        } else if (endH >= 22) {
+//            workMinutes -= 60;
+//        }
+
+        //TODO VO内で計算するロジックにし削除
         int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
 
-        iRepository.writeData(args, workMinutes, overWorkMinutes);
-        //iRepo.writeData();
+        iRepository.writeData();
+        //iRepository.writeData(); //TODO writeData内でTermVOをnewする
+
 
     }
 
@@ -93,15 +57,16 @@ public class Domain {
      *
      */
 
-//    public void outputData(String[] args) {
-//        if (args.length < 2) {
+    public void outputData(IRepository iRepository) { //TODO  Service層を使わないように吸える
+        //Serviceへ
+//        if (argsVO.getArgs().length < 2) {
 //            throw new RuntimeException("引数が足りません");
 //        }
 //
-//        String yearMonth = args[1];
-//
-//
-//
+//        iRepository.readData(argsVO, iRepository);
+
+        iRepository.readData(iRepository);
+
 //        File file = new File("data.csv");
 //
 //        try(
@@ -128,12 +93,10 @@ public class Domain {
 //                totalWorkMinutes += totalWorkMinutesMap.get(key);
 //                totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
 //            }
-//
-//            System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-//            System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
-//        }
-//
-//    }
 
+//        System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
+//        System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
+    }
 
 }
+

@@ -4,20 +4,38 @@ package service;
 
 import domain.Domain;
 import domain.IRepository;
+import domain.TermVO;
 
 public class Service {
-    public void service(String[] args, IRepository iRepository) {
+    public void service(ArgsVO argsVO, IRepository iRepository) {
         try {
             Domain dm = new Domain();
-            dm.checkArgsLength(args.length);
+            argsVO.checkArgsLength();
+            //プリミティブ型は禁止
+            //String methodType = argsVO.getArgs()[0];
 
-            String methodType = args[0];
 
             //TODO 分岐処理がService層で良いのか検討する
-            if ("input".equals(methodType)) {
-                dm.inputData(args, iRepository);
-            } else if ("total".equals(methodType)) {
-                //dm.outputData(args, iRepository); //TODO Datasource
+            if (argsVO.getMethodType().equals(MethodType.input)) {
+                argsVO.inputCheckArgsLength();
+
+                StartHourVO startHour = new StartHourVO(argsVO);
+                StartMinutesVO startMinutes = new StartMinutesVO(argsVO);
+                EndHourVO endHour = new EndHourVO(argsVO);
+                EndMinutesVO endMinutes = new EndMinutesVO(argsVO);
+
+                StartTimeVO startTimeVO = new StartTimeVO(startHour, startMinutes);
+                EndTimeVO endTimeVO = new EndTimeVO(endHour, endMinutes);
+                BreakTimeVO breakTimeVO = new BreakTimeVO(endHour, endMinutes);
+                TermVO termVO = new TermVO(startTimeVO, endTimeVO, breakTimeVO);
+
+                dm.inputData(iRepository, termVO);
+
+            } else if (argsVO.getMethodType().equals(MethodType.total)) {
+                argsVO.totalCheckArgsLength();
+
+
+                dm.outputData(iRepository);
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }

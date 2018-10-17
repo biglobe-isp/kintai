@@ -2,34 +2,86 @@
 'コメントアウト
 
 class Api {
-プロパティ
-メソッド()
+
 }
 
 
 class  Service {
-
+  inputData()
+  outputData()
 }
 
 class Domain {
 
 }
 
-class IReposityCsv {
+interface IRepository {
 
 }
 
 
-class ReposityCsv {
+class RepositoryDb implements IRepository {
 
 } 
 
+class ArgsVO {
+  checkArgsLength()
+  getMethodtype()
+  inputCheckArgsLength()
+  totalCheckArgsLength()
+}
 
+enum MethodType {
+  input
+  total
+}
+
+class TermVO {
+
+  }
+
+class StartTime {
+
+}
+
+class EndTime {
+
+}
+
+class StartHour {
+
+}
+
+class StartMinutes {
+
+}
+
+class EndHour {
+
+}
+
+class EndMinutes {
+
+}
+
+class BreakTime {
+
+}
 
 Api ..> Service
 Service ..> Domain
-Domain ..> IReposityCsv
-
+Domain ..> IRepository
+Service - ArgsVO
+ArgsVO - MethodType
+Domain - TermVO
+Service - StartHour
+Service - StartMinutes
+Service - EndHour
+Service -EndMinutes
+StartTime - StartHour
+StartTime - StartMinutes
+EndTime - EndHour
+EndTime - EndMinutes
 
 
 @enduml

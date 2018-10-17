@@ -1,8 +1,11 @@
 package domain;
 
+//import api.ArgsVO; //
+//import service.ArgsVO;
+
 public interface IRepository {
 
-    public void writeData(String[] args, int workMinutes, int overWorkMinutes);
+    public void writeData();
 
-    public void readData();
+    public void readData(IRepository iRepository);
 }
