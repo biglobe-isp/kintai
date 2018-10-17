@@ -14,13 +14,11 @@ public class DayWorkMinutesCalc {
     private int    workMinutes;
     private int    overWorkMinutes;
 
-    DayWorkMinutesRepository dayWorkMinutesRepository;
+    public void input(DayWorkMinutesRepository dayWorkMinutesRepository , ArgsList argsList) {
 
-    public void input(String[] args) {
-
-        date = args[1];
-        start = args[2];
-        end = args[3];
+        date = argsList.getDate();
+        start = argsList.getStart();
+        end = argsList.getEnd();
         now = LocalDateTime.now().toString();
 
         startH = Integer.valueOf(start.substring(0, 2));

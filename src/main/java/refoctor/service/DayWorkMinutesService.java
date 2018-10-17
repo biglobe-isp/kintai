@@ -1,18 +1,13 @@
 package refoctor.service;
 
+import refoctor.domain.ArgsList;
 import refoctor.domain.DayWorkMinutesCalc;
+import refoctor.domain.DayWorkMinutesRepository;
 
 public class DayWorkMinutesService {
-    public void workService(String[] args) {
+    public void workService(ArgsList argsList, DayWorkMinutesRepository dayWorkMinutesRepository) {
         DayWorkMinutesCalc dayWorkMinutesCalc = new DayWorkMinutesCalc();
-
-        if ("input".equals(args[0])) {
-
-            dayWorkMinutesCalc.input(args);
-
-        } else {
-            throw new RuntimeException("methodTypeが不正です");
-        }
+        dayWorkMinutesCalc.input(dayWorkMinutesRepository, argsList);
     }
 
 }

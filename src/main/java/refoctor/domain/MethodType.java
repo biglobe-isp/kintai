@@ -1,4 +1,4 @@
-package refoctor.service;
+package refoctor.domain;
 
 public enum MethodType {
     input, total

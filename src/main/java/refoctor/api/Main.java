@@ -1,35 +1,23 @@
 package refoctor.api;
 
+import refoctor.domain.ArgsList;
+import refoctor.domain.MethodType;
+
 public class Main {
     public static void main(String[] args) {
-        try {
-            if(args.length < 1) {
-                throw new RuntimeException("引数が足りません");
-            }
+        ArgsList argsList = new ArgsList(args);
+        argsList.checkLength();
 
-            String methodType = args[0];
+        if(argsList.getMethodType().equals(MethodType.input)) {
 
-            if("input".equals(methodType)) {
-                if(args.length < 4) {
-                    throw new RuntimeException("引数が足りません");
-                }
+            argsList.inputCheckLength();
+            DayWorkMinutesApi.inputApi(argsList);
 
-                DayWorkMinutesApi.inputApi(args);
+        } else if (argsList.getMethodType().equals(MethodType.total)) {
 
-            } else if("total".equals(methodType)) {
+            argsList.totalCheckLength();
+            TotalWorkMinutesApi.totalApi(argsList);
 
-                if(args.length < 2) {
-                    throw new RuntimeException("引数が足りません");
-                }
-
-                TotalWorkMinutesApi.totalApi(args);
-
-            } else {
-                throw new RuntimeException("methodTypeが不正です");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

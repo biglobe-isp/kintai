@@ -2,10 +2,8 @@ package refoctor.domain;
 
 public class TotalWorkMinutesCalc {
 
-    TotalWorkMinutesRepository totalWorkMinutesRepository;
-
-    public void total(String[] args) {
-        String yearMonth = args[1];
+    public void total(TotalWorkMinutesRepository totalWorkMinutesRepository, ArgsList argsList) {
+        String yearMonth = argsList.getDate();
         totalWorkMinutesRepository.totalOutPut(yearMonth);
     }
 }

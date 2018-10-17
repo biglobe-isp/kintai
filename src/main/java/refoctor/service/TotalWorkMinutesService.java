@@ -1,17 +1,12 @@
 package refoctor.service;
 
+import refoctor.domain.ArgsList;
 import refoctor.domain.TotalWorkMinutesCalc;
+import refoctor.domain.TotalWorkMinutesRepository;
 
 public class TotalWorkMinutesService {
-    public void workService(String[] args) {
+    public void workService(ArgsList argsList, TotalWorkMinutesRepository totalWorkMinutesRepository) {
         TotalWorkMinutesCalc totalWorkMinutesCalc = new TotalWorkMinutesCalc();
-
-        if ("total".equals(args[0])) {
-
-            totalWorkMinutesCalc.total(args);
-
-        } else {
-            throw new RuntimeException("methodTypeが不正です");
-        }
+        totalWorkMinutesCalc.total(totalWorkMinutesRepository, argsList);
     }
 }
