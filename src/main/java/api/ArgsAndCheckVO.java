@@ -1,9 +1,9 @@
-package service;
+package api;
 
-public class ArgsVO {
+public class ArgsAndCheckVO {
     private final String[] args;
 
-    public ArgsVO(String[] args) {
+    public ArgsAndCheckVO(String[] args) {
         this.args = args;
     }
 
@@ -16,8 +16,10 @@ public class ArgsVO {
     public MethodType getMethodType() { //enum
         if ("input".equals(args[0])) {
             return MethodType.input;
+
         } else if ("total".equals(args[0])) {
             return MethodType.total;
+
         } else {
             throw new RuntimeException("methodTypeが不正です");
         }
@@ -35,7 +37,19 @@ public class ArgsVO {
         }
     }
 
-    public String[] getArgs() {
-        return args;
+//    public String[] getArgs() {
+//        return args;
+//    }
+
+    public String getDate() {
+        return args[1];
+    }
+
+    public String getStart() {
+        return args[2];
+    }
+
+    public String getEnd() {
+        return args[3];
     }
 }

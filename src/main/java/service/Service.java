@@ -2,46 +2,46 @@ package service;
 
 //import datasource.RepositoryDb; //serviceからdatasourceを参照してはいけない
 
-import domain.Domain;
-import domain.IRepository;
-import domain.TermVO;
+import api.ArgsAndCheckVO;
+import domain.*;
 
 public class Service {
-    public void service(ArgsVO argsVO, IRepository iRepository) {
-        try {
-            Domain dm = new Domain();
-            argsVO.checkArgsLength();
-            //プリミティブ型は禁止
-            //String methodType = argsVO.getArgs()[0];
+    Domain dm = new Domain();
+    public void inputService(DateVO dateVO, StartTimeVO startVO, EndTimeVO endVO, WorkTimeVO workVO, IRepository iRepo) {
+//        try {
 
+        dm.inputData(dateVO, startVO, endVO, workVO, iRepo);
 
-            //TODO 分岐処理がService層で良いのか検討する
-            if (argsVO.getMethodType().equals(MethodType.input)) {
-                argsVO.inputCheckArgsLength();
+//            //TODO 分岐処理がService層で良いのか検討する
+//            if (argsAndCheckVO.getMethodType().equals(MethodType.input)) {
+//                argsAndCheckVO.inputCheckArgsLength();
+//
+//                StartHourVO startHour = new StartHourVO(argsAndCheckVO);
+//                StartMinutesVO startMinutes = new StartMinutesVO(argsAndCheckVO);
+//                EndHourVO endHour = new EndHourVO(argsAndCheckVO);
+//                EndMinutesVO endMinutes = new EndMinutesVO(argsAndCheckVO);
+//
+//                StartTimeVO startTimeVO = new StartTimeVO(startHour, startMinutes);
+//                EndTimeVO endTimeVO = new EndTimeVO(endHour, endMinutes);
+//                BreakTimeVO breakTimeVO = new BreakTimeVO(endHour, endMinutes);
+//                WorkTimeVO workTimeVO = new WorkTimeVO(startTimeVO, endTimeVO, breakTimeVO);
+//
+//                dm.inputData(iRepository, workTimeVO);
+//
+//            } else if (argsAndCheckVO.getMethodType().equals(MethodType.total)) {
+//                argsAndCheckVO.totalCheckArgsLength();
+//
+//
+//                dm.outputData(iRepository);
+//            } else {
+//                throw new RuntimeException("methodTypeが不正です");
+//            }
 
-                StartHourVO startHour = new StartHourVO(argsVO);
-                StartMinutesVO startMinutes = new StartMinutesVO(argsVO);
-                EndHourVO endHour = new EndHourVO(argsVO);
-                EndMinutesVO endMinutes = new EndMinutesVO(argsVO);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+    public void totalService(){
 
-                StartTimeVO startTimeVO = new StartTimeVO(startHour, startMinutes);
-                EndTimeVO endTimeVO = new EndTimeVO(endHour, endMinutes);
-                BreakTimeVO breakTimeVO = new BreakTimeVO(endHour, endMinutes);
-                TermVO termVO = new TermVO(startTimeVO, endTimeVO, breakTimeVO);
-
-                dm.inputData(iRepository, termVO);
-
-            } else if (argsVO.getMethodType().equals(MethodType.total)) {
-                argsVO.totalCheckArgsLength();
-
-
-                dm.outputData(iRepository);
-            } else {
-                throw new RuntimeException("methodTypeが不正です");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

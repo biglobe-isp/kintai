@@ -1,18 +1,51 @@
 package api;
 
 import datasource.RepositoryDb;
-import service.ArgsVO;
+import domain.DateVO;
+import domain.EndTimeVO;
+import domain.StartTimeVO;
+import domain.WorkTimeVO;
 import service.Service;
 
 public class Api { //入出力を行う
     public static void main(String[] args) {
 
+        ArgsAndCheckVO argsVO = new ArgsAndCheckVO(args);
+        argsVO.checkArgsLength();
+
+        if (argsVO.getMethodType().equals(MethodType.input)) {
+            inputController(argsVO);
+
+        } else if (argsVO.getMethodType().equals(MethodType.total)) {
+            totalController(argsVO);
+
+        } else {
+            throw new RuntimeException("methodTypeが不正です");
+        }
+
+    }
+
+    //TODO staticにしたがこれでいいのか検討
+    public static void inputController(ArgsAndCheckVO argsVO) {
+        argsVO.inputCheckArgsLength();
+
         Service sv = new Service();
         RepositoryDb repoDb = new RepositoryDb(); //Datasource
 
-        //Application以下でプリミティブ型を排除するためVOを使う
-        ArgsVO argsVO = new ArgsVO(args);
+        DateVO dateVO = new DateVO(argsVO.getDate());
+        StartTimeVO startVO = new StartTimeVO(argsVO.getStart());
+        EndTimeVO endVO = new EndTimeVO(argsVO.getEnd());
+        WorkTimeVO workVO = new WorkTimeVO(startVO, endVO);
 
-        sv.service(argsVO, repoDb);
+        sv.inputService(dateVO, startVO, endVO, workVO, repoDb);
     }
+
+    public static void totalController(ArgsAndCheckVO argsVO) {
+        argsVO.totalCheckArgsLength();
+
+        RepositoryDb repoDb = new RepositoryDb(); //Datasource
+
+    }
+
+
 }

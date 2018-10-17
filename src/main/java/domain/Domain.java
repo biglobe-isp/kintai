@@ -1,27 +1,21 @@
 package domain;
 
-
-import service.EndHourVO;
-import service.EndMinutesVO;
-
 public class Domain {
 
     /*
      *
      *
      */
-    public void inputData(IRepository iRepository, TermVO termVO) { //TODO  Service層を使わないようにする
+    public void inputData(DateVO dateVO, StartTimeVO startVO, EndTimeVO endVO, WorkTimeVO workVO, IRepository iRepo) { //TODO  Service層を使わないようにする
+
+//        StartHourVO startH = new StartHourVO(Integer.valueOf(argsAndCheckVO.getArgs()[2].substring(0, 2)));
+//        StartM_VO startM = new StartM_VO(Integer.valueOf(argsAndCheckVO.getArgs()[2].substring(2, 4)));
+//        EndH_VO endH = new EndH_VO(Integer.valueOf(argsAndCheckVO.getArgs()[3].substring(0, 2)));
+//        EndM_VO endM = new EndM_VO(Integer.valueOf(argsAndCheckVO.getArgs()[3].substring(2, 4)));
 
 
-//        StartHourVO startH = new StartHourVO(Integer.valueOf(argsVO.getArgs()[2].substring(0, 2)));
-//        StartM_VO startM = new StartM_VO(Integer.valueOf(argsVO.getArgs()[2].substring(2, 4)));
-//        EndH_VO endH = new EndH_VO(Integer.valueOf(argsVO.getArgs()[3].substring(0, 2)));
-//        EndM_VO endM = new EndM_VO(Integer.valueOf(argsVO.getArgs()[3].substring(2, 4)));
-
-
-        //TODO VO内で計算するロジックにし削除。EndTimeからStartTimeを引いたもの
+        //TODO 休憩時間を切り出す
         //workMinutes = endH * 60 + endM - (startH.getStartHour() * 60 + startM);
-        termVO.getWorkTime();
 
 
 //        if (endH == 12) {
@@ -41,13 +35,9 @@ public class Domain {
 //        } else if (endH >= 22) {
 //            workMinutes -= 60;
 //        }
-
         //TODO VO内で計算するロジックにし削除
-        int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-
-        iRepository.writeData();
-        //iRepository.writeData(); //TODO writeData内でTermVOをnewする
-
+        //int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
+        iRepo.writeData(dateVO, startVO, endVO, workVO);
 
     }
 
@@ -64,8 +54,7 @@ public class Domain {
 //        }
 //
 //        iRepository.readData(argsVO, iRepository);
-
-        iRepository.readData(iRepository);
+        iRepository.readData();
 
 //        File file = new File("data.csv");
 //
@@ -97,6 +86,7 @@ public class Domain {
 //        System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
 //        System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
     }
+
 
 }
 
