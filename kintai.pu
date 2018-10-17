@@ -2,7 +2,8 @@
 'コメントアウト
 
 class Api {
-
+  inputApi()
+  totalApi()
 }
 
 
@@ -36,52 +37,22 @@ enum MethodType {
   total
 }
 
-class TermVO {
 
-  }
 
-class StartTime {
+class EndTimeVO {
 
 }
 
-class EndTime {
 
-}
 
-class StartHour {
-
-}
-
-class StartMinutes {
-
-}
-
-class EndHour {
-
-}
-
-class EndMinutes {
-
-}
-
-class BreakTime {
-
-}
-
-Api ..> Service
+Api .down.> Service
 Service ..> Domain
 Domain ..> IRepository
-Service - ArgsVO
-ArgsVO - MethodType
-Domain - TermVO
-Service - StartHour
-Service - StartMinutes
-Service - EndHour
-Service -EndMinutes
-StartTime - StartHour
-StartTime - StartMinutes
-EndTime - EndHour
-EndTime - EndMinutes
+Api .right.> ArgsVO
+ArgsVO .right.> MethodType
+Domain ..> WorkTimeVO
+Domain ..> StartTimeVO
+Domain ..> EndTimeVO
 
 
 @enduml

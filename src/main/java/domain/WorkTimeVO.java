@@ -26,9 +26,9 @@ public class WorkTimeVO {
             tmpBreakTime -= 60;
         }
 
-        //就業時間＝終業時間ー始業時間ー休憩時間
+        //就業時間＝終業時間ー始業時間＋休憩時間（休憩時間にはマイナスの値が入っている）
         this.workTime = endVO.getEndTotalMinute() - startVO.getStartTotalMinute()
-                - tmpBreakTime; //TODO 変数名でTimeとMinuteが混合している
+                + tmpBreakTime; //TODO 変数名でTimeとMinuteが混合している
 
         //残業時間＝就業時間ー480分(8時間)
         this.overWorkTime = Math.max(this.workTime - 8 * 60, 0);

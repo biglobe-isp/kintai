@@ -43,7 +43,9 @@ public class Api { //入出力を行う
     public static void totalController(ArgsAndCheckVO argsVO) {
         argsVO.totalCheckArgsLength();
 
+        Service sv = new Service();
         RepositoryDb repoDb = new RepositoryDb(); //Datasource
+
 
     }
 
