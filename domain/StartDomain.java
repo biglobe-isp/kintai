@@ -28,5 +28,10 @@ public class StartDomain {
         return startH;
     }
 
+    public int getStartTotalM() {
+        return startH * 60 + startM;
+    }
+
+
 
 }

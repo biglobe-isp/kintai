@@ -13,23 +13,19 @@ public class EndDomain {
         this.endM = Integer.valueOf(this.end.substring(2, 4));
     }
 
-
-    public EndDomain(String methodType, String date) {
-        this.end = null;
-        this.endH = 0;
-        this.endM = 0;
-    }
-
-
     public String getEnd() {
         return end;
     }
 
-    public int getEndH() {
-        return endH;
-    }
+    public int getEndH() { return endH; }
 
     public int getEndM() {
         return endM;
     }
+
+    public int getEndTotalM() {
+        return endH * 60 + endM;
+    }
+
+
 }

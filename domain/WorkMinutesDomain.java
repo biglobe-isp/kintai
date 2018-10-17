@@ -8,9 +8,9 @@ public class WorkMinutesDomain {
     private final int overWorkMinutes;
     private int tmpWorkMinutes;
 
-    public WorkMinutesDomain(StartDomain st, EndDomain ed) {
+    public WorkMinutesDomain(StartDomain sd, EndDomain ed) {
 
-        this.tmpWorkMinutes = ed.getEndH() * 60 + ed.getEndM() - (st.getStartH() * 60 + st.getStartM());
+        this.tmpWorkMinutes = ed.getEndTotalM() - sd.getStartTotalM();
         if (ed.getEndH() == 12) {
             this.tmpWorkMinutes -= ed.getEndM();
         } else if (ed.getEndH() >= 13) {
