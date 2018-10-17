@@ -3,7 +3,6 @@ package domain;
 
 public class WorkMinutesDomain {
 
-
     private final int workMinutes;
     private final int overWorkMinutes;
     private int tmpWorkMinutes;

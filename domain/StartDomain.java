@@ -10,7 +10,7 @@ public class StartDomain {
 
     public StartDomain(String start) {
 
-        this.start = start;
+        this.start = start.substring(7);
         this.startH = Integer.valueOf(this.start.substring(0, 2));
         this.startM = Integer.valueOf(this.start.substring(2, 4));
     }
