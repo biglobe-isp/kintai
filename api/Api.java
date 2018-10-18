@@ -8,6 +8,7 @@ import service.Service;
 public class Api {
     public static void main(String[] args) {
         Service sv = new Service();
+        
         InputChecker inputChecker = new InputChecker();
 
         //コマンドライン引数が無しの場合、エラーを出力する。
