@@ -19,13 +19,15 @@ public class Api {
             if (args.length < 4) {
                 throw new RuntimeException("引数が足りません");
             }
-            sv.registryData(new KintaiToroku(args[1], args[2], args[3]), new Datasource());
+            KintaiToroku kintaiToroku = new KintaiToroku(args[1], args[2], args[3]);
+            sv.registryData(kintaiToroku, new Datasource());
 
         } else if("total".equals(args[0])) {
             if(args.length < 2) {
                 throw new RuntimeException("引数が足りません");
             }
-            sv.displayData(new KintaiHyoji(args[1], new Datasource()), new Datasource());
+            KintaiHyoji kintaiHyoji = new KintaiHyoji(args[1]);
+            sv.displayData(kintaiHyoji, new Datasource());
 
         } else {
             throw new RuntimeException("methodTypeが不正です");

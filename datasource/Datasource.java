@@ -12,13 +12,6 @@ import java.util.Set;
 
 public class Datasource implements DatasourceRepository {
 
-//    //労働時間合計（M)と残業時間合計（M）を持つ配列
-//    private int[] totalNums = null;
-//    //１ヶ月分の労働時間合計（M）
-//    int totalWorkMinutes = 0;
-//    //１ヵ月分の残業時間合計（M）
-//    int totalOverWorkMinutes = 0;
-
     public void writeData(String date, int start, int end, int workMinutes, int overWorkMinutes, String now) {
         try {
             File file = new File("data.csv");

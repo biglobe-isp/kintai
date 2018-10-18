@@ -2,71 +2,55 @@ package domain;
 
 public class KintaiToroku {
 
-    private Date date;
-    private StartDate startDate;
-    private EndDate endDate;
-    private Now now;
-    private StartHour startHour;
-    private StartMinute startMinute;
-    private EndHour endHour;
-    private EndMinute endMinute;
-    private WorkMinute workMinute;
-    private OverWorkMinute overWorkMinute;
+    private String date;
+    private String startDate;
+    private String endDate;
 
-    public KintaiToroku(String date, String startDate, String endDate){
 
-        this.date = new Date(date);
-        this.startDate = new StartDate(startDate);
-        this.endDate = new EndDate(endDate);
-        this.now = new Now();
-        this.startHour = new StartHour(startDate);
-        this.startMinute = new StartMinute(startDate);
-        this.endHour = new EndHour(endDate);
-        this.endMinute = new EndMinute(endDate);
-        this.workMinute = new WorkMinute(startHour.getStartHour(), startMinute.getStartMinute(),
-                                            endHour.getEndHour(), endMinute.getEndMinute());
-        this.overWorkMinute = new OverWorkMinute(workMinute.getWorkMinute());
-
+    public KintaiToroku(String date, String startDate, String endDate) {
+        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        Date date = new Date(this.date);
+        return date.getDate();
     }
 
-    public StartDate getStartDate() {
-        return startDate;
+    public String getNow() {
+        Now now = new Now();
+        return now.getNow();
     }
 
-    public EndDate getEndDate() {
-        return endDate;
+    public int getStartHour() {
+        StartHour startHour = new StartHour(this.startDate);
+        return startHour.getStartHour();
     }
 
-    public Now getNow() {
-        return now;
+    public int getStartMinute() {
+        StartMinute startMinute = new StartMinute(this.startDate);
+        return startMinute.getStartMinute();
     }
 
-    public StartHour getStartHour() {
-        return startHour;
+    public int getEndHour() {
+        EndHour endHour = new EndHour(this.endDate);
+        return endHour.getEndHour();
     }
 
-    public StartMinute getStartMinute() {
-        return startMinute;
+    public int getEndMinute() {
+        EndMinute endMinute = new EndMinute(this.endDate);
+        return endMinute.getEndMinute();
     }
 
-    public EndHour getEndHour() {
-        return endHour;
+    public int getWorkMinute() {
+        WorkMinute workMinute = new WorkMinute(getStartHour(), getStartMinute(), getEndHour(), getEndMinute());
+        return workMinute.getWorkMinute();
     }
 
-    public EndMinute getEndMinute() {
-        return endMinute;
-    }
-
-    public WorkMinute getWorkMinute() {
-        return workMinute;
-    }
-
-    public OverWorkMinute getOverWorkMinute() {
-        return overWorkMinute;
+    public int getOverWorkMinute() {
+        OverWorkMinute overWorkMinute = new OverWorkMinute(getWorkMinute());
+        return overWorkMinute.getOverWorkMinute();
     }
 
 }
