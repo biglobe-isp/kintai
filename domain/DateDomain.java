@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 public class DateDomain {
 
     private final String date;
-    private final String now = LocalDateTime.now().toString();
+    private final String now;
 
-    public DateDomain(String date) {
-        this.date = date.substring(6);
+    public DateDomain(String date, String now) {
+
+        this.date = date;
+        this.now = now;
     }
 
 

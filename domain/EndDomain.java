@@ -3,27 +3,29 @@ package domain;
 
 public class EndDomain {
 
-    private final String end;
+    private final String  end;
     private final int endH;
     private final int endM;
+    
+    public EndDomain(String end, int endH, int endM) {
 
-    public EndDomain(String end) {
-        this.end = end.substring(5);
-        this.endH = Integer.valueOf(this.end.substring(0, 2));
-        this.endM = Integer.valueOf(this.end.substring(2, 4));
+        this.end = end;
+        this.endH = endH;
+        this.endM = endM;
     }
-
-    public String getEnd() {
+    
+    public String  getEnd() {
         return end;
     }
 
-    public int getEndH() { return endH; }
-
-    public int getEndM() { return endM; }
-
-    public int getEndTotalM() {
-        return endH * 60 + endM;
+    public int getEndH() {
+        return endH;
     }
 
+    public int getEndM() {
+        return endM;
+    }
+
+    public int getEndTotalM() { return endH * 60 + endM; }
 
 }
