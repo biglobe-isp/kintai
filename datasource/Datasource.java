@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class Datasource implements DatasourceRepository {
 
-    public void writeData(String date, int start, int end, int workMinutes, int overWorkMinutes, String now) {
+    public void writeData(String date, String start, String end, int workMinutes, int overWorkMinutes, String now) {
         try {
             File file = new File("data.csv");
             try(FileWriter filewriter = new FileWriter(file, true)) {

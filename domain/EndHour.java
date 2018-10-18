@@ -7,7 +7,11 @@ public class EndHour {
         this.endHour = Integer.valueOf(endDate.substring(0, 2));
     }
 
-    public int getEndHour() {
+    public int getEndHourInt() {
         return endHour;
+    }
+
+    public String getEndHourStr() {
+        return String.valueOf(endHour);
     }
 }

@@ -7,7 +7,12 @@ public class StartMinute {
         this.startMinute = Integer.valueOf(startDate.substring(2, 4));
     }
 
-    public int getStartMinute() {
+    public int getStartMinuteInt() {
         return startMinute;
     }
+
+    public String getStartMinuteStr() {
+        return String.valueOf(startMinute);
+    }
+
 }

@@ -23,28 +23,47 @@ public class KintaiToroku {
         return now.getNow();
     }
 
-    public int getStartHour() {
+    public int getStartHourInt() {
         StartHour startHour = new StartHour(this.startDate);
-        return startHour.getStartHour();
+        return startHour.getStartHourInt();
     }
 
-    public int getStartMinute() {
+    public int getStartMinuteInt() {
         StartMinute startMinute = new StartMinute(this.startDate);
-        return startMinute.getStartMinute();
+        return startMinute.getStartMinuteInt();
     }
 
-    public int getEndHour() {
+    public int getEndHourInt() {
         EndHour endHour = new EndHour(this.endDate);
-        return endHour.getEndHour();
+        return endHour.getEndHourInt();
     }
 
-    public int getEndMinute() {
+    public int getEndMinuteInt() {
         EndMinute endMinute = new EndMinute(this.endDate);
-        return endMinute.getEndMinute();
+        return endMinute.getEndMinuteInt();
+    }
+    public String getStartHourStr() {
+        StartHour startHour = new StartHour(this.startDate);
+        return startHour.getStartHourStr();
+    }
+
+    public String getStartMinuteStr() {
+        StartMinute startMinute = new StartMinute(this.startDate);
+        return startMinute.getStartMinuteStr();
+    }
+
+    public String getEndHourStr() {
+        EndHour endHour = new EndHour(this.endDate);
+        return endHour.getEndHourStr();
+    }
+
+    public String getEndMinuteStr() {
+        EndMinute endMinute = new EndMinute(this.endDate);
+        return endMinute.getEndMinuteStr();
     }
 
     public int getWorkMinute() {
-        WorkMinute workMinute = new WorkMinute(getStartHour(), getStartMinute(), getEndHour(), getEndMinute());
+        WorkMinute workMinute = new WorkMinute(getStartHourInt(), getStartMinuteInt(), getEndHourInt(), getEndMinuteInt());
         return workMinute.getWorkMinute();
     }
 

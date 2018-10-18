@@ -4,8 +4,8 @@ public class Domain {
 
     public void registryData(KintaiToroku kintaiToroku, DatasourceRepository datasourceRepository) {
         datasourceRepository.writeData(kintaiToroku.getDate(),
-                                        kintaiToroku.getStartHour(),
-                                        kintaiToroku.getEndHour(),
+                                        kintaiToroku.getStartHourStr() + kintaiToroku.getStartMinuteStr(),
+                                        kintaiToroku.getEndHourStr() + kintaiToroku.getEndMinuteStr(),
                                         kintaiToroku.getWorkMinute(),
                                         kintaiToroku.getOverWorkMinute(),
                                         kintaiToroku.getNow());

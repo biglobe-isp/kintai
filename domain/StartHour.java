@@ -7,7 +7,12 @@ public class StartHour {
         this.startHour = Integer.valueOf(startDate.substring(0, 2));
     }
 
-    public int getStartHour() {
+    public int getStartHourInt() {
         return startHour;
     }
+
+    public String getStartHourStr() {
+        return String.valueOf(startHour);
+    }
+
 }

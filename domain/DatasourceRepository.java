@@ -1,6 +1,6 @@
 package domain;
 
 public interface DatasourceRepository {
-    void writeData(String date, int start, int end, int workMinutes, int overWorkMinutes, String now);
+    void writeData(String date, String start, String end, int workMinutes, int overWorkMinutes, String now);
     int[] readData(String yearMonth);
 }
