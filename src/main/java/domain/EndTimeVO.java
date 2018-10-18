@@ -5,7 +5,6 @@ public class EndTimeVO {
     private final int endHour;
     private final int endMinute;
 
-
     public EndTimeVO(String end) {
         this.end = end;
         this.endHour = Integer.valueOf(end.substring(0, 2));

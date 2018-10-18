@@ -2,30 +2,34 @@
 'コメントアウト
 
 class Api {
+  main()
   inputApi()
   totalApi()
 }
 
 
 class  Service {
+  inputService()
+  totalService()
+}
+
+class Domain {
   inputData()
   outputData()
 }
 
-class Domain {
-
-}
-
 interface IRepository {
-
+  writeData()
+  readData()
 }
 
 
 class RepositoryDb implements IRepository {
-
+  writeData()
+  readData()
 } 
 
-class ArgsVO {
+class ArgsAndCheckVO {
   checkArgsLength()
   getMethodtype()
   inputCheckArgsLength()
@@ -37,22 +41,52 @@ enum MethodType {
   total
 }
 
+class DateVO {
+  date
+  now
+  getDate()
+  getNow()
+}
+
+class StartTimeVO {
+  start
+  startHour
+  startMinute
+  getStart()
+  getStartTotalMinute()
+}
 
 
 class EndTimeVO {
+  end
+  endHour
+  endMinute
+  getEnd()
+  getEndHour()
+  getEndMinute()
+  getEndTotalMinute()
+}
 
+class WorkTimeVO {
+  workTime
+  overWorkTime
+  tmpBreakTime
+  getWorkTime()
+  getOverWorTime()
 }
 
 
 
 Api .down.> Service
-Service ..> Domain
-Domain ..> IRepository
-Api .right.> ArgsVO
-ArgsVO .right.> MethodType
-Domain ..> WorkTimeVO
-Domain ..> StartTimeVO
-Domain ..> EndTimeVO
+Service .down.> Domain
+Domain .down.> IRepository
+
+Api .right.> ArgsAndCheckVO
+ArgsAndCheckVO .right.> MethodType
+Domain .right.> WorkTimeVO
+Domain .right.> DateVO
+Domain .right.> StartTimeVO
+Domain .right.> EndTimeVO
 
 
 @enduml
