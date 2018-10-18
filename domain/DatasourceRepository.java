@@ -1,6 +1,8 @@
 package domain;
 
+import api.TimeGetter;
+
 public interface DatasourceRepository {
-    void writeData(String date, int start, int end, int workMinutes, int overWorkMinutes, String now);
-    int[] readData(String yearMonth);
+    void writeData (DateVO dateVO, TimeVO timeVO, TimeGetter timeGetter);
+    void readData (DateVO dateVO);
 }

@@ -1,11 +1,12 @@
-package domain;
+package api;
 
 import java.time.LocalDateTime;
 
-public class Now {
+public class TimeGetter {
+
     private final String now;
 
-    Now(){
+    TimeGetter(){
         this.now = LocalDateTime.now().toString();
     }
 

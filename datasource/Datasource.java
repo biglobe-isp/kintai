@@ -1,6 +1,9 @@
 package datasource;
 
+import api.TimeGetter;
 import domain.DatasourceRepository;
+import domain.DateVO;
+import domain.TimeVO;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,21 +15,49 @@ import java.util.Set;
 
 public class Datasource implements DatasourceRepository {
 
-    public void writeData(String date, int start, int end, int workMinutes, int overWorkMinutes, String now) {
+    public void writeData (DateVO dateVO, TimeVO timeVO, TimeGetter timeGetter) {
         try {
+
+            //日付
+            String date = dateVO.getDate();
+
+            //出勤時刻
+            String startD = timeVO.getStartD();
+
+            //退勤時刻
+            String endD = timeVO.getEndD();
+
+            int startH = Integer.valueOf(timeVO.getStartD().substring(0, 2));
+            int startM = Integer.valueOf(timeVO.getStartD().substring(2, 4));
+            int endH = Integer.valueOf(timeVO.getEndD().substring(0, 2));
+            int endM = Integer.valueOf(timeVO.getEndD().substring(2, 4));
+
+            WorkTimeCalculator workTimeCalculator = new WorkTimeCalculator();
+            //総労働時間
+            int dayWorkMinute = workTimeCalculator.calcDayWorkMinute(startH, startM, endH, endM);
+
+            OverWorkTimeCalculator overWorkTimeCalculator = new OverWorkTimeCalculator();
+            //総残業時間
+            int dayOverWorkMinute = overWorkTimeCalculator.calcDayOverWorkMinute(dayWorkMinute);
+
+            //現在時刻
+            String now = timeGetter.getNow();
+
             File file = new File("data.csv");
             try(FileWriter filewriter = new FileWriter(file, true)) {
-                filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
+                filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, startD, endD, dayWorkMinute, dayOverWorkMinute, now));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public int[] readData(String yearMonth) {
+    public void readData(DateVO dateVO) {
 
-        int[] totalNums = new int[2];
         try {
+
+            //労働時間を取得したい年月
+            String yearMonth = dateVO.getDate();
 
             File file = new File("data.csv");
             try (
@@ -40,8 +71,8 @@ public class Datasource implements DatasourceRepository {
 
                 //配列columns
                 // 0:日付（YYYYMMDD）
-                // 1:開始時刻（MMDD）
-                // 2:終了時刻（MMDD）
+                // 1:開始時刻（HHMM）
+                // 2:終了時刻（HHMM）
                 // 3:労働時間（M）
                 // 4:残業時間（M）
                 while (line != null) {
@@ -69,12 +100,13 @@ public class Datasource implements DatasourceRepository {
                     totalOverWorkMinute += totalOverWorkMinutesMap.get(key);
                 }
 
-                totalNums = new int[]{totalWorkMinute, totalOverWorkMinute};
+                System.out.println("勤務時間: " + totalWorkMinute / 60 + "時間" + totalWorkMinute % 60 + "分");
+                System.out.println("残業時間: " + totalOverWorkMinute / 60 + "時間" + totalOverWorkMinute % 60 + "分");
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return totalNums;
     }
 }

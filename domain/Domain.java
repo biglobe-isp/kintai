@@ -1,24 +1,15 @@
 package domain;
 
+import api.TimeGetter;
+
 public class Domain {
 
-    public void registryData(KintaiToroku kintaiToroku, DatasourceRepository datasourceRepository) {
-        datasourceRepository.writeData(kintaiToroku.getDate(),
-                                        kintaiToroku.getStartHour(),
-                                        kintaiToroku.getEndHour(),
-                                        kintaiToroku.getWorkMinute(),
-                                        kintaiToroku.getOverWorkMinute(),
-                                        kintaiToroku.getNow());
+    public void registryKintai(DateVO dateVO, TimeVO timeVO, TimeGetter timeGetter, DatasourceRepository datasourceRepository) {
+        datasourceRepository.writeData(dateVO, timeVO, timeGetter);
     }
 
-    public void displayData(KintaiHyoji kintaiHyoji, DatasourceRepository datasourceRepository) {
-
-        int totalWorkMinute = kintaiHyoji.getTotalWorkMinute(datasourceRepository);
-        int totalOverWorkMinute = kintaiHyoji.getTotalOverWorkMinute(datasourceRepository);
-
-        System.out.println("勤務時間: " + totalWorkMinute / 60 + "時間" + totalWorkMinute % 60 + "分");
-        System.out.println("残業時間: " + totalOverWorkMinute / 60 + "時間" + totalOverWorkMinute % 60 + "分");
-
+    public void displayMonthWorkTime(DateVO dateVO, DatasourceRepository datasourceRepository) {
+        datasourceRepository.readData(dateVO);
     }
 
 }

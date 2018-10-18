@@ -1,19 +1,17 @@
 package service;
 
-import domain.DatasourceRepository;
-import domain.Domain;
-import domain.KintaiHyoji;
-import domain.KintaiToroku;
+import api.TimeGetter;
+import domain.*;
 
 public class Service {
 
-    public void registryData(KintaiToroku kintaiToroku, DatasourceRepository datasourceRepository) {
+    public void registryKintai(DateVO dateVO, TimeVO timeVO, TimeGetter timeGetter, DatasourceRepository datasourceRepository) {
         Domain dm = new Domain();
-        dm.registryData(kintaiToroku, datasourceRepository);
+        dm.registryKintai(dateVO, timeVO, timeGetter, datasourceRepository);
     }
 
-    public void displayData(KintaiHyoji kintaiHyoji, DatasourceRepository datasourceRepository) {
+    public void displayMonthWorkTime(DateVO dateVO, DatasourceRepository datasourceRepository) {
         Domain dm = new Domain();
-        dm.displayData(kintaiHyoji, datasourceRepository);
+        dm.displayMonthWorkTime(dateVO, datasourceRepository);
     }
 }
