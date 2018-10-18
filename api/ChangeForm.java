@@ -4,7 +4,7 @@ import domain.*;
 
 import java.time.LocalDateTime;
 
-public class ChengeForm {
+public class ChangeForm {
 
     public StartDomain getStart(String start) {
         return new StartDomain(getStartSt(start), getHour(start), getMinutes(start));

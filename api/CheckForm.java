@@ -12,7 +12,7 @@ public class CheckForm {
 
     public CheckForm(String[] form) {
 
-        ChengeForm chengeForm = new ChengeForm();
+        ChangeForm changeForm = new ChangeForm();
 
         if (MethodType.INPUT.equals(form[0])) {
             if (form.length < 4) {
@@ -20,9 +20,9 @@ public class CheckForm {
             }
 
             this.methodType = MethodType.INPUT;
-            this.date = chengeForm.getDate(form[1]);
-            this.start = chengeForm.getStart(form[2]);
-            this.end = chengeForm.getEnd(form[3]);
+            this.date = changeForm.getDate(form[1]);
+            this.start = changeForm.getStart(form[2]);
+            this.end = changeForm.getEnd(form[3]);
             this.work = new WorkMinutesDomain(start, end);
 
 
@@ -32,7 +32,7 @@ public class CheckForm {
             }
 
             this.methodType = MethodType.TOTAL;
-            this.date = chengeForm.getDate(form[1]);
+            this.date = changeForm.getDate(form[1]);
 
         } else {
             throw new RuntimeException("methodTypeが不正です");

@@ -1,6 +1,5 @@
 package api;
 
-import domain.*;
 import service.DatetimeService;
 import datasource.FileOutDatasource;
 

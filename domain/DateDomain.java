@@ -1,7 +1,5 @@
 package domain;
 
-import java.time.LocalDateTime;
-
 public class DateDomain {
 
     private final String date;
