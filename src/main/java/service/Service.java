@@ -2,14 +2,13 @@ package service;
 
 //import datasource.RepositoryDb; //serviceからdatasourceを参照してはいけない
 
-import api.ArgsAndCheckVO;
 import domain.*;
 
 public class Service {
-    Domain dm = new Domain();
+
     public void inputService(DateVO dateVO, StartTimeVO startVO, EndTimeVO endVO, WorkTimeVO workVO, IRepository iRepo) {
 //        try {
-
+        Domain dm = new Domain();
         dm.inputData(dateVO, startVO, endVO, workVO, iRepo);
 
 //            //TODO 分岐処理がService層で良いのか検討する
@@ -41,7 +40,9 @@ public class Service {
 //            e.printStackTrace();
 //        }
     }
-    public void totalService(){
 
+    public void totalService(IRepository iRepo) {
+        Domain dm = new Domain();
+        dm.outputData(iRepo);
     }
 }

@@ -7,7 +7,7 @@ import domain.StartTimeVO;
 import domain.WorkTimeVO;
 import service.Service;
 
-public class Api { //入出力を行う
+public class Api {
     public static void main(String[] args) {
 
         ArgsAndCheckVO argsVO = new ArgsAndCheckVO(args);
@@ -25,7 +25,7 @@ public class Api { //入出力を行う
 
     }
 
-    //TODO staticにしたがこれでいいのか検討
+    //TODO staticクラスにしたがこれでいいのか検討
     public static void inputController(ArgsAndCheckVO argsVO) {
         argsVO.inputCheckArgsLength();
 
@@ -46,7 +46,7 @@ public class Api { //入出力を行う
         Service sv = new Service();
         RepositoryDb repoDb = new RepositoryDb(); //Datasource
 
-
+        sv.totalService(repoDb);
     }
 
 

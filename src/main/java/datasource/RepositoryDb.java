@@ -2,9 +2,10 @@ package datasource;
 
 import domain.*;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class RepositoryDb implements IRepository {
 
@@ -30,7 +31,7 @@ public class RepositoryDb implements IRepository {
 //        int totalWorkMinutes = 0;
 //        int totalOverWorkMinutes = 0;
 
-//        String yearMonth = args[1];
+//        String yearMonth = args[1]; //TODO args[1]をどうするか
         File file = new File("data.csv");
 
 //        try (
@@ -51,6 +52,9 @@ public class RepositoryDb implements IRepository {
 //
 //                line = br.readLine();
 //            }
+//
+//            //TODO VOに記述する
+//
 //
 //            Set<String> keySet = totalWorkMinutesMap.keySet();
 //            for (String key : keySet) {

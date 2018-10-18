@@ -34,6 +34,9 @@ class ArgsAndCheckVO {
   getMethodtype()
   inputCheckArgsLength()
   totalCheckArgsLength()
+  getDate()
+  getStart()
+  getEnd()
 }
 
 enum MethodType {
@@ -43,9 +46,7 @@ enum MethodType {
 
 class DateVO {
   date
-  now
   getDate()
-  getNow()
 }
 
 class StartTimeVO {
@@ -75,6 +76,10 @@ class WorkTimeVO {
   getOverWorTime()
 }
 
+class NowVO {
+  now
+  getNow()
+}
 
 
 Api .down.> Service
@@ -83,10 +88,13 @@ Domain .down.> IRepository
 
 Api .right.> ArgsAndCheckVO
 ArgsAndCheckVO .right.> MethodType
+
 Domain .right.> WorkTimeVO
 Domain .right.> DateVO
 Domain .right.> StartTimeVO
 Domain .right.> EndTimeVO
+
+RepositoryDb .right.> NowVO
 
 
 @enduml
