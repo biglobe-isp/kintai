@@ -14,7 +14,7 @@ public class CheckForm {
 
         ChangeForm changeForm = new ChangeForm();
 
-        if (MethodType.INPUT.equals(form[0])) {
+        if ("input".equals(form[0])) {
             if (form.length < 4) {
                 throw new RuntimeException("引数が足りません");
             }
@@ -26,7 +26,7 @@ public class CheckForm {
             this.work = new WorkMinutesDomain(start, end);
 
 
-        } else if (MethodType.TOTAL.equals(form[0])) {
+        } else if ("total".equals(form[0])) {
             if (form.length < 2) {
                 throw new RuntimeException("引数が足りません");
             }

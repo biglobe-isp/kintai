@@ -1,31 +1,35 @@
 package domain;
 
 
+import domain.microForm.End;
+import domain.microForm.EndH;
+import domain.microForm.EndM;
+
 public class EndDomain {
 
-    private final String  end;
-    private final int endH;
-    private final int endM;
+    private final End  end;
+    private final EndH endH;
+    private final EndM endM;
     
-    public EndDomain(String end, int endH, int endM) {
+    public EndDomain(End end, EndH endH, EndM endM) {
 
         this.end = end;
         this.endH = endH;
         this.endM = endM;
     }
     
-    public String  getEnd() {
+    public End  getEnd() {
         return end;
     }
 
-    public int getEndH() {
+    public EndH getEndH() {
         return endH;
     }
 
-    public int getEndM() {
+    public EndM getEndM() {
         return endM;
     }
 
-    public int getEndTotalM() { return endH * 60 + endM; }
+    public int getEndTotalM() { return endH.getEndH() * 60 + endM.getEndM(); }
 
 }

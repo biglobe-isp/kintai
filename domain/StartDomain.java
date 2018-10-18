@@ -1,31 +1,35 @@
 package domain;
 
 
+import domain.microForm.Start;
+import domain.microForm.StartH;
+import domain.microForm.StartM;
+
 public class StartDomain {
 
-    private final String  start;
-    private final int startH;
-    private final int startM;
+    private final Start  start;
+    private final StartH startH;
+    private final StartM startM;
 
-    public StartDomain(String start, int startH, int startM) {
+    public StartDomain(Start start, StartH startH, StartM startM) {
 
         this.start = start;
         this.startH = startH;
         this.startM = startM;
     }
 
-    public String  getStart() {
+    public Start  getStart() {
         return start;
     }
 
-    public int getStartH() {
+    public StartH getStartH() {
         return startH;
     }
 
-    public int getStartM() {
+    public StartM getStartM() {
         return startM;
     }
 
-    public int getStartTotalM() { return startH * 60 + startM; }
+    public int getStartTotalM() { return startH.getStartH() * 60 + startM.getStartM(); }
 
 }

@@ -10,17 +10,17 @@ public class WorkMinutesDomain {
     public WorkMinutesDomain(StartDomain sd, EndDomain ed) {
 
         this.tmpWorkMinutes = ed.getEndTotalM() - sd.getStartTotalM();
-        if (ed.getEndH() == 12) {
-            this.tmpWorkMinutes -= ed.getEndM();
-        } else if (ed.getEndH() >= 13) {
+        if (ed.getEndH().getEndH() == 12) {
+            this.tmpWorkMinutes -= ed.getEndM().getEndM();
+        } else if (ed.getEndH().getEndH() >= 13) {
             this.tmpWorkMinutes -= 60;
-        } else if  (ed.getEndH() == 18) {
-            this.tmpWorkMinutes -= ed.getEndM();
-        } else if (ed.getEndH() >= 19) {
+        } else if  (ed.getEndH().getEndH() == 18) {
+            this.tmpWorkMinutes -= ed.getEndM().getEndM();
+        } else if (ed.getEndH().getEndH() >= 19) {
             this.tmpWorkMinutes -= 60;
-        } else if  (ed.getEndH() == 21) {
-            this.tmpWorkMinutes -= ed.getEndM();
-        } else if (ed.getEndH() >= 22) {
+        } else if  (ed.getEndH().getEndH() == 21) {
+            this.tmpWorkMinutes -= ed.getEndM().getEndM();
+        } else if (ed.getEndH().getEndH() >= 22) {
             this.tmpWorkMinutes -= 60;
         }
         this.workMinutes = this.tmpWorkMinutes;

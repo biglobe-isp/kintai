@@ -1,22 +1,25 @@
 package domain;
 
+import domain.microForm.Date;
+import domain.microForm.Now;
+
 public class DateDomain {
 
-    private final String date;
-    private final String now;
+    private final Date date;
+    private final Now now;
 
-    public DateDomain(String date, String now) {
+    public DateDomain(Date date, Now now) {
 
         this.date = date;
         this.now = now;
     }
 
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public String getNow() {
+    public Now getNow() {
         return now;
     }
 }

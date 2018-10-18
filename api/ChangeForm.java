@@ -1,26 +1,38 @@
 package api;
 
-import domain.*;
+import domain.microForm.*;
+import domain.DateDomain;
+import domain.EndDomain;
+import domain.StartDomain;
 
 import java.time.LocalDateTime;
 
 public class ChangeForm {
 
     public StartDomain getStart(String start) {
-        return new StartDomain(getStartSt(start), getHour(start), getMinutes(start));
+        Start startSt = new Start(getStartSt(start));
+        StartH startH = new StartH(getHour(startSt.getStart()));
+        StartM startM = new StartM(getMinutes(startSt.getStart()));
+
+        return new StartDomain(startSt, startH, startM);
     }
 
     public EndDomain getEnd(String end) {
-        return new EndDomain(getEndSt(end), getHour(end), getMinutes(end));
+        End endSt = new End(getEndSt(end));
+        EndH endH = new EndH(getHour(endSt.getEnd()));
+        EndM endM = new EndM(getMinutes(endSt.getEnd()));
+
+        return new EndDomain(endSt, endH, endM);
     }
 
     public DateDomain getDate(String date) {
-        return new DateDomain(getDateSt(date), LocalDateTime.now().toString());
+        Date dateSt = new Date(getDateSt(date));
+        Now now = new Now(LocalDateTime.now().toString());
+
+        return new DateDomain(dateSt, now);
     }
 
-    private int getHour(String time) {
-        return Integer.valueOf(time.substring(0, 2));
-    }
+    private int getHour(String time) { return Integer.valueOf(time.substring(0, 2)); }
 
     private int getMinutes(String time) {
         return Integer.valueOf(time.substring(2, 4));
