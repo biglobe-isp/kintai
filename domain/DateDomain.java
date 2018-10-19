@@ -3,6 +3,9 @@ package domain;
 import domain.ValueForm.Date;
 import api.Now;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class DateDomain {
 
     private final Date date;
@@ -14,7 +17,6 @@ public class DateDomain {
         this.now = now;
     }
 
-
     public Date getDate() {
         return date;
     }
@@ -22,4 +24,5 @@ public class DateDomain {
     public Now getNow() {
         return now;
     }
+
 }
