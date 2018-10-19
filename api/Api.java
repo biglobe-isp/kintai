@@ -17,14 +17,14 @@ public class Api {
      * @param args
      */
     public static void main(String[] args) {
-        Service sv = new Service();
-
-        InputChecker inputChecker = new InputChecker();
 
         //コマンドライン引数が無しの場合、エラーを出力する。
+        InputChecker inputChecker = new InputChecker();
         inputChecker.checkNumEmpty(args.length);
 
-        //コマンドライン引数の値に応じて、勤怠の登録or表示を行う。
+        Service sv = new Service();
+
+        //ユーザの要求が「勤怠登録」の場合
         if(inputChecker.isInput(args)) {
 
             WorkDateVO workDateVO = new WorkDateVO(args[0]);
@@ -34,6 +34,7 @@ public class Api {
 
             sv.registryKintai(workDateVO, startTimeVO, endTimeVO, timeGetter, new Datasource());
 
+        //ユーザの要求が「労働時間出力」の場合
         } else if(inputChecker.isOutput(args)) {
 
             WorkYearMonthVO workYearMonthVO = new WorkYearMonthVO(args[0]);

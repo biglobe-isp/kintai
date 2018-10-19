@@ -33,12 +33,12 @@ public class Datasource implements DatasourceRepository {
             int endH = Integer.valueOf(endTimeVO.getEndTimeD().substring(5, 7));
             int endM = Integer.valueOf(endTimeVO.getEndTimeD().substring(7, 9));
 
-            WorkTimeCalculator workTimeCalculator = new WorkTimeCalculator();
             //総労働時間
+            WorkTimeCalculator workTimeCalculator = new WorkTimeCalculator();
             int dayWorkMinute = workTimeCalculator.calcDayWorkMinute(startH, startM, endH, endM);
 
-            OverWorkTimeCalculator overWorkTimeCalculator = new OverWorkTimeCalculator();
             //総残業時間
+            OverWorkTimeCalculator overWorkTimeCalculator = new OverWorkTimeCalculator();
             int dayOverWorkMinute = overWorkTimeCalculator.calcDayOverWorkMinute(dayWorkMinute);
 
             //現在時刻
@@ -70,10 +70,10 @@ public class Datasource implements DatasourceRepository {
                 Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
                 Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
 
-                //配列columns
+                //▼配列columnsの各要素の内容
                 // 0:日付（YYYYMMDD）
-                // 1:開始時刻（HHMM）
-                // 2:終了時刻（HHMM）
+                // 1:出勤時間（HHMM）
+                // 2:退勤時間（HHMM）
                 // 3:労働時間（M）
                 // 4:残業時間（M）
                 while (line != null) {

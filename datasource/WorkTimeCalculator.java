@@ -36,13 +36,4 @@ public class WorkTimeCalculator {
         return dayWorkMinute;
 
     }
-
-
-
-
-
-
-
-
-
 }

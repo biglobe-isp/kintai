@@ -26,7 +26,7 @@ public class InputChecker {
     }
 
     /**
-     * ユーザの要求が勤怠登録であるかを判定するメソッド。
+     * ユーザの要求が「勤怠登録」であるかを判定するメソッド。
      * @param args コマンドライン引数の個数
      * @return
      *          true 勤怠登録である
@@ -34,6 +34,7 @@ public class InputChecker {
      */
     public boolean isInput(String[] args) {
 
+        //ユーザの要求が「労働時間表示」の可能性がある場合
         if (args.length == 1) {
             return false;
         }
@@ -44,8 +45,9 @@ public class InputChecker {
         boolean result = false;
 
         if (args[0].startsWith("-date:") &&
-                args[1].startsWith("-start:") &&
-                args[2].startsWith("-end:")) {
+            args[1].startsWith("-start:") &&
+            args[2].startsWith("-end:")) {
+
             result = true;
 
         } else {
@@ -55,7 +57,7 @@ public class InputChecker {
     }
 
     /**
-     * ユーザの要求が労働時間出力であるかを判定するメソッド。
+     * ユーザの要求が「労働時間出力」であるかを判定するメソッド。
      * @param args コマンドライン引数の個数
      * @return
      *          true 労働時間出力である
@@ -73,5 +75,4 @@ public class InputChecker {
         }
         return result;
     }
-
 }
