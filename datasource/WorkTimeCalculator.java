@@ -1,5 +1,8 @@
 package datasource;
 
+/**
+ * 労働時間を計算するクラス。
+ */
 public class WorkTimeCalculator {
 
     public int calcDayWorkMinute(int startHour, int startMinute, int endHour, int endMinute){

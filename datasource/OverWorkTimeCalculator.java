@@ -1,5 +1,8 @@
 package datasource;
 
+/**
+ * 残業時間を計算するクラス。
+ */
 public class OverWorkTimeCalculator {
 
     public int calcDayOverWorkMinute(int dayWorkMinute){

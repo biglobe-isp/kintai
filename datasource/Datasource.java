@@ -1,9 +1,7 @@
 package datasource;
 
 import api.TimeGetter;
-import domain.DatasourceRepository;
-import domain.DateVO;
-import domain.TimeVO;
+import domain.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,24 +11,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Datasource層のメインの処理を担うクラス。
+ */
 public class Datasource implements DatasourceRepository {
 
-    public void writeData (DateVO dateVO, TimeVO timeVO, TimeGetter timeGetter) {
+    public void writeData (WorkDateVO workDateVO, StartTimeVO startTimeVO, EndTimeVO endTimeVO, TimeGetter timeGetter) {
         try {
 
             //日付
-            String date = dateVO.getDate();
+            String date = workDateVO.getWorkDate().substring(6, 14);
 
             //出勤時刻
-            String startD = timeVO.getStartD();
+            String startD = startTimeVO.getStartTimeD().substring(7, 11);
 
             //退勤時刻
-            String endD = timeVO.getEndD();
+            String endD = endTimeVO.getEndTimeD().substring(5, 9);
 
-            int startH = Integer.valueOf(timeVO.getStartD().substring(0, 2));
-            int startM = Integer.valueOf(timeVO.getStartD().substring(2, 4));
-            int endH = Integer.valueOf(timeVO.getEndD().substring(0, 2));
-            int endM = Integer.valueOf(timeVO.getEndD().substring(2, 4));
+            int startH = Integer.valueOf(startTimeVO.getStartTimeD().substring(7, 9));
+            int startM = Integer.valueOf(startTimeVO.getStartTimeD().substring(9, 11));
+            int endH = Integer.valueOf(endTimeVO.getEndTimeD().substring(5, 7));
+            int endM = Integer.valueOf(endTimeVO.getEndTimeD().substring(7, 9));
 
             WorkTimeCalculator workTimeCalculator = new WorkTimeCalculator();
             //総労働時間
@@ -52,12 +53,12 @@ public class Datasource implements DatasourceRepository {
         }
     }
 
-    public void readData(DateVO dateVO) {
+    public void readData(WorkYearMonthVO workYearMonthVO) {
 
         try {
 
             //労働時間を取得したい年月
-            String yearMonth = dateVO.getDate();
+            String yearMonth = workYearMonthVO.getWorkYearMonth().substring(6, 12);
 
             File file = new File("data.csv");
             try (
