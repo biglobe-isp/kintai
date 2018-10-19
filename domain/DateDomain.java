@@ -1,7 +1,7 @@
 package domain;
 
-import domain.microForm.Date;
-import domain.microForm.Now;
+import domain.ValueForm.Date;
+import domain.ValueForm.Now;
 
 public class DateDomain {
 

@@ -1,4 +1,4 @@
-package domain.microForm;
+package domain.ValueForm;
 
 public class Now {
 
@@ -9,7 +9,7 @@ public class Now {
         this.now = now;
     }
 
-    public String getNow() {
+    public String getNowVal() {
         return now;
     }
 }

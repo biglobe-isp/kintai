@@ -1,4 +1,4 @@
-package domain.microForm;
+package domain.ValueForm;
 
 
 public class End {
@@ -10,7 +10,7 @@ public class End {
         this.end = end;
     }
     
-    public String  getEnd() {
+    public String getEndVal() {
         return end;
     }
 }

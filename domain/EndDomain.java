@@ -1,9 +1,9 @@
 package domain;
 
 
-import domain.microForm.End;
-import domain.microForm.EndH;
-import domain.microForm.EndM;
+import domain.ValueForm.End;
+import domain.ValueForm.EndH;
+import domain.ValueForm.EndM;
 
 public class EndDomain {
 
@@ -30,6 +30,6 @@ public class EndDomain {
         return endM;
     }
 
-    public int getEndTotalM() { return endH.getEndH() * 60 + endM.getEndM(); }
+    public int getEndTotalM() { return endH.getEndHVal() * 60 + endM.getEndMVal(); }
 
 }

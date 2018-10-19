@@ -1,9 +1,9 @@
 package domain;
 
 
-import domain.microForm.Start;
-import domain.microForm.StartH;
-import domain.microForm.StartM;
+import domain.ValueForm.Start;
+import domain.ValueForm.StartH;
+import domain.ValueForm.StartM;
 
 public class StartDomain {
 
@@ -30,6 +30,6 @@ public class StartDomain {
         return startM;
     }
 
-    public int getStartTotalM() { return startH.getStartH() * 60 + startM.getStartM(); }
+    public int getStartTotalM() { return startH.getStartHVal() * 60 + startM.getStartMVal(); }
 
 }

@@ -1,6 +1,7 @@
 package datasource;
 
 import domain.*;
+import domain.ValueForm.WorkMAndOverM;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,17 +14,17 @@ import java.util.Set;
 public class FileOutDatasource implements FileOutInterface {
 
     @Override
-    public void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd) {
+    public void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMAndOverM wd) {
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    dd.getDate().getDate(),
-                    sd.getStart().getStart(),
-                    ed.getEnd().getEnd(),
-                    wd.getWorkMinutes(),
-                    wd.getOverWorkMinutes(),
-                    dd.getNow().getNow()));
+                    dd.getDate().getDateVal(),
+                    sd.getStart().getStartVal(),
+                    ed.getEnd().getEndVal(),
+                    wd.getWorkMinutesVal(),
+                    wd.getOverWorkMinutesVal(),
+                    dd.getNow().getNowVal()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,7 +46,7 @@ public class FileOutDatasource implements FileOutInterface {
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(dd.getDate().getDate())) {
+                if (!columns[0].startsWith(dd.getDate().getDateVal())) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));

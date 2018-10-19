@@ -1,4 +1,4 @@
-package domain.microForm;
+package domain.ValueForm;
 
 public class Date {
 
@@ -10,7 +10,7 @@ public class Date {
     }
 
 
-    public String getDate() {
+    public String getDateVal() {
         return date;
     }
 }
