@@ -6,7 +6,7 @@ public class WorkMinutesDomain {
     private final int overWorkMinutes;
     private int tmpWorkMinutes;
 
-    public WorkMinutesDomain(StartDomain sd, EndDomain ed, Boolean isAfter) {
+    public WorkMinutesDomain(StartDomain sd, EndDomain ed, DateDomain date) {
 
         this.tmpWorkMinutes = ed.getEndTotalMVal() - sd.getStartTotalMVal();
 
@@ -15,7 +15,7 @@ public class WorkMinutesDomain {
         } else if (ed.getEndH().getEndHVal() >= 13) {
             this.tmpWorkMinutes -= 60;
         }
-        if (isAfter) {
+        if (date.getDate().isAfter()) {
             if (ed.getEndH().getEndHVal() == 15) {
                 this.tmpWorkMinutes -= ed.getEndM().getEndMVal();
             } else if (ed.getEndH().getEndHVal() >= 16) {

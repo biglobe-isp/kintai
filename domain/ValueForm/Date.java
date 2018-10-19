@@ -14,7 +14,10 @@ public class Date {
         this.date = date;
         this.year = Integer.parseInt(date.substring(0, 4));
         this.month = Integer.parseInt(date.substring(4, 6));
-        this.dayOfMonth = Integer.parseInt(date.substring(6));
+
+        if (date.length() > 6) {
+            this.dayOfMonth = Integer.parseInt(date.substring(6));
+        }
 
     }
 

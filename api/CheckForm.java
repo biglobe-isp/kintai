@@ -24,7 +24,7 @@ public class CheckForm {
             this.date = changeForm.getDate(form[1]);
             this.start = changeForm.getStart(form[2]);
             this.end = changeForm.getEnd(form[3]);
-            this.work = new WorkMinutesDomain(start, end, date.getDate().isAfter());
+            this.work = new WorkMinutesDomain(start, end, date);
 
 
         } else if ("total".equals(form[0])) {
