@@ -1,12 +1,14 @@
-package domain.ValueForm;
+package api;
+
+import java.time.LocalDateTime;
 
 public class Now {
 
     private final String now;
 
-    public Now(String now) {
+    public Now() {
 
-        this.now = now;
+        this.now = LocalDateTime.now().toString();
     }
 
     public String getNowVal() {

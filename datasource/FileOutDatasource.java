@@ -1,7 +1,7 @@
 package datasource;
 
 import domain.*;
-import domain.ValueForm.WorkMAndOverM;
+import domain.WorkMinutesDomain;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.Set;
 public class FileOutDatasource implements FileOutInterface {
 
     @Override
-    public void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMAndOverM wd) {
+    public void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd) {
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {

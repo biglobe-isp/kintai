@@ -1,18 +1,14 @@
-package domain.ValueForm;
+package domain;
 
-
-import domain.EndDomain;
-import domain.StartDomain;
-
-public class WorkMAndOverM {
+public class WorkMinutesDomain {
 
     private final int workMinutes;
     private final int overWorkMinutes;
     private int tmpWorkMinutes;
 
-    public WorkMAndOverM(StartDomain sd, EndDomain ed) {
+    public WorkMinutesDomain(StartDomain sd, EndDomain ed) {
 
-        this.tmpWorkMinutes = ed.getEndTotalM() - sd.getStartTotalM();
+        this.tmpWorkMinutes = ed.getEndTotalMVal() - sd.getStartTotalMVal();
         if (ed.getEndH().getEndHVal() == 12) {
             this.tmpWorkMinutes -= ed.getEndM().getEndMVal();
         } else if (ed.getEndH().getEndHVal() >= 13) {

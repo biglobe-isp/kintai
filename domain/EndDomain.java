@@ -30,6 +30,6 @@ public class EndDomain {
         return endM;
     }
 
-    public int getEndTotalM() { return endH.getEndHVal() * 60 + endM.getEndMVal(); }
+    public int getEndTotalMVal() { return endH.getEndHVal() * 60 + endM.getEndMVal(); }
 
 }

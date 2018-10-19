@@ -30,6 +30,6 @@ public class StartDomain {
         return startM;
     }
 
-    public int getStartTotalM() { return startH.getStartHVal() * 60 + startM.getStartMVal(); }
+    public int getStartTotalMVal() { return startH.getStartHVal() * 60 + startM.getStartMVal(); }
 
 }

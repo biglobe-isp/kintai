@@ -1,7 +1,7 @@
 package domain;
 
 import domain.ValueForm.Date;
-import domain.ValueForm.Now;
+import api.Now;
 
 public class DateDomain {
 

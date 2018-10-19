@@ -1,10 +1,8 @@
 package domain;
 
-import domain.ValueForm.WorkMAndOverM;
-
 public interface FileOutInterface {
 
-    void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMAndOverM wd);
+    void kintaiOutPut(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd);
 
     void totalOutPut(DateDomain dd);
 

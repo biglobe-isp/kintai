@@ -1,12 +1,10 @@
 package domain;
 
 
-import domain.ValueForm.WorkMAndOverM;
-
 public class CalculateDomain {
 
 
-    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMAndOverM wd, FileOutInterface fileOutDatasource) {
+    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd, FileOutInterface fileOutDatasource) {
 
 
         fileOutDatasource.kintaiOutPut(dd, sd, ed, wd);

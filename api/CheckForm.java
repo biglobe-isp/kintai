@@ -1,7 +1,7 @@
 package api;
 
 import domain.*;
-import domain.ValueForm.WorkMAndOverM;
+import domain.WorkMinutesDomain;
 
 public class CheckForm {
 
@@ -9,7 +9,7 @@ public class CheckForm {
     private StartDomain start;
     private EndDomain end;
     private DateDomain date;
-    private WorkMAndOverM work;
+    private WorkMinutesDomain work;
 
     public CheckForm(String[] form) {
 
@@ -24,7 +24,7 @@ public class CheckForm {
             this.date = changeForm.getDate(form[1]);
             this.start = changeForm.getStart(form[2]);
             this.end = changeForm.getEnd(form[3]);
-            this.work = new WorkMAndOverM(start, end);
+            this.work = new WorkMinutesDomain(start, end);
 
 
         } else if ("total".equals(form[0])) {
@@ -57,7 +57,7 @@ public class CheckForm {
         return date;
     }
 
-    public WorkMAndOverM getWork() {
+    public WorkMinutesDomain getWork() {
         return work;
     }
 }

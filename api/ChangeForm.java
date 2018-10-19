@@ -5,8 +5,6 @@ import domain.DateDomain;
 import domain.EndDomain;
 import domain.StartDomain;
 
-import java.time.LocalDateTime;
-
 public class ChangeForm {
 
     public StartDomain getStart(String start) {
@@ -27,7 +25,7 @@ public class ChangeForm {
 
     public DateDomain getDate(String date) {
         Date dateSt = new Date(getDateSt(date));
-        Now now = new Now(LocalDateTime.now().toString());
+        Now now = new Now();
 
         return new DateDomain(dateSt, now);
     }

@@ -1,7 +1,7 @@
 package service;
 
 import domain.*;
-import domain.ValueForm.WorkMAndOverM;
+import domain.WorkMinutesDomain;
 
 
 public class DatetimeService {
@@ -9,7 +9,7 @@ public class DatetimeService {
 
     CalculateDomain calculateDomain = new CalculateDomain();
 
-    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMAndOverM wd, FileOutInterface fo) {
+    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd, FileOutInterface fo) {
 
         calculateDomain.input(dd, sd, ed, wd, fo);
 
