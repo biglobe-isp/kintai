@@ -2,12 +2,12 @@ package domain;
 
 public class Domain {
 
-    public void inputData(DateVO dateVO, StartTimeVO startVO, EndTimeVO endVO, WorkTimeVO workVO, IRepository iRepo) { //TODO  Service層を使わないようにする
-        iRepo.writeData(dateVO, startVO, endVO, workVO);
+    public void input(DateVO date, StartVO start, EndVO end, CalcWorkTimeVO workTime, INowRepository iNowRepo, IRepository iRepo) {
+        iRepo.writeData(date, start, end, workTime, iNowRepo);
     }
 
 
-    public void outputData(IRepository iRepo) {
+    public void total(IRepository iRepo) {
         iRepo.readData();
 
 //        File file = new File("data.csv");

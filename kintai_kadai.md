@@ -43,7 +43,7 @@ java Main total
 
 ### 仕様変更 入力方法変更
 ```
-java Main -date:20170101 -start:0900 -end:1800
+java Main -value:20170101 -start:0900 -end:1800
 ```
 
 ### インフラ変更 外部のCSV管理ライブラリを使う

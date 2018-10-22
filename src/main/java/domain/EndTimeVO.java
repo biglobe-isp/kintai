@@ -1,34 +1,30 @@
 package domain;
 
 public class EndTimeVO {
-    private final String end;
-    private final int endHour;
-    private final int endMinute;
+    private final EndVO end;
+    private final EndHourVO endHour;
+    private final EndMinutesVO endMinutes;
 
-    public EndTimeVO(String end) {
+    public EndTimeVO(EndVO end, EndHourVO endHour, EndMinutesVO endMinutes) {
         this.end = end;
-        this.endHour = Integer.valueOf(end.substring(0, 2));
-        this.endMinute = Integer.valueOf(end.substring(2, 4));
+        this.endHour = endHour;
+        this.endMinutes = endMinutes;
     }
 
-    public String getEnd() {
-        return end;
+    public String getValue() {
+        return end.getValue();
     }
 
-    public int getEndHour() {
-        return endHour;
+    public int getHour() {
+        return endHour.getValue();
     }
 
-    public int getEndMinute() {
-        return endMinute;
+    public int getMinutes() {
+        return endMinutes.getValue();
     }
 
-    public int getEndTotalMinute() {
-        return endHour * 60 + endMinute;
+    public int getTotalMinutes() {
+        return endHour.getValue() * 60 + endMinutes.getValue();
     }
 
-    //    public int getBreakTime() {
-//        int breakTime;
-//        return 0;
-//    }
 }

@@ -3,19 +3,19 @@
 
 class Api {
   main()
-  inputApi()
-  totalApi()
+  inputController()
+  totalController()
 }
 
 
 class  Service {
-  inputService()
-  totalService()
+  input()
+  total()
 }
 
 class Domain {
-  inputData()
-  outputData()
+  input()
+  total()
 }
 
 interface IRepository {
@@ -29,14 +29,17 @@ class RepositoryDb implements IRepository {
   readData()
 } 
 
-class ArgsAndCheckVO {
+class NowRepository implements INowRepository {
+  getCurrentTime()
+}
+
+
+class ArgsCheckVO {
   checkArgsLength()
   getMethodtype()
   inputCheckArgsLength()
   totalCheckArgsLength()
-  getDate()
-  getStart()
-  getEnd()
+  getArgs()
 }
 
 enum MethodType {
@@ -45,30 +48,30 @@ enum MethodType {
 }
 
 class DateVO {
-  date
-  getDate()
+  value
+  getValue()
 }
 
+
 class StartTimeVO {
-  start
-  startHour
-  startMinute
-  getStart()
-  getStartTotalMinute()
+  StartVO start
+  StartHourVO startHour
+  StartMinutesVO startMinutes
+  getValue()
+  getTotalMinutes()
 }
 
 
 class EndTimeVO {
-  end
-  endHour
-  endMinute
-  getEnd()
-  getEndHour()
-  getEndMinute()
-  getEndTotalMinute()
+  EndVO end
+  EndHourVO endHour
+  EndMinutes endMinutes
+  getHour()
+  getMinutes()
+  getTotalMinutes()
 }
 
-class WorkTimeVO {
+class CalcWorkTimeVO {
   workTime
   overWorkTime
   tmpBreakTime
@@ -76,25 +79,29 @@ class WorkTimeVO {
   getOverWorTime()
 }
 
-class NowVO {
-  now
-  getNow()
+class ValueAdjustVO {
+  getIntStartH()
+  getIntStartM()
+  getIntEndH()
+  getIntEndM()
 }
 
 
 Api .down.> Service
 Service .down.> Domain
 Domain .down.> IRepository
+Domain .down.> INowRepository
 
-Api .right.> ArgsAndCheckVO
-ArgsAndCheckVO .right.> MethodType
+Api .right.> ArgsCheckVO
+ArgsCheckVO .right.> MethodType
+Api .right.> ValueAdjustVO
 
-Domain .right.> WorkTimeVO
+
+Domain .right.> CalcWorkTimeVO
 Domain .right.> DateVO
 Domain .right.> StartTimeVO
 Domain .right.> EndTimeVO
 
-RepositoryDb .right.> NowVO
 
 
 @enduml

@@ -1,9 +1,9 @@
 package api;
 
-public class ArgsAndCheckVO {
+public class ArgsCheckVO {
     private final String[] args;
 
-    public ArgsAndCheckVO(String[] args) {
+    public ArgsCheckVO(String[] args) {
         this.args = args;
     }
 
@@ -25,6 +25,21 @@ public class ArgsAndCheckVO {
         }
     }
 
+    /*
+     * 引数が前方一致
+     *
+     */
+//    public boolean getArgsStartWith() {
+//        if ("-date".startsWith())
+//
+//    }
+
+
+
+    public String[] getValue() {
+        return args;
+    }
+
     public void inputCheckArgsLength() {
         if (args.length < 4) {
             throw new RuntimeException("引数が足りません");
@@ -35,21 +50,5 @@ public class ArgsAndCheckVO {
         if (args.length < 2) {
             throw new RuntimeException("引数が足りません");
         }
-    }
-
-//    public String[] getArgs() {
-//        return args;
-//    }
-
-    public String getDate() {
-        return args[1];
-    }
-
-    public String getStart() {
-        return args[2];
-    }
-
-    public String getEnd() {
-        return args[3];
     }
 }

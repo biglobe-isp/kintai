@@ -2,23 +2,19 @@ package datasource;
 
 import domain.*;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class RepositoryDb implements IRepository {
 
     @Override
-    public void writeData(DateVO dateVO, StartTimeVO startVO, EndTimeVO endVO, WorkTimeVO workVO) {
-//        String date = args[1];
-//        String start = args[2];
-//        String end = args[3];
-//        String now = LocalDateTime.now().toString();
+    public void writeData(DateVO date, StartVO start, EndVO end, CalcWorkTimeVO workTime, INowRepository iNowRepo) {
 
+        //DateVO date, StartVO start, EndVO end, CalcWorkTimeVO workTime, IRepository iRepo
         File file = new File("data.csv");
-        try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", dateVO.getDate(), startVO.getStart(), endVO.getEnd(), workVO.getWorkTime(), workVO.getOverWorTime(), dateVO.getNow()));
+        try (FileWriter filewriter = new FileWriter(file, true)) { //TODO 引数問題
+            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date.getValue(), start.getValue(), end.getValue(), workTime.getWorkTime(), workTime.getOverWorTime(), iNowRepo.getCurrentTime()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,7 +27,7 @@ public class RepositoryDb implements IRepository {
 //        int totalWorkMinutes = 0;
 //        int totalOverWorkMinutes = 0;
 
-//        String yearMonth = args[1]; //TODO args[1]をどうするか
+//      String yearMonth = args[1]; //TODO args[1]をどうするか
         File file = new File("data.csv");
 
 //        try (

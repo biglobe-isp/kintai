@@ -1,11 +1,10 @@
 package domain;
 
-//import api.ArgsAndCheckVO; //
-//import api.ArgsAndCheckVO;
+//import api.ArgsCheckVO; //
 
 public interface IRepository {
 
-    public void writeData(DateVO dateVO, StartTimeVO startVO, EndTimeVO endVO, WorkTimeVO workVO);
+    public void writeData(DateVO date, StartVO start, EndVO end, CalcWorkTimeVO workTime, INowRepository iNowRepo);
 
     public void readData();
 }

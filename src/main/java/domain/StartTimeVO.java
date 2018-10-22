@@ -1,30 +1,31 @@
 package domain;
 
+//import api.ValueAdjustVO;
+
 public class StartTimeVO {
-    private final String start;
-    private final int startHour;
-    private final int startMinute;
+    private final StartVO start;
+    private final StartHourVO startHour;
+    private final StartMinutesVO startMinutes;
 
-    public StartTimeVO(String start) { //TimeVOがHourとMinuteを持つようにした方が構造的。
-        //this.start = start.substring(7);
+    public StartTimeVO(StartVO start, StartHourVO startHour, StartMinutesVO startMinutes) {
         this.start = start;
-        this.startHour = Integer.valueOf(start.substring(0, 2)); //TODO Domain層にこれは違う。Datasource層が正しい。
-        this.startMinute = Integer.valueOf(start.substring(2, 4));
+        this.startHour = startHour;
+        this.startMinutes = startMinutes;
     }
 
-    public String getStart() {
-        return start;
+    public String getValue() {
+        return start.getValue();
     }
 
-    public int getStartTotalMinute() {
-        return startHour * 60 + startMinute;
+    public int getHour() {
+        return startHour.getValue();
     }
 
-//    public int getStartHour() {
-//        return startHour;
-//    }
-//
-//    public int getStartMinute() {
-//        return startMinute;
-//    }
+    public int getMinutes() {
+        return startMinutes.getValue();
+    }
+
+    public int getTotalMinutes() {
+        return startHour.getValue() * 60 + startMinutes.getValue();
+    }
 }
