@@ -3,15 +3,15 @@ package domain.ValueForm;
 
 public class EndM {
 
-    private final int endM;
+    private final int value;
 
-    public EndM(int endM) {
+    public EndM(int value) {
 
-        this.endM = endM;
+        this.value = value;
     }
 
-    public int getEndMVal() {
-        return endM;
+    public int getValue() {
+        return value;
     }
 
 }

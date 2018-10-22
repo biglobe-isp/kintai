@@ -3,14 +3,15 @@ package domain.ValueForm;
 
 public class End {
 
-    private final String  end;
+    private final String value;
 
-    public End(String end) {
+    public End(String value) {
 
-        this.end = end;
+        this.value = value;
     }
     
-    public String getEndVal() {
-        return end;
+    public String getValue() {
+        return value;
     }
+
 }

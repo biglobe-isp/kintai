@@ -3,15 +3,15 @@ package domain.ValueForm;
 
 public class StartH {
 
-    private final int startH;
+    private final int value;
 
-    public StartH(int startH) {
+    public StartH(int value) {
 
-        this.startH = startH;
+        this.value = value;
     }
 
-    public int getStartHVal() {
-        return startH;
+    public int getValue() {
+        return value;
     }
 
 }

@@ -1,17 +1,16 @@
 package domain.ValueForm;
 
-
 public class Start {
 
-    private final String  start;
+    private final String value;
 
-    public Start(String start) {
+    public Start(String value) {
 
-        this.start = start;
+        this.value = value;
     }
 
-    public String getStartVal() {
-        return start;
+    public String getValue() {
+        return value;
     }
 
 }

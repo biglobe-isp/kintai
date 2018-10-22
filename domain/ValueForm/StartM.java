@@ -3,15 +3,15 @@ package domain.ValueForm;
 
 public class StartM {
 
-    private final int startM;
+    private final int value;
 
-    public StartM(int startM) {
+    public StartM(int value) {
 
-        this.startM = startM;
+        this.value = value;
     }
 
-    public int getStartMVal() {
-        return startM;
+    public int getValue() {
+        return value;
     }
 
 }

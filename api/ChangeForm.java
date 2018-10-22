@@ -1,5 +1,6 @@
 package api;
 
+import datasource.Now;
 import domain.ValueForm.*;
 import domain.DateDomain;
 import domain.EndDomain;
@@ -9,16 +10,16 @@ public class ChangeForm {
 
     public StartDomain getStart(String start) {
         Start startSt = new Start(getStartSt(start));
-        StartH startH = new StartH(getHour(startSt.getStartVal()));
-        StartM startM = new StartM(getMinutes(startSt.getStartVal()));
+        StartH startH = new StartH(getHour(startSt.getValue()));
+        StartM startM = new StartM(getMinutes(startSt.getValue()));
 
         return new StartDomain(startSt, startH, startM);
     }
 
     public EndDomain getEnd(String end) {
         End endSt = new End(getEndSt(end));
-        EndH endH = new EndH(getHour(endSt.getEndVal()));
-        EndM endM = new EndM(getMinutes(endSt.getEndVal()));
+        EndH endH = new EndH(getHour(endSt.getValue()));
+        EndM endM = new EndM(getMinutes(endSt.getValue()));
 
         return new EndDomain(endSt, endH, endM);
     }

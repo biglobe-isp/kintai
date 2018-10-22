@@ -19,9 +19,9 @@ public class FileOutDatasource implements FileOutInterface {
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    dd.getDate().getDateVal(),
-                    sd.getStart().getStartVal(),
-                    ed.getEnd().getEndVal(),
+                    dd.getDate().getValue(),
+                    sd.getStart().getValue(),
+                    ed.getEnd().getValue(),
                     wd.getWorkMinutesVal(),
                     wd.getOverWorkMinutesVal(),
                     dd.getNow().getNowVal()));
@@ -46,7 +46,7 @@ public class FileOutDatasource implements FileOutInterface {
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(dd.getDate().getDateVal())) {
+                if (!columns[0].startsWith(dd.getDate().getValue())) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
