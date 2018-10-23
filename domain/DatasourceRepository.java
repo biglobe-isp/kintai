@@ -1,7 +1,6 @@
 package domain;
 
-import japan.EndTime;
-import japan.StartTime;
+import domain.japan.*;
 
 public interface DatasourceRepository {
     void writeKintai (WorkDateVO workDateVO, StartTime startTime, EndTime endTime, WorkTimeMinuteVO workTimeMinuteVO,

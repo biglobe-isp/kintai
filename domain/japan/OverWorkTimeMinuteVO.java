@@ -1,4 +1,4 @@
-package domain;
+package domain.japan;
 
 /**
  * 残業時間（分）のValueObjectクラス。

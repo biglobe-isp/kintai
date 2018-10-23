@@ -1,8 +1,9 @@
 package domain;
 
-import japan.EndTime;
+import domain.japan.EndTime;
+import domain.japan.RestTimeCaluculatorRepository;
 
-public class RestTimeCalculator {
+public class RestTimeCalculator implements RestTimeCaluculatorRepository {
 
     public int calcTotalRestTime(EndTime endTime) {
 

@@ -1,7 +1,6 @@
 package domain;
 
-import japan.EndTime;
-import japan.StartTime;
+import domain.japan.*;
 
 /**
  * Domain層のメインの処理を担うクラス。

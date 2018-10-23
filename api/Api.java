@@ -1,9 +1,7 @@
 package api;
 
 import datasource.Datasource;
-import domain.*;
-import japan.EndTime;
-import japan.StartTime;
+import domain.japan.*;
 import service.Service;
 
 /**

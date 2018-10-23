@@ -1,4 +1,4 @@
-package domain;
+package domain.japan;
 
 /**
  * 出勤時間（HH）のValueObjectクラス。

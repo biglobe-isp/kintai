@@ -1,7 +1,6 @@
 package datasource;
 import domain.*;
-import japan.EndTime;
-import japan.StartTime;
+import domain.japan.*;
 
 import java.io.BufferedReader;
 import java.io.File;

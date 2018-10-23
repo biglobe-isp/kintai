@@ -1,4 +1,4 @@
-package domain;
+package domain.japan;
 
 /**
  * 勤務年月（YYYYMM）のValueObjectクラス。

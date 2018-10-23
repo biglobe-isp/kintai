@@ -1,7 +1,4 @@
-package japan;
-
-import domain.EndTimeHourVO;
-import domain.EndTimeMinuteVO;
+package domain.japan;
 
 /**
  * 退勤時間（HHMM）のValueObjectクラス。
