@@ -1,7 +1,6 @@
 package service;
 
-import domain.*;
-import domain.WorkMinutesDomain;
+import domain.japan.*;
 
 
 public class DatetimeService {
@@ -9,7 +8,7 @@ public class DatetimeService {
 
     CalculateDomain calculateDomain = new CalculateDomain();
 
-    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesDomain wd, FileOutInterface fo) {
+    public void input(DateDomain dd, StartDomain sd, EndDomain ed, WorkMinutesInterface wd, FileOutInterface fo) {
 
         calculateDomain.input(dd, sd, ed, wd, fo);
 

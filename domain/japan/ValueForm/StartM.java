@@ -1,11 +1,11 @@
-package domain.ValueForm;
+package domain.japan.ValueForm;
 
 
-public class StartH {
+public class StartM {
 
     private final int value;
 
-    public StartH(int value) {
+    public StartM(int value) {
 
         this.value = value;
     }

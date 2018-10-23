@@ -1,4 +1,4 @@
-package datasource;
+package domain.japan;
 
 import java.time.LocalDateTime;
 
@@ -6,9 +6,9 @@ public class Now {
 
     private final String now;
 
-    public Now() {
+    public Now(LocalDateTime now) {
 
-        this.now = LocalDateTime.now().toString();
+        this.now = now.toString();
     }
 
     public String getNowVal() {

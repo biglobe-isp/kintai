@@ -1,7 +1,10 @@
 package api;
 
-import domain.*;
-import domain.WorkMinutesDomain;
+import domain.WorkMinutesBiglobeDomain;
+import domain.japan.DateDomain;
+import domain.japan.EndDomain;
+import domain.japan.StartDomain;
+import domain.japan.WorkMinutesInterface;
 
 public class CheckForm {
 
@@ -9,7 +12,7 @@ public class CheckForm {
     private StartDomain start;
     private EndDomain end;
     private DateDomain date;
-    private WorkMinutesDomain work;
+    private WorkMinutesInterface work;
 
     public CheckForm(String[] form) {
 
@@ -22,8 +25,8 @@ public class CheckForm {
                 throw new RuntimeException("引数が足りません");
             }
 
-            CheckInput(form, changeForm);
-            this.work = new WorkMinutesDomain(start, end, date);
+            checkInput(form, changeForm);
+            this.work = new WorkMinutesBiglobeDomain(start, end, date);
         } else if ("total".equals(form[0])) {
             if (form.length < 2) {
                 throw new RuntimeException("引数が足りません");
@@ -54,11 +57,11 @@ public class CheckForm {
         return date;
     }
 
-    public WorkMinutesDomain getWork() {
+    public WorkMinutesInterface getWork() {
         return work;
     }
 
-    private void CheckInput(String[] form, ChangeForm changeForm) {
+    private void checkInput(String[] form, ChangeForm changeForm) {
 
         for (String fo : form) {
 

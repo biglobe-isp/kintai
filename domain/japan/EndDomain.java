@@ -1,9 +1,9 @@
-package domain;
+package domain.japan;
 
 
-import domain.ValueForm.End;
-import domain.ValueForm.EndH;
-import domain.ValueForm.EndM;
+import domain.japan.ValueForm.End;
+import domain.japan.ValueForm.EndH;
+import domain.japan.ValueForm.EndM;
 
 public class EndDomain {
 
@@ -30,6 +30,6 @@ public class EndDomain {
         return endM;
     }
 
-    public int getEndTotalMVal() { return endH.getValue() * 60 + endM.getValue(); }
+    public int getEndTotalMinutes() { return endH.getValue() * 60 + endM.getValue(); }
 
 }

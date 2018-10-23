@@ -1,14 +1,19 @@
 package domain;
 
-public class WorkMinutesDomain {
+import domain.japan.DateDomain;
+import domain.japan.EndDomain;
+import domain.japan.StartDomain;
+import domain.japan.WorkMinutesInterface;
+
+public class WorkMinutesBiglobeDomain implements WorkMinutesInterface {
 
     private final int workMinutes;
     private final int overWorkMinutes;
 
-    public WorkMinutesDomain(StartDomain sd, EndDomain ed, DateDomain date) {
+    public WorkMinutesBiglobeDomain(StartDomain sd, EndDomain ed, DateDomain date) {
 
 
-        int tmpWorkMinutes = ed.getEndTotalMVal() - sd.getStartTotalMVal();
+        int tmpWorkMinutes = ed.getEndTotalMinutes() - sd.getStartTotalMinutes();
 
         if (ed.getEndH().getValue() == 12) {
             tmpWorkMinutes -= ed.getEndM().getValue();

@@ -1,15 +1,14 @@
-package domain.ValueForm;
+package domain.japan.ValueForm;
 
-
-public class End {
+public class Start {
 
     private final String value;
 
-    public End(String value) {
+    public Start(String value) {
 
         this.value = value;
     }
-    
+
     public String getValue() {
         return value;
     }

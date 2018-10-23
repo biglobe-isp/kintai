@@ -1,9 +1,9 @@
-package domain;
+package domain.japan;
 
 
-import domain.ValueForm.Start;
-import domain.ValueForm.StartH;
-import domain.ValueForm.StartM;
+import domain.japan.ValueForm.Start;
+import domain.japan.ValueForm.StartH;
+import domain.japan.ValueForm.StartM;
 
 public class StartDomain {
 
@@ -30,6 +30,6 @@ public class StartDomain {
         return startM;
     }
 
-    public int getStartTotalMVal() { return startH.getValue() * 60 + startM.getValue(); }
+    public int getStartTotalMinutes() { return startH.getValue() * 60 + startM.getValue(); }
 
 }

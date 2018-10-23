@@ -1,4 +1,4 @@
-package domain.ValueForm;
+package domain.japan.ValueForm;
 
 
 public class EndM {

@@ -1,10 +1,12 @@
 package api;
 
-import datasource.Now;
-import domain.ValueForm.*;
-import domain.DateDomain;
-import domain.EndDomain;
-import domain.StartDomain;
+import domain.japan.Now;
+import domain.japan.ValueForm.*;
+import domain.japan.DateDomain;
+import domain.japan.EndDomain;
+import domain.japan.StartDomain;
+
+import java.time.LocalDateTime;
 
 public class ChangeForm {
 
@@ -26,7 +28,7 @@ public class ChangeForm {
 
     public DateDomain getDate(String date) {
         Date dateSt = new Date(getDateSt(date));
-        Now now = new Now();
+        Now now = new Now(LocalDateTime.now());
 
         return new DateDomain(dateSt, now);
     }

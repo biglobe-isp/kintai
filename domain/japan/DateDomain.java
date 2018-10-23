@@ -1,7 +1,6 @@
-package domain;
+package domain.japan;
 
-import domain.ValueForm.Date;
-import datasource.Now;
+import domain.japan.ValueForm.Date;
 
 import java.time.LocalDate;
 
