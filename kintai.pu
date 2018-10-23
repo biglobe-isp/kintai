@@ -23,6 +23,15 @@ interface IRepository {
   readData()
 }
 
+interface INowRepository {
+  getCurrentTime()
+}
+
+interface ICalcWorkTimeVO {
+  getWorkTime()
+  getOverWorTime()
+}
+
 
 class RepositoryDb implements IRepository {
   writeData()
@@ -33,10 +42,21 @@ class NowRepository implements INowRepository {
   getCurrentTime()
 }
 
+class CalcWorkTimeVO implements ICalcWorkTimeVO {
+  workTime
+  overWorkTime
+  tmpBreakTime
+  getWorkTime()
+  getOverWorTime()
+}
+
+
 
 class ArgsCheckVO {
   checkArgsLength()
   getMethodtype()
+  checkArgsStartWith()
+  getValue()
   inputCheckArgsLength()
   totalCheckArgsLength()
   getArgs()
@@ -45,6 +65,12 @@ class ArgsCheckVO {
 enum MethodType {
   input
   total
+}
+
+enum ArgsStartWith {
+  date
+  start
+  end
 }
 
 class DateVO {
@@ -66,17 +92,10 @@ class EndTimeVO {
   EndVO end
   EndHourVO endHour
   EndMinutes endMinutes
+  getValue()
   getHour()
   getMinutes()
   getTotalMinutes()
-}
-
-class CalcWorkTimeVO {
-  workTime
-  overWorkTime
-  tmpBreakTime
-  getWorkTime()
-  getOverWorTime()
 }
 
 class ValueAdjustVO {
@@ -84,24 +103,63 @@ class ValueAdjustVO {
   getIntStartM()
   getIntEndH()
   getIntEndM()
+  getDate()
+  getStart()
+  getEnd()
+}
+
+class StartVO {
+  String value
+  getValue()
+}
+
+class StartHourVO {
+  int value
+  getValue()
+}
+
+class StartMinutesVO {
+  int value
+  getValue()
+}
+
+class EndVO {
+  String value
+  getValue()
+}
+
+class EndHourVO {
+  int value
+  getValue()
+}
+
+class EndMinutesVO {
+  int value
+  getValue()
 }
 
 
-Api .down.> Service
-Service .down.> Domain
-Domain .down.> IRepository
-Domain .down.> INowRepository
+Api -down-> Service
+Service -down-> Domain
+Domain -down-> IRepository
+Domain -down-> INowRepository
+Domain -down-> ICalcWorkTimeVO
 
-Api .right.> ArgsCheckVO
-ArgsCheckVO .right.> MethodType
-Api .right.> ValueAdjustVO
+Api -right-> ArgsCheckVO
+ArgsCheckVO -right-> MethodType
+ArgsCheckVO -right-> ArgsStartWith
+Api -right-> ValueAdjustVO
 
+Domain -right-> DateVO
+Domain -right-> StartTimeVO
+Domain -right-> EndTimeVO
 
-Domain .right.> CalcWorkTimeVO
-Domain .right.> DateVO
-Domain .right.> StartTimeVO
-Domain .right.> EndTimeVO
+StartTimeVO --> StartVO
+StartTimeVO --> StartHourVO
+StartTimeVO --> StartMinutesVO
 
-
+EndTimeVO --> EndVO
+EndTimeVO --> EndHourVO
+EndTimeVO --> EndMinutesVO
 
 @enduml

@@ -26,14 +26,43 @@ public class ArgsCheckVO {
     }
 
     /*
-     * 引数が前方一致
+     * 引数を前方一致で判定。
+     * -date* ,-start* ,-endが共に与えられた時のみtrueを返す
      *
      */
-//    public boolean getArgsStartWith() {
-//        if ("-date".startsWith())
-//
-//    }
+    public boolean isArgsStartWith(ArgsCheckVO args) throws Exception {
+        boolean isArgs = false;
+        boolean isDate = false;
+        boolean isStart = false;
+        boolean isEnd = false;
 
+        for (String value : args.getValue()) { //TODO Streamを使う書き方を試すべき
+            if (value.startsWith("-" + ArgsStartWith.date + ":")) {
+                isDate = true;
+                //DateVO date = new DateVO(value.substring(5, 12));
+            } else if (value.startsWith("-" + ArgsStartWith.start + ":")) {
+                isStart = true;
+                //argsVO.getValue()[1] = value.substring(6, 9);
+                //StartVO start = new StartVO(value.substring(6, 9));
+            } else if (value.startsWith("-" + ArgsStartWith.end + ":")) {
+                isEnd = true;
+                //argsVO.getValue()[2] = value.substring(4, 7);
+                //EndVO end = new EndVO(value.substring(4, 7));
+            } else {
+                //Errorの際にどこがエラーかを出力できた方がより良い。
+                throw new Exception("inputの後には、-date・-start・-endを全て入力して下さい。");
+            }
+        }
+        /* Streamにするならこんな書き方
+         * filter　はtrueなら残す、
+         * Stream.of(args).filter(v -> v.startWith("-date")) || v.startWith("-start")) ||v.startWith("-end"))
+         * count == 3
+         */
+        if (isDate && isStart && isEnd) {
+            isArgs = true;
+        }
+        return isArgs;
+    }
 
 
     public String[] getValue() {

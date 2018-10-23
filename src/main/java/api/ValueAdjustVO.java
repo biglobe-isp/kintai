@@ -5,44 +5,67 @@ package api;
  * Stringで受け取り、Intで返す
  */
 public class ValueAdjustVO {
-    //private final String date;
-    private final String start;
-    private final String end;
+    private String date;
+    private String start;
+    private String end;
+//TODO finalにできていない（dateなどが複数回引数で与えられた場合があるため）
+//    private final String date;
+//    private final String start;
+//    private final String end;
 
-    public ValueAdjustVO(String[] args) {
-        //this.date = args[1];
-        this.start = args[2];
-        this.end = args[3];
+    public ValueAdjustVO(ArgsCheckVO argsVO) {
+        //TODO ArgsCheckVOのisArgsStartWith()内と同じなので修正する
+        for (String value : argsVO.getValue()) { //TODO Streamを使う書き方を試すべき
+            if (value.startsWith("-" + ArgsStartWith.date + ":")) {
+                this.date = value;
+
+            } else if (value.startsWith("-" + ArgsStartWith.start + ":")) {
+                this.start = value;
+
+            } else if (value.startsWith("-" + ArgsStartWith.end + ":")) {
+                this.end = value;
+
+//            } else {
+//                //Errorの際にどこがエラーかを出力できた方がより良い。
+//                throw new Exception("inputの後には、-date・-start・-endを全て入力して下さい。");
+            }
+        }
+//        this.date = args[1];
+//        this.start = args[2];
+//        this.end = args[3];
     }
 
     //Integer.valueOf(hoge)
     public int getIntStartH() {
-        return Integer.valueOf(this.start.substring(0, 2));
+        return Integer.valueOf(getStart().substring(0, 2));
     }
 
     public int getIntStartM() {
-        return Integer.valueOf(this.start.substring(2, 4));
+        return Integer.valueOf(getStart().substring(2, 4));
     }
 
     public int getIntEndH() {
-        return Integer.valueOf(this.end.substring(0, 2));
+        return Integer.valueOf(getEnd().substring(0, 2));
     }
 
     public int getIntEndM() {
-        return Integer.valueOf(this.end.substring(2, 4));
+        return Integer.valueOf(getEnd().substring(2, 4));
     }
 
-
-//    public String getValue() {
-//        return date;
-//    }
+    /*
+     * 仕様変更でinput -date20180101 -start0900 -end1800 に対応するためのメソッド
+     *
+     */
+    public String getDate() {
+        return this.date.substring(6, 14);
+    }
 
     public String getStart() {
-        return start;
+        return this.start.substring(7, 11);
     }
 
-//    public String getValue() {
-//        return end;
-//    }
+    public String getEnd() {
+        return this.end.substring(5, 9);
+    }
 }
 

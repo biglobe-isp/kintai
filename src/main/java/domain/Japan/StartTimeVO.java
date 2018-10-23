@@ -1,6 +1,4 @@
-package domain;
-
-//import api.ValueAdjustVO;
+package domain.Japan;
 
 public class StartTimeVO {
     private final StartVO start;

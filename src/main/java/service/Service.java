@@ -1,18 +1,17 @@
 package service;
-
 //import datasource.RepositoryDb; //serviceからdatasourceを参照してはいけない
 
-import domain.*;
+import domain.Japan.*;
 
 public class Service {
 
-    public void input(DateVO date, StartVO start, EndVO end, CalcWorkTimeVO workTime, INowRepository iNowRepo, IRepository iRepo) {
+    public void input(DateVO date, StartVO start, EndVO end, ICalcWorkTimeVO iWorkTime, INowRepository iNowRepo, IRepository iRepo) {
         Domain dm = new Domain();
-        dm.input(date, start, end, workTime, iNowRepo, iRepo);
+        dm.input(date, start, end, iWorkTime, iNowRepo, iRepo);
     }
 
-    public void total(IRepository iRepo) {
+    public void total(DateVO date, IRepository iRepo) {
         Domain dm = new Domain();
-        dm.total(iRepo);
+        dm.total(date, iRepo);
     }
 }

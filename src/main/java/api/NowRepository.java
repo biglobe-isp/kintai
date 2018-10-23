@@ -1,6 +1,6 @@
 package api;
 
-import domain.INowRepository;
+import domain.Japan.INowRepository;
 
 import java.time.LocalDateTime;
 

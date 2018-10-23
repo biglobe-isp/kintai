@@ -1,18 +1,18 @@
 package domain;
 
-/*
- * 勤務時間・残業時間を計算するドメイン
- *
- */
+import domain.Japan.EndTimeVO;
+import domain.Japan.ICalcWorkTimeVO;
+import domain.Japan.StartTimeVO;
 
-public class CalcWorkTimeVO {
+/*
+ * 勤務時間・残業時間を計算する実装クラス
+ */
+public class CalcWorkTimeVO implements ICalcWorkTimeVO {
     private final int workTime;
     private final int overWorkTime;
     private int tmpBreakTime;
 
     public CalcWorkTimeVO(StartTimeVO startTime, EndTimeVO endTime) {
-        //private int tmpBreakTime; //TODO なぜこの位置だとprivateのためにエラーなのか
-
         //休憩時間の計算
         if (endTime.getHour() == 12) {
             tmpBreakTime -= endTime.getMinutes();
@@ -47,10 +47,9 @@ public class CalcWorkTimeVO {
     }
 
     //残業時間
-    public int getOverWorTime() {
+    public int getOverWorkTime() {
         //return Math.max(this.workTime - 8 * 60, 0);
         return overWorkTime;
     }
-
 
 }

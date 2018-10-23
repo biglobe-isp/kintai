@@ -1,4 +1,4 @@
-package domain;
+package domain.Japan;
 
 public class StartMinutesVO {
     private final int value;

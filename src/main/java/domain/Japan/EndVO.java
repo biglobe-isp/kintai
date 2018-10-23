@@ -1,10 +1,10 @@
-package domain;
+package domain.Japan;
 
 public class EndVO {
     private final String value;
 
-    public EndVO(String[] args) {
-        this.value = args[3];
+    public EndVO(String value) {
+        this.value = value;
     }
 
     public String getValue() {
