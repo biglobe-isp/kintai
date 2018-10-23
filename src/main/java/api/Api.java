@@ -44,13 +44,8 @@ public class Api {
         NowRepository nowRepo = new NowRepository(); //現在日時取得
         RepositoryDb repoDb = new RepositoryDb(); //Datasource
 
-        StartHourVO startHour = new StartHourVO(valueAdjust.getIntStartH());
-        StartMinutesVO startMinutes = new StartMinutesVO(valueAdjust.getIntStartM());
-        EndHourVO endHour = new EndHourVO(valueAdjust.getIntEndH());
-        EndMinutesVO endMinutes = new EndMinutesVO(valueAdjust.getIntEndM());
-
-        StartTimeVO startTime = new StartTimeVO(start, startHour, startMinutes); //TODO この辺をまとめる。
-        EndTimeVO endTime = new EndTimeVO(end, endHour, endMinutes);
+        StartTimeVO startTime = new StartTimeVO(valueAdjust.getStart());
+        EndTimeVO endTime = new EndTimeVO(valueAdjust.getEnd());
         CalcWorkTimeVO workTime = new CalcWorkTimeVO(startTime, endTime);
 
         sv.input(date, start, end, workTime, nowRepo, repoDb);

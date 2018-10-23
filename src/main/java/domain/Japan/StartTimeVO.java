@@ -1,26 +1,20 @@
 package domain.Japan;
 
 public class StartTimeVO {
-    private final StartVO start;
     private final StartHourVO startHour;
     private final StartMinutesVO startMinutes;
 
-    public StartTimeVO(StartVO start, StartHourVO startHour, StartMinutesVO startMinutes) {
-        this.start = start;
-        this.startHour = startHour;
-        this.startMinutes = startMinutes;
-    }
-
-    public String getValue() {
-        return start.getValue();
+    public StartTimeVO(String start) {
+        this.startHour = new StartHourVO(Integer.valueOf(start));
+        this.startMinutes = new StartMinutesVO(Integer.valueOf(start));
     }
 
     public int getHour() {
-        return startHour.getValue();
+        return this.startHour.getValue();
     }
 
     public int getMinutes() {
-        return startMinutes.getValue();
+        return this.startMinutes.getValue();
     }
 
     public int getTotalMinutes() {

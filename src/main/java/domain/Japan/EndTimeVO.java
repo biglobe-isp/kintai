@@ -1,18 +1,12 @@
 package domain.Japan;
 
 public class EndTimeVO {
-    private final EndVO end;
     private final EndHourVO endHour;
     private final EndMinutesVO endMinutes;
 
-    public EndTimeVO(EndVO end, EndHourVO endHour, EndMinutesVO endMinutes) {
-        this.end = end;
-        this.endHour = endHour;
-        this.endMinutes = endMinutes;
-    }
-
-    public String getValue() {
-        return end.getValue();
+    public EndTimeVO(String end) {
+        this.endHour = new EndHourVO(Integer.valueOf(end));
+        this.endMinutes = new EndMinutesVO(Integer.valueOf(end));
     }
 
     public int getHour() {
