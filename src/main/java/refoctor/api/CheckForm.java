@@ -17,25 +17,25 @@ public class CheckForm {
 
         ChangeForm changeForm = new ChangeForm();
 
-        if("input".equals(form[0])) {
+        if ("input".equals(form[0])) {
             this.methodType = MethodType.input;
 
-            if(form.length < 3) {
+            if (form.length < 3) {
                 throw new RuntimeException("引数が足りません");
             }
 
             CheckInput(form, changeForm);
-                this.workTime = new WorkTime(startTime, endTime, dateDomain);
+            this.workTime = new WorkTime(startTime, endTime, dateDomain);
 
-        }else if("total".equals(form[0])){
-            if (form.length < 2){
+        } else if ("total".equals(form[0])) {
+            if (form.length < 2) {
                 throw new RuntimeException("引数が足りません");
             }
 
             this.methodType = MethodType.total;
             this.dateDomain = changeForm.getDateDomain(form[1]);
 
-        }else {
+        } else {
             throw new RuntimeException("methodTypeが不正です");
         }
     }
@@ -59,7 +59,6 @@ public class CheckForm {
     public WorkTime getWorkTime() {
         return workTime;
     }
-}
 
     private void CheckInput(String[] form, ChangeForm changeForm) {
 
@@ -91,3 +90,4 @@ public class CheckForm {
         }
 
     }
+}

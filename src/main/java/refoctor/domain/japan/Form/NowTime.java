@@ -6,8 +6,8 @@ public class NowTime {
     private final String now;
 
 
-    public NowTime() {
-        this.now = LocalDateTime.now().toString();
+    public NowTime(LocalDateTime now) {
+        this.now = now.toString();
     }
 
     public String getValue() {

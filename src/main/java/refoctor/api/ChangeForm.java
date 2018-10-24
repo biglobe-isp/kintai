@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 public class ChangeForm {
 
     public StartTime getStart(String start) {
-        Start startSt = new Start(getStart(start));
-        StartHour startHour = new StartHour(startSt.getValue());
-        StartMinutes startMinutes = new StartMinutes(startSt.getValue());
+        Start startSt = new Start(getStartSt(start));
+        StartHour startHour = new StartHour(getHour(startSt.getValue()));
+        StartMinutes startMinutes = new StartMinutes(getMinutes(startSt.getValue()));
 
         return new StartTime(startSt, startHour, startMinutes);
     }
 
     public EndTime getEnd(String end) {
-        End endSt = new End(getEnd(end));
-        EndHour endHour = new EndHour(endSt.getValue());
-        EndMinutes endMinutes = new EndMinutes(endSt.getValue());
+        End endSt = new End(getEndSt(end));
+        EndHour endHour = new EndHour(getHour(endSt.getValue()));
+        EndMinutes endMinutes = new EndMinutes(getMinutes(endSt.getValue()));
 
         return new EndTime(endSt, endHour, endMinutes);
     }
@@ -29,7 +29,7 @@ public class ChangeForm {
         Date dateSt = new Date(getDateSt(date));
         NowTime nowTime = new NowTime(LocalDateTime.now());
 
-        return DateDomain(dateSt, nowTime);
+        return new DateDomain(dateSt, nowTime);
     }
 
     private int getHour(String time) {
