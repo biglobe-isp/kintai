@@ -1,22 +1,19 @@
 package refoctor.api;
 
-import refoctor.domain.ArgsList;
-import refoctor.domain.MethodType;
+import refoctor.datasource.DayWorkMinutesDb;
 
 public class Main {
     public static void main(String[] args) {
-        ArgsList argsList = new ArgsList(args);
-        argsList.checkLength();
+        DayWorkMinutesDb dayWorkMinutesDb = new DayWorkMinutesDb();
+        CheckForm checkForm = new CheckForm(args);
 
-        if(argsList.getMethodType().equals(MethodType.input)) {
+        if(MethodType.input.equals(checkForm.getMethodType())){
 
-            argsList.inputCheckLength();
-            DayWorkMinutesApi.inputApi(argsList);
+            DayWorkMinutesApi.inputApi(checkForm.getDateDomain(), checkForm.getStartTime(), checkForm.getEndTime(), checkForm.getWorkTime(), dayWorkMinutesDb);
 
-        } else if (argsList.getMethodType().equals(MethodType.total)) {
+        }else if (MethodType.total.equals(checkForm.getMethodType())){
 
-            argsList.totalCheckLength();
-            TotalWorkMinutesApi.totalApi(argsList);
+            TotalWorkMinutesApi.totalApi(checkForm.getDateDomain());
 
         }
     }

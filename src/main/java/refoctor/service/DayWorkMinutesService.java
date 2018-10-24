@@ -1,13 +1,13 @@
 package refoctor.service;
 
-import refoctor.domain.ArgsList;
-import refoctor.domain.DayWorkMinutesCalc;
-import refoctor.domain.DayWorkMinutesRepository;
+import refoctor.domain.japan.*;
 
 public class DayWorkMinutesService {
-    public void workService(ArgsList argsList, DayWorkMinutesRepository dayWorkMinutesRepository) {
+    public void workService(DateDomain dateDomain, StartTime startTime, EndTime endTime, WorkTime workTime, DayWorkMinutesRepository dayWorkMinutesRepository) {
+
         DayWorkMinutesCalc dayWorkMinutesCalc = new DayWorkMinutesCalc();
-        dayWorkMinutesCalc.input(dayWorkMinutesRepository, argsList);
+
+        dayWorkMinutesCalc.input(dateDomain, startTime, endTime, workTime, dayWorkMinutesRepository);
     }
 
 }

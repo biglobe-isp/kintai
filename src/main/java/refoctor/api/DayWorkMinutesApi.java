@@ -1,16 +1,18 @@
 package refoctor.api;
 
 import refoctor.datasource.DayWorkMinutesDb;
-import refoctor.domain.ArgsList;
+import refoctor.domain.japan.DateDomain;
+import refoctor.domain.japan.EndTime;
+import refoctor.domain.japan.StartTime;
+import refoctor.domain.japan.WorkTime;
 import refoctor.service.DayWorkMinutesService;
 
 public class DayWorkMinutesApi {
-    public static void inputApi(ArgsList argsList) {
+    public static void inputApi(DateDomain dateDomain, StartTime startTime, EndTime endTime, WorkTime workTime, DayWorkMinutesDb dayWorkMinutesDb) {
 
         DayWorkMinutesService dayWorkMinutesService = new DayWorkMinutesService();
-        DayWorkMinutesDb dayWorkMinutesDb = new DayWorkMinutesDb();
 
-        dayWorkMinutesService.workService(argsList, dayWorkMinutesDb);
+        dayWorkMinutesService.workService(dateDomain, startTime,endTime, workTime, dayWorkMinutesDb);
 
     }
 }

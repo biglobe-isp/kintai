@@ -1,6 +1,7 @@
 package refoctor.datasource;
 
-import refoctor.domain.TotalWorkMinutesRepository;
+import refoctor.domain.japan.DateDomain;
+import refoctor.domain.japan.TotalWorkMinutesRepository;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public class TotalWorkMinutesDb implements TotalWorkMinutesRepository {
 
-    public void totalOutPut(String yearMonth) {
+    public void totalOutPut(DateDomain dateDomain) {
 
         File file = new File("data.csv");
 
@@ -25,7 +26,7 @@ public class TotalWorkMinutesDb implements TotalWorkMinutesRepository {
             Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(yearMonth)) {
+                if (!columns[0].startsWith(dateDomain.getDate().getValue())) {
                     continue;
                 }
                 totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));

@@ -1,18 +1,25 @@
 package refoctor.datasource;
 
-import refoctor.domain.DayWorkMinutesRepository;
+import refoctor.domain.japan.*;
 
 import java.io.File;
 import java.io.FileWriter;
 
 public class DayWorkMinutesDb implements DayWorkMinutesRepository {
+    @Override
+    public void dayInPut(DateDomain dateDomain, StartTime startTime, EndTime endTime, WorkTime workTime) {
 
-    public void dayOutPut(String date, String start, String end, int workMinutes, int overWorkMinutes, String now) {
+
         File file = new File("data.csv");
 
         try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
-
+            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n",
+                    dateDomain.getDate().getValue(),
+                    startTime.getStart().getValue(),
+                    endTime.getEnd().getValue(),
+                    workTime.getWorkTime(),
+                    workTime.getOverWork(),
+                    dateDomain.getNowTime().getValue()));
         } catch (Exception e) {
             e.printStackTrace();
         }

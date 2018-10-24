@@ -1,12 +1,14 @@
 package refoctor.service;
 
-import refoctor.domain.ArgsList;
-import refoctor.domain.TotalWorkMinutesCalc;
-import refoctor.domain.TotalWorkMinutesRepository;
+import refoctor.domain.japan.DateDomain;
+import refoctor.domain.japan.TotalWorkMinutesCalc;
+import refoctor.domain.japan.TotalWorkMinutesRepository;
 
 public class TotalWorkMinutesService {
-    public void workService(ArgsList argsList, TotalWorkMinutesRepository totalWorkMinutesRepository) {
+    public void workService(DateDomain dateDomain, TotalWorkMinutesRepository totalWorkMinutesRepository) {
+
         TotalWorkMinutesCalc totalWorkMinutesCalc = new TotalWorkMinutesCalc();
-        totalWorkMinutesCalc.total(totalWorkMinutesRepository, argsList);
+
+        totalWorkMinutesCalc.total(dateDomain, totalWorkMinutesRepository);
     }
 }

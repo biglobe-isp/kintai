@@ -1,14 +1,16 @@
 package refoctor.api;
 
 import refoctor.datasource.TotalWorkMinutesDb;
-import refoctor.domain.ArgsList;
+import refoctor.domain.japan.DateDomain;
 import refoctor.service.TotalWorkMinutesService;
 
 public class TotalWorkMinutesApi {
-    public static void totalApi(ArgsList argsList) {
+    public static void totalApi(DateDomain dateDomain) {
+
         TotalWorkMinutesService totalWorkMinutesService = new TotalWorkMinutesService();
+
         TotalWorkMinutesDb totalWorkMinutesDb = new TotalWorkMinutesDb();
 
-        totalWorkMinutesService.workService(argsList, totalWorkMinutesDb);
+        totalWorkMinutesService.workService(dateDomain, totalWorkMinutesDb);
     }
 }
