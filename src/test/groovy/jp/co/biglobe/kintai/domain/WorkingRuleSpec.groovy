@@ -1,5 +1,8 @@
 package jp.co.biglobe.kintai.domain
 
+import jp.co.biglobe.kintai.domain.breaktime.BreakTime
+import jp.co.biglobe.kintai.domain.breaktime.DailyBreakTimes
+import jp.co.biglobe.kintai.util.Time
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -14,7 +17,14 @@ class WorkingRuleSpec extends Specification {
         def endWorkTime = new EndWorkTime(end)
         def nowTime = new NowTime(now)
         def time = new WorkTime(workDate, startWorkTime, endWorkTime, 0, 0, nowTime)
-        def workTime = WorkingRule.getInstance().calculateWorkTime(time)
+        def breakTime1 = new BreakTime(new Time("1200"), new Time("1300"))
+        def breakTime2 = new BreakTime(new Time("1800"), new Time("1900"))
+        def breakTime3 = new BreakTime(new Time("2100"), new Time("2200"))
+        def breakTimes = new DailyBreakTimes()
+        breakTimes.add(breakTime1)
+        breakTimes.add(breakTime2)
+        breakTimes.add(breakTime3)
+        def workTime = WorkingRule.getInstance().calculateWorkTime(time, breakTimes)
 
         expect:
         workTime.minutes == ex_minites

@@ -1,17 +1,13 @@
 package jp.co.biglobe.kintai.domain;
 
-import jp.co.biglobe.kintai.datasource.BreakTimeRepositoryDb;
 import jp.co.biglobe.kintai.domain.breaktime.BreakTime;
 import jp.co.biglobe.kintai.domain.breaktime.DailyBreakTimes;
 
 public class WorkingRule {
 
-    private final BreakTimeRepository breakTimeRepository;
-
     private static WorkingRule INSTANCE;
 
     private WorkingRule() {
-        this.breakTimeRepository = new BreakTimeRepositoryDb();
     }
 
     public static WorkingRule getInstance() {
@@ -21,7 +17,7 @@ public class WorkingRule {
         return INSTANCE;
     }
 
-    public WorkTime calculateWorkTime(WorkTime workTime) {
+    public WorkTime calculateWorkTime(WorkTime workTime, DailyBreakTimes breakTimes) {
         WorkTimeBuilder builder = new WorkTimeBuilder();
 
         int startH = workTime.getStartTime().getHoursAsInt();
@@ -30,8 +26,6 @@ public class WorkingRule {
         int endH = workTime.getEndTime().getHoursAsInt();
         int endM = workTime.getEndTime().getMinutesAsInt();
         int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-        DailyBreakTimes breakTimes = this.breakTimeRepository.findBreakTimes();
 
         for (BreakTime breakTime : breakTimes.getBreakTimes()) {
             if (endH == breakTime.getStartBreakTime().getHours()) {
