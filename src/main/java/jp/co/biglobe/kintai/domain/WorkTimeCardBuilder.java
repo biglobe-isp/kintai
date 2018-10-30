@@ -7,23 +7,23 @@ import java.util.function.ToIntFunction;
 
 public class WorkTimeCardBuilder {
 
-    private HashMap<String, WorkTime> timeCard;
+    private HashMap<String, DailyReport> timeCard;
 
 
     public WorkTimeCardBuilder() {
         this.timeCard = new HashMap<>();
     }
 
-    public WorkTime punch(String date, WorkTime workTime) {
-        this.timeCard.put(date, workTime);
-        return workTime;
+    public DailyReport punch(String date, DailyReport dailyReport) {
+        this.timeCard.put(date, dailyReport);
+        return dailyReport;
     }
 
-    public Optional<MonthlyWorkTimeCard> getMonthlyWorkTimCard(){
+    public Optional<MonthlyWorkTimeCard> build(){
         return isPunched() ? Optional.of(
                 new MonthlyWorkTimeCard(
-                        getSummary(WorkTime::getMinutes),
-                        getSummary(WorkTime::getOverWorkMinutes)
+                        getSummary(DailyReport::getMinutes),
+                        getSummary(DailyReport::getOverWorkMinutes)
                 )) : Optional.empty();
     }
 
@@ -31,8 +31,8 @@ public class WorkTimeCardBuilder {
         return !this.timeCard.isEmpty();
     }
 
-    int getSummary(ToIntFunction<? super WorkTime> mapper){
-        ArrayList<WorkTime> timesList = new ArrayList(this.timeCard.values());
+    int getSummary(ToIntFunction<? super DailyReport> mapper){
+        ArrayList<DailyReport> timesList = new ArrayList(this.timeCard.values());
         return timesList.stream().mapToInt(mapper).sum();
     }
 }

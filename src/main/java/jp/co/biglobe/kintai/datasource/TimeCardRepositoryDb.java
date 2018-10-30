@@ -28,15 +28,15 @@ public class TimeCardRepositoryDb implements TimeCardRepository {
                 if (!columns[Csv_Column_Date_Index].startsWith(yearMonth.getYearMonth())) {
                     continue;
                 }
-                WorkTime workTime = new WorkTime(Integer.valueOf(columns[Csv_Column_Minutes_Index]),
+                DailyReport dailyReport = new DailyReport(Integer.valueOf(columns[Csv_Column_Minutes_Index]),
                         Integer.valueOf(columns[Csv_Column_OverWorkMinutes_Index]));
 
-                builder.punch(columns[Csv_Column_Date_Index], workTime);
+                builder.punch(columns[Csv_Column_Date_Index], dailyReport);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return builder.getMonthlyWorkTimCard();
+        return builder.build();
     }
 }
