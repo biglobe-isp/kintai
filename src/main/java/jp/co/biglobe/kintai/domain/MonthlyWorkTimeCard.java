@@ -1,20 +1,21 @@
 package jp.co.biglobe.kintai.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.stream.Collectors;
 
 @ToString
 @EqualsAndHashCode
 public class MonthlyWorkTimeCard {
 
+    @Getter
     private int workHours;
+    @Getter
     private int workMinutes;
 
+    @Getter
     private int overWorkHours;
+    @Getter
     private int overWorkMinutes;
 
 
@@ -24,21 +25,4 @@ public class MonthlyWorkTimeCard {
         this.overWorkHours = totalOverWorkMinutes / 60;
         this.overWorkMinutes = totalOverWorkMinutes % 60;
     }
-
-    public int getWorkHours() {
-        return workHours;
-    }
-
-    public int getWorkMinutes() {
-        return workMinutes;
-    }
-
-    public int getOverWorkHours() {
-        return overWorkHours;
-    }
-
-    public int getOverWorkMinutes() {
-        return overWorkMinutes;
-    }
-
 }

@@ -1,13 +1,12 @@
 package jp.co.biglobe.kintai.domain;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class WorkDate {
 
+    @Getter
     private final String workDate;
 
-    public WorkDate(String workDate){
-        this.workDate = workDate;
-    }
-    public String getWorkDate() {
-        return workDate;
-    }
 }
