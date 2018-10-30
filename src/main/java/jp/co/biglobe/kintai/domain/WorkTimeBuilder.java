@@ -5,7 +5,7 @@ public final class WorkTimeBuilder {
     public WorkTimeBuilder() {
     }
 
-    public WorkTime buildWorkTime(WorkTime workTime, int minutes, int overWorkMinutes) {
+    public WorkTime build(WorkTime workTime, int minutes, int overWorkMinutes) {
         return new WorkTime(
                 workTime.getDate(),
                 workTime.getStartTime(),

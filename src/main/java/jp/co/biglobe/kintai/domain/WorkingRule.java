@@ -41,6 +41,6 @@ public class WorkingRule {
             }
         }
 
-        return builder.buildWorkTime(workTime, workMinutes, Math.max(workMinutes - 8 * 60, 0));
+        return builder.build(workTime, workMinutes, Math.max(workMinutes - 8 * 60, 0));
     }
 }
