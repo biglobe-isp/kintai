@@ -94,13 +94,10 @@ package 勤怠{
 
 
     class "就業規則" as  WorkingRule << Singleton >>{
-     - 配列　休憩開始時間
-     - 配列　休憩終了時間
     --
-     + WorkTime calcWorkTime(WorkTime workTime)
+     + WorkTime calcWorkTime(WorkTime workTime, DailyBreakTimes breakTimes)
     }
     WorkingRule --> DailyBreakTimes
-    WorkTimeRepository --> WorkingRule
     WorkingRule --> WorkTime
 
 }
