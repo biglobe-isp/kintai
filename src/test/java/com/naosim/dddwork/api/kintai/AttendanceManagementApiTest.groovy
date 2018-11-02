@@ -64,7 +64,7 @@ class AttendanceManagementApiTest extends Specification {
 //        "INPUT"/*	*/| ["input","20181116", "0900", "2000"]
 //        "INPUT"/*	*/| ["input","20181117", "0900", "1800"]
 //        "TOTAL"/*	*/| ["total", "201811"]
-        "INPUT"/*	*/| ["input", "20181117", "v"]
+        "INPUT"/*	*/| ["input", "20181118", "v"]
         //@formatter:on
     }
 }

@@ -62,36 +62,40 @@ public class AttendanceManagementApi {
         paramString[1] = "";
         paramString[2] = "";
 
-        if (args.length > 1 && args.length < 5) {
-            if (args.length >= 2) {
-                paramString[0] = args[1];
-                if (args[1].startsWith("-date:")) {
-                    paramString[0] = args[1].replace("-date:", "");
+        try {
+            if (args.length > 1 && args.length < 5) {
+                if (args.length >= 2) {
+                    paramString[0] = args[1];
+                    if (args[1].startsWith("-date:")) {
+                        paramString[0] = args[1].replace("-date:", "");
+                    }
                 }
-            }
-            if (args.length >= 3) {
-                paramString[1] = args[2];
-                if (args[2].startsWith("-start:")) {
-                    paramString[1] = args[2].replace("-start:", "");
+                if (args.length >= 3) {
+                    paramString[1] = args[2];
+                    if (args[2].startsWith("-start:")) {
+                        paramString[1] = args[2].replace("-start:", "");
+                    }
                 }
-            }
-            if (args.length >= 4) {
-                paramString[2] = args[3];
-                if (args[3].startsWith("-end:")) {
-                    paramString[2] = args[3].replace("-end:", "");
+                if (args.length >= 4) {
+                    paramString[2] = args[3];
+                    if (args[3].startsWith("-end:")) {
+                        paramString[2] = args[3].replace("-end:", "");
+                    }
                 }
-            }
 
-            if (paramString[1].equals("v")) {
-                paramString[1] = "0900";
-                paramString[2] = "1800";
+                if (paramString[1].equals("v")) {
+                    paramString[1] = "0900";
+                    paramString[2] = "1800";
+                }
+                if (paramString[1].equals("am")) {
+                    paramString[1] = "0900";
+                }
+                if (paramString[1].equals("pm")) {
+                    paramString[1] = "1800";
+                }
             }
-            if (paramString[1].equals("am")) {
-                paramString[1] = "0900";
-            }
-            if (paramString[1].equals("pm")) {
-                paramString[1] = "1800";
-            }
+        } catch (Exception exception) {
+            throw exception;
         }
         return paramString;
     }
