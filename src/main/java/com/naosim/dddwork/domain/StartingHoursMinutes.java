@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.time.LocalTime;
-
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode
 @RequiredArgsConstructor

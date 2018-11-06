@@ -4,12 +4,11 @@ import com.naosim.dddwork.domain.ClosingHours;
 import com.naosim.dddwork.domain.StartingHours;
 import com.naosim.dddwork.domain.WorkDay;
 import com.naosim.dddwork.domain.use_case.WorkTimeRegistrationApplication;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 public class WorkTimeRegistrationRequest {
@@ -32,7 +31,7 @@ public class WorkTimeRegistrationRequest {
     private ClosingHours closingHours;
 
     WorkTimeRegistrationApplication makeWorkTimeRegistrationApplication() {
-        return new WorkTimeRegistrationApplication (
+        return new WorkTimeRegistrationApplication(
                 this.getWorkDay(),
                 this.getStartingHours(),
                 this.getClosingHours()

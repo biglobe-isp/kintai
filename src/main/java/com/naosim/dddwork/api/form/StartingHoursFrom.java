@@ -1,14 +1,13 @@
 package com.naosim.dddwork.api.form;
 
 import com.naosim.dddwork.domain.StartingHours;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javax.validation.constraints.NotNull;
 import jp.co.biglobe.lib.publication.form.FormToValueObject;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotNull;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 
 @ToString(includeFieldNames = false)

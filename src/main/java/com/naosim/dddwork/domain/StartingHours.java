@@ -1,11 +1,10 @@
 package com.naosim.dddwork.domain;
 
+import java.time.LocalTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-import java.time.LocalTime;
 
 @ToString(includeFieldNames = false)
 @EqualsAndHashCode

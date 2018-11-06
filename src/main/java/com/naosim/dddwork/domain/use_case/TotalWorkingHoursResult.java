@@ -11,9 +11,9 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class TotalWorkingHoursResult {
     @Getter
-    private  WorkingMonth workingMonth;
+    private WorkingMonth workingMonth;
     @Getter
-    private  WorkingHours workingHours;
+    private WorkingHours workingHours;
     @Getter
-    private  OvertimeHours overtimeHours;
+    private OvertimeHours overtimeHours;
 }

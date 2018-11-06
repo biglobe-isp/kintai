@@ -23,13 +23,13 @@ public class DailyAttendance {
 
     public DailyAttendance(WorkTimeRegistrationApplication workTimeRegistrationApplication, LaborRegulations laborRegulations) {
         this.workDay = workTimeRegistrationApplication.getWorkDay();
-        this.startingHours= workTimeRegistrationApplication.getStartingHours();
-        this.closingHours= workTimeRegistrationApplication.getClosingHours();
-        this.workingHours=getWorkingHours(laborRegulations);
-        this.overtimeHours=getOvertimeHours(this.workingHours,laborRegulations.getFixedTime().getWorkingTime());
+        this.startingHours = workTimeRegistrationApplication.getStartingHours();
+        this.closingHours = workTimeRegistrationApplication.getClosingHours();
+        this.workingHours = getWorkingHours(laborRegulations);
+        this.overtimeHours = getOvertimeHours(this.workingHours, laborRegulations.getFixedTime().getWorkingTime());
     }
 
-    private WorkingHours getWorkingHours(LaborRegulations laborRegulations){
+    private WorkingHours getWorkingHours(LaborRegulations laborRegulations) {
 
         return new WorkingHours(
                 (this.closingHours.getClosingHoursMinutes().getValue() - this.startingHours.getStartingHoursMinutes().getValue()) -
@@ -46,8 +46,8 @@ public class DailyAttendance {
         );
     }
 
-    private OvertimeHours getOvertimeHours(WorkingHours workingHours, WorkingTime workingTime){
-        if (workingHours.getValue() >= workingTime.getValue() ){
+    private OvertimeHours getOvertimeHours(WorkingHours workingHours, WorkingTime workingTime) {
+        if (workingHours.getValue() >= workingTime.getValue()) {
             return new OvertimeHours(workingHours.getValue() - workingTime.getValue());
         }
         return new OvertimeHours(0);

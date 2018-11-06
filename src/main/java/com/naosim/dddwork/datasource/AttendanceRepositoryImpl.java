@@ -1,18 +1,15 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.AttendanceRepository;
+import com.naosim.dddwork.domain.ClosingHours;
 import com.naosim.dddwork.domain.DailyAttendance;
 import com.naosim.dddwork.domain.DailyAttendanceList;
 import com.naosim.dddwork.domain.MonthlyAttendance;
-import com.naosim.dddwork.domain.use_case.TotalWorkingHoursApplication;
-import com.naosim.dddwork.domain.ClosingHours;
 import com.naosim.dddwork.domain.OvertimeHours;
 import com.naosim.dddwork.domain.StartingHours;
 import com.naosim.dddwork.domain.WorkDay;
 import com.naosim.dddwork.domain.WorkingHours;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-
+import com.naosim.dddwork.domain.use_case.TotalWorkingHoursApplication;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
@@ -52,12 +51,13 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
         }
 
     }
+
     @Override
     public MonthlyAttendance get(TotalWorkingHoursApplication totalWorkingHoursApplication) {
         File file = new File("Attendance.csv");
 
 
-        try(
+        try (
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr)
         ) {
@@ -72,21 +72,21 @@ public class AttendanceRepositoryImpl implements AttendanceRepository {
             return new MonthlyAttendance(
                     totalWorkingHoursApplication.getWorkingMonth(),
                     new DailyAttendanceList(
-                        laborRegulations.values().stream()
-                                .filter(columns ->
-                                        columns[0].substring(0,6).equals(
-                                                totalWorkingHoursApplication.getWorkingMonth().getValue().format(DateTimeFormatter.ofPattern("yyyyMM"))
-                                        )
-                                )
-                                .map(columns ->
-                                    new DailyAttendance(
-                                            new WorkDay(LocalDate.parse(columns[0], DateTimeFormatter.ofPattern("yyyyMMdd"))),
-                                            new StartingHours(LocalTime.parse(columns[1], DateTimeFormatter.ofPattern("HHmm"))),
-                                            new ClosingHours(LocalTime.parse(columns[2], DateTimeFormatter.ofPattern("HHmm"))),
-                                            new WorkingHours(Integer.parseInt(columns[3])),
-                                            new OvertimeHours(Integer.parseInt(columns[4]))
+                            laborRegulations.values().stream()
+                                    .filter(columns ->
+                                            columns[0].substring(0, 6).equals(
+                                                    totalWorkingHoursApplication.getWorkingMonth().getValue().format(DateTimeFormatter.ofPattern("yyyyMM"))
+                                            )
                                     )
-                                ).collect(Collectors.toList())
+                                    .map(columns ->
+                                            new DailyAttendance(
+                                                    new WorkDay(LocalDate.parse(columns[0], DateTimeFormatter.ofPattern("yyyyMMdd"))),
+                                                    new StartingHours(LocalTime.parse(columns[1], DateTimeFormatter.ofPattern("HHmm"))),
+                                                    new ClosingHours(LocalTime.parse(columns[2], DateTimeFormatter.ofPattern("HHmm"))),
+                                                    new WorkingHours(Integer.parseInt(columns[3])),
+                                                    new OvertimeHours(Integer.parseInt(columns[4]))
+                                            )
+                                    ).collect(Collectors.toList())
                     )
             );
 

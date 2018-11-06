@@ -14,7 +14,7 @@ public class TotalWorkingHoursService {
     public TotalWorkingHoursResult refer(TotalWorkingHoursApplication totalWorkingHoursApplication) {
 
         return attendanceRepository.get(
-                    totalWorkingHoursApplication
-                ).makeTotalWorkingHoursResult();
+                totalWorkingHoursApplication
+        ).makeTotalWorkingHoursResult();
     }
 }

@@ -9,5 +9,5 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class TotalWorkingHoursApplication {
     @Getter
-    private  final WorkingMonth workingMonth;
+    private final WorkingMonth workingMonth;
 }

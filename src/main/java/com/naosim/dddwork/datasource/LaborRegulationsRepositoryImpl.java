@@ -1,22 +1,19 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.BreakTime;
-import com.naosim.dddwork.domain.BreakTimeList;
-import com.naosim.dddwork.domain.FixedTime;
-import com.naosim.dddwork.domain.LaborRegulations;
-import com.naosim.dddwork.domain.LaborRegulationsRepository;
-import com.naosim.dddwork.domain.use_case.WorkTimeRegistrationApplication;
 import com.naosim.dddwork.domain.ApplyEndDate;
 import com.naosim.dddwork.domain.ApplyStartDate;
 import com.naosim.dddwork.domain.BreakEndTime;
 import com.naosim.dddwork.domain.BreakStartTime;
+import com.naosim.dddwork.domain.BreakTime;
+import com.naosim.dddwork.domain.BreakTimeList;
 import com.naosim.dddwork.domain.ClosingTime;
+import com.naosim.dddwork.domain.FixedTime;
+import com.naosim.dddwork.domain.LaborRegulations;
+import com.naosim.dddwork.domain.LaborRegulationsRepository;
 import com.naosim.dddwork.domain.StartingTime;
 import com.naosim.dddwork.domain.WorkDay;
 import com.naosim.dddwork.domain.WorkingTime;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
-
+import com.naosim.dddwork.domain.use_case.WorkTimeRegistrationApplication;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -27,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
@@ -41,11 +40,11 @@ public class LaborRegulationsRepositoryImpl implements LaborRegulationsRepositor
     static private FixedTime getFixedTime() {
         File fileFixedTime = new File("FixedTime.csv");
 
-        try(
+        try (
                 FileReader fr = new FileReader(fileFixedTime);
                 BufferedReader br = new BufferedReader(fr)
         ) {
-            Map<String,String[]> fixedTimeMap = new LinkedHashMap<>();
+            Map<String, String[]> fixedTimeMap = new LinkedHashMap<>();
 
             String[] columns = br.readLine().split(",");
 
@@ -65,7 +64,7 @@ public class LaborRegulationsRepositoryImpl implements LaborRegulationsRepositor
     static private BreakTimeList getBreakTimeList(WorkDay workDay) {
         File fileBreakTime = new File("BreakTime.csv");
 
-        try(
+        try (
                 FileReader fr = new FileReader(fileBreakTime);
                 BufferedReader br = new BufferedReader(fr)
         ) {
@@ -80,15 +79,15 @@ public class LaborRegulationsRepositoryImpl implements LaborRegulationsRepositor
             return new BreakTimeList(
                     breakTimeMap.values().stream()
                             .filter(columns -> !(LocalDate.parse(columns[0], DateTimeFormatter.ofPattern("yyyyMMdd")).isAfter(workDay.getValue())
-                                                 || LocalDate.parse(columns[1], DateTimeFormatter.ofPattern("yyyyMMdd")).isBefore(workDay.getValue()))
+                                    || LocalDate.parse(columns[1], DateTimeFormatter.ofPattern("yyyyMMdd")).isBefore(workDay.getValue()))
                             )
                             .map(columns ->
-                                new BreakTime(
-                                        new ApplyStartDate(LocalDate.parse(columns[0], DateTimeFormatter.ofPattern("yyyyMMdd"))),
-                                        new ApplyEndDate(LocalDate.parse(columns[1], DateTimeFormatter.ofPattern("yyyyMMdd"))),
-                                        new BreakStartTime(LocalTime.parse(columns[2], DateTimeFormatter.ofPattern("HHmm"))),
-                                        new BreakEndTime(LocalTime.parse(columns[3], DateTimeFormatter.ofPattern("HHmm")))
-                                )
+                                    new BreakTime(
+                                            new ApplyStartDate(LocalDate.parse(columns[0], DateTimeFormatter.ofPattern("yyyyMMdd"))),
+                                            new ApplyEndDate(LocalDate.parse(columns[1], DateTimeFormatter.ofPattern("yyyyMMdd"))),
+                                            new BreakStartTime(LocalTime.parse(columns[2], DateTimeFormatter.ofPattern("HHmm"))),
+                                            new BreakEndTime(LocalTime.parse(columns[3], DateTimeFormatter.ofPattern("HHmm")))
+                                    )
                             ).collect(Collectors.toList())
             );
 
