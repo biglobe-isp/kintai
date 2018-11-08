@@ -16,7 +16,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-mainClassName = 'com.sample.kintai.Main'
+mainClassName = 'com.sample.kintai.api.KintaiApi'
 
 run {
     if (project.hasProperty('args')) {    // "args" というプロパティが渡されていたら
