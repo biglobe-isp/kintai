@@ -1,0 +1,23 @@
+@startuml
+package 勤怠 {
+  class 勤務日 {
+   }
+  class 始業時間 {
+    }
+  class 終業時間 {
+    }
+  class 入力サービス {
+    }
+  class 集計サービス {
+    }
+  class 勤務時間 {
+    }
+  class 終業時間 {
+    }
+  class 休憩時間 {
+    }
+勤務時間 -d-> 始業時間
+勤務時間 -d-> 終業時間
+休憩時間 -d-> 勤務時間
+  }
+@enduml
