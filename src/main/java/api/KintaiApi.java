@@ -5,6 +5,10 @@ import service.TotalService;
 
 public class KintaiApi {
 
+    public static void main(String[] inputData) {
+        new KintaiApi(inputData);
+    }
+
     KintaiApi(String[] inputData) {
         try {
             if (inputData.length < 1) {

@@ -1,6 +1,6 @@
 package service;
 
-import datasource.InputCsvDatasource;
+import repository.InputCsvRepositoryImpl;
 import domain.OverWorkMinutesDomain;
 import domain.WorkMinutesDomain;
 
@@ -14,6 +14,7 @@ public class InputService {
         OverWorkMinutesDomain overWorkMinutesDomain = new OverWorkMinutesDomain(workMinutesDomain);
 
         // CSV出力
-        new InputCsvDatasource(inputData, workMinutesDomain.workMinutes, overWorkMinutesDomain.overWorkMinutes);
+        InputCsvRepositoryImpl inputCsvRepositoryImpl = new InputCsvRepositoryImpl();
+        inputCsvRepositoryImpl.InputCsvAdd(inputData, workMinutesDomain.workMinutes, overWorkMinutesDomain.overWorkMinutes);
     }
 }
