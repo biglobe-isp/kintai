@@ -1,11 +1,11 @@
 package service;
 
-import repository.InputCsvRepositoryImpl;
+import datasource.InputCsvRepositoryImpl;
 import domain.OverWorkMinutesDomain;
 import domain.WorkMinutesDomain;
 
 public class InputService {
-    public InputService(String[] inputData) {
+    public InputService(String[] inputData, InputCsvRepositoryImpl inputCsvRepositoryImpl) {
         if (inputData.length < 4) {
             throw new RuntimeException("引数が足りません");
         }
@@ -14,7 +14,6 @@ public class InputService {
         OverWorkMinutesDomain overWorkMinutesDomain = new OverWorkMinutesDomain(workMinutesDomain);
 
         // CSV出力
-        InputCsvRepositoryImpl inputCsvRepositoryImpl = new InputCsvRepositoryImpl();
         inputCsvRepositoryImpl.InputCsvAdd(inputData, workMinutesDomain.workMinutes, overWorkMinutesDomain.overWorkMinutes);
     }
 }

@@ -1,5 +1,6 @@
 package api;
 
+import datasource.InputCsvRepositoryImpl;
 import service.InputService;
 import service.TotalService;
 
@@ -17,7 +18,8 @@ public class KintaiApi {
             String methodType = inputData[0];
 
             if ("input".equals(methodType)) {
-                new InputService(inputData);
+                InputCsvRepositoryImpl inputCsvRepositoryImpl = new InputCsvRepositoryImpl();
+                new InputService(inputData, inputCsvRepositoryImpl);
             } else if ("total".equals(methodType)) {
                 new TotalService(inputData);
             } else {
