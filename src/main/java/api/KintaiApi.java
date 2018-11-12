@@ -11,7 +11,7 @@ public class KintaiApi {
         new KintaiApi(inputData);
     }
 
-    KintaiApi(String[] inputData) {
+    private KintaiApi(String[] inputData) {
         try {
             if (inputData.length < 1) {
                 throw new RuntimeException("引数が足りません");
@@ -19,8 +19,8 @@ public class KintaiApi {
             String methodType = inputData[0];
 
             if ("input".equals(methodType)) {
-                InputCsvRepositoryImpl inputCsvRepositoryImpl = new InputCsvRepositoryImpl();
-                new InputService(inputData, inputCsvRepositoryImpl);
+                InputCsvRepositoryImpl inputCsvRepository = new InputCsvRepositoryImpl();
+                new InputService(inputData, inputCsvRepository);
             } else if ("total".equals(methodType)) {
                 TotalCsvRepositoryImpl totalCsvRepository = new TotalCsvRepositoryImpl();
                 new TotalService(inputData, totalCsvRepository);

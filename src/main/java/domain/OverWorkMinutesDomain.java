@@ -7,4 +7,5 @@ public class OverWorkMinutesDomain {
     public OverWorkMinutesDomain(WorkMinutesDomain workMinutesDomain) {
         this.overWorkMinutes = Math.max(workMinutesDomain.workMinutes - 8 * 60, 0);
     }
+
 }
