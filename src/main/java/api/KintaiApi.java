@@ -1,6 +1,7 @@
 package api;
 
 import datasource.InputCsvRepositoryImpl;
+import datasource.TotalCsvRepositoryImpl;
 import service.InputService;
 import service.TotalService;
 
@@ -21,7 +22,8 @@ public class KintaiApi {
                 InputCsvRepositoryImpl inputCsvRepositoryImpl = new InputCsvRepositoryImpl();
                 new InputService(inputData, inputCsvRepositoryImpl);
             } else if ("total".equals(methodType)) {
-                new TotalService(inputData);
+                TotalCsvRepositoryImpl totalCsvRepository = new TotalCsvRepositoryImpl();
+                new TotalService(inputData, totalCsvRepository);
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }

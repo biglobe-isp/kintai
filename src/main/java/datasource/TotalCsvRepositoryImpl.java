@@ -1,5 +1,6 @@
 package datasource;
 
+import domain.TotalCsvRepository;
 import domain.YearMonthDomain;
 
 import java.io.BufferedReader;
@@ -10,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class TotalCsvDatasouce {
+public class TotalCsvRepositoryImpl implements TotalCsvRepository{
 
-    public TotalCsvDatasouce(YearMonthDomain yearMonthDomain) {
+    public void TotalCsvAdd(YearMonthDomain yearMonthDomain) {
 
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
