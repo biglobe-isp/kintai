@@ -1,7 +1,9 @@
 package refactor.api;
 
 import refactor.api.form.InputData;
+import refactor.api.form.InputTotalData;
 import refactor.api.form.MethodType;
+import refactor.api.form.OutPutTotalData;
 import refactor.api.fuction.AttendanceFunction;
 import refactor.service.AttendanceServiece;
 
@@ -16,6 +18,7 @@ public class AttendanceApi {
             String methodType = args[0];
             //登録時処理
             if (MethodType.input.toString().equals(methodType)) {
+                AttendanceFunction.validateArgInInput(args);
                 //入力データを内部データへ変換
                 InputData inputData = convertForm(args);
 
@@ -25,7 +28,12 @@ public class AttendanceApi {
 
                 //勤務時間出力処理
             } else if (MethodType.total.toString().equals(methodType)) {
-
+                AttendanceFunction.validateArgTotal(args);
+                InputTotalData inputDataForTotal = conbertFormForTotal(args);
+                AttendanceServiece service = new AttendanceServiece();
+                OutPutTotalData outputData = service.totalAttendance(inputDataForTotal);
+                System.out.println("勤務時間: " + outputData.getTotalWorkMinutes() / 60 + "時間" + outputData.getTotalWorkMinutes() % 60 + "分");
+                System.out.println("残業時間: " + outputData.getTotalOverWorkMinutes() / 60 + "時間" + outputData.getTotalOverWorkMinutes() % 60 + "分");
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }
@@ -47,5 +55,10 @@ public class AttendanceApi {
         return inputData;
     }
 
+    private static InputTotalData conbertFormForTotal(String[] args){
+        InputTotalData inputData =new InputTotalData();
+        inputData.setYearMonth(args[1]);
+        return inputData;
+    }
 
 }

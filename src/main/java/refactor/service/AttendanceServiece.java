@@ -1,26 +1,22 @@
 package refactor.service;
 
 import refactor.api.form.InputData;
+import refactor.api.form.InputTotalData;
+import refactor.api.form.OutPutTotalData;
 import refactor.domain.AttendanceDomain;
 
 public class AttendanceServiece {
     private AttendanceDomain aDomain = new AttendanceDomain();
 
-    public AttendanceDomain getaDomain() {
-        return aDomain;
-    }
-
-    public void setaDomain(AttendanceDomain aDomain) {
-        this.aDomain = aDomain;
-    }
-
 
     public void inputAttendance(InputData data){
+
         aDomain.inputAttendance(data);
     }
 
 
-    public void totalAttendance(InputData data){
-        aDomain.totalAttendance(data);
+    public OutPutTotalData totalAttendance(InputTotalData data){
+        OutPutTotalData outputData = aDomain.totalAttendance(data);
+        return outputData;
     }
 }

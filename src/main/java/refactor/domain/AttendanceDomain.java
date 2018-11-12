@@ -1,10 +1,15 @@
 package refactor.domain;
 
 import refactor.api.form.InputData;
+import refactor.api.form.InputTotalData;
+import refactor.api.form.OutPutTotalData;
 import refactor.datasource.AttendanceRepository;
 import refactor.datasource.entity.AttendanceData;
+import refactor.datasource.entity.WorkMinutesData;
 import refactor.domain.dto.TimeData;
 import refactor.domain.util.TimeManager;
+
+import java.util.Set;
 
 public class AttendanceDomain {
     public void inputAttendance(InputData data){
@@ -27,7 +32,24 @@ public class AttendanceDomain {
         repository.insert(insertData);
     }
 
-    public void totalAttendance(InputData data){
+    public OutPutTotalData totalAttendance(InputTotalData data){
+        AttendanceRepository repository = new AttendanceRepository();
+        WorkMinutesData mData = repository.select(data);
+        Set<String> keySet = mData.getTotalWorkMinutes().keySet();
 
+
+        int totalWorkMinutes = 0;
+        int totalOverWorkMinutes = 0;
+        for(String key : keySet) {
+            totalWorkMinutes += ((Integer)mData.getTotalWorkMinutes().get(key)).intValue();
+            totalOverWorkMinutes += ((Integer) mData.getTotalOverWorkMinutes().get(key)).intValue();
+        }
+
+        OutPutTotalData outputData = new OutPutTotalData();
+
+        outputData.setTotalWorkMinutes(totalWorkMinutes);
+        outputData.setTotalOverWorkMinutes(totalOverWorkMinutes);
+
+        return outputData;
     }
 }

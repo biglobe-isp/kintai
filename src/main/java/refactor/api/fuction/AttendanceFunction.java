@@ -24,4 +24,9 @@ public class AttendanceFunction {
         }
     }
 
+    public static void validateArgTotal(String[] args)throws RuntimeException{
+        if(args.length < 2) {
+            throw new RuntimeException("引数が足りません");
+        }
+    }
 }
