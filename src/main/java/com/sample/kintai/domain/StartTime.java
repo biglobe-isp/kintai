@@ -8,7 +8,7 @@ public class StartTime {
         this.hour = Integer.valueOf(str.substring(0, 2));
         this.minute = Integer.valueOf(str.substring(2, 4));
     }
-    public int calcMinites(){
+    public int calcMinutes(){
         return hour * 60 + minute;
     }
 }

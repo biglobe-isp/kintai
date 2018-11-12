@@ -10,7 +10,7 @@ public class WorkMinutes {
     }
 
     private int calcWorkMinutes() {
-        return endTime.calcMinites() - startTime.calcMinites();
+        return endTime.calcMinites() - startTime.calcMinutes();
     }
 
     public int calcWorkMinutesIncludingBreakTime() {

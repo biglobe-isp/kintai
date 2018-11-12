@@ -1,13 +1,13 @@
 package com.sample.kintai.service;
 
-import com.sample.kintai.domain.CsvFileInterFace;
+import com.sample.kintai.domain.CsvFileReaderInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class SyukeiService {
-    public void syukei(String yearMonth, CsvFileInterFace ds) {
+    public void syukei(String yearMonth, CsvFileReaderInterface ds) {
 
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
@@ -18,12 +18,13 @@ public class SyukeiService {
         while (line != null) {
             String[] columns = line.split(",");
             if (!columns[0].startsWith(yearMonth)) {
+                line = ds.read();
                 continue;
             }
             totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
             totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-
             line = ds.read();
+
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();
