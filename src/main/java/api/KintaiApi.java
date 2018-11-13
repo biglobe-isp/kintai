@@ -2,30 +2,26 @@ package api;
 
 import datasource.InputCsvRepositoryImpl;
 import datasource.TotalCsvRepositoryImpl;
+import form.InputDataForm;
 import service.InputService;
 import service.TotalService;
 
 public class KintaiApi {
 
     public static void main(String[] inputData) {
-        new KintaiApi(inputData);
-    }
-
-    private KintaiApi(String[] inputData) {
+        // APIからドメインを呼ぶのはOK
+        // サービス層を飛ばして呼ぶのもOK
         try {
-            if (inputData.length < 1) {
-                throw new RuntimeException("引数が足りません");
-            }
-            String methodType = inputData[0];
+            //入力チェック
+            new InputDataForm(inputData);
 
+            String methodType = inputData[0];
             if ("input".equals(methodType)) {
                 InputCsvRepositoryImpl inputCsvRepository = new InputCsvRepositoryImpl();
                 new InputService(inputData, inputCsvRepository);
             } else if ("total".equals(methodType)) {
                 TotalCsvRepositoryImpl totalCsvRepository = new TotalCsvRepositoryImpl();
                 new TotalService(inputData, totalCsvRepository);
-            } else {
-                throw new RuntimeException("methodTypeが不正です");
             }
         } catch (Exception e) {
             e.printStackTrace();
