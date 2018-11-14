@@ -7,7 +7,7 @@ import refactor.datasource.entity.WorkMinutesData;
 import java.io.*;
 import java.util.HashMap;
 
-public class AttendanceRepository {
+public class AttendanceRepositoryImpl {
 
     private final String FILE_NAME = "data.csv";
     private final String CSV_REGEX =",";
