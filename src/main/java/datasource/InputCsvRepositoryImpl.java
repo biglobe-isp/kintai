@@ -9,17 +9,26 @@ import java.io.IOException;
 public class InputCsvRepositoryImpl implements InputCsvRepository {
 
     public void InputCsvAdd(
-            String[] inputData,
-            int workMinutes,
-            int overWorkMinutes) {
-        DateDomain dateDomain = new DateDomain(inputData[1]);
-        StartDomain startDomain = new StartDomain(inputData[2]);
-        EndDomain endDomain = new EndDomain(inputData[3]);
-        NowDomain nowDomain = new NowDomain();
+            WorkDate workDate,
+            StartTime startTime,
+            EndTime endTime) {
+
+        WorkTimeMinutes workTimeMinutes = new WorkTimeMinutes(startTime, endTime);
+        OverWorkTimeMinutes overWorkTimeMinutes = new OverWorkTimeMinutes(workTimeMinutes);
+        NowDate nowDate = new NowDate();
 
         File file = new File("data.csv");
         try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", dateDomain.date, startDomain.start, endDomain.end, workMinutes, overWorkMinutes, nowDomain.now));
+            // @todo Entityにする
+            filewriter.write(
+                    String.format("%s,%s,%s,%s,%s,%s\n",
+                            workDate.workDate,
+                            startTime.startTime,
+                            endTime.endTime,
+                            workTimeMinutes.workTimeMinutes,
+                            overWorkTimeMinutes.overWorkMinutes,
+                            nowDate.nowDate)
+            );
         } catch (IOException e) {
             e.printStackTrace();
         }

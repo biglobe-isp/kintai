@@ -2,6 +2,6 @@ package domain;
 
 public interface InputCsvRepository {
 
-    public void InputCsvAdd(String[] inputData, int workMinutes, int overWorkMinutes);
+    public void InputCsvAdd(WorkDate workDate, StartTime startTime, EndTime endTime);
 
 }
