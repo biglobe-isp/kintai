@@ -1,58 +1,51 @@
-package refactor.datasource.entity;
+package refactor.domain.dto;
+
+import refactor.domain.dto.Item.DateItem;
+import refactor.domain.dto.Item.EndTimeItem;
+import refactor.domain.dto.Item.StartTimeItem;
+import refactor.domain.dto.Item.WorkAndOverWorkMinutesItem;
 
 public class AttendanceData {
-    private String date;
-    private String startTime;
-    private String endTime;
-    private int workMinutes;
-    private int overWorkMinutes;
-    private String nowTime;
+    private final DateItem date;
+    private final StartTimeItem startTime;
+    private final EndTimeItem endTime;
+    private final WorkAndOverWorkMinutesItem workAndOverWorkMinutesItem;
+    private final String nowTime;
 
-    public String getDate() {
+    public AttendanceData(DateItem date, StartTimeItem startTime, EndTimeItem endTime,WorkAndOverWorkMinutesItem workAndOverWorkMinutesItem, String nowTime) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.workAndOverWorkMinutesItem =workAndOverWorkMinutesItem;
+        this.nowTime = nowTime;
+    }
+
+    public DateItem getDate() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getStartTime() {
+    public StartTimeItem getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
+    public EndTimeItem getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public WorkAndOverWorkMinutesItem getWorkAndOverWorkMinutesItem() {
+        return workAndOverWorkMinutesItem;
     }
 
-    public int getWorkMinutes() {
-        return workMinutes;
-    }
-
-    public void setWorkMinutes(int workMinutes) {
-        this.workMinutes = workMinutes;
-    }
-
-    public int getOverWorkMinutes() {
-        return overWorkMinutes;
-    }
-
-    public void setOverWorkMinutes(int overWorkMinutes) {
-        this.overWorkMinutes = overWorkMinutes;
-    }
     public String getNowTime() {
         return nowTime;
     }
 
-    public void setNowTime(String nowTime) {
-        this.nowTime = nowTime;
+    public String valueOfStartTimeString(){
+        return startTime.valueOfHHMM();
+    }
+
+    public String valueOfEndTimeString(){
+        return endTime.valueOfHHMM();
     }
 
 }

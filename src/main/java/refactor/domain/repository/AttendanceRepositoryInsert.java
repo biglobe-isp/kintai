@@ -1,4 +1,4 @@
-package refactor.api.repository;
+package refactor.domain.repository;
 
 import refactor.domain.dto.AttendanceData;
 //DOMAIN層

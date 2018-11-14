@@ -1,15 +1,20 @@
-package refactor.domain.dto;
+package refactor.domain.dto.Item;
 
+import java.util.Date;
 import java.util.HashMap;
 
-public class WorkAndOverWorkMinutesList {
-    private HashMap totalWorkMinutes = new HashMap<String, Integer>();
+public class WorkMinutesList {
+    private HashMap<DateItem,Integer> workMinutesList;
 
-    public WorkAndOverWorkMinutesList(HashMap totalWorkMinutes) {
-        this.totalWorkMinutes = totalWorkMinutes;
+    public WorkMinutesList(HashMap totalWorkMinutes) {
+        this.workMinutesList = totalWorkMinutes;
     }
 
     public HashMap getTotalWorkMinutes() {
-        return totalWorkMinutes;
+        return workMinutesList;
+    }
+
+    public int getWrokMinutes(DateItem date){
+        return (int)workMinutesList.get(date);
     }
 }

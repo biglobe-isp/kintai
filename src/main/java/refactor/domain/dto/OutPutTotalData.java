@@ -1,23 +1,20 @@
-package refactor.api.form;
+package refactor.domain.dto;
 
 public class OutPutTotalData {
-    private int totalWorkMinutes ;
+    private final int totalWorkMinutes ;
 
-    private int totalOverWorkMinutes;
+    private final int totalOverWorkMinutes;
+
+    public OutPutTotalData(int totalWorkMinutes, int totalOverWorkMinutes) {
+        this.totalWorkMinutes = totalWorkMinutes;
+        this.totalOverWorkMinutes = totalOverWorkMinutes;
+    }
 
     public int getTotalWorkMinutes() {
         return totalWorkMinutes;
     }
 
-    public void setTotalWorkMinutes(int totalWorkMinutes) {
-        this.totalWorkMinutes = totalWorkMinutes;
-    }
-
     public int getTotalOverWorkMinutes() {
         return totalOverWorkMinutes;
-    }
-
-    public void setTotalOverWorkMinutes(int totalOverWorkMinutes) {
-        this.totalOverWorkMinutes = totalOverWorkMinutes;
     }
 }

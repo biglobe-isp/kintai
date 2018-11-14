@@ -2,16 +2,16 @@ package refactor.domain.dto.Item;
 
 import java.util.HashMap;
 
-public class TotalOverWorkMinutesList {
+public class OverWorkMinutesList {
 
-    private HashMap OverWorkMinutesList = new HashMap<String, Integer>();
+    private HashMap overWorkMinutesList;
 
-    public TotalOverWorkMinutesList(HashMap totalOverWorkMinutes) {
-        this.OverWorkMinutesList = totalOverWorkMinutes;
+    public OverWorkMinutesList(HashMap totalOverWorkMinutes) {
+        this.overWorkMinutesList = totalOverWorkMinutes;
     }
 
-    public HashMap getTotalOverWorkMinutes() {
-            return OverWorkMinutesList;
+    public int getTotalOverWorkMinutes(DateItem date) {
+            return (int)overWorkMinutesList.get(date);
         }
 
 }

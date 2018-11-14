@@ -1,14 +1,16 @@
 package refactor.api.fuction;
 
-public class AttendanceFunction {
+import refactor.domain.dto.Item.ArgsItem;
+
+public class AttendanceValidater {
 
     /**
      * 引数存在チェック
      * @param args
      * @throws RuntimeException
      */
-    public static void validateExsitArg(String[] args) throws RuntimeException{
-        if (args.length < 1) {
+    public static void validateExsitArg(ArgsItem args) throws RuntimeException{
+        if (args.getArgs().length < 1) {
             throw new RuntimeException("引数が足りません");
         }
     }
@@ -18,8 +20,8 @@ public class AttendanceFunction {
      * @param args
      * @throws RuntimeException
      */
-    public static void validateArgInInput(String[] args)throws RuntimeException{
-        if (args.length < 4) {
+    public static void validateArgInInput(ArgsItem args)throws RuntimeException{
+        if (args.getArgs().length < 4) {
             throw new RuntimeException("引数が足りません");
         }
     }
@@ -29,8 +31,8 @@ public class AttendanceFunction {
      * @param args
      * @throws RuntimeException
      */
-    public static void validateArgTotal(String[] args)throws RuntimeException{
-        if(args.length < 2) {
+    public static void validateArgTotal(ArgsItem args)throws RuntimeException{
+        if(args.getArgs().length < 2) {
             throw new RuntimeException("引数が足りません");
         }
     }

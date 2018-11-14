@@ -1,4 +1,11 @@
 package refactor.datasource;
 
-public class NowTimeRepositoryImple implements NowTimeRepository {
+import refactor.domain.repository.NowTimeRepository;
+
+import java.time.LocalDateTime;
+
+public class NowTimeRepositoryImpl implements NowTimeRepository {
+    public String getNowTime(){
+        return LocalDateTime.now().toString();
+    }
 }

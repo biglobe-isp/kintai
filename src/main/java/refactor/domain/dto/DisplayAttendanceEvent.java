@@ -1,11 +1,14 @@
-package refactor.api.form;
+package refactor.domain.dto;
+
+import refactor.domain.dto.Item.ArgsItem;
 
 public class DisplayAttendanceEvent {
     private final String MethodType;
 
     private final String yearMonth;
-
-    public DisplayAttendanceEvent(String[] args) {
+//TODO DOMAIN層の引数はStringにしない
+    public DisplayAttendanceEvent(ArgsItem argsItem) {
+        String[] args = argsItem.getArgs();
         MethodType = args[0];
         yearMonth = args[1];
     }

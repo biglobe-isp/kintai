@@ -1,15 +1,12 @@
 package refactor.service;
 
-import refactor.api.repository.AttendanceRepositoryInsert;
-import refactor.api.repository.AttendanceRepositorySelect;
+import refactor.domain.repository.AttendanceRepositoryInsert;
 //TODO ここにDOMAINはNGか
 import refactor.domain.dto.RegistAttendanceEvent;
-import refactor.domain.dto.DisplayAttendanceEvent;
-import refactor.domain.dto.OutPutTotalData;
-import refactor.domain.AttendanceDomain;
+import refactor.domain.AttendanceRegistDomain;
 
-public class AttendanceServiece {
-    private AttendanceDomain aDomain = new AttendanceDomain();
+public class AttendanceRegistServiece {
+    private AttendanceRegistDomain aDomain = new AttendanceRegistDomain();
 
 
     public void inputAttendance(RegistAttendanceEvent data, AttendanceRepositoryInsert repository){
@@ -17,9 +14,4 @@ public class AttendanceServiece {
         aDomain.inputAttendance(data,repository);
     }
 
-
-    public OutPutTotalData totalAttendance(DisplayAttendanceEvent data, AttendanceRepositorySelect repository){
-        OutPutTotalData outputData = aDomain.totalAttendance(data,repository);
-        return outputData;
-    }
 }

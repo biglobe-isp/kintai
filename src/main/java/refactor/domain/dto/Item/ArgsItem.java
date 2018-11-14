@@ -1,4 +1,4 @@
-package refactor.api.form;
+package refactor.domain.dto.Item;
 
 public class ArgsItem {
     private final String[] args;

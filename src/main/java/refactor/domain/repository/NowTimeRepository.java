@@ -1,6 +1,4 @@
-package refactor.api.repository;
-
-import java.time.LocalDateTime;
+package refactor.domain.repository;
 
 public interface NowTimeRepository{
     public String getNowTime();
