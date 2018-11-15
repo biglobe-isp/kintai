@@ -9,7 +9,14 @@ import refactor.domain.dto.OutPutTotalData;
 import java.util.Set;
 
 public class AttendanceDisplayDomain {
-    public OutPutTotalData totalAttendance(DisplayAttendanceEvent data, AttendanceRepositorySelect repository){
+
+    private AttendanceRepositorySelect repository;
+
+    public AttendanceDisplayDomain(AttendanceRepositorySelect repository) {
+        this.repository = repository;
+    }
+
+    public OutPutTotalData totalAttendance(DisplayAttendanceEvent data){
         WorkAndOverWorkMinutesList rtnData = repository.select(data);
         Set<DateItem> keySet = rtnData.makeKeyByWorkMinutes();
 

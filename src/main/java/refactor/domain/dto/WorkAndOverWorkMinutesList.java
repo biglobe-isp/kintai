@@ -4,7 +4,6 @@ import refactor.domain.dto.Item.DateItem;
 import refactor.domain.dto.Item.OverWorkMinutesList;
 import refactor.domain.dto.Item.WorkMinutesList;
 
-import java.util.Date;
 import java.util.Set;
 
 public class WorkAndOverWorkMinutesList {

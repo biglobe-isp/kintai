@@ -6,7 +6,14 @@ import refactor.domain.dto.RegistAttendanceEvent;
 import refactor.domain.dto.AttendanceData;
 
 public class AttendanceRegistDomain {
-    public void inputAttendance(RegistAttendanceEvent data, AttendanceRepositoryInsert repository){
+
+    private AttendanceRepositoryInsert repository;
+
+    public AttendanceRegistDomain(AttendanceRepositoryInsert repository) {
+        this.repository = repository;
+    }
+
+    public void inputAttendance(RegistAttendanceEvent data){
 
         WorkAndOverWorkMinutesItem workAndOverWorkMinutesItem =new WorkAndOverWorkMinutesItem(data.calculateWorkTime(),data.caluculateOverWorkTime());
 
@@ -15,7 +22,7 @@ public class AttendanceRegistDomain {
         data.getStartTime(),
         data.getEndTime(),
         workAndOverWorkMinutesItem,
-        data.getNowTime()
+        data.getNowTime().getNowTime()
         );
 
         repository.insert(insertData);

@@ -6,10 +6,15 @@ import refactor.domain.dto.DisplayAttendanceEvent;
 import refactor.domain.dto.OutPutTotalData;
 
 public class AttendanceDisplayServiece {
-    private AttendanceDisplayDomain aDomain = new AttendanceDisplayDomain();
+    private AttendanceRepositorySelect repository;
 
-    public OutPutTotalData totalAttendance(DisplayAttendanceEvent data, AttendanceRepositorySelect repository){
-        OutPutTotalData outputData = aDomain.totalAttendance(data,repository);
+    public AttendanceDisplayServiece(AttendanceRepositorySelect repository) {
+        this.repository = repository;
+    }
+
+    public OutPutTotalData totalAttendance(DisplayAttendanceEvent data){
+        AttendanceDisplayDomain aDomain = new AttendanceDisplayDomain(repository);
+        OutPutTotalData outputData = aDomain.totalAttendance(data);
         return outputData;
     }
 }

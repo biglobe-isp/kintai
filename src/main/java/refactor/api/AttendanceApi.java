@@ -33,19 +33,17 @@ public class AttendanceApi {
 
                 //登録処理
                 //TODO コンストラクタで引数渡し
-                AttendanceRegistServiece service = new AttendanceRegistServiece();
-                //リポジトリのインスタンス生成
-                AttendanceRepositoryInsert repositoryForInsert = new AttendanceRepositoryInsertImpl();
-                service.inputAttendance(inputData,repositoryForInsert);
+                AttendanceRegistServiece service = new AttendanceRegistServiece(new AttendanceRepositoryInsertImpl());
+
+                service.inputAttendance(inputData);
 
                 //勤務時間出力処理
             } else if (MethodType.total.toString().equals(methodType)) {
                 AttendanceValidater.validateArgTotal(argsItem);
                 DisplayAttendanceEvent inputDataForTotal = new DisplayAttendanceEvent(argsItem);
-                AttendanceDisplayServiece service = new AttendanceDisplayServiece();
-                //リポジトリのインスタンス生成
-                AttendanceRepositorySelect repositoryForSelect = new AttendanceRepositorySelectImpl();
-                OutPutTotalData outputData = service.totalAttendance(inputDataForTotal,repositoryForSelect);
+                AttendanceDisplayServiece service = new AttendanceDisplayServiece(new AttendanceRepositorySelectImpl());
+
+                OutPutTotalData outputData = service.totalAttendance(inputDataForTotal);
                 System.out.println("勤務時間: " + outputData.getTotalWorkMinutes() / 60 + "時間" + outputData.getTotalWorkMinutes() % 60 + "分");
                 System.out.println("残業時間: " + outputData.getTotalOverWorkMinutes() / 60 + "時間" + outputData.getTotalOverWorkMinutes() % 60 + "分");
             } else {

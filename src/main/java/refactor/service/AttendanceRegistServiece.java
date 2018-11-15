@@ -6,12 +6,16 @@ import refactor.domain.dto.RegistAttendanceEvent;
 import refactor.domain.AttendanceRegistDomain;
 
 public class AttendanceRegistServiece {
-    private AttendanceRegistDomain aDomain = new AttendanceRegistDomain();
 
+    private AttendanceRepositoryInsert repository;
 
-    public void inputAttendance(RegistAttendanceEvent data, AttendanceRepositoryInsert repository){
+    public AttendanceRegistServiece(AttendanceRepositoryInsert repository) {
+        this.repository = repository;
+    }
 
-        aDomain.inputAttendance(data,repository);
+    public void inputAttendance(RegistAttendanceEvent data){
+        AttendanceRegistDomain aDomain = new AttendanceRegistDomain(repository);
+        aDomain.inputAttendance(data);
     }
 
 }

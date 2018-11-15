@@ -1,9 +1,6 @@
 package refactor.domain.dto;
 
-import refactor.domain.dto.Item.ArgsItem;
-import refactor.domain.dto.Item.DateItem;
-import refactor.domain.dto.Item.EndTimeItem;
-import refactor.domain.dto.Item.StartTimeItem;
+import refactor.domain.dto.Item.*;
 import refactor.domain.repository.NowTimeRepository;
 
 
@@ -31,16 +28,16 @@ public class RegistAttendanceEvent {
     /**
      * 現在時刻
      */
-    private final String nowTime;
+    private final NowTimeItem nowTime;
 
-//NOWTIMEで値を渡しで直接渡してOK
+//NOWTIMEで値を渡しで直接渡してもOK
     public RegistAttendanceEvent(ArgsItem argsInput, NowTimeRepository nowTimeRepo) {
         String[] args = argsInput.getArgs();
         methodType = args[0];
         date = new DateItem(args[1]);
         startTime = new StartTimeItem(args[2]);
         endTime = new EndTimeItem(args[3]);
-        nowTime = nowTimeRepo.getNowTime();
+        nowTime = new NowTimeItem(nowTimeRepo.getNowTime());
     }
 
     public String getMethodType() {
@@ -59,7 +56,7 @@ public class RegistAttendanceEvent {
         return endTime;
     }
 
-    public String getNowTime() {
+    public NowTimeItem getNowTime() {
         return nowTime;
     }
 
@@ -72,6 +69,7 @@ public class RegistAttendanceEvent {
         int workMinutes = endTime.getHour()  * 60 + endTime.getMinutes()
                 - (startTime.getHour() * 60 + startTime.getMinutes());
 
+        //TODO ここの書き方も早期Returnに直せるのでは
         //１２時から１３時の休憩時間加味
         if(endTime.getHour() == 12) {
             workMinutes -= endTime.getMinutes();
