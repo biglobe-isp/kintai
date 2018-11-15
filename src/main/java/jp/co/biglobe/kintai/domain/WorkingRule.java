@@ -3,7 +3,7 @@ package jp.co.biglobe.kintai.domain;
 import jp.co.biglobe.kintai.domain.breaktime.BreakTime;
 import jp.co.biglobe.kintai.domain.breaktime.DailyBreakTimes;
 
-public class WorkingRule {
+public final class WorkingRule {
 
     private static WorkingRule INSTANCE;
 

@@ -1,7 +1,6 @@
 package jp.co.biglobe.kintai;
 
 import jp.co.biglobe.kintai.api.KintaiApi;
-import jp.co.biglobe.kintai.service.KintaiService;
 
 import java.time.LocalDateTime;
 
