@@ -2,27 +2,26 @@ package refactor.domain;
 
 public class WorkMinutes {
     public int calculateWorkMinutes(StartTime startTime, EndTime endTime) {
-        int startH = startTime.getStartH();
-        int startM = startTime.getStartM();
-        int endH = endTime.getEndH();
-        int endM = endTime.getEndM();
+        int startHour = startTime.getStartHour();
+        int startMinute = startTime.getStartMinutes();
+        int endHour = endTime.getEndHour();
+        int endMinutes = endTime.getEndMinutes();
 
-        int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-        if (endH == 12) {
-            workMinutes -= endM;
-        } else if (endH >= 13) {
+        int workMinutes = endHour * 60 + endMinutes - (startHour * 60 + startMinute);
+        if (endHour == 12) {
+            workMinutes -= endMinutes;
+        } else if (endHour >= 13) {
+            workMinutes -= 60;
+        }
+        if (endHour == 18) {
+            workMinutes -= endMinutes;
+        } else if (endHour >= 19) {
             workMinutes -= 60;
         }
 
-        if (endH == 18) {
-            workMinutes -= endM;
-        } else if (endH >= 19) {
-            workMinutes -= 60;
-        }
-
-        if (endH == 21) {
-            workMinutes -= endM;
-        } else if (endH >= 22) {
+        if (endHour == 21) {
+            workMinutes -= endMinutes;
+        } else if (endHour >= 22) {
             workMinutes -= 60;
         }
         return workMinutes;

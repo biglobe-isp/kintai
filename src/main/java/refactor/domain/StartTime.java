@@ -2,21 +2,26 @@ package refactor.domain;
 
 //業務ロジックを書くところ
 public class StartTime {
+    private String startTime;
+    private int startHour;
+    private int startMinutes;
 
-    private int startH;
-
-    private int startM;
-
-    public StartTime(String  start) {
-        this.startH = Integer.valueOf(start.substring(0, 2));
-        this.startM = Integer.valueOf(start.substring(2, 4));
+    public StartTime(String startTime) {
+        this.startTime = startTime;
+        this.startHour = Integer.valueOf(startTime.substring(0, 2));
+        this.startMinutes = Integer.valueOf(startTime.substring(2, 4));
     }
 
-    public int getStartH() {
-        return startH;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public int getStartM() {
-        return startM;
+    public int getStartHour() {
+        return startHour;
     }
+
+    public int getStartMinutes() {
+        return startMinutes;
+    }
+
 }

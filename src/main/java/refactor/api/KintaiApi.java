@@ -1,40 +1,55 @@
 package refactor.api;
 
 import refactor.datasource.CsvWriter;
+import refactor.domain.Date;
 import refactor.domain.EndTime;
-import refactor.domain.OverWorkMinutes;
+import refactor.domain.NowTime;
 import refactor.domain.StartTime;
-import refactor.domain.WorkMinutes;
+import refactor.domain.YearMonth;
 import refactor.service.AggregationService;
 import refactor.service.InputService;
 
 public class KintaiApi {
     //各サービスを呼びに行く(InputService)(service層,domain層)
     public static void main(String[] args) {
-        new MethodValidation().methodTypeValidator(args);
+        try {
+            if (args.length < 1) {
+                throw new RuntimeException("引数が足りません");
+            }
+            String methodType = args[0];
 
-        CsvWriter csvWriter = new CsvWriter();
-        new InputService().inputWorkTimeData(args, csvWriter);
+            if ("input".equals(methodType)) {
+                if (args.length < 4) {
+                    throw new RuntimeException("引数が足りません");
+                }
+                //argsの引数をApi層がチェックしてdomain呼ぶ
+                Date date = new Date(args[1]);
+                StartTime startTime = new StartTime(args[2]);
+                EndTime endTime = new EndTime(args[3]);
+                NowTime nowTime = new NowTime();
 
-        //argsの引数をApi層がチェックしてdomain呼ぶ
-        StartTime startTime = new StartTime(args[2]);
-        EndTime endTime = new EndTime(args[3]);
+                CsvWriter csvWriter = new CsvWriter();
+                new InputService().inputWorkTimeData(date, startTime, endTime, csvWriter, nowTime);
+            } else if ("total".equals(methodType)) {
+                if (args.length < 2) {
+                    throw new RuntimeException("引数が足りません");
+                }
+                YearMonth yearMonth = new YearMonth(args[1]);
 
-        WorkMinutes workMinutes = new WorkMinutes();
-        int workMinutes2 = workMinutes.calculateWorkMinutes(startTime, endTime);
+                int totalWorkMinutes = 0;
+                int totalOverWorkMinutes = 0;
 
-        int overWorkMinutes = new OverWorkMinutes().calculateOverWorkMinutes(workMinutes2);
-
-        String yearMonth = args[1];
-
-        int totalWorkMinutes = 0;
-        int totalOverWorkMinutes = 0;
-
-        new AggregationService().calculateTotalWorkMinutesAndTotalOverWorkMinutes(
-                yearMonth,
-                totalWorkMinutes,
-                totalOverWorkMinutes
-        );
+                new AggregationService().calculateTotalWorkMinutesAndTotalOverWorkMinutes(
+                        yearMonth.getYearMonth(),
+                        totalWorkMinutes,
+                        totalOverWorkMinutes
+                );
+            } else {
+                throw new RuntimeException("methodTypeが不正です");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
