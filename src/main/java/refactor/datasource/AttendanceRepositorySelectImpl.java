@@ -29,7 +29,7 @@ public class AttendanceRepositorySelectImpl implements AttendanceRepositorySelec
             HashMap<DateItem, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(CSV_REGEX);
-                if (!columns[0].startsWith(data.getYearMonth())) {
+                if (!columns[0].startsWith(data.getYearMonth().getYearMonth())) {
                     line = br.readLine();
                     continue;
                 }

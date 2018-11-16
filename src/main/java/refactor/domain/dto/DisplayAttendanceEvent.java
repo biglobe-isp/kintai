@@ -1,24 +1,24 @@
 package refactor.domain.dto;
 
-import refactor.domain.dto.Item.ArgsItem;
+import refactor.domain.dto.Item.YearAndMonth;
+
 
 public class DisplayAttendanceEvent {
-    private final String MethodType;
+    private final String methodType;
 
-    private final String yearMonth;
-//TODO DOMAIN層の引数はStringにしない
-    public DisplayAttendanceEvent(ArgsItem argsItem) {
-        String[] args = argsItem.getArgs();
-        MethodType = args[0];
-        yearMonth = args[1];
+    private final YearAndMonth yearMonth;
+//TODO DOMAIN層の引数はにしない
+    public DisplayAttendanceEvent(String methodTypeInput,YearAndMonth yearMonthInput ) {
+        methodType = methodTypeInput;
+        yearMonth = yearMonthInput;
     }
 
-    public String getYearMonth() {
+    public YearAndMonth getYearMonth() {
         return yearMonth;
     }
 
     public String getMethodType() {
-        return MethodType;
+        return methodType;
     }
 
 }

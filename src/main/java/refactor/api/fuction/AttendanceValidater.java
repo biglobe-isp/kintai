@@ -1,6 +1,6 @@
 package refactor.api.fuction;
 
-import refactor.domain.dto.Item.ArgsItem;
+import refactor.api.form.ArgsItem;
 
 public class AttendanceValidater {
 

@@ -1,5 +1,6 @@
 package refactor.domain.dto.Item;
 
+//TODO String渡すのはAPIにね
 public class DateItem {
     private final String date;
 

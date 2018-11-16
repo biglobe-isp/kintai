@@ -30,14 +30,12 @@ public class RegistAttendanceEvent {
      */
     private final NowTimeItem nowTime;
 
-//NOWTIMEで値を渡しで直接渡してもOK
-    public RegistAttendanceEvent(ArgsItem argsInput, NowTimeRepository nowTimeRepo) {
-        String[] args = argsInput.getArgs();
-        methodType = args[0];
-        date = new DateItem(args[1]);
-        startTime = new StartTimeItem(args[2]);
-        endTime = new EndTimeItem(args[3]);
-        nowTime = new NowTimeItem(nowTimeRepo.getNowTime());
+    public RegistAttendanceEvent(String methodType, DateItem date, StartTimeItem startTime, EndTimeItem endTime, NowTimeRepository nowTimeRepo) {
+        this.methodType = methodType;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.nowTime = new NowTimeItem(nowTimeRepo.getNowTime());
     }
 
     public String getMethodType() {
