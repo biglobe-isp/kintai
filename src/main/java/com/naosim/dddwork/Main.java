@@ -67,10 +67,10 @@ public class Main {
                 }
 
             } else if ("total".equals(methodType)) {
-                String yearMonth = args[1];
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
+                String yearMonth = args[1];
 
                 int totalWorkMinutes = 0;
                 int totalOverWorkMinutes = 0;
