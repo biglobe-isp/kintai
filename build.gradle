@@ -1,26 +1,34 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+    }
 }
 
-group 'kintai'
-version '1.0-SNAPSHOT'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-sourceCompatibility = 1.8
+jar {
+    baseName = 'kintai'
+    version = "1.0.0-SNAPSHOT"
+}
 
 repositories {
     mavenCentral()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
+    compile("org.springframework.boot:spring-boot-starter")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-apply plugin: 'application'
-
-mainClassName = 'com.naosim.dddwork.Main'
-
-jar {
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
 }
