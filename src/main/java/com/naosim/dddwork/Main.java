@@ -13,13 +13,13 @@ public class Main {
     public static void main(String[] args) {
         try {
             if (args.length < 1) {
-                throw new RuntimeException("引数が足りません");
+                throw new IllegalArgumentException("引数が足りません");
             }
             String methodType = args[0];
 
             if ("input".equals(methodType)) {
                 if (args.length < 4) {
-                    throw new RuntimeException("引数が足りません");
+                    throw new IllegalArgumentException("引数が足りません");
                 }
                 String date = args[1];
                 String start = args[2];
@@ -68,7 +68,7 @@ public class Main {
 
             } else if ("total".equals(methodType)) {
                 if (args.length < 2) {
-                    throw new RuntimeException("引数が足りません");
+                    throw new IllegalArgumentException("引数が足りません");
                 }
                 String yearMonth = args[1];
 
@@ -107,8 +107,10 @@ public class Main {
                 }
 
             } else {
-                throw new RuntimeException("methodTypeが不正です");
+                throw new IllegalArgumentException("methodTypeが不正です");
             }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
