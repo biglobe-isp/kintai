@@ -18,3 +18,9 @@ dependencies {
 apply plugin: 'application'
 
 mainClassName = 'com.naosim.dddwork.Main'
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
