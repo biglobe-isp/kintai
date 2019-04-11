@@ -1,0 +1,127 @@
+@startuml
+
+package api {
+
+    class  AttendanceController <<Controller>> {
+        + void command(String[] args)
+        - void input(String date, String start, String end)
+        - AttendanceSummary total(String yearMonth)
+    }
+}
+
+package service {
+
+    class  AttendanceService <<Service>> {
+        + void saveAttendance(LocalDate date, TimePoint startTime, TimePoint endTime)
+        + AttendanceSummary fetchMonthlyAttendanceSummary(YearMonth yearMonth) {
+    }
+
+    ~class AttendanceBuilder <<Service>> {
+        '~ Attendance build(LocalDate date, TimePoint startTime, TimePoint endTime, LocalDate createDate)
+        ~ Attendance build(...)
+    }
+
+    ~class AttendanceSummaryBuilder <<Service>> {
+        '~ AttendanceSummary build(YearMonth yearMonth, List<Attendance> attendances)
+        ~ AttendanceSummary build(...)
+    }
+}
+
+package datasource {
+
+    class  AttendanceRepositoryCsv <<Datasource>> {
+        + void save(Attendance attendance)
+        + List<Attendance> fetchMonthly(YearMonth yearMonth)
+    }
+
+    class WorkRegulationRepositoryDefault <<Datasource>> {
+        + WorkRegulation fetchDefault()
+    }
+}
+
+package domain {
+
+    class Attendance <<Entity>> {
+        LocalDate date;
+        TimePoint startTime;
+        TimePoint endTime;
+        WorkMinute workMinute;
+        WorkMinute overWorkMinute;
+        LocalDate createDate;
+    }
+
+    interface AttendanceRepository <<Service>> {
+        + void save(Attendance attendance)
+        + List<Attendance> fetchMonthly(YearMonth yearMonth)
+    }
+
+    class AttendanceSummary <<Entity>> {
+        YearMonth yearMonth;
+        WorkMinute totalWorkMinute;
+        WorkMinute totalOverWorkMinute;
+    }
+
+    class TimePoint <<ValueObject>> {
+        LocalTime value
+    }
+
+    class TimePointPair <<Entity>> {
+        TimePoint startTime
+        TimePoint endTime
+    }
+
+    class WorkMinute <<ValueObject>> {
+        int value
+    }
+
+    class WorkRegulation <<Entity>> {
+        TimePoint standardStartTime;
+        TimePoint minStartTime;
+        TimePoint maxStartTime;
+        TimePoint standardEndTime;
+        TimePoint minEndTime;
+        TimePoint maxEndTime;
+        ImmutableList<TimePointPair> restTimes;
+        WorkMinute standardWorkMinute;
+    }
+
+    interface WorkRegulationRepository <<Service>> {
+        + WorkRegulation fetchDefault()
+    }
+
+    class YearMonth <<ValueObject>> {
+        int year;
+        int month;
+    }
+}
+
+
+''' api
+AttendanceController --> AttendanceService
+
+
+''' service
+AttendanceService --> AttendanceBuilder
+AttendanceService --> AttendanceSummaryBuilder
+AttendanceService --> AttendanceRepository
+AttendanceBuilder --> WorkRegulationRepository
+' AttendanceBuilder ..> Attendance : <<Create>>
+' AttendanceSummaryBuilder ..> AttendanceSummary : <<Create>>
+
+
+''' datasource
+AttendanceRepositoryCsv --|> AttendanceRepository
+WorkRegulationRepositoryDefault --|> WorkRegulationRepository
+
+
+''' domain
+AttendanceRepository -[hidden]- Attendance
+WorkRegulation -[hidden] Attendance
+Attendance -[hidden]- TimePoint
+Attendance -[hidden]- WorkMinute
+AttendanceSummary -[hidden]- YearMonth
+AttendanceSummary -[hidden]- WorkMinute
+WorkRegulation -[hidden]- TimePointPair
+TimePointPair -[hidden] TimePoint
+
+@enduml
