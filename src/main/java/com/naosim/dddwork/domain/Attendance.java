@@ -5,7 +5,7 @@ import lombok.Value;
 import java.time.LocalDate;
 
 @Value
-public class Attendance {
+public class Attendance implements WorkTimeOfDay {
 
     private final LocalDate date;
     private final TimePoint startTime;

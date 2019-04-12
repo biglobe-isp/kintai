@@ -13,17 +13,20 @@ package service {
 
     class  AttendanceService <<Service>> {
         + void saveAttendance(LocalDate date, TimePoint startTime, TimePoint endTime)
-        + AttendanceSummary fetchMonthlyAttendanceSummary(YearMonth yearMonth) {
+        + AttendanceSummary fetchAttendanceSummary(YearMonth yearMonth)
     }
 
     ~class AttendanceFactory <<Service>> {
-        '~ Attendance create(LocalDate date, TimePoint startTime, TimePoint endTime, LocalDate createDate)
         ~ Attendance create(...)
     }
 
     ~class AttendanceSummaryFactory <<Service>> {
-        '~ AttendanceSummary create(YearMonth yearMonth, List<Attendance> attendances)
         ~ AttendanceSummary create(...)
+    }
+
+    ~class WorkMinuteCalculator <<Service>> {
+        ~ WorkTimeOfDay calculateOfDay(TimePoint startTime, TimePoint endTime)
+        ~ WorkTimeOfMonth calculateOfMonth(List<WorkTimeOfDay> workTimeOfDays)
     }
 }
 
@@ -89,6 +92,16 @@ package domain {
         + WorkRegulation fetchDefault()
     }
 
+    interface WorkTimeOfDay {
+        + WorkMinute getWorkMinute()
+        + WorkMinute getOverWorkMinute()
+    }
+
+    interface WorkTimeOfMonth {
+        + WorkMinute getTotalWorkMinute()
+        + WorkMinute getTotalOverWorkMinute()
+    }
+
     class YearMonth <<ValueObject>> {
         int year;
         int month;
@@ -101,13 +114,14 @@ AttendanceController --> AttendanceService
 
 
 ''' service
+AttendanceService --> AttendanceRepository
 AttendanceService --> AttendanceFactory
 AttendanceService --> AttendanceSummaryFactory
-AttendanceService --> AttendanceRepository
-AttendanceFactory --> WorkRegulationRepository
+AttendanceService --> WorkMinuteCalculator
+WorkMinuteCalculator --> WorkRegulationRepository
 ' AttendanceFactory ..> Attendance : <<Create>>
 ' AttendanceSummaryFactory ..> AttendanceSummary : <<Create>>
-
+AttendanceFactory -[hidden]- WorkMinuteCalculator
 
 ''' datasource
 AttendanceRepositoryCsv --|> AttendanceRepository
@@ -115,13 +129,16 @@ WorkRegulationRepositoryDefault --|> WorkRegulationRepository
 
 
 ''' domain
+Attendance --|> WorkTimeOfDay
+AttendanceSummary --|> WorkTimeOfMonth
+
 WorkRegulationRepository -[hidden]- WorkRegulation
 WorkRegulation -[hidden] Attendance
-Attendance -[hidden]- TimePoint
-Attendance -[hidden]- WorkMinute
-AttendanceSummary -[hidden]- YearMonth
-AttendanceSummary -[hidden]- WorkMinute
+Attendance -[hidden] AttendanceSummary
+WorkTimeOfDay -[hidden] WorkTimeOfMonth
 WorkRegulation -[hidden]- TimePointPair
-TimePointPair -[hidden] TimePoint
+TimePointPair -[hidden]- TimePoint
+TimePoint -[hidden] WorkMinute
+WorkMinute -[hidden] YearMonth
 
 @enduml

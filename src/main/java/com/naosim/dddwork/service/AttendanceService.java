@@ -4,35 +4,37 @@ import com.naosim.dddwork.domain.Attendance;
 import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.AttendanceSummary;
 import com.naosim.dddwork.domain.TimePoint;
+import com.naosim.dddwork.domain.WorkTimeOfDay;
+import com.naosim.dddwork.domain.WorkTimeOfMonth;
 import com.naosim.dddwork.domain.YearMonth;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
     private final AttendanceFactory attendanceFactory;
     private final AttendanceSummaryFactory attendanceSummaryFactory;
-
-    @Autowired
-    public AttendanceService(
-            AttendanceRepository attendanceRepository,
-            AttendanceFactory attendanceFactory,
-            AttendanceSummaryFactory attendanceSummaryFactory) {
-        this.attendanceRepository = attendanceRepository;
-        this.attendanceFactory = attendanceFactory;
-        this.attendanceSummaryFactory = attendanceSummaryFactory;
-    }
+    private final WorkMinuteCalculator workMinuteCalculator;
 
     public void saveAttendance(LocalDate date, TimePoint startTime, TimePoint endTime) {
-        Attendance attendance = attendanceFactory.create(date, startTime, endTime, LocalDate.now());
+        WorkTimeOfDay workTimeOfDay = workMinuteCalculator.calculateOfDay(startTime, endTime);
+        Attendance attendance = attendanceFactory.create(date, startTime, endTime, workTimeOfDay);
         attendanceRepository.save(attendance);
     }
 
-    public AttendanceSummary fetchMonthlyAttendanceSummary(YearMonth yearMonth) {
-        return attendanceSummaryFactory.create(yearMonth, attendanceRepository.fetchMonthly(yearMonth));
+    public AttendanceSummary fetchAttendanceSummary(YearMonth yearMonth) {
+        List<WorkTimeOfDay> workTimeOfDays = attendanceRepository.fetchMonthly(yearMonth)
+                .stream()
+                .map((x) -> (WorkTimeOfDay) x)
+                .collect(Collectors.toList());
+        WorkTimeOfMonth workTimeOfMonth = workMinuteCalculator.calculateOfMonth(workTimeOfDays);
+        return attendanceSummaryFactory.create(yearMonth, workTimeOfMonth);
     }
 }

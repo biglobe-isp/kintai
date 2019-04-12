@@ -61,7 +61,7 @@ public class AttendanceController {
 
     private String total(String yearMonthStr) {
         YearMonth yearMonth = parseToYearMonth(yearMonthStr);
-        AttendanceSummary summary = attendanceService.fetchMonthlyAttendanceSummary(yearMonth);
+        AttendanceSummary summary = attendanceService.fetchAttendanceSummary(yearMonth);
         return toDisplayString(summary);
     }
 
