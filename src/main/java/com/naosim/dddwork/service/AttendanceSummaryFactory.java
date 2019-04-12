@@ -9,9 +9,9 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.util.List;
 
 @Component
-class AttendanceSummaryBuilder {
+class AttendanceSummaryFactory {
 
-    AttendanceSummary build(YearMonth yearMonth, List<Attendance> attendances) {
+    AttendanceSummary create(YearMonth yearMonth, List<Attendance> attendances) {
         // TODO: Not Implemented
         throw new NotImplementedException();
     }

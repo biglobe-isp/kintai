@@ -14,25 +14,25 @@ import java.time.LocalDate;
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
-    private final AttendanceBuilder attendanceBuilder;
-    private final AttendanceSummaryBuilder attendanceSummaryBuilder;
+    private final AttendanceFactory attendanceFactory;
+    private final AttendanceSummaryFactory attendanceSummaryFactory;
 
     @Autowired
     public AttendanceService(
             AttendanceRepository attendanceRepository,
-            AttendanceBuilder attendanceBuilder,
-            AttendanceSummaryBuilder attendanceSummaryBuilder) {
+            AttendanceFactory attendanceFactory,
+            AttendanceSummaryFactory attendanceSummaryFactory) {
         this.attendanceRepository = attendanceRepository;
-        this.attendanceBuilder = attendanceBuilder;
-        this.attendanceSummaryBuilder = attendanceSummaryBuilder;
+        this.attendanceFactory = attendanceFactory;
+        this.attendanceSummaryFactory = attendanceSummaryFactory;
     }
 
     public void saveAttendance(LocalDate date, TimePoint startTime, TimePoint endTime) {
-        Attendance attendance = attendanceBuilder.build(date, startTime, endTime, LocalDate.now());
+        Attendance attendance = attendanceFactory.create(date, startTime, endTime, LocalDate.now());
         attendanceRepository.save(attendance);
     }
 
     public AttendanceSummary fetchMonthlyAttendanceSummary(YearMonth yearMonth) {
-        return attendanceSummaryBuilder.build(yearMonth, attendanceRepository.fetchMonthly(yearMonth));
+        return attendanceSummaryFactory.create(yearMonth, attendanceRepository.fetchMonthly(yearMonth));
     }
 }

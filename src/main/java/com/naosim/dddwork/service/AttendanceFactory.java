@@ -10,16 +10,16 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.time.LocalDate;
 
 @Component
-class AttendanceBuilder {
+class AttendanceFactory {
 
     private final WorkRegulationRepository workRegulationRepository;
 
     @Autowired
-    public AttendanceBuilder(WorkRegulationRepository workRegulationRepository) {
+    public AttendanceFactory(WorkRegulationRepository workRegulationRepository) {
         this.workRegulationRepository = workRegulationRepository;
     }
 
-    Attendance build(LocalDate date, TimePoint startTime, TimePoint endTime, LocalDate createDate) {
+    Attendance create(LocalDate date, TimePoint startTime, TimePoint endTime, LocalDate createDate) {
         // TODO: Not Implemented
         throw new NotImplementedException();
     }

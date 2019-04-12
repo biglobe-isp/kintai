@@ -5,7 +5,7 @@ package api {
     class  AttendanceController <<Controller>> {
         + void command(String[] args)
         - void input(String date, String start, String end)
-        - AttendanceSummary total(String yearMonth)
+        - String total(String yearMonth)
     }
 }
 
@@ -16,14 +16,14 @@ package service {
         + AttendanceSummary fetchMonthlyAttendanceSummary(YearMonth yearMonth) {
     }
 
-    ~class AttendanceBuilder <<Service>> {
-        '~ Attendance build(LocalDate date, TimePoint startTime, TimePoint endTime, LocalDate createDate)
-        ~ Attendance build(...)
+    ~class AttendanceFactory <<Service>> {
+        '~ Attendance create(LocalDate date, TimePoint startTime, TimePoint endTime, LocalDate createDate)
+        ~ Attendance create(...)
     }
 
-    ~class AttendanceSummaryBuilder <<Service>> {
-        '~ AttendanceSummary build(YearMonth yearMonth, List<Attendance> attendances)
-        ~ AttendanceSummary build(...)
+    ~class AttendanceSummaryFactory <<Service>> {
+        '~ AttendanceSummary create(YearMonth yearMonth, List<Attendance> attendances)
+        ~ AttendanceSummary create(...)
     }
 }
 
@@ -101,12 +101,12 @@ AttendanceController --> AttendanceService
 
 
 ''' service
-AttendanceService --> AttendanceBuilder
-AttendanceService --> AttendanceSummaryBuilder
+AttendanceService --> AttendanceFactory
+AttendanceService --> AttendanceSummaryFactory
 AttendanceService --> AttendanceRepository
-AttendanceBuilder --> WorkRegulationRepository
-' AttendanceBuilder ..> Attendance : <<Create>>
-' AttendanceSummaryBuilder ..> AttendanceSummary : <<Create>>
+AttendanceFactory --> WorkRegulationRepository
+' AttendanceFactory ..> Attendance : <<Create>>
+' AttendanceSummaryFactory ..> AttendanceSummary : <<Create>>
 
 
 ''' datasource
@@ -115,7 +115,7 @@ WorkRegulationRepositoryDefault --|> WorkRegulationRepository
 
 
 ''' domain
-AttendanceRepository -[hidden]- Attendance
+WorkRegulationRepository -[hidden]- WorkRegulation
 WorkRegulation -[hidden] Attendance
 Attendance -[hidden]- TimePoint
 Attendance -[hidden]- WorkMinute
