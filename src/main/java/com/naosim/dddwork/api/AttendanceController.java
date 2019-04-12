@@ -3,6 +3,7 @@ package com.naosim.dddwork.api;
 import com.naosim.dddwork.domain.AttendanceSummary;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.WorkMinute;
+import com.naosim.dddwork.domain.WorkRegulationException;
 import com.naosim.dddwork.domain.YearMonth;
 import com.naosim.dddwork.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class AttendanceController {
             }
         } catch (DateTimeException e) {
             return "引数が不正です";
+        } catch (WorkRegulationException e) {
+            return e.getMessage();
         }
 
         return "methodTypeが不正です";
