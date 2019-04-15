@@ -1,5 +1,6 @@
 package com.naosim.dddwork.datasource;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.naosim.dddwork.domain.Attendance;
 import com.naosim.dddwork.domain.AttendanceFactory;
@@ -14,8 +15,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Repository
 public class AttendanceRepositoryCsv implements AttendanceRepository {
@@ -49,17 +56,27 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         return filterMonthly(attendances, yearMonth);
     }
 
-    private List<Attendance> filterMonthly(List<Attendance> attendances, YearMonth yearMonth) {
-        Predicate<Attendance> condition = (Attendance attendance) ->
+    @VisibleForTesting
+    List<Attendance> filterMonthly(List<Attendance> attendances, YearMonth yearMonth) {
+        Predicate<Attendance> condition = (attendance) ->
                 attendance.getDate().getYear() == yearMonth.getYear()
                         && attendance.getDate().getMonthValue() == yearMonth.getMonth();
 
-        return attendances.stream()
+        Collector<Attendance, ?, Map<LocalDate, Attendance>> aggregateByMaxDate = Collectors.toMap(
+                Attendance::getDate,
+                Function.identity(),
+                BinaryOperator.maxBy(Comparator.comparing(Attendance::getCreateAt))
+        );
+
+        Map<LocalDate, Attendance> map = attendances.stream()
                 .filter(condition)
-                .collect(ImmutableList.toImmutableList());
+                .collect(aggregateByMaxDate);
+
+        return map.values().stream().collect(ImmutableList.toImmutableList());
     }
 
-    private String serialize(Attendance attendance) {
+    @VisibleForTesting
+    String serialize(Attendance attendance) {
         return String.format(
                 "%s,%s,%s,%s,%s,%s",
                 attendance.getDate().format(DATE_FORMATTER),
@@ -71,7 +88,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         );
     }
 
-    private Attendance deserialize(String line) {
+    @VisibleForTesting
+    Attendance deserialize(String line) {
         String[] items = line.split(",");
         String date = items[0];
         String startDate = items[1];
