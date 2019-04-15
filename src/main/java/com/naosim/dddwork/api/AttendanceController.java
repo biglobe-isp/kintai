@@ -46,8 +46,6 @@ public class AttendanceController {
                 String yearMonth = args[1];
                 return this.total(yearMonth);
             }
-        } catch (DateTimeException e) {
-            return "引数が不正です";
         } catch (WorkRegulationException e) {
             return e.getMessage();
         }
@@ -56,14 +54,26 @@ public class AttendanceController {
     }
 
     private void input(String dateStr, String startStr, String endStr) {
-        LocalDate date = parseToLocalDate(dateStr);
-        TimePoint startTime = parseToTimePoint(startStr);
-        TimePoint endTime = parseToTimePoint(endStr);
+        LocalDate date;
+        TimePoint startTime;
+        TimePoint endTime;
+        try {
+            date = parseToLocalDate(dateStr);
+            startTime = parseToTimePoint(startStr);
+            endTime = parseToTimePoint(endStr);
+        } catch (DateTimeException e) {
+            throw new WorkRegulationException("引数が不正です");
+        }
         attendanceService.saveAttendance(date, startTime, endTime);
     }
 
     private String total(String yearMonthStr) {
-        YearMonth yearMonth = parseToYearMonth(yearMonthStr);
+        YearMonth yearMonth;
+        try {
+            yearMonth = parseToYearMonth(yearMonthStr);
+        } catch (DateTimeException e) {
+            throw new WorkRegulationException("引数が不正です");
+        }
         AttendanceSummary summary = attendanceService.fetchAttendanceSummary(yearMonth);
         return toDisplayString(summary);
     }

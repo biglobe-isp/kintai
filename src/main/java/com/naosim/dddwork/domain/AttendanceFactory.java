@@ -3,6 +3,7 @@ package com.naosim.dddwork.domain;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class AttendanceFactory {
@@ -13,7 +14,7 @@ public class AttendanceFactory {
             TimePoint endTime,
             WorkMinute workMinute,
             WorkMinute overWorkMinute,
-            LocalDate createDate
+            LocalDateTime createAt
     ) {
         return new Attendance(
                 date,
@@ -21,7 +22,7 @@ public class AttendanceFactory {
                 endTime,
                 workMinute,
                 overWorkMinute,
-                createDate
+                createAt
         );
     }
 }

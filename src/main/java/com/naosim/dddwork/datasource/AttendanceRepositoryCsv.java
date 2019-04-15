@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.function.Predicate;
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private final static Charset CHARSET = StandardCharsets.UTF_8;
+    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -83,7 +85,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                 attendance.getEndTime().getValue().format(TIME_FORMATTER),
                 attendance.getWorkMinute().getValue(),
                 attendance.getOverWorkMinute().getValue(),
-                attendance.getCreateDate().format(DATE_FORMATTER)
+                attendance.getCreateAt().format(DATE_TIME_FORMATTER)
         );
     }
 
@@ -94,7 +96,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         String endDate = items[2];
         String workMinute = items[3];
         String overWorkMinute = items[4];
-        String createDate = items[5];
+        String createAt = items[5];
 
         return attendanceFactory.create(
                 LocalDate.parse(date, DATE_FORMATTER),
@@ -102,7 +104,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                 new TimePoint(LocalTime.parse(endDate, TIME_FORMATTER)),
                 new WorkMinute(Integer.valueOf(workMinute)),
                 new WorkMinute(Integer.valueOf(overWorkMinute)),
-                LocalDate.parse(createDate, DATE_FORMATTER)
+                LocalDateTime.parse(createAt, DATE_TIME_FORMATTER)
         );
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class AttendanceService {
                 endTime,
                 workTimeOfDay.getWorkMinute(),
                 workTimeOfDay.getOverWorkMinute(),
-                LocalDate.now(clock)
+                LocalDateTime.now(clock)
         );
         attendanceRepository.save(attendance);
     }

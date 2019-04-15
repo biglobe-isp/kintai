@@ -49,7 +49,7 @@ package domain {
         TimePoint endTime;
         WorkMinute workMinute;
         WorkMinute overWorkMinute;
-        LocalDate createDate;
+        LocalDate createAt;
     }
 
     interface AttendanceRepository <<Service>> {
