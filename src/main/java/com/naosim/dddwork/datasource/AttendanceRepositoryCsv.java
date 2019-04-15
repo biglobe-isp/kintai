@@ -45,6 +45,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                     getTargetFile().toPath(),
                     ImmutableList.of(serialize(attendance)),
                     CHARSET,
+                    StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
         } catch (IOException e) {
@@ -76,7 +77,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private String serialize(Attendance attendance) {
         return String.format(
-                "%s,%s,%s,%s,%s,%s\n",
+                "%s,%s,%s,%s,%s,%s",
                 attendance.getDate().format(DATE_FORMATTER),
                 attendance.getStartTime().getValue().format(TIME_FORMATTER),
                 attendance.getEndTime().getValue().format(TIME_FORMATTER),

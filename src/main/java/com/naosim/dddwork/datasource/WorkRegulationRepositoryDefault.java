@@ -16,12 +16,12 @@ public class WorkRegulationRepositoryDefault implements WorkRegulationRepository
     @Override
     public WorkRegulation fetchDefault() {
 
-        TimePoint standardStartTime = createTimePoint(9);   //  9時開始  // 意味ないかも
-        TimePoint standardEndTime = createTimePoint(18);    // 18時終了  // 〃
-        TimePoint minStartTime = createTimePoint(0);        // 早出はあり
-        TimePoint minEndTime = createTimePoint(0);          // 早退はあり（コアタイムなし）
-        TimePoint maxStartTime = createTimePoint(9);        // 遅刻はなし
-        TimePoint maxEndTime = createTimePoint(24);         // 日付を越えたらサービス残業
+        TimePoint standardStartTime = createTimePoint(9, 0);   //  9時開始  // いまのところ不使用
+        TimePoint standardEndTime = createTimePoint(18, 0);    // 18時終了  // 〃
+        TimePoint minStartTime = createTimePoint(0, 0);        // 早出はあり
+        TimePoint minEndTime = createTimePoint(0, 0);          // 早退はあり（コアタイムなし）
+        TimePoint maxStartTime = createTimePoint(9, 0);        // 遅刻はなし
+        TimePoint maxEndTime = createTimePoint(23, 59);         // 日付を越えたらサービス残業
         ImmutableList<TimePointPair> restTimes =
                 ImmutableList.of(
                         createTimePointPair(12, 13),
@@ -42,8 +42,8 @@ public class WorkRegulationRepositoryDefault implements WorkRegulationRepository
         );
     }
 
-    private TimePoint createTimePoint(int hour) {
-        return new TimePoint(LocalTime.of(hour, 0));
+    private TimePoint createTimePoint(int hour, int minute) {
+        return new TimePoint(LocalTime.of(hour, minute));
     }
 
     private TimePointPair createTimePointPair(int startHour, int endHour) {

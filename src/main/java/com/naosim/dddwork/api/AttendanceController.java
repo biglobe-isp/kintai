@@ -69,7 +69,7 @@ public class AttendanceController {
     }
 
     private String toDisplayString(AttendanceSummary summary) {
-        return "勤務時間: " + toDisplayString(summary.getTotalOverWorkMinute())
+        return "勤務時間: " + toDisplayString(summary.getTotalWorkMinute()) + "\n"
                 + "残業時間: " + toDisplayString(summary.getTotalOverWorkMinute());
     }
 

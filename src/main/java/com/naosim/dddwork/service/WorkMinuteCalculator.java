@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 class WorkMinuteCalculator {
 
-    private static final DateTimeFormatter fmt = DateTimeFormatter.ofPattern("H:m");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmm");
 
     private final WorkRegulationRepository workRegulationRepository;
 
@@ -48,22 +48,22 @@ class WorkMinuteCalculator {
 
         LocalTime stMin = workRegulation.getMinStartTime().getValue();
         if (st.isBefore(stMin)) {
-            throw new WorkRegulationException("開始時間は" + stMin.format(fmt) + "以降の値を指定してください");
+            throw new WorkRegulationException("開始時間は" + stMin.format(TIME_FORMATTER) + "以降の値を指定してください");
         }
 
         LocalTime stMax = workRegulation.getMaxStartTime().getValue();
         if (st.isAfter(stMax)) {
-            throw new WorkRegulationException("開始時間は" + stMin.format(fmt) + "以前の値を指定してください");
+            throw new WorkRegulationException("開始時間は" + stMax.format(TIME_FORMATTER) + "までの値を指定してください");
         }
 
         LocalTime etMin = workRegulation.getMinEndTime().getValue();
         if (st.isBefore(etMin)) {
-            throw new WorkRegulationException("終了時間は" + etMin.format(fmt) + "以降の値を指定してください");
+            throw new WorkRegulationException("終了時間は" + etMin.format(TIME_FORMATTER) + "以降の値を指定してください");
         }
 
         LocalTime etMax = workRegulation.getMaxEndTime().getValue();
         if (st.isAfter(etMax)) {
-            throw new WorkRegulationException("終了時間は" + etMax.format(fmt) + "以前の値を指定してください");
+            throw new WorkRegulationException("終了時間は" + etMax.format(TIME_FORMATTER) + "までの値を指定してください");
         }
     }
 

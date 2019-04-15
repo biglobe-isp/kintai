@@ -6,9 +6,6 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import java.time.Clock;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -35,10 +32,5 @@ public class Application implements CommandLineRunner {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-    }
-
-    @Bean
-    public Clock clock() {
-        return Clock.systemDefaultZone();
     }
 }
