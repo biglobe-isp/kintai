@@ -10,12 +10,6 @@ import com.naosim.dddwork.domain.YearMonth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -26,55 +20,43 @@ import java.util.function.Predicate;
 @Repository
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
-    private final static Charset CHARSET = StandardCharsets.UTF_8;
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     private final CsvSetting setting;
+    private final FileIOHelper fileIOHelper;
     private final AttendanceFactory attendanceFactory;
 
     @Autowired
-    public AttendanceRepositoryCsv(CsvSetting setting, AttendanceFactory attendanceFactory) {
+    public AttendanceRepositoryCsv(CsvSetting setting, FileIOHelper fileIOHelper, AttendanceFactory attendanceFactory) {
         this.setting = setting;
+        this.fileIOHelper = fileIOHelper;
         this.attendanceFactory = attendanceFactory;
     }
 
     @Override
     public void save(Attendance attendance) {
-        try {
-            Files.write(
-                    getTargetFile().toPath(),
-                    ImmutableList.of(serialize(attendance)),
-                    CHARSET,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        fileIOHelper.writeLines(setting.getFilepath(), ImmutableList.of(serialize(attendance)));
     }
 
     @Override
     public List<Attendance> fetchMonthly(YearMonth yearMonth) {
+        List<Attendance> attendances = fileIOHelper.readLines(setting.getFilepath())
+                .stream()
+                .map(this::deserialize)
+                .collect(ImmutableList.toImmutableList());
+        return filterMonthly(attendances, yearMonth);
+    }
+
+    private List<Attendance> filterMonthly(List<Attendance> attendances, YearMonth yearMonth) {
         Predicate<Attendance> condition = (Attendance attendance) ->
                 attendance.getDate().getYear() == yearMonth.getYear()
                         && attendance.getDate().getMonthValue() == yearMonth.getMonth();
-        return fetchAll().stream().filter(condition).collect(ImmutableList.toImmutableList());
-    }
 
-    private List<Attendance> fetchAll() {
-        try {
-            return Files.lines(getTargetFile().toPath(), CHARSET)
-                    .map(this::deserialize)
-                    .collect(ImmutableList.toImmutableList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private File getTargetFile() {
-        return new File(setting.getFilepath());
+        return attendances.stream()
+                .filter(condition)
+                .collect(ImmutableList.toImmutableList());
     }
 
     private String serialize(Attendance attendance) {
