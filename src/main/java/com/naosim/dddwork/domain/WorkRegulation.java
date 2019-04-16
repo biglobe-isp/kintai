@@ -1,9 +1,11 @@
 package com.naosim.dddwork.domain;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Builder;
 import lombok.Value;
 
 @Value
+@Builder
 public class WorkRegulation {
 
     private final TimePoint standardStartTime;

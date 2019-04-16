@@ -3,7 +3,6 @@ package com.naosim.dddwork.datasource;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.naosim.dddwork.domain.Attendance;
-import com.naosim.dddwork.domain.AttendanceFactory;
 import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.WorkMinute;
@@ -31,13 +30,11 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private final CsvSetting setting;
     private final FileIOHelper fileIOHelper;
-    private final AttendanceFactory attendanceFactory;
 
     @Autowired
-    public AttendanceRepositoryCsv(CsvSetting setting, FileIOHelper fileIOHelper, AttendanceFactory attendanceFactory) {
+    public AttendanceRepositoryCsv(CsvSetting setting, FileIOHelper fileIOHelper) {
         this.setting = setting;
         this.fileIOHelper = fileIOHelper;
-        this.attendanceFactory = attendanceFactory;
     }
 
     @Override
@@ -96,13 +93,13 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         String overWorkMinute = items[4];
         String createAt = items[5];
 
-        return attendanceFactory.create(
-                LocalDate.parse(date, DATE_FORMATTER),
-                TimePoint.parse(startDate),
-                TimePoint.parse(endDate),
-                WorkMinute.parse(workMinute),
-                WorkMinute.parse(overWorkMinute),
-                LocalDateTime.parse(createAt, DATE_TIME_FORMATTER)
-        );
+        return Attendance.builder()
+                .date(LocalDate.parse(date, DATE_FORMATTER))
+                .startTime(TimePoint.parse(startDate))
+                .endTime(TimePoint.parse(endDate))
+                .workMinute(WorkMinute.parse(workMinute))
+                .overWorkMinute(WorkMinute.parse(overWorkMinute))
+                .createAt(LocalDateTime.parse(createAt, DATE_TIME_FORMATTER))
+                .build();
     }
 }

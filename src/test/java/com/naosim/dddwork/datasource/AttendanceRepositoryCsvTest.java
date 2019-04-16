@@ -2,7 +2,6 @@ package com.naosim.dddwork.datasource;
 
 import com.google.common.collect.ImmutableList;
 import com.naosim.dddwork.domain.Attendance;
-import com.naosim.dddwork.domain.AttendanceFactory;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.WorkMinute;
 import com.naosim.dddwork.domain.YearMonth;
@@ -89,7 +88,7 @@ public class AttendanceRepositoryCsvTest {
     public void testSerialize() {
         AttendanceRepositoryCsv target = createDefaultTarget();
         Attendance attendance = createAttendance(4, 1, 4, 2);
-        String expected = "2019-04-01,09:00,18:00,8,0,2019-04-02 00:00:00.000";
+        String expected = "2019-04-01,09:00,18:00,480,0,2019-04-02 00:00:00.000";
 
         String actual = target.serialize(attendance);
 
@@ -99,7 +98,7 @@ public class AttendanceRepositoryCsvTest {
     @Test
     public void testDeserialize() {
         AttendanceRepositoryCsv target = createDefaultTarget();
-        String line = "2019-04-01,09:00,18:00,8,0,2019-04-02 00:00:00.000";
+        String line = "2019-04-01,09:00,18:00,480,0,2019-04-02 00:00:00.000";
         Attendance expected = createAttendance(4, 1, 4, 2);
 
         Attendance actual = target.deserialize(line);
@@ -110,8 +109,7 @@ public class AttendanceRepositoryCsvTest {
     private AttendanceRepositoryCsv createDefaultTarget() {
         CsvSetting setting = new CsvSetting();
         FileIOHelper fileIOHelper = new FileIOHelper();
-        AttendanceFactory attendanceFactory = new AttendanceFactory();
-        return new AttendanceRepositoryCsv(setting, fileIOHelper, attendanceFactory);
+        return new AttendanceRepositoryCsv(setting, fileIOHelper);
     }
 
     private Attendance createAttendance(
@@ -120,13 +118,13 @@ public class AttendanceRepositoryCsvTest {
             int createMonth,
             int createDay
     ) {
-        return new Attendance(
-                LocalDate.of(2019, month, day),
-                TimePoint.of(9, 0),
-                TimePoint.of(18, 0),
-                WorkMinute.of(8),
-                WorkMinute.of(0),
-                LocalDateTime.of(2019, createMonth, createDay, 0, 0)
-        );
+        return Attendance.builder()
+                .date(LocalDate.of(2019, month, day))
+                .startTime(TimePoint.of(9, 0))
+                .endTime(TimePoint.of(18, 0))
+                .workMinute(WorkMinute.of(8 * 60))
+                .overWorkMinute(WorkMinute.of(0))
+                .createAt(LocalDateTime.of(2019, createMonth, createDay, 0, 0))
+                .build();
     }
 }

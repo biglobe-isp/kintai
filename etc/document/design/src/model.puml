@@ -12,8 +12,6 @@ package api {
 package service {
 
     class  AttendanceService <<Service>> {
-        - AttendanceFactory attendanceFactory
-        - AttendanceSummaryFactory attendanceSummaryFactory
         + void saveAttendance(LocalDate date, TimePoint startTime, TimePoint endTime)
         + AttendanceSummary fetchAttendanceSummary(YearMonth yearMonth)
     }
@@ -27,7 +25,6 @@ package service {
 package datasource {
 
     class  AttendanceRepositoryCsv <<Datasource>> {
-        - AttendanceFactory attendanceFactory
         + void save(Attendance attendance)
         + List<Attendance> fetchMonthly(YearMonth yearMonth)
     }
@@ -68,14 +65,6 @@ package domain {
         WorkMinute totalOverWorkMinute;
     }
 
-    class AttendanceFactory <<Service>> {
-        Attendance create(...)
-    }
-
-    class AttendanceSummaryFactory <<Service>> {
-        AttendanceSummary create(...)
-    }
-
     class TimePoint <<ValueObject>> {
         int hour
         int minute
@@ -85,7 +74,7 @@ package domain {
         + boolean isAfter(TimePoint timePoint)
     }
 
-    class TimePointPair <<Entity>> {
+    class TimeRange <<Entity>> {
         TimePoint startTime
         TimePoint endTime
     }
@@ -101,7 +90,7 @@ package domain {
         TimePoint standardEndTime;
         TimePoint minEndTime;
         TimePoint maxEndTime;
-        ImmutableList<TimePointPair> restTimes;
+        ImmutableList<TimeRange> restTimes;
         WorkMinute standardWorkMinute;
     }
 
@@ -123,6 +112,20 @@ package domain {
         int year;
         int month;
     }
+
+    ' Auto Generated
+
+    class AttendanceBuilder {
+        Attendance build(...)
+    }
+
+    class AttendanceSummaryBuilder {
+        AttendanceSummary build(...)
+    }
+
+    class WorkRegulationBuilder {
+        WorkRegulation build(...)
+    }
 }
 
 
@@ -132,18 +135,13 @@ AttendanceController --> AttendanceService
 
 ''' service
 AttendanceService --> AttendanceRepository
-' AttendanceService --> AttendanceFactory
-' AttendanceService --> AttendanceSummaryFactory
 AttendanceService --> WorkMinuteCalculator
 WorkMinuteCalculator --> WorkRegulationRepository
-AttendanceFactory ..> Attendance : <<Create>>
-AttendanceSummaryFactory ..> AttendanceSummary : <<Create>>
-AttendanceFactory -[hidden]- WorkMinuteCalculator
+AttendanceBuilder -[hidden]- WorkMinuteCalculator
 
 
 ''' datasource
 AttendanceRepositoryCsv --|> AttendanceRepository
-' AttendanceRepositoryCsv --> AttendanceFactory
 AttendanceRepositoryCsv --> CsvSetting
 AttendanceRepositoryCsv --> FileIOHelper
 WorkRegulationRepositoryDefault --|> WorkRegulationRepository
@@ -152,6 +150,9 @@ WorkRegulationRepositoryDefault --|> WorkRegulationRepository
 ''' domain
 Attendance --|> WorkTimeOfDay
 AttendanceSummary --|> WorkTimeOfMonth
+AttendanceBuilder ..> Attendance : <<Create>>
+AttendanceSummaryBuilder ..> AttendanceSummary : <<Create>>
+WorkRegulationBuilder ..> WorkRegulation : <<Create>>
 
 
 ''' placement order
@@ -160,14 +161,15 @@ AttendanceRepositoryCsv -[hidden]- CsvSetting
 CsvSetting -[hidden]- WorkRegulationRepository
 WorkMinuteCalculator -[hidden]- WorkRegulationRepository
 WorkRegulationRepository -[hidden] AttendanceRepository
-AttendanceRepository -[hidden]- AttendanceFactory
-AttendanceFactory -[hidden] AttendanceSummaryFactory
+AttendanceRepository -[hidden]- AttendanceBuilder
+WorkRegulationBuilder -[hidden] AttendanceBuilder
+AttendanceBuilder -[hidden] AttendanceSummaryBuilder
 
 WorkRegulation -[hidden] Attendance
 Attendance -[hidden] AttendanceSummary
 WorkTimeOfDay -[hidden] WorkTimeOfMonth
-WorkRegulation -[hidden]- TimePointPair
-TimePointPair -[hidden]- TimePoint
+WorkRegulation -[hidden]- TimeRange
+TimeRange -[hidden]- TimePoint
 TimePoint -[hidden] WorkMinute
 WorkMinute -[hidden] YearMonth
 
