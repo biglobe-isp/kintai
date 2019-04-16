@@ -26,11 +26,11 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Main.main(args);
-//        try {
-//            System.out.println(attendanceController.command(args));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        // Main.main(args);
+        try {
+            System.out.println(attendanceController.command(args));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
