@@ -2,7 +2,7 @@ package com.naosim.dddwork.service;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.naosim.dddwork.domain.TimePoint;
-import com.naosim.dddwork.domain.TimePointPair;
+import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.WorkMinute;
 import com.naosim.dddwork.domain.WorkRegulation;
 import com.naosim.dddwork.domain.WorkRegulationException;
@@ -12,15 +12,10 @@ import com.naosim.dddwork.domain.WorkTimeOfMonth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
 class WorkMinuteCalculator {
-
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmm");
 
     private final WorkRegulationRepository workRegulationRepository;
 
@@ -30,14 +25,12 @@ class WorkMinuteCalculator {
     }
 
     WorkTimeOfDay calculateOfDay(TimePoint startTime, TimePoint endTime) {
-        LocalTime st = startTime.getValue();
-        LocalTime et = endTime.getValue();
         WorkRegulation workRegulation = workRegulationRepository.fetchDefault();
 
-        validateWorkTime(st, et, workRegulation);
+        validateWorkTime(startTime, endTime, workRegulation);
 
-        int stayMinute = calculateStayTime(st, et);
-        int restMinute = calculateRestTimes(st, et, workRegulation.getRestTimes());
+        int stayMinute = calculateStayTime(startTime, endTime);
+        int restMinute = calculateRestTimes(startTime, endTime, workRegulation.getRestTimes());
 
         return createWorkTimeOfDay(stayMinute, restMinute, workRegulation.getStandardWorkMinute().getValue());
     }
@@ -59,64 +52,60 @@ class WorkMinuteCalculator {
     }
 
     @VisibleForTesting
-    void validateWorkTime(LocalTime startTime, LocalTime endTime, WorkRegulation workRegulation) {
+    void validateWorkTime(TimePoint startTime, TimePoint endTime, WorkRegulation workRegulation) {
         if (startTime.isAfter(endTime)) {
             throw new WorkRegulationException("開始時間は終了時間より小さい値を指定してください");
         }
 
-        LocalTime minStartTime = workRegulation.getMinStartTime().getValue();
-        if (startTime.isBefore(minStartTime)) {
-            throw new WorkRegulationException("開始時間は" + minStartTime.format(TIME_FORMATTER) + "以降の値を指定してください");
+        if (startTime.isBefore(workRegulation.getMinStartTime())) {
+            throw new WorkRegulationException("開始時間が早すぎます");
         }
 
-        LocalTime maxStartTime = workRegulation.getMaxStartTime().getValue();
-        if (startTime.isAfter(maxStartTime)) {
-            throw new WorkRegulationException("開始時間は" + maxStartTime.format(TIME_FORMATTER) + "までの値を指定してください");
+        if (startTime.isAfter(workRegulation.getMaxStartTime())) {
+            throw new WorkRegulationException("開始時間が遅すぎます");
         }
 
-        LocalTime minEndTime = workRegulation.getMinEndTime().getValue();
-        if (startTime.isBefore(minEndTime)) {
-            throw new WorkRegulationException("終了時間は" + minEndTime.format(TIME_FORMATTER) + "以降の値を指定してください");
+        if (startTime.isBefore(workRegulation.getMinEndTime())) {
+            throw new WorkRegulationException("終了時間が早すぎます");
         }
 
-        LocalTime maxEndTime = workRegulation.getMaxEndTime().getValue();
-        if (startTime.isAfter(maxEndTime)) {
-            throw new WorkRegulationException("終了時間は" + maxEndTime.format(TIME_FORMATTER) + "までの値を指定してください");
+        if (startTime.isAfter(workRegulation.getMaxEndTime())) {
+            throw new WorkRegulationException("終了時間が遅すぎます");
         }
     }
 
     @VisibleForTesting
-    int calculateStayTime(LocalTime startTime, LocalTime endTime) {
-        return (int) ChronoUnit.MINUTES.between(startTime, endTime);
+    int calculateStayTime(TimePoint startTime, TimePoint endTime) {
+        return endTime.differenceMinuteValue(startTime);
     }
 
     @VisibleForTesting
-    int calculateRestTimes(LocalTime startTime, LocalTime endTime, List<TimePointPair> restTimes) {
+    int calculateRestTimes(TimePoint startTime, TimePoint endTime, List<TimeRange> restTimes) {
         return restTimes.stream()
                 .map((rt -> calculateRestTime(
                         startTime,
                         endTime,
-                        rt.getStartTime().getValue(),
-                        rt.getEndTime().getValue()
+                        rt.getStartTime(),
+                        rt.getEndTime()
                 )))
                 .reduce(Integer::sum).orElse(0);
     }
 
     @VisibleForTesting
-    int calculateRestTime(LocalTime startTime, LocalTime endTime, LocalTime restStartTime, LocalTime restEndTime) {
+    int calculateRestTime(TimePoint startTime, TimePoint endTime, TimePoint restStartTime, TimePoint restEndTime) {
         if (startTime.isAfter(restEndTime) || endTime.isBefore(restStartTime)) {
             return 0;
         }
 
         if (startTime.isAfter(restStartTime)) {
-            return (int) ChronoUnit.MINUTES.between(startTime, restEndTime);
+            return restEndTime.differenceMinuteValue(startTime);
         }
 
         if (endTime.isBefore(restEndTime)) {
-            return (int) ChronoUnit.MINUTES.between(restStartTime, endTime);
+            return endTime.differenceMinuteValue(restStartTime);
         }
 
-        return (int) ChronoUnit.MINUTES.between(restStartTime, restEndTime);
+        return restEndTime.differenceMinuteValue(restStartTime);
     }
 
     @VisibleForTesting

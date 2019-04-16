@@ -12,6 +12,6 @@ public class WorkRegulation {
     private final TimePoint standardEndTime;
     private final TimePoint minEndTime;
     private final TimePoint maxEndTime;
-    private final ImmutableList<TimePointPair> restTimes;
+    private final ImmutableList<TimeRange> restTimes;
     private final WorkMinute standardWorkMinute;
 }

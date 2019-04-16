@@ -2,17 +2,17 @@ package com.naosim.dddwork.service;
 
 import com.google.common.collect.ImmutableList;
 import com.naosim.dddwork.domain.TimePoint;
-import com.naosim.dddwork.domain.TimePointPair;
+import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.WorkTimeOfDay;
 import com.naosim.dddwork.domain.WorkTimeOfMonth;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.time.LocalTime;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class WorkMinuteCalculatorTest {
@@ -29,100 +29,100 @@ public class WorkMinuteCalculatorTest {
     @Test
     public void testCalculateStayTime() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(9, 40);
-        LocalTime endTime = LocalTime.of(20, 20);
+        TimePoint startTime = TimePoint.of(9, 40);
+        TimePoint endTime = TimePoint.of(20, 20);
         int expected = (20 - 9) * 60 + (20 - 40);
 
         int actual = target.calculateStayTime(startTime, endTime);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testCalculateRestTimes() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(10, 0);
-        LocalTime endTime = LocalTime.of(15, 30);
-        List<TimePointPair> restTimes = ImmutableList.of(
-                createTimePointPair(9, 10),
-                createTimePointPair(12, 13),
-                createTimePointPair(15, 16)
+        TimePoint startTime = TimePoint.of(10, 0);
+        TimePoint endTime = TimePoint.of(15, 30);
+        List<TimeRange> restTimes = ImmutableList.of(
+                TimeRange.of(9, 0, 10, 0),
+                TimeRange.of(12, 0, 13, 0),
+                TimeRange.of(15, 0, 16, 0)
         );
         int expected = 90;
 
         int actual = target.calculateRestTimes(startTime, endTime, restTimes);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testCalculateRestTime1() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(10, 0);
-        LocalTime endTime = LocalTime.of(15, 0);
-        LocalTime restStartTime = LocalTime.of(9, 0);
-        LocalTime restEndTime = LocalTime.of(10, 0);
+        TimePoint startTime = TimePoint.of(10, 0);
+        TimePoint endTime = TimePoint.of(15, 0);
+        TimePoint restStartTime = TimePoint.of(9, 0);
+        TimePoint restEndTime = TimePoint.of(10, 0);
         int expected = 0;
 
         int actual = target.calculateRestTime(startTime, endTime, restStartTime, restEndTime);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testCalculateRestTime2() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(9, 30);
-        LocalTime endTime = LocalTime.of(15, 0);
-        LocalTime restStartTime = LocalTime.of(9, 0);
-        LocalTime restEndTime = LocalTime.of(10, 0);
+        TimePoint startTime = TimePoint.of(9, 30);
+        TimePoint endTime = TimePoint.of(15, 0);
+        TimePoint restStartTime = TimePoint.of(9, 0);
+        TimePoint restEndTime = TimePoint.of(10, 0);
         int expected = 30;
 
         int actual = target.calculateRestTime(startTime, endTime, restStartTime, restEndTime);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testCalculateRestTime3() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(9, 0);
-        LocalTime endTime = LocalTime.of(15, 0);
-        LocalTime restStartTime = LocalTime.of(12, 0);
-        LocalTime restEndTime = LocalTime.of(13, 0);
+        TimePoint startTime = TimePoint.of(9, 0);
+        TimePoint endTime = TimePoint.of(15, 0);
+        TimePoint restStartTime = TimePoint.of(12, 0);
+        TimePoint restEndTime = TimePoint.of(13, 0);
         int expected = 60;
 
         int actual = target.calculateRestTime(startTime, endTime, restStartTime, restEndTime);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testCalculateRestTime4() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(9, 0);
-        LocalTime endTime = LocalTime.of(14, 30);
-        LocalTime restStartTime = LocalTime.of(14, 0);
-        LocalTime restEndTime = LocalTime.of(15, 0);
+        TimePoint startTime = TimePoint.of(9, 0);
+        TimePoint endTime = TimePoint.of(14, 30);
+        TimePoint restStartTime = TimePoint.of(14, 0);
+        TimePoint restEndTime = TimePoint.of(15, 0);
         int expected = 30;
 
         int actual = target.calculateRestTime(startTime, endTime, restStartTime, restEndTime);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     public void testCalculateRestTime5() {
         WorkMinuteCalculator target = new WorkMinuteCalculator(null);
-        LocalTime startTime = LocalTime.of(9, 0);
-        LocalTime endTime = LocalTime.of(14, 0);
-        LocalTime restStartTime = LocalTime.of(14, 0);
-        LocalTime restEndTime = LocalTime.of(15, 0);
+        TimePoint startTime = TimePoint.of(9, 0);
+        TimePoint endTime = TimePoint.of(14, 0);
+        TimePoint restStartTime = TimePoint.of(14, 0);
+        TimePoint restEndTime = TimePoint.of(15, 0);
         int expected = 0;
 
         int actual = target.calculateRestTime(startTime, endTime, restStartTime, restEndTime);
 
-        Assert.assertEquals(expected, actual);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -136,9 +136,9 @@ public class WorkMinuteCalculatorTest {
 
         WorkTimeOfDay result = target.createWorkTimeOfDay(stayMinute, restMinute, standardMinute);
 
-        Assert.assertNotNull(result);
-        Assert.assertEquals(result.getWorkMinute().getValue(), workMinute);
-        Assert.assertEquals(result.getOverWorkMinute().getValue(), overWorkMinute);
+        assertThat(result).isNotNull();
+        assertThat(result.getWorkMinute().getValue()).isEqualTo(workMinute);
+        assertThat(result.getOverWorkMinute().getValue()).isEqualTo(overWorkMinute);
     }
 
     @Test
@@ -152,9 +152,9 @@ public class WorkMinuteCalculatorTest {
 
         WorkTimeOfDay result = target.createWorkTimeOfDay(stayMinute, restMinute, standardMinute);
 
-        Assert.assertNotNull(result);
-        Assert.assertEquals(result.getWorkMinute().getValue(), workMinute);
-        Assert.assertEquals(result.getOverWorkMinute().getValue(), overWorkMinute);
+        assertThat(result).isNotNull();
+        assertThat(result.getWorkMinute().getValue()).isEqualTo(workMinute);
+        assertThat(result.getOverWorkMinute().getValue()).isEqualTo(overWorkMinute);
     }
 
     @Test
@@ -168,9 +168,9 @@ public class WorkMinuteCalculatorTest {
 
         WorkTimeOfDay result = target.createWorkTimeOfDay(stayMinute, restMinute, standardMinute);
 
-        Assert.assertNotNull(result);
-        Assert.assertEquals(result.getWorkMinute().getValue(), workMinute);
-        Assert.assertEquals(result.getOverWorkMinute().getValue(), overWorkMinute);
+        assertThat(result).isNotNull();
+        assertThat(result.getWorkMinute().getValue()).isEqualTo(workMinute);
+        assertThat(result.getOverWorkMinute().getValue()).isEqualTo(overWorkMinute);
     }
 
     @Test
@@ -181,15 +181,8 @@ public class WorkMinuteCalculatorTest {
 
         WorkTimeOfMonth result = target.createWorkTimeOfMonth(totalWorkMinuteValue, totalOverWorkMinuteValue);
 
-        Assert.assertNotNull(result);
-        Assert.assertEquals(result.getTotalWorkMinute().getValue(), totalWorkMinuteValue);
-        Assert.assertEquals(result.getTotalOverWorkMinute().getValue(), totalOverWorkMinuteValue);
-    }
-
-    private TimePointPair createTimePointPair(int startHour, int endHour) {
-        return new TimePointPair(
-                new TimePoint(LocalTime.of(startHour, 0)),
-                new TimePoint(LocalTime.of(endHour, 0))
-        );
+        assertThat(result).isNotNull();
+        assertThat(result.getTotalWorkMinute().getValue()).isEqualTo(totalWorkMinuteValue);
+        assertThat(result.getTotalOverWorkMinute().getValue()).isEqualTo(totalOverWorkMinuteValue);
     }
 }

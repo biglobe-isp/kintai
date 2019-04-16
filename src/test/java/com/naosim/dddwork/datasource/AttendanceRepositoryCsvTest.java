@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -123,10 +122,10 @@ public class AttendanceRepositoryCsvTest {
     ) {
         return new Attendance(
                 LocalDate.of(2019, month, day),
-                new TimePoint(LocalTime.of(9, 0)),
-                new TimePoint(LocalTime.of(18, 0)),
-                new WorkMinute(8),
-                new WorkMinute(0),
+                TimePoint.of(9, 0),
+                TimePoint.of(18, 0),
+                WorkMinute.of(8),
+                WorkMinute.of(0),
                 LocalDateTime.of(2019, createMonth, createDay, 0, 0)
         );
     }

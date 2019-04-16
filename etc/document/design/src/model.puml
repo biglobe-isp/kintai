@@ -77,7 +77,12 @@ package domain {
     }
 
     class TimePoint <<ValueObject>> {
-        LocalTime value
+        int hour
+        int minute
+        + int toMinuteValue()
+        + int differenceMinuteValue(TimePoint timePoint)
+        + boolean isBefore(TimePoint timePoint)
+        + boolean isAfter(TimePoint timePoint)
     }
 
     class TimePointPair <<Entity>> {

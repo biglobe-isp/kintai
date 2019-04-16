@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Controller
@@ -93,12 +92,11 @@ public class AttendanceController {
         return LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
-    private LocalTime parseToLocalTime(String value) {
-        return LocalTime.parse(value, DateTimeFormatter.ofPattern("HHmm"));
-    }
-
     private TimePoint parseToTimePoint(String value) {
-        return new TimePoint(parseToLocalTime(value));
+        // TODO: Validation
+        int hour = Integer.valueOf(value.substring(0, 2));
+        int minute = Integer.valueOf(value.substring(2, 4));
+        return TimePoint.of(hour, minute);
     }
 
     private YearMonth parseToYearMonth(String value) {

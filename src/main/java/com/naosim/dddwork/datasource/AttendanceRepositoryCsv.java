@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +28,6 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     private final CsvSetting setting;
     private final FileIOHelper fileIOHelper;
@@ -80,8 +78,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         return String.format(
                 "%s,%s,%s,%s,%s,%s",
                 attendance.getDate().format(DATE_FORMATTER),
-                attendance.getStartTime().getValue().format(TIME_FORMATTER),
-                attendance.getEndTime().getValue().format(TIME_FORMATTER),
+                attendance.getStartTime().toString(),
+                attendance.getEndTime().toString(),
                 attendance.getWorkMinute().getValue(),
                 attendance.getOverWorkMinute().getValue(),
                 attendance.getCreateAt().format(DATE_TIME_FORMATTER)
@@ -100,10 +98,10 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
         return attendanceFactory.create(
                 LocalDate.parse(date, DATE_FORMATTER),
-                new TimePoint(LocalTime.parse(startDate, TIME_FORMATTER)),
-                new TimePoint(LocalTime.parse(endDate, TIME_FORMATTER)),
-                new WorkMinute(Integer.valueOf(workMinute)),
-                new WorkMinute(Integer.valueOf(overWorkMinute)),
+                TimePoint.parse(startDate),
+                TimePoint.parse(endDate),
+                WorkMinute.parse(workMinute),
+                WorkMinute.parse(overWorkMinute),
                 LocalDateTime.parse(createAt, DATE_TIME_FORMATTER)
         );
     }
