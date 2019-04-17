@@ -1,9 +1,13 @@
 package com.naosim.dddwork.service;
 
+import com.google.common.base.Strings;
 import com.naosim.dddwork.domain.Attendance;
 import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.AttendanceSummary;
 import com.naosim.dddwork.domain.TimePoint;
+import com.naosim.dddwork.domain.WorkRegulation;
+import com.naosim.dddwork.domain.WorkRegulationException;
+import com.naosim.dddwork.domain.WorkRegulationRepository;
 import com.naosim.dddwork.domain.WorkTimeOfDay;
 import com.naosim.dddwork.domain.WorkTimeOfMonth;
 import com.naosim.dddwork.domain.YearMonth;
@@ -21,11 +25,20 @@ import java.util.stream.Collectors;
 public class AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
+    private final WorkRegulationRepository workRegulationRepository;
+    private final WorkRegulationValidator workRegulationValidator;
     private final WorkMinuteCalculator workMinuteCalculator;
     private final Clock clock;
 
     public void saveAttendance(LocalDate date, TimePoint startTime, TimePoint endTime) {
-        WorkTimeOfDay workTimeOfDay = workMinuteCalculator.calculateOfDay(startTime, endTime);
+        WorkRegulation workRegulation = workRegulationRepository.fetchDefault();
+
+        String errorMessage = workRegulationValidator.validateWorkTime(startTime, endTime, workRegulation);
+        if (!Strings.isNullOrEmpty(errorMessage)) {
+            throw new WorkRegulationException(errorMessage);
+        }
+
+        WorkTimeOfDay workTimeOfDay = workMinuteCalculator.calculateOfDay(startTime, endTime, workRegulation);
         Attendance attendance = Attendance.builder()
                 .date(date)
                 .startTime(startTime)

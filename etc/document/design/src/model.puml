@@ -16,9 +16,16 @@ package service {
         + AttendanceSummary fetchAttendanceSummary(YearMonth yearMonth)
     }
 
+    ~class WorkRegulationValidator <<Service>> {
+        '~ String validateWorkTime(TimePoint startTime, TimePoint endTime, WorkRegulation workRegulation)
+        ~ String validateWorkTime(...)
+    }
+
     ~class WorkMinuteCalculator <<Service>> {
-        ~ WorkTimeOfDay calculateOfDay(TimePoint startTime, TimePoint endTime)
-        ~ WorkTimeOfMonth calculateOfMonth(List<WorkTimeOfDay> workTimeOfDays)
+        '~ WorkTimeOfDay calculateOfDay(TimePoint startTime, TimePoint endTime, WorkRegulation workRegulation)
+        '~ WorkTimeOfMonth calculateOfMonth(List<WorkTimeOfDay> workTimeOfDays)
+        ~ WorkTimeOfDay calculateOfDay(...)
+        ~ WorkTimeOfMonth calculateOfMonth(...)
     }
 }
 
@@ -135,9 +142,9 @@ AttendanceController --> AttendanceService
 
 ''' service
 AttendanceService --> AttendanceRepository
+AttendanceService --> WorkRegulationValidator
 AttendanceService --> WorkMinuteCalculator
-WorkMinuteCalculator --> WorkRegulationRepository
-AttendanceBuilder -[hidden]- WorkMinuteCalculator
+AttendanceService --> WorkRegulationRepository
 
 
 ''' datasource
@@ -156,10 +163,6 @@ WorkRegulationBuilder ..> WorkRegulation : <<Create>>
 
 
 ''' placement order
-WorkRegulationRepositoryDefault -[hidden] AttendanceRepositoryCsv
-AttendanceRepositoryCsv -[hidden]- CsvSetting
-CsvSetting -[hidden]- WorkRegulationRepository
-WorkMinuteCalculator -[hidden]- WorkRegulationRepository
 WorkRegulationRepository -[hidden] AttendanceRepository
 AttendanceRepository -[hidden]- AttendanceBuilder
 WorkRegulationBuilder -[hidden] AttendanceBuilder

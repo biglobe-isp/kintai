@@ -5,11 +5,8 @@ import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.WorkMinute;
 import com.naosim.dddwork.domain.WorkRegulation;
-import com.naosim.dddwork.domain.WorkRegulationException;
-import com.naosim.dddwork.domain.WorkRegulationRepository;
 import com.naosim.dddwork.domain.WorkTimeOfDay;
 import com.naosim.dddwork.domain.WorkTimeOfMonth;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,17 +14,7 @@ import java.util.List;
 @Component
 class WorkMinuteCalculator {
 
-    private final WorkRegulationRepository workRegulationRepository;
-
-    @Autowired
-    public WorkMinuteCalculator(WorkRegulationRepository workRegulationRepository) {
-        this.workRegulationRepository = workRegulationRepository;
-    }
-
-    WorkTimeOfDay calculateOfDay(TimePoint startTime, TimePoint endTime) {
-        WorkRegulation workRegulation = workRegulationRepository.fetchDefault();
-
-        validateWorkTime(startTime, endTime, workRegulation);
+    WorkTimeOfDay calculateOfDay(TimePoint startTime, TimePoint endTime, WorkRegulation workRegulation) {
 
         int stayMinute = calculateStayTime(startTime, endTime);
         int restMinute = calculateRestTimes(startTime, endTime, workRegulation.getRestTimes());
@@ -49,29 +36,6 @@ class WorkMinuteCalculator {
                         .reduce(Integer::sum).orElse(0);
 
         return createWorkTimeOfMonth(totalWorkMinuteValue, totalOverWorkMinuteValue);
-    }
-
-    @VisibleForTesting
-    void validateWorkTime(TimePoint startTime, TimePoint endTime, WorkRegulation workRegulation) {
-        if (startTime.isAfter(endTime)) {
-            throw new WorkRegulationException("開始時間は終了時間より小さい値を指定してください");
-        }
-
-        if (startTime.isBefore(workRegulation.getMinStartTime())) {
-            throw new WorkRegulationException("開始時間が早すぎます");
-        }
-
-        if (startTime.isAfter(workRegulation.getMaxStartTime())) {
-            throw new WorkRegulationException("開始時間が遅すぎます");
-        }
-
-        if (startTime.isBefore(workRegulation.getMinEndTime())) {
-            throw new WorkRegulationException("終了時間が早すぎます");
-        }
-
-        if (startTime.isAfter(workRegulation.getMaxEndTime())) {
-            throw new WorkRegulationException("終了時間が遅すぎます");
-        }
     }
 
     @VisibleForTesting

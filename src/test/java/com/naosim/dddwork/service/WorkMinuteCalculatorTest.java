@@ -5,7 +5,6 @@ import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.WorkTimeOfDay;
 import com.naosim.dddwork.domain.WorkTimeOfMonth;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,18 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class WorkMinuteCalculatorTest {
 
-    @Before
-    public void setUp() {
-    }
-
-    @Test
-    public void testValidateWorkTime() {
-        // TODO: Not Implemented
-    }
-
     @Test
     public void testCalculateStayTime() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(9, 40);
         TimePoint endTime = TimePoint.of(20, 20);
         int expected = (20 - 9) * 60 + (20 - 40);
@@ -40,7 +30,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCalculateRestTimes() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(10, 0);
         TimePoint endTime = TimePoint.of(15, 30);
         List<TimeRange> restTimes = ImmutableList.of(
@@ -57,7 +47,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCalculateRestTime1() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(10, 0);
         TimePoint endTime = TimePoint.of(15, 0);
         TimePoint restStartTime = TimePoint.of(9, 0);
@@ -71,7 +61,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCalculateRestTime2() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(9, 30);
         TimePoint endTime = TimePoint.of(15, 0);
         TimePoint restStartTime = TimePoint.of(9, 0);
@@ -85,7 +75,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCalculateRestTime3() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(9, 0);
         TimePoint endTime = TimePoint.of(15, 0);
         TimePoint restStartTime = TimePoint.of(12, 0);
@@ -99,7 +89,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCalculateRestTime4() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(9, 0);
         TimePoint endTime = TimePoint.of(14, 30);
         TimePoint restStartTime = TimePoint.of(14, 0);
@@ -113,7 +103,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCalculateRestTime5() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         TimePoint startTime = TimePoint.of(9, 0);
         TimePoint endTime = TimePoint.of(14, 0);
         TimePoint restStartTime = TimePoint.of(14, 0);
@@ -127,9 +117,9 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCreateWorkTimeOfDay1() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         int stayMinute = 9 * 60 + 30;
-        int restMinute = 1 * 60;
+        int restMinute = 60;
         int standardMinute = 8 * 60;
         int workMinute = 8 * 60;
         int overWorkMinute = 30;
@@ -143,9 +133,9 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCreateWorkTimeOfDay2() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         int stayMinute = 9 * 60;
-        int restMinute = 1 * 60;
+        int restMinute = 60;
         int standardMinute = 8 * 60;
         int workMinute = 8 * 60;
         int overWorkMinute = 0;
@@ -159,9 +149,9 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCreateWorkTimeOfDay3() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         int stayMinute = 8 * 60;
-        int restMinute = 1 * 60;
+        int restMinute = 60;
         int standardMinute = 8 * 60;
         int workMinute = 7 * 60;
         int overWorkMinute = 0;
@@ -175,7 +165,7 @@ public class WorkMinuteCalculatorTest {
 
     @Test
     public void testCreateWorkTimeOfMonth() {
-        WorkMinuteCalculator target = new WorkMinuteCalculator(null);
+        WorkMinuteCalculator target = new WorkMinuteCalculator();
         int totalWorkMinuteValue = 8 * 20;
         int totalOverWorkMinuteValue = 3 * 20;
 
