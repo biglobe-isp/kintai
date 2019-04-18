@@ -1,13 +1,14 @@
 package com.naosim.dddwork;
 
 import com.naosim.dddwork.api.AttendanceController;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class Application implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -18,11 +19,6 @@ public class Application implements CommandLineRunner {
     }
 
     private final AttendanceController attendanceController;
-
-    @Autowired
-    public Application(AttendanceController attendanceController) {
-        this.attendanceController = attendanceController;
-    }
 
     @Override
     public void run(String... args) {

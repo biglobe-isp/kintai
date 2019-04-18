@@ -7,7 +7,7 @@ import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.WorkMinute;
 import com.naosim.dddwork.domain.YearMonth;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -23,6 +23,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Repository
+@RequiredArgsConstructor
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
@@ -30,12 +31,6 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private final CsvSetting setting;
     private final FileIOHelper fileIOHelper;
-
-    @Autowired
-    public AttendanceRepositoryCsv(CsvSetting setting, FileIOHelper fileIOHelper) {
-        this.setting = setting;
-        this.fileIOHelper = fileIOHelper;
-    }
 
     @Override
     public void save(Attendance attendance) {

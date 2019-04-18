@@ -7,6 +7,12 @@ package api {
         - void input(String date, String start, String end)
         - String total(String yearMonth)
     }
+
+    ~class AttendanceArgumentParser {
+        ~ LocalDate parseToLocalDate(String value)
+        ~ TimePoint parseToTimePoint(String value)
+        ~ YearMonth parseToYearMonth(String value)
+    }
 }
 
 package service {
@@ -137,6 +143,7 @@ package domain {
 
 
 ''' api
+AttendanceController --> AttendanceArgumentParser
 AttendanceController --> AttendanceService
 
 
