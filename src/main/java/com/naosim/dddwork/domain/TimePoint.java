@@ -12,16 +12,12 @@ public class TimePoint {
         return hour * 60 + minute;
     }
 
-    public int differenceMinuteValue(TimePoint timePoint) {
-        return this.toMinuteValue() - timePoint.toMinuteValue();
-    }
-
     public boolean isBefore(TimePoint timePoint) {
-        return differenceMinuteValue(timePoint) < 0;
+        return this.toMinuteValue() < timePoint.toMinuteValue();
     }
 
     public boolean isAfter(TimePoint timePoint) {
-        return differenceMinuteValue(timePoint) > 0;
+        return this.toMinuteValue() > timePoint.toMinuteValue();
     }
 
     public String toString() {

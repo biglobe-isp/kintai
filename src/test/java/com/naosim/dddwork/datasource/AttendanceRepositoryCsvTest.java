@@ -5,7 +5,6 @@ import com.naosim.dddwork.domain.Attendance;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.WorkMinute;
 import com.naosim.dddwork.domain.YearMonth;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,10 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AttendanceRepositoryCsvTest {
-
-    @Before
-    public void setUp() {
-    }
 
     @Test
     public void testFilterMonthly1() {

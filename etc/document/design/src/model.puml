@@ -82,7 +82,6 @@ package domain {
         int hour
         int minute
         + int toMinuteValue()
-        + int differenceMinuteValue(TimePoint timePoint)
         + boolean isBefore(TimePoint timePoint)
         + boolean isAfter(TimePoint timePoint)
     }

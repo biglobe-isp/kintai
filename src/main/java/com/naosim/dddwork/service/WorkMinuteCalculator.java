@@ -40,7 +40,7 @@ class WorkMinuteCalculator {
 
     @VisibleForTesting
     int calculateStayTime(TimePoint startTime, TimePoint endTime) {
-        return endTime.differenceMinuteValue(startTime);
+        return endTime.toMinuteValue() - startTime.toMinuteValue();
     }
 
     @VisibleForTesting
@@ -62,14 +62,14 @@ class WorkMinuteCalculator {
         }
 
         if (startTime.isAfter(restStartTime)) {
-            return restEndTime.differenceMinuteValue(startTime);
+            return restEndTime.toMinuteValue() - startTime.toMinuteValue();
         }
 
         if (endTime.isBefore(restEndTime)) {
-            return endTime.differenceMinuteValue(restStartTime);
+            return endTime.toMinuteValue() - restStartTime.toMinuteValue();
         }
 
-        return restEndTime.differenceMinuteValue(restStartTime);
+        return restEndTime.toMinuteValue() - restStartTime.toMinuteValue();
     }
 
     @VisibleForTesting
