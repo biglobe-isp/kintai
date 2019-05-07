@@ -1,4 +1,4 @@
-package com.naosim.dddwork;
+package com.naosim.dddwork.kintai;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Main {
+public class App {
+
     public static void main(String[] args) {
+
         try {
             if(args.length < 1) {
                 throw new RuntimeException("引数が足りません");
