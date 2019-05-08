@@ -54,6 +54,12 @@ public class App {
                     workMinutes -= 60;
                 }
 
+                if (endH > 23) {
+                    final int serviceH = endH - 24;
+                    final int serviceM = endM;
+                    workMinutes -= serviceH * 60 + serviceM;
+                }
+
                 int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
                 File file = new File("data.csv");
                 try(FileWriter filewriter = new FileWriter(file, true)) {

@@ -13,3 +13,7 @@ build/**
 
 # macOS
 .DS_Store
+
+# App
+*.csv
+
