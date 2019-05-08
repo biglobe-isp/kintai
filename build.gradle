@@ -33,6 +33,10 @@ dependencies {
     // Use the awesome Spock testing and specification framework even with Java
     testImplementation 'org.spockframework:spock-core:1.2-groovy-2.5'
     testImplementation 'junit:junit:4.12'
+
+    // For Spy System.out 
+    testImplementation "cglib:cglib-nodep:3.2.10"
+    testImplementation "org.objenesis:objenesis:3.0.1"
 }
 
 // Define the main class for the application
