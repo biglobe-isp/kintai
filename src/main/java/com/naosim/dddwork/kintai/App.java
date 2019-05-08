@@ -88,6 +88,7 @@ public class App {
                     while(line != null){
                         String[] columns = line.split(",");
                         if(!columns[0].startsWith(yearMonth)) {
+                            line = br.readLine();
                             continue;
                         }
                         totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));

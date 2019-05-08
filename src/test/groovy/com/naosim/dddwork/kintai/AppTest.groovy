@@ -354,4 +354,43 @@ class AppTest extends Specification {
     }
 
 
+
+    def "シナリオ-月合計-月抽出-修正入力あり"() {
+
+        setup:
+        new File(CSV_FILE_NAME).delete()
+        def outputStream = new ByteArrayOutputStream()
+        def printStream = Spy(PrintStream, constructorArgs: [outputStream])
+        System.out = printStream
+
+        when:
+        App.main("input", "20161231", "0900", "1800")   // total対象外
+        App.main("input", "20170101", "0900", "1100")
+        App.main("input", "20170102", "0900", "1130")
+        App.main("input", "20170102", "0900", "1200")   // 修正入力
+        App.main("input", "20170103", "0900", "1220")
+        App.main("input", "20170104", "0900", "1300")
+        App.main("input", "20170105", "0900", "1540")
+        App.main("input", "20170108", "0900", "1800")
+        App.main("input", "20170109", "0900", "1810")
+        App.main("input", "20170110", "0900", "1900")
+        App.main("input", "20170115", "0900", "2040")
+        App.main("input", "20170115", "0900", "2010")   // 修正入力
+        App.main("input", "20170116", "0900", "2100")
+        App.main("input", "20170117", "0900", "2150")
+        App.main("input", "20170123", "0900", "2200")
+        App.main("input", "20170124", "0900", "2330")
+        App.main("input", "20170125", "0900", "2400")
+        App.main("input", "20170129", "0900", "2530")
+        App.main("input", "20170130", "0900", "3100")
+        App.main("input", "20170131", "0900", "3200")
+        App.main("input", "20170201", "0900", "1800")   // total対象外
+
+        then:
+        App.main("total", "201701")
+        outputStream.toString() == """|勤務時間: 139時間20分
+                                      |残業時間: 26時間40分
+                                      |""".stripMargin()
+    }
+
 }
