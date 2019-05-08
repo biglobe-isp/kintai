@@ -1,5 +1,9 @@
 package com.naosim.dddwork.kintai;
 
+import com.naosim.dddwork.kintai.api.ArgumentParser;
+import com.naosim.dddwork.kintai.api.Request;
+import com.naosim.dddwork.kintai.api.Usage;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,22 +19,18 @@ public class App {
     public static void main(String[] args) {
 
         try {
-            if(args.length < 1) {
-                throw new RuntimeException("引数が足りません");
-            }
-            String methodType = args[0];
+            ArgumentParser parser = new ArgumentParser(args);
+            Request request = parser.pickRequest();
 
-            if("input".equals(methodType)) {
+            if (request == Request.INPUT) {
                 _registerWorkTime(args);
-
-            } else if("total".equals(methodType)) {
+            }
+            else if(request == Request.TOTAL) {
                 _showWorkedTime(args);
-
-            } else {
-                throw new RuntimeException("methodTypeが不正です");
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Usage.print();
         }
     }
 

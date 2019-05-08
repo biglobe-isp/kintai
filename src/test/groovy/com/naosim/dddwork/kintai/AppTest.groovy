@@ -303,7 +303,7 @@ class AppTest extends Specification {
         System.out = printStream
 
         when:
-        App.main("input", "20170101", "0900", "3200")
+        App.main("input", "20170101", "0900", "3300")
 
         then:
         App.main("total", "201701")
@@ -383,7 +383,7 @@ class AppTest extends Specification {
         App.main("input", "20170125", "0900", "2400")
         App.main("input", "20170129", "0900", "2530")
         App.main("input", "20170130", "0900", "3100")
-        App.main("input", "20170131", "0900", "3200")
+        App.main("input", "20170131", "0900", "3300")
         App.main("input", "20170201", "0900", "1800")   // total対象外
 
         then:
