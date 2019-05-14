@@ -2,21 +2,20 @@ package com.naosim.dddwork.kintai.service.command;
 
 import com.naosim.dddwork.kintai.domain.core.type.time.component.TimeOfDay;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
+import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
+import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 import com.naosim.dddwork.kintai.shared.exception.SystemException;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
 /**
  * ［指定日の勤怠登録］サービス
  */
-public class DailyWorkTimeRegistration {
+public class DailyWorkedTimeRegistrationService {
 
     @Value
     @AllArgsConstructor(staticName="of")
@@ -26,6 +25,14 @@ public class DailyWorkTimeRegistration {
         final TimeOfDay beginTime;
         final TimeOfDay endTime;
     }
+
+    final WorkedTimeRepository repository;
+
+
+    public DailyWorkedTimeRegistrationService(WorkedTimeRepository repository) {
+        this.repository = repository;
+    }
+
 
     public void execute(Parameter parameter) {
 
@@ -37,7 +44,7 @@ public class DailyWorkTimeRegistration {
         }
     }
 
-    private static void _registerWorkTime(Parameter parameter) throws IOException {
+    private void _registerWorkTime(Parameter parameter) throws IOException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = parameter.attendanceDate.getLocalDate().format(formatter);
@@ -80,11 +87,9 @@ public class DailyWorkTimeRegistration {
         }
 
         int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-        File file = new File("data.csv");
-        String now = LocalDateTime.now().toString();
-        try(FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
-        }
+
+        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(date, start, end, workMinutes, overWorkMinutes);
+        repository.save(dailyWorkedTime);
     }
 
     //TODO: 暫定的に設けている

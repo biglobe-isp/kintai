@@ -5,7 +5,7 @@ import com.naosim.dddwork.kintai.api.pod.BeginTimePod;
 import com.naosim.dddwork.kintai.api.pod.EndTimePod;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestOperandVerifiable;
-import com.naosim.dddwork.kintai.service.command.DailyWorkTimeRegistration;
+import com.naosim.dddwork.kintai.service.command.DailyWorkedTimeRegistrationService;
 import lombok.ToString;
 
 import java.util.Arrays;
@@ -71,9 +71,9 @@ public class InputRequestOperandParser {
     }
 
 
-    public DailyWorkTimeRegistration.Parameter serviceParameter() {
+    public DailyWorkedTimeRegistrationService.Parameter serviceParameter() {
 
-        return DailyWorkTimeRegistration.Parameter.of(
+        return DailyWorkedTimeRegistrationService.Parameter.of(
                 _attendanceDatePod.domainObject(),
                 _beginTimePod.domainObject(),
                 _endTimePod.domainObject()

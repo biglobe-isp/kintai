@@ -1,8 +1,10 @@
 package com.naosim.dddwork.kintai.api.feature.input;
 
+import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestProcessor;
-import com.naosim.dddwork.kintai.service.command.DailyWorkTimeRegistration;
+import com.naosim.dddwork.kintai.datasource.workedtime.protocol.DataSourceFactory;
+import com.naosim.dddwork.kintai.service.command.DailyWorkedTimeRegistrationService;
 
 
 /**
@@ -10,13 +12,22 @@ import com.naosim.dddwork.kintai.service.command.DailyWorkTimeRegistration;
  */
 public class InputRequestProcessor implements RequestProcessor {
 
+    final DailyWorkedTimeRegistrationService service;
+
+
+    public InputRequestProcessor(DataStorePolicy dataStorePolicy) {
+
+        final DataSourceFactory dataSourceFactory = dataStorePolicy.dataSourceFactory();
+        service = new DailyWorkedTimeRegistrationService(dataSourceFactory.workedTimeRepository());
+    }
+
+
     @Override
     public void execute(RequestOperands operands) {
 
         InputRequestOperandParser parser = InputRequestOperandParser.of(operands);
-        DailyWorkTimeRegistration.Parameter parameter = parser.serviceParameter();
+        DailyWorkedTimeRegistrationService.Parameter parameter = parser.serviceParameter();
 
-        final DailyWorkTimeRegistration service = new DailyWorkTimeRegistration();
         service.execute(parameter);
     }
 }

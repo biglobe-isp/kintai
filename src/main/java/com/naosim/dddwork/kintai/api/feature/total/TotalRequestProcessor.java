@@ -1,8 +1,13 @@
 package com.naosim.dddwork.kintai.api.feature.total;
 
+import com.naosim.dddwork.kintai.api.port.output.MonthlyTotalWorkedTimeOutputPort;
+import com.naosim.dddwork.kintai.api.port.protocol.OutputPort;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestProcessor;
-import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQuery;
+import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
+import com.naosim.dddwork.kintai.datasource.workedtime.protocol.DataSourceFactory;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.MonthlyTotalWorkedTime;
+import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQueryService;
 
 
 /**
@@ -10,13 +15,24 @@ import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQuery;
  */
 public class TotalRequestProcessor implements RequestProcessor {
 
+    final MonthlyTotalWorkedTimeQueryService service;
+
+
+    public TotalRequestProcessor(DataStorePolicy dataStorePolicy) {
+
+        final DataSourceFactory dataSourceFactory = dataStorePolicy.dataSourceFactory();
+        service = new MonthlyTotalWorkedTimeQueryService(dataSourceFactory.workedTimeRepository());
+    }
+
+
     @Override
     public void execute(RequestOperands operands) {
 
         TotalRequestOperandParser parser = TotalRequestOperandParser.of(operands);
-        MonthlyTotalWorkedTimeQuery.Parameter parameter = parser.serviceParameter();
+        MonthlyTotalWorkedTimeQueryService.Parameter parameter = parser.serviceParameter();
 
-        final MonthlyTotalWorkedTimeQuery service = new MonthlyTotalWorkedTimeQuery();
-        service.execute(parameter);
+        final MonthlyTotalWorkedTime monthlyTotalWorkedTime = service.execute(parameter);
+        final OutputPort outputPort = new MonthlyTotalWorkedTimeOutputPort();
+        outputPort.show(monthlyTotalWorkedTime);
     }
 }

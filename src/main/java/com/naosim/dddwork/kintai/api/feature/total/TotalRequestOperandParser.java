@@ -3,7 +3,7 @@ package com.naosim.dddwork.kintai.api.feature.total;
 import com.naosim.dddwork.kintai.api.pod.AttendanceMonthPod;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestOperandVerifiable;
-import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQuery;
+import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQueryService;
 
 import java.util.Arrays;
 
@@ -55,9 +55,9 @@ public class TotalRequestOperandParser {
     }
 
 
-    public MonthlyTotalWorkedTimeQuery.Parameter serviceParameter() {
+    public MonthlyTotalWorkedTimeQueryService.Parameter serviceParameter() {
 
-        return MonthlyTotalWorkedTimeQuery.Parameter.of(
+        return MonthlyTotalWorkedTimeQueryService.Parameter.of(
                 _attendanceMonthPod.domainObject()
         );
     }
