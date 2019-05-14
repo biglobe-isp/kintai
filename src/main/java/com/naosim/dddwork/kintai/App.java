@@ -1,7 +1,6 @@
 package com.naosim.dddwork.kintai;
 
-import com.naosim.dddwork.kintai.api.ArgumentParser;
-import com.naosim.dddwork.kintai.api.Request;
+import com.naosim.dddwork.kintai.api.AttendanceController;
 import com.naosim.dddwork.kintai.api.Usage;
 
 public class App {
@@ -9,9 +8,7 @@ public class App {
     public static void main(String[] args) {
 
         try {
-            ArgumentParser parser = new ArgumentParser(args);
-            Request request = parser.pickRequest();
-            request.execute(args);
+            new AttendanceController(args).execute();
         }
         catch (Exception e) {
             e.printStackTrace();

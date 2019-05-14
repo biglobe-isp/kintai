@@ -2,6 +2,10 @@ package com.naosim.dddwork.kintai.api;
 
 import com.naosim.dddwork.kintai.shared.EasyPrinter;
 
+
+/**
+ * 使い方
+ */
 public class Usage implements EasyPrinter {
 
     public static void print() {
@@ -15,7 +19,7 @@ public class Usage implements EasyPrinter {
         println();
         println("※ ()内はフォーマットです。");
         println();
-        println("◆勤務時間登録");
+        println("◆指定日の勤怠登録");
         println("   input 勤怠日付(yyyyMMdd) 出勤時刻(HHmm) 退勤時刻(HHmm)");
         println("   例)");
         println("       input 20190107 0900 1800");
