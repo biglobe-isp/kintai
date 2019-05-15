@@ -3,11 +3,8 @@ package com.naosim.dddwork.kintai.service.query;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceYearMonth;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.MonthlyTotalWorkedTime;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
-import com.naosim.dddwork.kintai.shared.exception.SystemException;
 import lombok.AllArgsConstructor;
 import lombok.Value;
-
-import java.io.IOException;
 
 
 /**
@@ -32,16 +29,10 @@ public class MonthlyTotalWorkedTimeQueryService {
 
 
     public MonthlyTotalWorkedTime execute(Parameter parameter) {
-
-        try {
-            return _showWorkedTime(parameter);
-        }
-        catch (IOException e) {
-            throw new SystemException("月次勤務時間合計照会処理中に入出力例外が発生しました．", e);
-        }
+        return _showWorkedTime(parameter);
     }
 
-    private MonthlyTotalWorkedTime _showWorkedTime(Parameter parameter) throws IOException {
+    private MonthlyTotalWorkedTime _showWorkedTime(Parameter parameter) {
 
         AttendanceYearMonth yearMonth = parameter.attendanceYearMonth;
         return repository.totalWorkedTimeIn(yearMonth);

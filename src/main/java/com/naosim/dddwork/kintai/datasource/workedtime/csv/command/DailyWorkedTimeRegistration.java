@@ -1,6 +1,7 @@
 package com.naosim.dddwork.kintai.datasource.workedtime.csv.command;
 
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
+import com.naosim.dddwork.kintai.shared.exception.SystemException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +28,7 @@ public class DailyWorkedTimeRegistration {
                     dailyWorkedTime.getNow()));
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new SystemException("[指定日の勤怠登録]処理中に入出力例外が発生しました．", e);
         }
     }
 }

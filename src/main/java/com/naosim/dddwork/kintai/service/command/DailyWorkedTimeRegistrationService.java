@@ -4,11 +4,9 @@ import com.naosim.dddwork.kintai.domain.core.type.time.component.TimeOfDay;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
-import com.naosim.dddwork.kintai.shared.exception.SystemException;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
-import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 
@@ -35,16 +33,10 @@ public class DailyWorkedTimeRegistrationService {
 
 
     public void execute(Parameter parameter) {
-
-        try {
-            _registerWorkTime(parameter);
-        }
-        catch (IOException e) {
-            throw new SystemException("日次勤怠登録処理中に入出力例外が発生しました．", e);
-        }
+        _registerWorkTime(parameter);
     }
 
-    private void _registerWorkTime(Parameter parameter) throws IOException {
+    private void _registerWorkTime(Parameter parameter) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = parameter.attendanceDate.getLocalDate().format(formatter);
