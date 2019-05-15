@@ -3,6 +3,7 @@ package com.naosim.dddwork.kintai.domain.model.foundation.date;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 /**
@@ -30,5 +31,12 @@ public class AttendanceDate {
 
     public AttendanceDate(LocalDate localDate) {
         this.localDate = localDate;
+    }
+
+
+    public String storedValue() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return localDate.format(formatter);
     }
 }

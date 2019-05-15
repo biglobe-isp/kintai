@@ -7,8 +7,6 @@ import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
-import java.time.format.DateTimeFormatter;
-
 
 /**
  * ［指定日の勤怠登録］サービス
@@ -38,14 +36,13 @@ public class DailyWorkedTimeRegistrationService {
 
     private void _registerWorkTime(Parameter parameter) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String date = parameter.attendanceDate.getLocalDate().format(formatter);
-
         String start = pad(parameter.beginTime.getHour().getValue(), 2, "0")
                      + pad(parameter.beginTime.getMinute().getValue(), 2, "0");
         String end = pad(parameter.endTime.getHour().getValue(), 2, "0")
                    + pad(parameter.endTime.getMinute().getValue(), 2, "0");
 
+
+//NOTE: ここから勤務時間と残業時間の算出をやっている
         int startH = parameter.beginTime.getHour().getValue();
         int startM = parameter.beginTime.getMinute().getValue();
 
@@ -80,7 +77,7 @@ public class DailyWorkedTimeRegistrationService {
 
         int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
 
-        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(date, start, end, workMinutes, overWorkMinutes);
+        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(parameter.attendanceDate, start, end, workMinutes, overWorkMinutes);
         repository.save(dailyWorkedTime);
     }
 

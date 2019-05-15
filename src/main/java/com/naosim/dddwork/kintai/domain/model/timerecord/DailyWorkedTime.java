@@ -1,5 +1,6 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord;
 
+import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,9 +14,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @ToString
 @Getter
+//TODO: 属性をドメインオブジェクトにしていく
 public class DailyWorkedTime {
 
-    final String attendanceDate;
+    final AttendanceDate attendanceDate;
     final String beginTime;
     final String endTime;
     final int workMinutes;
@@ -23,11 +25,11 @@ public class DailyWorkedTime {
     final String now = LocalDateTime.now().toString();
 
 
-    public static DailyWorkedTime of(String attendanceDate, String beginTime, String endTime, int workMinutes, int overWorkMinutes) {
+    public static DailyWorkedTime of(AttendanceDate attendanceDate, String beginTime, String endTime, int workMinutes, int overWorkMinutes) {
         return new DailyWorkedTime(attendanceDate, beginTime, endTime, workMinutes, overWorkMinutes);
     }
 
-    public DailyWorkedTime(String attendanceDate, String beginTime, String endTime, int workMinutes, int overWorkMinutes) {
+    public DailyWorkedTime(AttendanceDate attendanceDate, String beginTime, String endTime, int workMinutes, int overWorkMinutes) {
 
         this.attendanceDate = attendanceDate;
         this.beginTime = beginTime;

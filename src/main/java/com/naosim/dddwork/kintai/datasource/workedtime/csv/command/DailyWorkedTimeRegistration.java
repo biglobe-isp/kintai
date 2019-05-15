@@ -20,7 +20,7 @@ public class DailyWorkedTimeRegistration {
         try(FileWriter writer = new FileWriter(file, true)) {
 
             writer.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    dailyWorkedTime.getAttendanceDate(),
+                    dailyWorkedTime.getAttendanceDate().storedValue(),
                     dailyWorkedTime.getBeginTime(),
                     dailyWorkedTime.getEndTime(),
                     dailyWorkedTime.getWorkMinutes(),
