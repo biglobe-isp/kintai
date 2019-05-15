@@ -23,7 +23,7 @@ public class DailyWorkedTimeRegistration {
                     dailyWorkedTime.getAttendanceDate().storedValue(),
                     dailyWorkedTime.getBeginTime().storedValue(),
                     dailyWorkedTime.getEndTime().storedValue(),
-                    dailyWorkedTime.getWorkMinutes().getValue(),        //TODO: どうする？
+                    dailyWorkedTime.getWorkedTimeAsRegular().storedValue(),
                     dailyWorkedTime.getWorkedTimeAsOvertime().storedValue(),
                     dailyWorkedTime.getRecordTimestamp().storedValue()));
         }
