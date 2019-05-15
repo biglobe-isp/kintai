@@ -1,14 +1,13 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord;
 
 import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
+import com.naosim.dddwork.kintai.domain.core.type.time.stamp.RecordTimestamp;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
 
 
 /**
@@ -27,7 +26,7 @@ public class DailyWorkedTime {
 //TODO: ここはまとめる
     final AmountOfMinutes workMinutes;
     final AmountOfMinutes overWorkMinutes;
-    final String now = LocalDateTime.now().toString();
+    final RecordTimestamp recordTimestamp = RecordTimestamp.now();
 
 
     public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, AmountOfMinutes overWorkMinutes) {

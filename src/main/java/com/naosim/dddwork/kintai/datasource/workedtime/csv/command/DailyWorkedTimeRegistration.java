@@ -25,7 +25,7 @@ public class DailyWorkedTimeRegistration {
                     dailyWorkedTime.getEndTime().storedValue(),
                     dailyWorkedTime.getWorkMinutes().getValue(),        //TODO: どうする？
                     dailyWorkedTime.getOverWorkMinutes().getValue(),    //TODO: どうする？
-                    dailyWorkedTime.getNow()));
+                    dailyWorkedTime.getRecordTimestamp().storedValue()));
         }
         catch (IOException e) {
             throw new SystemException("[指定日の勤怠登録]処理中に入出力例外が発生しました．", e);
