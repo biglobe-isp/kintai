@@ -20,9 +20,9 @@ public class DailyWorkedTimeRegistration {
         try(FileWriter writer = new FileWriter(file, true)) {
 
             writer.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    dailyWorkedTime.getAttendanceDate().storedValue(),
-                    dailyWorkedTime.getBeginTime().storedValue(),
-                    dailyWorkedTime.getEndTime().storedValue(),
+                    dailyWorkedTime.getDailySpentTimeRangeAtWork().getAttendanceDate().storedValue(),
+                    dailyWorkedTime.getDailySpentTimeRangeAtWork().getSpentTimeRange().getBeginTime().storedValue(),
+                    dailyWorkedTime.getDailySpentTimeRangeAtWork().getSpentTimeRange().getEndTime().storedValue(),
                     dailyWorkedTime.getPaidWorkedTime().workedTimeAsRegular().storedValue(),
                     dailyWorkedTime.getPaidWorkedTime().workedTimeAsOvertime().storedValue(),
                     dailyWorkedTime.getRecordTimestamp().storedValue()));

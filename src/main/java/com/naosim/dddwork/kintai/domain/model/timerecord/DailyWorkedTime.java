@@ -18,13 +18,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @Getter
-//TODO: 属性をドメインオブジェクトにしていく
 public class DailyWorkedTime {
 
-    final AttendanceDate attendanceDate;
-//TODO: ここはまとめる
-    final BeginTime beginTime;
-    final EndTime endTime;
+    final DailySpentTimeRangeAtWork dailySpentTimeRangeAtWork;
     final PaidWorkedTime paidWorkedTime;
     final RecordTimestamp recordTimestamp = RecordTimestamp.now();
 
@@ -35,9 +31,7 @@ public class DailyWorkedTime {
 
     public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, WorkedTimeAsRegular workedTimeAsRegular, WorkedTimeAsOvertime workedTimeAsOvertime) {
 
-        this.attendanceDate = attendanceDate;
-        this.beginTime = beginTime;
-        this.endTime = endTime;
+        this.dailySpentTimeRangeAtWork = DailySpentTimeRangeAtWork.of(attendanceDate, beginTime, endTime);
         paidWorkedTime = PaidWorkedTime.of(workedTimeAsRegular, workedTimeAsOvertime);
     }
 }
