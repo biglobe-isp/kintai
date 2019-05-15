@@ -30,11 +30,11 @@ public class DailyWorkedTime {
     final RecordTimestamp recordTimestamp = RecordTimestamp.now();
 
 
-    public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, WorkedTimeAsOvertime workedTimeAsOvertime) {
+    public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, WorkedTimeAsRegular workMinutes, WorkedTimeAsOvertime workedTimeAsOvertime) {
         return new DailyWorkedTime(attendanceDate, beginTime, endTime, workMinutes, workedTimeAsOvertime);
     }
 
-    public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, WorkedTimeAsOvertime workedTimeAsOvertime) {
+    public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, WorkedTimeAsRegular workedTimeAsRegular, WorkedTimeAsOvertime workedTimeAsOvertime) {
 
         this.attendanceDate = attendanceDate;
         this.beginTime = beginTime;
