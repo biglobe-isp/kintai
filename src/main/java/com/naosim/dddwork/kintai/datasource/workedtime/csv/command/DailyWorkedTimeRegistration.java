@@ -23,8 +23,8 @@ public class DailyWorkedTimeRegistration {
                     dailyWorkedTime.getAttendanceDate().storedValue(),
                     dailyWorkedTime.getBeginTime().storedValue(),
                     dailyWorkedTime.getEndTime().storedValue(),
-                    dailyWorkedTime.getWorkedTimeAsRegular().storedValue(),
-                    dailyWorkedTime.getWorkedTimeAsOvertime().storedValue(),
+                    dailyWorkedTime.getPaidWorkedTime().workedTimeAsRegular().storedValue(),
+                    dailyWorkedTime.getPaidWorkedTime().workedTimeAsOvertime().storedValue(),
                     dailyWorkedTime.getRecordTimestamp().storedValue()));
         }
         catch (IOException e) {

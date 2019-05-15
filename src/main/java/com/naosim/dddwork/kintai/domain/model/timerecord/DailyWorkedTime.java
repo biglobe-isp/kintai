@@ -1,11 +1,12 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord;
 
-import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
 import com.naosim.dddwork.kintai.domain.core.type.time.stamp.RecordTimestamp;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.PaidWorkedTime;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.WorkedTimeAsOvertime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.WorkedTimeAsRegular;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,9 +25,7 @@ public class DailyWorkedTime {
 //TODO: ここはまとめる
     final BeginTime beginTime;
     final EndTime endTime;
-//TODO: ここはまとめる
-    final AmountOfMinutes workMinutes;
-    final WorkedTimeAsOvertime workedTimeAsOvertime;
+    final PaidWorkedTime paidWorkedTime;
     final RecordTimestamp recordTimestamp = RecordTimestamp.now();
 
 
@@ -39,7 +38,6 @@ public class DailyWorkedTime {
         this.attendanceDate = attendanceDate;
         this.beginTime = beginTime;
         this.endTime = endTime;
-        this.workMinutes = workMinutes;
-        this.workedTimeAsOvertime = workedTimeAsOvertime;
+        paidWorkedTime = PaidWorkedTime.of(workedTimeAsRegular, workedTimeAsOvertime);
     }
 }
