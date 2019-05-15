@@ -32,4 +32,18 @@ public class TimeOfDay {
         this.minute = minute;
     }
 
+
+    public int hourRawValue() {
+        return hour.value;
+    }
+
+    public int minuteRawValue() {
+        return minute.value;
+    }
+
+    public String defaultStoredValue() {
+
+        MessageFormat mf = new MessageFormat("{0, number, 00}{1, number, 00}");
+        return mf.format(new Integer[] {hour.value, minute.value});
+    }
 }

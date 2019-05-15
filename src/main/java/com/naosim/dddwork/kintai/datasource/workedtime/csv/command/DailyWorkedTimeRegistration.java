@@ -21,8 +21,8 @@ public class DailyWorkedTimeRegistration {
 
             writer.write(String.format("%s,%s,%s,%s,%s,%s\n",
                     dailyWorkedTime.getAttendanceDate().storedValue(),
-                    dailyWorkedTime.getBeginTime(),
-                    dailyWorkedTime.getEndTime(),
+                    dailyWorkedTime.getBeginTime().storedValue(),
+                    dailyWorkedTime.getEndTime().storedValue(),
                     dailyWorkedTime.getWorkMinutes(),
                     dailyWorkedTime.getOverWorkMinutes(),
                     dailyWorkedTime.getNow()));

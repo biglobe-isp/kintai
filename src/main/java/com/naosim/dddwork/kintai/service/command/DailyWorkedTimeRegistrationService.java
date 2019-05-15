@@ -1,7 +1,8 @@
 package com.naosim.dddwork.kintai.service.command;
 
-import com.naosim.dddwork.kintai.domain.core.type.time.component.TimeOfDay;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,8 @@ public class DailyWorkedTimeRegistrationService {
     public static class Parameter {
 
         final AttendanceDate attendanceDate;
-        final TimeOfDay beginTime;
-        final TimeOfDay endTime;
+        final BeginTime beginTime;
+        final EndTime endTime;
     }
 
     final WorkedTimeRepository repository;
@@ -36,18 +37,13 @@ public class DailyWorkedTimeRegistrationService {
 
     private void _registerWorkTime(Parameter parameter) {
 
-        String start = pad(parameter.beginTime.getHour().getValue(), 2, "0")
-                     + pad(parameter.beginTime.getMinute().getValue(), 2, "0");
-        String end = pad(parameter.endTime.getHour().getValue(), 2, "0")
-                   + pad(parameter.endTime.getMinute().getValue(), 2, "0");
-
 
 //NOTE: ここから勤務時間と残業時間の算出をやっている
-        int startH = parameter.beginTime.getHour().getValue();
-        int startM = parameter.beginTime.getMinute().getValue();
+        int startH = parameter.beginTime.hourRawValue();
+        int startM = parameter.beginTime.minuteRawValue();
 
-        int endH = parameter.endTime.getHour().getValue();
-        int endM = parameter.endTime.getMinute().getValue();
+        int endH = parameter.endTime.hourRawValue();
+        int endM = parameter.endTime.minuteRawValue();
 
         int workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
@@ -77,13 +73,14 @@ public class DailyWorkedTimeRegistrationService {
 
         int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
 
-        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(parameter.attendanceDate, start, end, workMinutes, overWorkMinutes);
+        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(
+                parameter.attendanceDate,
+                parameter.beginTime,
+                parameter.endTime,
+                workMinutes,
+                overWorkMinutes);
+
         repository.save(dailyWorkedTime);
     }
 
-    //TODO: 暫定的に設けている
-    public static String pad(int value, int length,  CharSequence replacement){
-
-        return String.format("%" + length + "d", value).replace(" ", replacement);
-    }
 }

@@ -1,7 +1,7 @@
 package com.naosim.dddwork.kintai.api.pod;
 
 import com.google.common.base.Verify;
-import com.naosim.dddwork.kintai.domain.core.type.time.component.TimeOfDay;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +18,7 @@ public class EndTimePod {
 
     private final String _rawString;
 
-    final TimeOfDay timeOfDay;
+    final EndTime endTime;
 
 
     public static EndTimePod of(String rawString) {
@@ -30,17 +30,17 @@ public class EndTimePod {
         Verify.verifyNotNull(rawString, "%sが nullです。", NAME);
 
         _rawString = rawString;
-        timeOfDay = _parse(rawString);
+        endTime = _parse(rawString);
     }
 
-    private TimeOfDay _parse(String rawString) {
+    private EndTime _parse(String rawString) {
 
         final Matcher m = patternMatcherFor(rawString);
 
         final String hour = m.group("hour");
         final String minute = m.group("minute");
 
-        return TimeOfDay.of(
+        return EndTime.of(
                 Integer.valueOf(hour),
                 Integer.valueOf(minute));
     }
@@ -55,8 +55,7 @@ public class EndTimePod {
         return matcher;
     }
 
-    //TODO: EndTimeにする予定
-    public TimeOfDay domainObject() {
-        return timeOfDay;
+    public EndTime domainObject() {
+        return endTime;
     }
 }
