@@ -7,7 +7,8 @@ import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
  * 残業時間
  * <pre>
  *     残業時間は、作業開始から8時間経過以降。
- *     ただし、日付を越えた労働時間は含めない。
+ *     休憩時間は含まない。
+ *     また、日付を越えた労働時間は含めない。
  * </pre>
  */
 public class WorkedTimeAsOvertime {
