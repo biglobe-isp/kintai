@@ -5,6 +5,7 @@ import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.WorkedTimeAsOvertime;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -79,7 +80,7 @@ public class DailyWorkedTimeRegistrationService {
                 parameter.beginTime,
                 parameter.endTime,
                 AmountOfMinutes.of(workMinutes),
-                AmountOfMinutes.of(overWorkMinutes));
+                WorkedTimeAsOvertime.of(overWorkMinutes));
 
         repository.save(dailyWorkedTime);
     }

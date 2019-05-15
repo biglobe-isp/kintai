@@ -24,7 +24,7 @@ public class DailyWorkedTimeRegistration {
                     dailyWorkedTime.getBeginTime().storedValue(),
                     dailyWorkedTime.getEndTime().storedValue(),
                     dailyWorkedTime.getWorkMinutes().getValue(),        //TODO: どうする？
-                    dailyWorkedTime.getOverWorkMinutes().getValue(),    //TODO: どうする？
+                    dailyWorkedTime.getWorkedTimeAsOvertime().storedValue(),
                     dailyWorkedTime.getRecordTimestamp().storedValue()));
         }
         catch (IOException e) {

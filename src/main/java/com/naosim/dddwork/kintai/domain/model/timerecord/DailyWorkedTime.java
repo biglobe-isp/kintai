@@ -5,6 +5,7 @@ import com.naosim.dddwork.kintai.domain.core.type.time.stamp.RecordTimestamp;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.WorkedTimeAsOvertime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,20 +26,20 @@ public class DailyWorkedTime {
     final EndTime endTime;
 //TODO: ここはまとめる
     final AmountOfMinutes workMinutes;
-    final AmountOfMinutes overWorkMinutes;
+    final WorkedTimeAsOvertime workedTimeAsOvertime;
     final RecordTimestamp recordTimestamp = RecordTimestamp.now();
 
 
-    public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, AmountOfMinutes overWorkMinutes) {
-        return new DailyWorkedTime(attendanceDate, beginTime, endTime, workMinutes, overWorkMinutes);
+    public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, WorkedTimeAsOvertime workedTimeAsOvertime) {
+        return new DailyWorkedTime(attendanceDate, beginTime, endTime, workMinutes, workedTimeAsOvertime);
     }
 
-    public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, AmountOfMinutes overWorkMinutes) {
+    public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, WorkedTimeAsOvertime workedTimeAsOvertime) {
 
         this.attendanceDate = attendanceDate;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.workMinutes = workMinutes;
-        this.overWorkMinutes = overWorkMinutes;
+        this.workedTimeAsOvertime = workedTimeAsOvertime;
     }
 }
