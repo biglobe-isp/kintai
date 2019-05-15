@@ -1,5 +1,6 @@
 package com.naosim.dddwork.kintai.service.command;
 
+import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
@@ -77,8 +78,8 @@ public class DailyWorkedTimeRegistrationService {
                 parameter.attendanceDate,
                 parameter.beginTime,
                 parameter.endTime,
-                workMinutes,
-                overWorkMinutes);
+                AmountOfMinutes.of(workMinutes),
+                AmountOfMinutes.of(overWorkMinutes));
 
         repository.save(dailyWorkedTime);
     }

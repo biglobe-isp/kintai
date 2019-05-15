@@ -1,5 +1,6 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord;
 
+import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
@@ -20,18 +21,20 @@ import java.time.LocalDateTime;
 public class DailyWorkedTime {
 
     final AttendanceDate attendanceDate;
+//TODO: ここはまとめる
     final BeginTime beginTime;
     final EndTime endTime;
-    final int workMinutes;
-    final int overWorkMinutes;
+//TODO: ここはまとめる
+    final AmountOfMinutes workMinutes;
+    final AmountOfMinutes overWorkMinutes;
     final String now = LocalDateTime.now().toString();
 
 
-    public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, int workMinutes, int overWorkMinutes) {
+    public static DailyWorkedTime of(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, AmountOfMinutes overWorkMinutes) {
         return new DailyWorkedTime(attendanceDate, beginTime, endTime, workMinutes, overWorkMinutes);
     }
 
-    public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, int workMinutes, int overWorkMinutes) {
+    public DailyWorkedTime(AttendanceDate attendanceDate, BeginTime beginTime, EndTime endTime, AmountOfMinutes workMinutes, AmountOfMinutes overWorkMinutes) {
 
         this.attendanceDate = attendanceDate;
         this.beginTime = beginTime;

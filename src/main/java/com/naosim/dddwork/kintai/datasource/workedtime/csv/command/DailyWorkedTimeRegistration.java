@@ -23,8 +23,8 @@ public class DailyWorkedTimeRegistration {
                     dailyWorkedTime.getAttendanceDate().storedValue(),
                     dailyWorkedTime.getBeginTime().storedValue(),
                     dailyWorkedTime.getEndTime().storedValue(),
-                    dailyWorkedTime.getWorkMinutes(),
-                    dailyWorkedTime.getOverWorkMinutes(),
+                    dailyWorkedTime.getWorkMinutes().getValue(),        //TODO: どうする？
+                    dailyWorkedTime.getOverWorkMinutes().getValue(),    //TODO: どうする？
                     dailyWorkedTime.getNow()));
         }
         catch (IOException e) {
