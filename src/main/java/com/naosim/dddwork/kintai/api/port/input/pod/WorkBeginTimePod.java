@@ -1,46 +1,46 @@
-package com.naosim.dddwork.kintai.api.pod;
+package com.naosim.dddwork.kintai.api.port.input.pod;
 
 import com.google.common.base.Verify;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkEndTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkBeginTime;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 /**
- * ［作業終了時刻］ポッド
+ * ［作業開始時刻］ポッド
  */
-public class WorkEndTimePod {
+public class WorkBeginTimePod {
 
     private static final Pattern PATTERN = Pattern.compile("^(?<hour>[0-9]{2})(?<minute>[0-9]{2})$");
-    private static final String NAME = "退勤時刻";
+    private static final String NAME = "出勤時刻";
     private static final String MESSAGE = String.format("%sは HHmmフォーマットで入力してください．[入力値=${rawString}", NAME);
 
     private final String _rawString;
 
-    final WorkEndTime endTime;
+    final WorkBeginTime beginTime;
 
 
-    public static WorkEndTimePod of(String rawString) {
-        return new WorkEndTimePod(rawString);
+    public static WorkBeginTimePod of(String rawString) {
+        return new WorkBeginTimePod(rawString);
     }
 
-    public WorkEndTimePod(String rawString) {
+    public WorkBeginTimePod(String rawString) {
 
         Verify.verifyNotNull(rawString, "%sが nullです。", NAME);
 
         _rawString = rawString;
-        endTime = _parse(rawString);
+        beginTime = _parse(rawString);
     }
 
-    private WorkEndTime _parse(String rawString) {
+    private WorkBeginTime _parse(String rawString) {
 
         final Matcher m = patternMatcherFor(rawString);
 
         final String hour = m.group("hour");
         final String minute = m.group("minute");
 
-        return WorkEndTime.of(
+        return WorkBeginTime.of(
                 Integer.valueOf(hour),
                 Integer.valueOf(minute));
     }
@@ -55,7 +55,7 @@ public class WorkEndTimePod {
         return matcher;
     }
 
-    public WorkEndTime domainObject() {
-        return endTime;
+    public WorkBeginTime domainObject() {
+        return beginTime;
     }
 }

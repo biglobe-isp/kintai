@@ -1,6 +1,6 @@
 package com.naosim.dddwork.kintai.api.feature.total;
 
-import com.naosim.dddwork.kintai.api.pod.AttendanceMonthPod;
+import com.naosim.dddwork.kintai.api.port.input.pod.AttendanceMonthPod;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestOperandVerifiable;
 import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQueryService;

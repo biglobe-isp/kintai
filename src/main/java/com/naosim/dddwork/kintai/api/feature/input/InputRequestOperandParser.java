@@ -1,8 +1,8 @@
 package com.naosim.dddwork.kintai.api.feature.input;
 
-import com.naosim.dddwork.kintai.api.pod.AttendanceDatePod;
-import com.naosim.dddwork.kintai.api.pod.WorkBeginTimePod;
-import com.naosim.dddwork.kintai.api.pod.WorkEndTimePod;
+import com.naosim.dddwork.kintai.api.port.input.pod.AttendanceDatePod;
+import com.naosim.dddwork.kintai.api.port.input.pod.WorkBeginTimePod;
+import com.naosim.dddwork.kintai.api.port.input.pod.WorkEndTimePod;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestOperandVerifiable;
 import com.naosim.dddwork.kintai.service.command.DailyWorkedTimeRegistrationService;

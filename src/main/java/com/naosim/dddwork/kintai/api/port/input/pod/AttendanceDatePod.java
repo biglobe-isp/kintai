@@ -1,4 +1,4 @@
-package com.naosim.dddwork.kintai.api.pod;
+package com.naosim.dddwork.kintai.api.port.input.pod;
 
 import com.google.common.base.Verify;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
