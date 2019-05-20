@@ -3,6 +3,7 @@ package com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed;
 import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
 
 
+//TODO: ここにルールコメントがあるのは違和感
 /**
  * 残業時間
  * <pre>
@@ -16,18 +17,22 @@ public class WorkedTimeAsOvertime {
     final AmountOfMinutes minutes;
 
 
+    /* 生成 */
+
+    private WorkedTimeAsOvertime(AmountOfMinutes minutes) {
+        this.minutes = minutes;
+    }
+
     public static WorkedTimeAsOvertime of(int minutes) {
-        return new WorkedTimeAsOvertime(AmountOfMinutes.of(minutes));
+        return WorkedTimeAsOvertime.of(AmountOfMinutes.of(minutes));
     }
 
     public static WorkedTimeAsOvertime of(AmountOfMinutes minutes) {
         return new WorkedTimeAsOvertime(minutes);
     }
 
-    public WorkedTimeAsOvertime(AmountOfMinutes minutes) {
-        this.minutes = minutes;
-    }
 
+    /* 値 */
 
     /**
      * 残業時間の「分」表現
@@ -35,7 +40,7 @@ public class WorkedTimeAsOvertime {
      * @return 残業時間（分）
      */
     public int minutes() {
-        return minutes.getValue();
+        return minutes.rawValue();
     }
 
     public int storedValue() {

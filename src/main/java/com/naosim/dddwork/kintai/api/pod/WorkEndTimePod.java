@@ -1,16 +1,16 @@
 package com.naosim.dddwork.kintai.api.pod;
 
 import com.google.common.base.Verify;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkEndTime;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 /**
- * ［終業時刻］ポッド
+ * ［作業終了時刻］ポッド
  */
-public class EndTimePod {
+public class WorkEndTimePod {
 
     private static final Pattern PATTERN = Pattern.compile("^(?<hour>[0-9]{2})(?<minute>[0-9]{2})$");
     private static final String NAME = "退勤時刻";
@@ -18,14 +18,14 @@ public class EndTimePod {
 
     private final String _rawString;
 
-    final EndTime endTime;
+    final WorkEndTime endTime;
 
 
-    public static EndTimePod of(String rawString) {
-        return new EndTimePod(rawString);
+    public static WorkEndTimePod of(String rawString) {
+        return new WorkEndTimePod(rawString);
     }
 
-    public EndTimePod(String rawString) {
+    public WorkEndTimePod(String rawString) {
 
         Verify.verifyNotNull(rawString, "%sが nullです。", NAME);
 
@@ -33,14 +33,14 @@ public class EndTimePod {
         endTime = _parse(rawString);
     }
 
-    private EndTime _parse(String rawString) {
+    private WorkEndTime _parse(String rawString) {
 
         final Matcher m = patternMatcherFor(rawString);
 
         final String hour = m.group("hour");
         final String minute = m.group("minute");
 
-        return EndTime.of(
+        return WorkEndTime.of(
                 Integer.valueOf(hour),
                 Integer.valueOf(minute));
     }
@@ -55,7 +55,7 @@ public class EndTimePod {
         return matcher;
     }
 
-    public EndTime domainObject() {
+    public WorkEndTime domainObject() {
         return endTime;
     }
 }

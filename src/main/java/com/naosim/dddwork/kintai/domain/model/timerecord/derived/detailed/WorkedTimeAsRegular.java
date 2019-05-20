@@ -15,18 +15,22 @@ public class WorkedTimeAsRegular {
     final AmountOfMinutes minutes;
 
 
+    /* 生成 */
+
+    private WorkedTimeAsRegular(AmountOfMinutes minutes) {
+        this.minutes = minutes;
+    }
+
     public static WorkedTimeAsRegular of(int minutes) {
-        return new WorkedTimeAsRegular(AmountOfMinutes.of(minutes));
+        return WorkedTimeAsRegular.of(AmountOfMinutes.of(minutes));
     }
 
     public static WorkedTimeAsRegular of(AmountOfMinutes minutes) {
         return new WorkedTimeAsRegular(minutes);
     }
 
-    public WorkedTimeAsRegular(AmountOfMinutes minutes) {
-        this.minutes = minutes;
-    }
 
+    /* 値 */
 
     /**
      * 勤務時間の「分」表現
@@ -34,7 +38,7 @@ public class WorkedTimeAsRegular {
      * @return 勤務時間（分）
      */
     public int minutes() {
-        return minutes.getValue();
+        return minutes.rawValue();
     }
 
     public int storedValue() {

@@ -3,6 +3,7 @@ package com.naosim.dddwork.kintai.api;
 import com.naosim.dddwork.kintai.api.request.Request;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
+import com.naosim.dddwork.kintai.shared.exception.ValidationException;
 
 
 /**
@@ -24,6 +25,13 @@ public class AttendanceController {
         Request request = parser.pickRequest();
         RequestOperands operands = parser.pickOperands();
 
-        request.execute(operands, DataStorePolicy.CSV);
+        try {
+            request.execute(operands, DataStorePolicy.CSV);
+        }
+        catch (ValidationException e) {
+            e.getErrorMessages().stream().
+                    forEach(System.out::println);
+            e.printStackTrace();
+        }
     }
 }

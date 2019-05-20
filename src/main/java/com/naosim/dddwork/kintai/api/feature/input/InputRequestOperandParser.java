@@ -1,8 +1,8 @@
 package com.naosim.dddwork.kintai.api.feature.input;
 
 import com.naosim.dddwork.kintai.api.pod.AttendanceDatePod;
-import com.naosim.dddwork.kintai.api.pod.BeginTimePod;
-import com.naosim.dddwork.kintai.api.pod.EndTimePod;
+import com.naosim.dddwork.kintai.api.pod.WorkBeginTimePod;
+import com.naosim.dddwork.kintai.api.pod.WorkEndTimePod;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestOperandVerifiable;
 import com.naosim.dddwork.kintai.service.command.DailyWorkedTimeRegistrationService;
@@ -47,8 +47,8 @@ public class InputRequestOperandParser {
     static Regulation regulation = new Regulation();
 
     private final AttendanceDatePod _attendanceDatePod;
-    private final BeginTimePod _beginTimePod;
-    private final EndTimePod _endTimePod;
+    private final WorkBeginTimePod _Work_beginTimePod;
+    private final WorkEndTimePod _Work_endTimePod;
 
 
     public static InputRequestOperandParser of(RequestOperands operands) {
@@ -66,8 +66,8 @@ public class InputRequestOperandParser {
         }
 
         _attendanceDatePod = new AttendanceDatePod(operands.at(AttendanceDate.index));
-        _beginTimePod = new BeginTimePod(operands.at(BeginTime.index));
-        _endTimePod = new EndTimePod(operands.at(EndTime.index));
+        _Work_beginTimePod = new WorkBeginTimePod(operands.at(BeginTime.index));
+        _Work_endTimePod = new WorkEndTimePod(operands.at(EndTime.index));
     }
 
 
@@ -75,8 +75,8 @@ public class InputRequestOperandParser {
 
         return DailyWorkedTimeRegistrationService.Parameter.of(
                 _attendanceDatePod.domainObject(),
-                _beginTimePod.domainObject(),
-                _endTimePod.domainObject()
+                _Work_beginTimePod.domainObject(),
+                _Work_endTimePod.domainObject()
         );
     }
 }

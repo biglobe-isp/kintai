@@ -1,11 +1,10 @@
 package com.naosim.dddwork.kintai.service.command;
 
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkBeginTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkEndTime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.DailySpentTimeRangeAtWork;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
-import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.WorkedTimeAsOvertime;
-import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.WorkedTimeAsRegular;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 import lombok.AllArgsConstructor;
 import lombok.Value;
@@ -21,8 +20,8 @@ public class DailyWorkedTimeRegistrationService {
     public static class Parameter {
 
         final AttendanceDate attendanceDate;
-        final BeginTime beginTime;
-        final EndTime endTime;
+        final WorkBeginTime beginTime;
+        final WorkEndTime endTime;
     }
 
     final WorkedTimeRepository repository;
@@ -39,50 +38,12 @@ public class DailyWorkedTimeRegistrationService {
 
     private void _registerWorkTime(Parameter parameter) {
 
-
-//NOTE: ここから勤務時間と残業時間の算出をやっている
-        int startH = parameter.beginTime.hourRawValue();
-        int startM = parameter.beginTime.minuteRawValue();
-
-        int endH = parameter.endTime.hourRawValue();
-        int endM = parameter.endTime.minuteRawValue();
-
-        int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-        if(endH == 12) {
-            workMinutes -= endM;
-        } else if(endH >= 13) {
-            workMinutes -= 60;
-        }
-
-        if(endH == 18) {
-            workMinutes -= endM;
-        } else if(endH >= 19) {
-            workMinutes -= 60;
-        }
-
-        if(endH == 21) {
-            workMinutes -= endM;
-        } else if(endH >= 22) {
-            workMinutes -= 60;
-        }
-
-        if (endH > 23) {
-            final int serviceH = endH - 24;
-            final int serviceM = endM;
-            workMinutes -= serviceH * 60 + serviceM;
-        }
-
-        int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-
-        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(
+        DailySpentTimeRangeAtWork fact = DailySpentTimeRangeAtWork.of(
                 parameter.attendanceDate,
                 parameter.beginTime,
-                parameter.endTime,
-                WorkedTimeAsRegular.of(workMinutes),
-                WorkedTimeAsOvertime.of(overWorkMinutes));
-
-        repository.save(dailyWorkedTime);
+                parameter.endTime);
+        DailyWorkedTime record = fact.calculateDetailedWorkTime();
+        repository.save(record);
     }
 
 }

@@ -11,14 +11,18 @@ public class RecordTimestamp {
     final LocalDateTime dateTime;
 
 
+    /* 生成 */
+
+    private RecordTimestamp(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public static RecordTimestamp now() {
         return new RecordTimestamp(LocalDateTime.now());
     }
 
-    public RecordTimestamp(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
 
+    /* 値 */
 
     public String storedValue() {
         return dateTime.toString();

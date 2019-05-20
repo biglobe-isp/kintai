@@ -1,16 +1,16 @@
 package com.naosim.dddwork.kintai.api.pod;
 
 import com.google.common.base.Verify;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkBeginTime;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 /**
- * ［始業時刻］ポッド
+ * ［作業開始時刻］ポッド
  */
-public class BeginTimePod {
+public class WorkBeginTimePod {
 
     private static final Pattern PATTERN = Pattern.compile("^(?<hour>[0-9]{2})(?<minute>[0-9]{2})$");
     private static final String NAME = "出勤時刻";
@@ -18,14 +18,14 @@ public class BeginTimePod {
 
     private final String _rawString;
 
-    final BeginTime beginTime;
+    final WorkBeginTime beginTime;
 
 
-    public static BeginTimePod of(String rawString) {
-        return new BeginTimePod(rawString);
+    public static WorkBeginTimePod of(String rawString) {
+        return new WorkBeginTimePod(rawString);
     }
 
-    public BeginTimePod(String rawString) {
+    public WorkBeginTimePod(String rawString) {
 
         Verify.verifyNotNull(rawString, "%sが nullです。", NAME);
 
@@ -33,14 +33,14 @@ public class BeginTimePod {
         beginTime = _parse(rawString);
     }
 
-    private BeginTime _parse(String rawString) {
+    private WorkBeginTime _parse(String rawString) {
 
         final Matcher m = patternMatcherFor(rawString);
 
         final String hour = m.group("hour");
         final String minute = m.group("minute");
 
-        return BeginTime.of(
+        return WorkBeginTime.of(
                 Integer.valueOf(hour),
                 Integer.valueOf(minute));
     }
@@ -55,7 +55,7 @@ public class BeginTimePod {
         return matcher;
     }
 
-    public BeginTime domainObject() {
+    public WorkBeginTime domainObject() {
         return beginTime;
     }
 }

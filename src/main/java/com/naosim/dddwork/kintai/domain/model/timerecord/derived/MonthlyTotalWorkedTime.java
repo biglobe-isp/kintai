@@ -13,6 +13,9 @@ public class MonthlyTotalWorkedTime {
     final int totalWorkMinutes;
     final int totalOverWorkMinutes;
 
+
+    /* 生成 */
+
     public MonthlyTotalWorkedTime(int totalWorkMinutes, int totalOverWorkMinutes) {
         this.totalWorkMinutes = totalWorkMinutes;
         this.totalOverWorkMinutes = totalOverWorkMinutes;
@@ -22,10 +25,10 @@ public class MonthlyTotalWorkedTime {
     /**
      * 指定されたプリントストリームに表示する．
      * <pre>
-     *     QUESTION: この方式がいいのか、それとも getterを生やして OutputPortの責務にする方がいいのか？
+     *     QUESTION: この方式がいいのか、それとも getterを生やして OutputPortの責務にする方がいいのか？ ヘキサゴナルアーキテクチャに従えばアダプター側かな。
      * </pre>
      *
-     * @param printStream
+     * @param printStream プリントストリーム
      */
     public void showOn(PrintStream printStream) {
 

@@ -9,11 +9,17 @@ import java.time.YearMonth;
  * 勤怠年月
  */
 @Getter
-//TODO: Getterは暫定的に使用中
+//TODO: Getterは暫定的に使用中。
 public class AttendanceYearMonth {
 
     final YearMonth yearMonth;
 
+
+    /* 生成 */
+
+    private AttendanceYearMonth(YearMonth yearMonth) {
+        this.yearMonth = yearMonth;
+    }
 
     public static AttendanceYearMonth of(String year, String month) {
         return new AttendanceYearMonth(
@@ -25,9 +31,5 @@ public class AttendanceYearMonth {
 
     public static AttendanceYearMonth of(YearMonth yearMonth) {
         return new AttendanceYearMonth(yearMonth);
-    }
-
-    public AttendanceYearMonth(YearMonth yearMonth) {
-        this.yearMonth = yearMonth;
     }
 }

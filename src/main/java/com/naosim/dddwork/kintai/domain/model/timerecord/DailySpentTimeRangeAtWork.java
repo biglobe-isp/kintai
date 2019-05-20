@@ -1,9 +1,9 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord;
 
-import com.naosim.dddwork.kintai.domain.core.type.time.range.TimeRange;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.BeginTime;
-import com.naosim.dddwork.kintai.domain.model.foundation.time.EndTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkBeginTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkEndTime;
+import com.naosim.dddwork.kintai.domain.model.foundation.time.range.WorkTimeRange;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -19,16 +19,27 @@ import lombok.ToString;
 public class DailySpentTimeRangeAtWork {
 
     final AttendanceDate attendanceDate;
-    final TimeRange spentTimeRange;
+    final WorkTimeRange spentTimeRange;
 
 
-    public static DailySpentTimeRangeAtWork of(AttendanceDate attendanceDate, BeginTime beganTime, EndTime endedTime) {
-        return new DailySpentTimeRangeAtWork(attendanceDate, beganTime, endedTime);
-    }
+    /* 生成 */
 
-    public DailySpentTimeRangeAtWork(AttendanceDate attendanceDate, BeginTime beganTime, EndTime endedTime) {
+    private DailySpentTimeRangeAtWork(AttendanceDate attendanceDate, WorkBeginTime workBeganTime, WorkEndTime workEndedTime) {
 
         this.attendanceDate = attendanceDate;
-        spentTimeRange = new TimeRange(beganTime, endedTime);
+        spentTimeRange = WorkTimeRange.of(workBeganTime, workEndedTime);
+    }
+
+    public static DailySpentTimeRangeAtWork of(AttendanceDate attendanceDate, WorkBeginTime workBeganTime, WorkEndTime workEndedTime) {
+        return new DailySpentTimeRangeAtWork(attendanceDate, workBeganTime, workEndedTime);
+    }
+
+
+    /* 導出 */
+
+    public DailyWorkedTime calculateDetailedWorkTime() {
+
+        DailyWorkedTime dailyWorkedTime = DailyWorkedTime.of(this);
+        return dailyWorkedTime;
     }
 }
