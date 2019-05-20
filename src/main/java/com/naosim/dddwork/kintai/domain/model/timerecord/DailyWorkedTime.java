@@ -1,11 +1,10 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord;
 
-import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
 import com.naosim.dddwork.kintai.domain.core.type.time.stamp.RecordTimestamp;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.range.WorkTimeRange;
-import com.naosim.dddwork.kintai.domain.model.regulation.WorkTimeCalculation;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.ActualUnpaidWorkedTime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.ActualWorkedTime;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.PaidWorkedTime;
-import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.UnpaidWorkedTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -19,9 +18,15 @@ import lombok.ToString;
 @Getter
 public class DailyWorkedTime {
 
+    /* 日別拘束時間 */
     final DailySpentTimeRangeAtWork dailySpentTimeRangeAtWork;
+
+    /* ［導出］労働時間（賃金発生分） */
     final PaidWorkedTime paidWorkedTime;
-    final UnpaidWorkedTime unpaidWorkedTime;
+    /* ［導出］サービス残業時間 */
+    final ActualUnpaidWorkedTime actualUnpaidWorkedTime;
+
+    /* タイムスタンプ */
     final RecordTimestamp recordTimestamp = RecordTimestamp.now();
 
 
@@ -33,16 +38,11 @@ public class DailyWorkedTime {
 
         /* 拘束時間 */
         final WorkTimeRange spentTimeRange = dailySpentTimeRangeAtWork.spentTimeRange;
+        /* 実際の労働時間 */
+        final ActualWorkedTime actualWorkedTime = ActualWorkedTime.of(spentTimeRange);
 
-        /* サービス残業時間（分） */
-        final AmountOfMinutes actualUnpaidOvertimeMinutes = WorkTimeCalculation.actualTotalUnpaidOvertimeIn(spentTimeRange);
-        unpaidWorkedTime = UnpaidWorkedTime.of(actualUnpaidOvertimeMinutes);
-
-        /* 実際の労働時間（分） */
-        final AmountOfMinutes actualWorkedMinutes = WorkTimeCalculation.actualTotalWorkMinutesIn(spentTimeRange);
-        /* 賃金発生労働時間（分） = 実際の労働時間 - サービス残業時間 */
-        final AmountOfMinutes actualPaidWorkMinutes = actualWorkedMinutes.minus(actualUnpaidOvertimeMinutes);
-        paidWorkedTime = PaidWorkedTime.of(actualPaidWorkMinutes);
+        actualUnpaidWorkedTime = ActualUnpaidWorkedTime.of(spentTimeRange);
+        paidWorkedTime = PaidWorkedTime.of(actualWorkedTime, actualUnpaidWorkedTime);
     }
 
     public static DailyWorkedTime of(DailySpentTimeRangeAtWork dailySpentTimeRangeAtWork) {

@@ -2,12 +2,14 @@ package com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed;
 
 import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
 
+import static com.naosim.dddwork.kintai.domain.model.regulation.WorkingTimeRegulations.LEGAL_WORKING_MINUTES;
+
 
 /**
- * 勤務時間
+ * 賃金発生労働時間（通常時間）
  * <pre>
+ *     法定労働時間量内の労働時間。
  *     休憩時間は含まない。
- *     残業時間も含む（サービス残業（日付を超えた分の労働時間）は含まない）。
  * </pre>
  */
 public class WorkedTimeAsRegular {
@@ -17,16 +19,14 @@ public class WorkedTimeAsRegular {
 
     /* 生成 */
 
-    private WorkedTimeAsRegular(AmountOfMinutes minutes) {
-        this.minutes = minutes;
+    private WorkedTimeAsRegular(ActualPaidWorkedTime actualPaidWorkedTime) {
+
+        /* 通常労働時間(分) = min(賃金が発生する実際の労働時間量, 法定労働時間) */
+        minutes = AmountOfMinutes.findMinimum(actualPaidWorkedTime.actualPaidWorkMinutes, LEGAL_WORKING_MINUTES);
     }
 
-    public static WorkedTimeAsRegular of(int minutes) {
-        return WorkedTimeAsRegular.of(AmountOfMinutes.of(minutes));
-    }
-
-    public static WorkedTimeAsRegular of(AmountOfMinutes minutes) {
-        return new WorkedTimeAsRegular(minutes);
+    public static WorkedTimeAsRegular of(ActualPaidWorkedTime actualPaidWorkedTime) {
+        return new WorkedTimeAsRegular(actualPaidWorkedTime);
     }
 
 

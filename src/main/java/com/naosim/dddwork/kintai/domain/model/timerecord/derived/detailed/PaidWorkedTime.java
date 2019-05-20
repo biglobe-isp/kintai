@@ -1,42 +1,35 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed;
 
 
-import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
-
-import static com.naosim.dddwork.kintai.domain.model.regulation.WorkingTimeRegulations.LEGAL_WORKING_MINUTES;
-
-
 /**
  * 労働時間（賃金発生分）
  */
 public class PaidWorkedTime {
 
-    /** 通常労働時間 */
+    /** 賃金発生労働時間（通常時間） */
     final WorkedTimeAsRegular workedTimeAsRegular;
-    /** 残業時間 */
+    /** 賃金発生労働時間（残業時間） */
     final WorkedTimeAsOvertime workedTimeAsOvertime;
 
 
     /* 生成 */
 
     /**
-     * 賃金が発生する実際の労働時間量（分）で構築する．
+     * 実質労働時間とサービス残業時間で構築する．
      *
-     * @param actualPaidWorkMinutes 賃金が発生する実際の労働時間量（分）
+     * @param actualWorkedTime 実質労働時間
+     * @param actualUnpaidWorkedTime サービス残業時間
      */
-    private PaidWorkedTime(AmountOfMinutes actualPaidWorkMinutes) {
+    private PaidWorkedTime(ActualWorkedTime actualWorkedTime, ActualUnpaidWorkedTime actualUnpaidWorkedTime) {
 
-        /* 残業時間(分) = 賃金発生労働時間量 - 法定労働時間 */
-        final AmountOfMinutes actualPaidOvertimeMinutes = actualPaidWorkMinutes.minus(LEGAL_WORKING_MINUTES);
-        /* 通常労働時間(分) = min(賃金が発生する実際の労働時間量, 法定労働時間) */
-        final AmountOfMinutes actualRegularWorkTime = AmountOfMinutes.findMinimum(actualPaidWorkMinutes, LEGAL_WORKING_MINUTES);
+        final ActualPaidWorkedTime actualPaidWorkedTime = ActualPaidWorkedTime.of(actualWorkedTime, actualUnpaidWorkedTime);
 
-        this.workedTimeAsRegular = WorkedTimeAsRegular.of(actualRegularWorkTime);
-        this.workedTimeAsOvertime = WorkedTimeAsOvertime.of(actualPaidOvertimeMinutes);
+        this.workedTimeAsRegular = WorkedTimeAsRegular.of(actualPaidWorkedTime);
+        this.workedTimeAsOvertime = WorkedTimeAsOvertime.of(actualPaidWorkedTime);
     }
 
-    public static PaidWorkedTime of(AmountOfMinutes actualPaidWorkMinutes) {
-        return new PaidWorkedTime(actualPaidWorkMinutes);
+    public static PaidWorkedTime of(ActualWorkedTime actualWorkedTime, ActualUnpaidWorkedTime actualUnpaidWorkedTime) {
+        return new PaidWorkedTime(actualWorkedTime, actualUnpaidWorkedTime);
     }
 
 
@@ -50,7 +43,6 @@ public class PaidWorkedTime {
         return workedTimeAsOvertime;
     }
 
-    //TODO: メソッド名が意味的におかしい
     public int storedValue() {
         return workedTimeAsRegular.minutes.plus(workedTimeAsOvertime.minutes).rawValue();
     }
