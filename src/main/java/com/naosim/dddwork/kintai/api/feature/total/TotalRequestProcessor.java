@@ -4,7 +4,7 @@ import com.naosim.dddwork.kintai.api.port.output.MonthlyTotalWorkedTimeOutputPor
 import com.naosim.dddwork.kintai.api.port.protocol.OutputPort;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestProcessor;
-import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
+import com.naosim.dddwork.kintai.settings.DataStorePolicy;
 import com.naosim.dddwork.kintai.datasource.timerecord.protocol.DataSourceFactory;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.MonthlyTotalWorkedTime;
 import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQueryService;

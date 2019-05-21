@@ -1,6 +1,6 @@
 package com.naosim.dddwork.kintai.api.request;
 
-import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
+import com.naosim.dddwork.kintai.settings.DataStorePolicy;
 import com.naosim.dddwork.kintai.api.feature.input.InputRequestProcessor;
 import com.naosim.dddwork.kintai.api.feature.total.TotalRequestProcessor;
 

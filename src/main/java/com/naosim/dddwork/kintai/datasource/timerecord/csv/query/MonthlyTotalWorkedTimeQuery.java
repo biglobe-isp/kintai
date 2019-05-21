@@ -1,6 +1,6 @@
 package com.naosim.dddwork.kintai.datasource.timerecord.csv.query;
 
-import com.naosim.dddwork.kintai.api.settings.Environment;
+import com.naosim.dddwork.kintai.settings.Environment;
 import com.naosim.dddwork.kintai.datasource.timerecord.csv.domain.builder.DailyTimeRecordBuilder;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceYearMonth;

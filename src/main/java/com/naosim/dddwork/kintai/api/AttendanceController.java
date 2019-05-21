@@ -2,7 +2,7 @@ package com.naosim.dddwork.kintai.api;
 
 import com.naosim.dddwork.kintai.api.request.Request;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
-import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
+import com.naosim.dddwork.kintai.settings.DataStorePolicy;
 import com.naosim.dddwork.kintai.shared.exception.ValidationException;
 
 

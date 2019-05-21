@@ -1,4 +1,4 @@
-package com.naosim.dddwork.kintai.api.settings;
+package com.naosim.dddwork.kintai.settings;
 
 
 public class Environment {
