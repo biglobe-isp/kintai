@@ -1,7 +1,7 @@
-package com.naosim.dddwork.kintai.datasource.workedtime.csv;
+package com.naosim.dddwork.kintai.datasource.timerecord.csv;
 
-import com.naosim.dddwork.kintai.datasource.workedtime.csv.command.DailyWorkedTimeRegistration;
-import com.naosim.dddwork.kintai.datasource.workedtime.csv.query.MonthlyTotalWorkedTimeQuery;
+import com.naosim.dddwork.kintai.datasource.timerecord.csv.command.DailyWorkedTimeRegistration;
+import com.naosim.dddwork.kintai.datasource.timerecord.csv.query.MonthlyTotalWorkedTimeQuery;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceYearMonth;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.MonthlyTotalWorkedTime;

@@ -1,7 +1,7 @@
-package com.naosim.dddwork.kintai.datasource.workedtime.factory;
+package com.naosim.dddwork.kintai.datasource.timerecord.factory;
 
-import com.naosim.dddwork.kintai.datasource.workedtime.csv.WorkedTimeCsvDataSource;
-import com.naosim.dddwork.kintai.datasource.workedtime.protocol.DataSourceFactory;
+import com.naosim.dddwork.kintai.datasource.timerecord.csv.WorkedTimeCsvDataSource;
+import com.naosim.dddwork.kintai.datasource.timerecord.protocol.DataSourceFactory;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 
 

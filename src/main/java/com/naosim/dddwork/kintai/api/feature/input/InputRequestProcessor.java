@@ -3,7 +3,7 @@ package com.naosim.dddwork.kintai.api.feature.input;
 import com.naosim.dddwork.kintai.api.settings.DataStorePolicy;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestProcessor;
-import com.naosim.dddwork.kintai.datasource.workedtime.protocol.DataSourceFactory;
+import com.naosim.dddwork.kintai.datasource.timerecord.protocol.DataSourceFactory;
 import com.naosim.dddwork.kintai.service.command.DailyWorkedTimeRegistrationService;
 
 

@@ -1,13 +1,13 @@
-package com.naosim.dddwork.kintai.datasource.workedtime.csv.domain.builder;
+package com.naosim.dddwork.kintai.datasource.timerecord.csv.domain.builder;
 
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkBeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkEndTime;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyTimeRecord;
 
-import static com.naosim.dddwork.kintai.datasource.workedtime.csv.domain.builder.DailyTimeRecordBuilder.CsvColumn.ATTENDANCE_DATE;
-import static com.naosim.dddwork.kintai.datasource.workedtime.csv.domain.builder.DailyTimeRecordBuilder.CsvColumn.WORK_BEGIN_TIME;
-import static com.naosim.dddwork.kintai.datasource.workedtime.csv.domain.builder.DailyTimeRecordBuilder.CsvColumn.WORK_END_TIME;
+import static com.naosim.dddwork.kintai.datasource.timerecord.csv.domain.builder.DailyTimeRecordBuilder.CsvColumn.ATTENDANCE_DATE;
+import static com.naosim.dddwork.kintai.datasource.timerecord.csv.domain.builder.DailyTimeRecordBuilder.CsvColumn.WORK_BEGIN_TIME;
+import static com.naosim.dddwork.kintai.datasource.timerecord.csv.domain.builder.DailyTimeRecordBuilder.CsvColumn.WORK_END_TIME;
 
 
 /**

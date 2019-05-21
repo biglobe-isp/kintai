@@ -1,4 +1,4 @@
-package com.naosim.dddwork.kintai.datasource.workedtime.protocol;
+package com.naosim.dddwork.kintai.datasource.timerecord.protocol;
 
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 

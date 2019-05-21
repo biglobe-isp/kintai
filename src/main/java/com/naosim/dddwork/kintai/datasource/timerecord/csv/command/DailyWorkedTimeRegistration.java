@@ -1,4 +1,4 @@
-package com.naosim.dddwork.kintai.datasource.workedtime.csv.command;
+package com.naosim.dddwork.kintai.datasource.timerecord.csv.command;
 
 import com.naosim.dddwork.kintai.api.settings.Environment;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
