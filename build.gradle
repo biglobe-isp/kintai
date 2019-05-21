@@ -15,7 +15,11 @@ plugins {
 
     // Apply the groovy plugin to also add support for Groovy (needed for Spock)
     id 'groovy'
+
+    id "org.dddjava.jig-gradle-plugin" version "2019.5.2.1"
 }
+
+jigReports.dependsOn(clean, compileJava, processResources)
 
 repositories {
     // Use jcenter for resolving your dependencies.
@@ -44,6 +48,21 @@ dependencies {
     // For Spy System.out 
     testImplementation "cglib:cglib-nodep:3.2.10"
     testImplementation "org.objenesis:objenesis:3.0.1"
+}
+
+jig {
+    modelPattern = '.+\\.domain\\..+'
+    documentTypes = [
+            'ServiceMethodCallHierarchyDiagram',
+            'PackageRelationDiagram',
+            'BusinessRuleRelationDiagram',
+            'ApplicationList',
+            'BusinessRuleList',
+            'BranchList',
+            'CategoryUsageDiagram',
+            'CategoryDiagram',
+            'BooleanServiceDiagram',
+            'PackageTreeDiagram']
 }
 
 // Define the main class for the application

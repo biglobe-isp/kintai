@@ -1,0 +1,4 @@
+/**
+ * 入力ポート
+ */
+package com.naosim.dddwork.kintai.api.port.input;
