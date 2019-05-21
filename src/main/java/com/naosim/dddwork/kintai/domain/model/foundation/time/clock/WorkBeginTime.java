@@ -43,6 +43,12 @@ public class WorkBeginTime implements ClockTimeQuantifiable, TimeOrderComparable
         return new WorkBeginTime(beginTime);
     }
 
+    public static WorkBeginTime of(String storedValue) {
+
+        final BeginTime beginTime = BeginTime.of(storedValue);
+        return new WorkBeginTime(beginTime);
+    }
+
 
     /* 値 */
 

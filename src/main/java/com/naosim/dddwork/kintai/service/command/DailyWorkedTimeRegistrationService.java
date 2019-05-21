@@ -3,7 +3,7 @@ package com.naosim.dddwork.kintai.service.command;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkBeginTime;
 import com.naosim.dddwork.kintai.domain.model.foundation.time.clock.WorkEndTime;
-import com.naosim.dddwork.kintai.domain.model.timerecord.DailySpentTimeRangeAtWork;
+import com.naosim.dddwork.kintai.domain.model.timerecord.DailyTimeRecord;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
 import com.naosim.dddwork.kintai.domain.repository.protocol.WorkedTimeRepository;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ public class DailyWorkedTimeRegistrationService {
 
     private void _registerWorkTime(Parameter parameter) {
 
-        DailySpentTimeRangeAtWork fact = DailySpentTimeRangeAtWork.of(
+        DailyTimeRecord fact = DailyTimeRecord.of(
                 parameter.attendanceDate,
                 parameter.beginTime,
                 parameter.endTime);

@@ -1,5 +1,6 @@
 package com.naosim.dddwork.kintai.datasource.workedtime.csv.command;
 
+import com.naosim.dddwork.kintai.api.settings.Environment;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
 import com.naosim.dddwork.kintai.shared.exception.SystemException;
 
@@ -15,14 +16,14 @@ public class DailyWorkedTimeRegistration {
 
     public void save(DailyWorkedTime dailyWorkedTime) {
 
-        File file = new File("data.csv");
+        File file = new File(Environment.DATA_STORE_CSV_FILE_NAME);
 
         try(FileWriter writer = new FileWriter(file, true)) {
 
             writer.write(String.format("%s,%s,%s,%s,%s,%s\n",
-                    dailyWorkedTime.getDailySpentTimeRangeAtWork().getAttendanceDate().storedValue(),
-                    dailyWorkedTime.getDailySpentTimeRangeAtWork().getSpentTimeRange().beginTime().storedValue(),
-                    dailyWorkedTime.getDailySpentTimeRangeAtWork().getSpentTimeRange().endTime().storedValue(),
+                    dailyWorkedTime.getDailyTimeRecord().getAttendanceDate().storedValue(),
+                    dailyWorkedTime.getDailyTimeRecord().getSpentTimeRange().beginTime().storedValue(),
+                    dailyWorkedTime.getDailyTimeRecord().getSpentTimeRange().endTime().storedValue(),
                     dailyWorkedTime.getPaidWorkedTime().storedValue(),
                     dailyWorkedTime.getPaidWorkedTime().workedTimeAsOvertime().storedValue(),
                     dailyWorkedTime.getRecordTimestamp().storedValue()));

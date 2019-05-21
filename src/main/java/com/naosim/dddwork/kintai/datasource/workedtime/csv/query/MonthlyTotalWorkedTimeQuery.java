@@ -1,18 +1,22 @@
 package com.naosim.dddwork.kintai.datasource.workedtime.csv.query;
 
+import com.naosim.dddwork.kintai.api.settings.Environment;
+import com.naosim.dddwork.kintai.datasource.workedtime.csv.domain.builder.DailyTimeRecordBuilder;
+import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.model.foundation.date.AttendanceYearMonth;
+import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
+import com.naosim.dddwork.kintai.domain.model.timerecord.collection.DailyWorkedTimeCollection;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.MonthlyTotalWorkedTime;
 import com.naosim.dddwork.kintai.shared.exception.SystemException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -20,48 +24,46 @@ import java.util.Set;
  */
 public class MonthlyTotalWorkedTimeQuery {
 
+
     public MonthlyTotalWorkedTime totalWorkedTimeIn(AttendanceYearMonth yearMonth) {
 
-        int totalWorkMinutes = 0;
-        int totalOverWorkMinutes = 0;
+        Path filePath = Paths.get(Environment.DATA_STORE_CSV_FILE_NAME);
 
-        File file = new File("data.csv");
-        Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-        Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
+        DailyWorkedTimeCollection dailyWorkedTimes = _extractDailyWorkedTimesIn(yearMonth, filePath);
+        MonthlyTotalWorkedTime monthlyTotalWorkedTime = dailyWorkedTimes.total();
+        return monthlyTotalWorkedTime;
+    }
 
-        try(FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr)
-        ) {
 
-            String line = br.readLine();
-            while(line != null){
-                String[] columns = line.split(",");
-                if(!columns[0].startsWith(yearMonth.getYearMonth().format(DateTimeFormatter.ofPattern("uuuuMM")))) {
-                    line = br.readLine();
-                    continue;
-                }
-                totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-                totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
+    /**
+     * 指定された年月の日別勤務時間をCSVファイルから抽出する．
+     * <pre>
+     *     同一日付のデータについては、（追記方式なので）最後のデータを採取する。
+     * </pre>
+     *
+     * @param yearMonth 抽出対象年月
+     * @param csvFilePath CSVファイルパス
+     *
+     * @return 抽出した日別勤務時間のコレクション
+     */
+    private DailyWorkedTimeCollection _extractDailyWorkedTimesIn(AttendanceYearMonth yearMonth, Path csvFilePath) {
 
-                line = br.readLine();
-            }
-        }
-        catch (FileNotFoundException e) {
-            throw new SystemException("ファイルが存在しません．", e);
+        final Map<AttendanceDate, DailyWorkedTime> dailyWorkedTimes;
+
+        try (Stream<String> stream = Files.lines(csvFilePath, StandardCharsets.UTF_8)) {
+            dailyWorkedTimes = stream
+                    .map(line -> DailyTimeRecordBuilder.fromCsv(line))
+                    .filter(timeRecord -> timeRecord.isIncludedIn(yearMonth))   // 指定年月分を抽出
+                    .map(timeRecord -> timeRecord.calculateDetailedWorkTime())  // THINK: 実際は導出項目も記録済みだけど、ここでまた計算している...RDBかNoSQLかとか、イベントソーシングを使うのかなどによってもデータをどう記録してどう復元するのかは変わってくるのだろうか？
+                    .collect(Collectors.toMap(
+                            DailyWorkedTime::getAttendanceDate,
+                            dailyWorkedTime -> dailyWorkedTime,
+                            (earlier, latest) -> latest));                      // 追記方式なので後の方を選択
         }
         catch (IOException e) {
-            throw new SystemException("IO例外発生．", e);
+            throw new SystemException("CSVデータから復元時に IO例外発生．", e);
         }
 
-        Set<String> keySet = totalWorkMinutesMap.keySet();
-        for(String key : keySet) {
-            totalWorkMinutes += totalWorkMinutesMap.get(key);
-            totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
-        }
-
-        final MonthlyTotalWorkedTime monthlyTotalWorkedTime = new MonthlyTotalWorkedTime(
-                totalWorkMinutes,
-                totalOverWorkMinutes);
-        return monthlyTotalWorkedTime;
+        return DailyWorkedTimeCollection.of(dailyWorkedTimes);
     }
 }

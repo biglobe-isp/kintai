@@ -1,24 +1,20 @@
 package com.naosim.dddwork.kintai.domain.model.foundation.date;
 
-import lombok.Getter;
-
 import java.time.YearMonth;
 
 
 /**
  * 勤怠年月
  */
-@Getter
-//TODO: Getterは暫定的に使用中。
 public class AttendanceYearMonth {
 
-    final YearMonth yearMonth;
+    final YearMonth value;
 
 
     /* 生成 */
 
     private AttendanceYearMonth(YearMonth yearMonth) {
-        this.yearMonth = yearMonth;
+        this.value = yearMonth;
     }
 
     public static AttendanceYearMonth of(String year, String month) {
@@ -31,5 +27,12 @@ public class AttendanceYearMonth {
 
     public static AttendanceYearMonth of(YearMonth yearMonth) {
         return new AttendanceYearMonth(yearMonth);
+    }
+
+
+    /* 比較 */
+
+    public boolean isEqualTo(YearMonth other) {
+        return other.equals(value);
     }
 }

@@ -29,7 +29,7 @@ public class EndTime implements ClockTimeQuantifiable, TimeOrderComparable<EndTi
     }
 
     private EndTime(HourOfDay hour, MinuteOfHour minute) {
-        timeOfDay = TimeOfDay.of(hour, minute);
+        this(TimeOfDay.of(hour, minute));
     }
 
     public static EndTime of(int hour, int minute) {
@@ -38,6 +38,10 @@ public class EndTime implements ClockTimeQuantifiable, TimeOrderComparable<EndTi
 
     public static EndTime of(HourOfDay hour, MinuteOfHour minute) {
         return new EndTime(hour, minute);
+    }
+
+    public static EndTime of(String storedValue) {
+        return new EndTime(TimeOfDay.of(storedValue));
     }
 
 

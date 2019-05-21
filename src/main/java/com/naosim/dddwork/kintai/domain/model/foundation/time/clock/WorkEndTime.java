@@ -46,6 +46,12 @@ public class WorkEndTime implements ClockTimeQuantifiable, TimeOrderComparable<W
         return new WorkEndTime(endTime);
     }
 
+    public static WorkEndTime of(String storedValue) {
+
+        final EndTime endTime = EndTime.of(storedValue);
+        return new WorkEndTime(endTime);
+    }
+
 
     /* 値 */
 

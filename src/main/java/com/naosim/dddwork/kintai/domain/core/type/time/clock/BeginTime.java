@@ -23,8 +23,12 @@ public class BeginTime implements ClockTimeQuantifiable, TimeOrderComparable<Beg
 
     /* 生成 */
 
+    private BeginTime(TimeOfDay timeOfDay) {
+        this.timeOfDay = timeOfDay;
+    }
+
     private BeginTime(HourOfDay hour, MinuteOfHour minute) {
-        timeOfDay = TimeOfDay.of(hour, minute);
+        this(TimeOfDay.of(hour, minute));
     }
 
     public static BeginTime of(int hour, int minute) {
@@ -33,6 +37,10 @@ public class BeginTime implements ClockTimeQuantifiable, TimeOrderComparable<Beg
 
     public static BeginTime of(HourOfDay hour, MinuteOfHour minute) {
         return new BeginTime(hour, minute);
+    }
+
+    public static BeginTime of(String storedValue) {
+        return new BeginTime(TimeOfDay.of(storedValue));
     }
 
 

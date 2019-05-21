@@ -20,6 +20,10 @@ import java.time.temporal.ChronoUnit;
 public class TimeOfDay implements ClockTimeQuantifiable,
                                   TimeOrderComparable<TimeOfDay> {
 
+    private final static String STORED_VALUE_FORMAT = "{0,number,00}{1,number,00}";
+
+    private final MessageFormat _storedValueFormat = new MessageFormat(STORED_VALUE_FORMAT);
+
     final HourOfDay hour;
     final MinuteOfHour minute;
 
@@ -37,6 +41,13 @@ public class TimeOfDay implements ClockTimeQuantifiable,
         asLocalTime = LocalTime.of(hour.normalizedValue(), minute.value);
     }
 
+    public static TimeOfDay of(String storedValue) {
+
+        final int hour = Integer.valueOf(storedValue.substring(0, 2));
+        final int minute = Integer.valueOf(storedValue.substring(2, 4));
+        return new TimeOfDay(HourOfDay.of(hour), MinuteOfHour.of(minute));
+    }
+
     public static TimeOfDay of(int hour, int minute) {
         return new TimeOfDay(HourOfDay.of(hour), MinuteOfHour.of(minute));
     }
@@ -45,6 +56,10 @@ public class TimeOfDay implements ClockTimeQuantifiable,
         return new TimeOfDay(hour, minute);
     }
 
+
+    private static MessageFormat _storedValueFormatter() {
+        return new MessageFormat(STORED_VALUE_FORMAT);
+    }
 
     /* 値 */
 
@@ -57,9 +72,8 @@ public class TimeOfDay implements ClockTimeQuantifiable,
     }
 
     public String defaultStoredValue() {
-
-        MessageFormat mf = new MessageFormat("{0,number,00}{1,number,00}");
-        return mf.format(new Integer[] {hour.value, minute.value});
+        //TODO: hourやminuteから0パディングした値を出す？
+        return _storedValueFormatter().format(new Integer[] {hour.value, minute.value});
     }
 
 

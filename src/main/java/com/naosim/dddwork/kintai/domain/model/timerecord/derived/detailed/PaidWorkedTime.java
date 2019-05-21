@@ -1,6 +1,8 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed;
 
 
+import com.naosim.dddwork.kintai.domain.core.type.time.amount.AmountOfMinutes;
+
 /**
  * 労働時間（賃金発生分）
  */
@@ -43,7 +45,15 @@ public class PaidWorkedTime {
         return workedTimeAsOvertime;
     }
 
+    public AmountOfMinutes totalMinutes() {
+        return workedTimeAsRegular.minutes.plus(workedTimeAsOvertime.minutes);
+    }
+
+    public AmountOfMinutes overtimeMinutes() {
+        return workedTimeAsOvertime.minutes;
+    }
+
     public int storedValue() {
-        return workedTimeAsRegular.minutes.plus(workedTimeAsOvertime.minutes).rawValue();
+        return totalMinutes().rawValue();
     }
 }
