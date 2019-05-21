@@ -1,13 +1,13 @@
 package com.naosim.dddwork.kintai.domain.model.timerecord.derived;
 
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.detailed.PaidWorkedTime;
-
-import java.io.PrintStream;
+import lombok.Getter;
 
 
 /**
  * 月次トータル勤務時間
  */
+@Getter
 public class MonthlyTotalWorkedTime {
 
 //TODO: 年月が必要かな？
@@ -44,23 +44,5 @@ public class MonthlyTotalWorkedTime {
         final int overtimeMinutes = this.totalOvertimeMinutes + other.totalOvertimeMinutes;
 
         return new MonthlyTotalWorkedTime(totalPaidWorkMinutes, overtimeMinutes);
-    }
-
-
-    /* 表示 */
-
-    //TODO: これの呼び出し元に移動する
-    /**
-     * 指定されたプリントストリームに表示する．
-     * <pre>
-     *     QUESTION: この方式がいいのか、それとも getterを生やして OutputPortの責務にする方がいいのか？ ヘキサゴナルアーキテクチャに従えばアダプター側かな。
-     * </pre>
-     *
-     * @param printStream プリントストリーム
-     */
-    public void showOn(PrintStream printStream) {
-
-        printStream.println("勤務時間: " + totalPaidWorkMinutes / 60 + "時間" + totalPaidWorkMinutes % 60 + "分");
-        printStream.println("残業時間: " + totalOvertimeMinutes / 60 + "時間" + totalOvertimeMinutes % 60 + "分");
     }
 }
