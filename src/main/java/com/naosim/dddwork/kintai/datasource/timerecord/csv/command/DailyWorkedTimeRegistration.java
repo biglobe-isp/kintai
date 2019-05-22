@@ -1,8 +1,8 @@
 package com.naosim.dddwork.kintai.datasource.timerecord.csv.command;
 
+import com.naosim.dddwork.kintai.datasource.settings.DataSourceConfiguration;
 import com.naosim.dddwork.kintai.domain.model.timerecord.DailyWorkedTime;
 import com.naosim.dddwork.kintai.shared.exception.SystemException;
-import com.naosim.dddwork.kintai.settings.Environment;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +16,7 @@ public class DailyWorkedTimeRegistration {
 
     public void save(DailyWorkedTime dailyWorkedTime) {
 
-        File file = new File(Environment.DATA_STORE_CSV_FILE_NAME);
+        File file = new File(DataSourceConfiguration.CSV_FILE_NAME);
 
         try(FileWriter writer = new FileWriter(file, true)) {
 

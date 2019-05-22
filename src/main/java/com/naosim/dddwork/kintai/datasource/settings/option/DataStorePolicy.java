@@ -1,4 +1,4 @@
-package com.naosim.dddwork.kintai.settings;
+package com.naosim.dddwork.kintai.datasource.settings.option;
 
 import com.naosim.dddwork.kintai.datasource.timerecord.factory.CsvDataSourceFactory;
 import com.naosim.dddwork.kintai.datasource.timerecord.protocol.DataSourceFactory;

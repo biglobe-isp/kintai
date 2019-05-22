@@ -1,6 +1,5 @@
 package com.naosim.dddwork.kintai.api.request;
 
-import com.naosim.dddwork.kintai.settings.DataStorePolicy;
 import com.naosim.dddwork.kintai.api.feature.input.InputRequestProcessor;
 import com.naosim.dddwork.kintai.api.feature.total.TotalRequestProcessor;
 
@@ -14,18 +13,18 @@ public enum Request {
 
     INPUT {
         @Override
-        public void execute(RequestOperands operands, DataStorePolicy dataStorePolicy) {
+        public void execute(RequestOperands operands) {
 
-            final InputRequestProcessor processor = new InputRequestProcessor(dataStorePolicy);
+            final InputRequestProcessor processor = new InputRequestProcessor();
             processor.execute(operands);
         }
     },
 
     TOTAL {
         @Override
-        public void execute(RequestOperands operands, DataStorePolicy dataStorePolicy) {
+        public void execute(RequestOperands operands) {
 
-            final TotalRequestProcessor processor = new TotalRequestProcessor(dataStorePolicy);
+            final TotalRequestProcessor processor = new TotalRequestProcessor();
             processor.execute(operands);
         }
     },
@@ -33,7 +32,7 @@ public enum Request {
     ;
 
 
-    public abstract void execute(RequestOperands operands, DataStorePolicy dataStorePolicy);
+    public abstract void execute(RequestOperands operands);
 
 
 

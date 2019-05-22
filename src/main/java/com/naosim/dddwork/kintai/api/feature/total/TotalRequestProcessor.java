@@ -4,7 +4,7 @@ import com.naosim.dddwork.kintai.api.port.output.MonthlyTotalWorkedTimeOutputPor
 import com.naosim.dddwork.kintai.api.port.protocol.OutputPort;
 import com.naosim.dddwork.kintai.api.request.RequestOperands;
 import com.naosim.dddwork.kintai.api.request.protocol.RequestProcessor;
-import com.naosim.dddwork.kintai.settings.DataStorePolicy;
+import com.naosim.dddwork.kintai.datasource.settings.DataSourceConfiguration;
 import com.naosim.dddwork.kintai.datasource.timerecord.protocol.DataSourceFactory;
 import com.naosim.dddwork.kintai.domain.model.timerecord.derived.MonthlyTotalWorkedTime;
 import com.naosim.dddwork.kintai.service.query.MonthlyTotalWorkedTimeQueryService;
@@ -18,9 +18,9 @@ public class TotalRequestProcessor implements RequestProcessor {
     final MonthlyTotalWorkedTimeQueryService service;
 
 
-    public TotalRequestProcessor(DataStorePolicy dataStorePolicy) {
+    public TotalRequestProcessor() {
 
-        final DataSourceFactory dataSourceFactory = dataStorePolicy.dataSourceFactory();
+        final DataSourceFactory dataSourceFactory = DataSourceConfiguration.DATA_STORE_POLICY.dataSourceFactory();
         service = new MonthlyTotalWorkedTimeQueryService(dataSourceFactory.workedTimeRepository());
     }
 
