@@ -17,7 +17,7 @@ public class InputRequestProcessor implements RequestProcessor {
 
     public InputRequestProcessor() {
 
-        final DataSourceFactory dataSourceFactory = DataSourceConfiguration.DATA_STORE_POLICY.dataSourceFactory();
+        final DataSourceFactory dataSourceFactory = DataSourceConfiguration.dataSourceFactory();
         service = new DailyWorkedTimeRegistrationService(dataSourceFactory.workedTimeRepository());
     }
 

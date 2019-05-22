@@ -20,7 +20,7 @@ public class TotalRequestProcessor implements RequestProcessor {
 
     public TotalRequestProcessor() {
 
-        final DataSourceFactory dataSourceFactory = DataSourceConfiguration.DATA_STORE_POLICY.dataSourceFactory();
+        final DataSourceFactory dataSourceFactory = DataSourceConfiguration.dataSourceFactory();
         service = new MonthlyTotalWorkedTimeQueryService(dataSourceFactory.workedTimeRepository());
     }
 

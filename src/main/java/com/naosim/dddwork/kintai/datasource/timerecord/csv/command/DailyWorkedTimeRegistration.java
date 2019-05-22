@@ -16,7 +16,7 @@ public class DailyWorkedTimeRegistration {
 
     public void save(DailyWorkedTime dailyWorkedTime) {
 
-        File file = new File(DataSourceConfiguration.CSV_FILE_NAME);
+        File file = new File(DataSourceConfiguration.csvFileName());
 
         try(FileWriter writer = new FileWriter(file, true)) {
 

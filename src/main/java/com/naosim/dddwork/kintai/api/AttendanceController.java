@@ -24,7 +24,10 @@ public class AttendanceController {
 
 //TODO: 改善する
 
-        DataSourceConfiguration.setup(DataStorePolicy.CSV, Environment.DATA_STORE_CSV_FILE_NAME);
+        DataSourceConfiguration.builder()
+                .dataStorePolicy(DataStorePolicy.CSV)
+                .csvFileName(Environment.DATA_STORE_CSV_FILE_NAME)
+                .build();
 
         ArgumentParser parser = new ArgumentParser(args);
         Request request = parser.pickRequest();

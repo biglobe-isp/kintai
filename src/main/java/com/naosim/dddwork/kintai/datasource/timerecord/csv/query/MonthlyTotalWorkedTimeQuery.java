@@ -27,7 +27,7 @@ public class MonthlyTotalWorkedTimeQuery {
 
     public MonthlyTotalWorkedTime totalWorkedTimeIn(AttendanceYearMonth yearMonth) {
 
-        Path filePath = Paths.get(DataSourceConfiguration.CSV_FILE_NAME);
+        Path filePath = Paths.get(DataSourceConfiguration.csvFileName());
 
         DailyWorkedTimeCollection dailyWorkedTimes = _extractDailyWorkedTimesIn(yearMonth, filePath);
         MonthlyTotalWorkedTime monthlyTotalWorkedTime = dailyWorkedTimes.total();
