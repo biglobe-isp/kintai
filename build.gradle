@@ -51,6 +51,8 @@ dependencies {
 }
 
 jig {
+    modelPattern = '.+\\.(domain)\\..+'
+    modelPattern = '.+\\.(domain|service|api|datasource|settings|shared)\\..+'
     modelPattern = '.+\\.(domain|service|api|datasource)\\..+'
     documentTypes = [
             'ServiceMethodCallHierarchyDiagram',
