@@ -1,10 +1,12 @@
 package refactor.api;
 
+import refactor.datasource.CsvFileRepository;
+import refactor.domain.*;
+import refactor.service.KintaiInputService;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,42 +23,16 @@ public class KintaiApi {
                 if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
                 }
-                String date = args[1];
-                String start = args[2];
-                String end = args[3];
-                String now = LocalDateTime.now().toString();
 
-                int startH = Integer.valueOf(start.substring(0, 2));
-                int startM = Integer.valueOf(start.substring(2, 4));
+                Date date = createDate(args[1]);
+                StartTime startTime = createStartTime(args[2]);
+                EndTime endTime = createEndTime(args[3]);
+                CurrentTime currentTime = new CurrentTime();
+                Repository repository = new CsvFileRepository();
 
-                int endH = Integer.valueOf(end.substring(0, 2));
-                int endM = Integer.valueOf(end.substring(2, 4));
-
-                int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-                if (endH == 12) {
-                    workMinutes -= endM;
-                } else if (endH >= 13) {
-                    workMinutes -= 60;
-                }
-
-                if (endH == 18) {
-                    workMinutes -= endM;
-                } else if (endH >= 19) {
-                    workMinutes -= 60;
-                }
-
-                if (endH == 21) {
-                    workMinutes -= endM;
-                } else if (endH >= 22) {
-                    workMinutes -= 60;
-                }
-
-                int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-                File file = new File("data.csv");
-                try (FileWriter filewriter = new FileWriter(file, true)) {
-                    filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
-                }
+                KintaiInputService kintaiInputService = new KintaiInputService(
+                        date, startTime, endTime, currentTime, repository);
+                kintaiInputService.inputKintai();
 
             } else if ("total".equals(methodType)) {
                 String yearMonth = args[1];
@@ -104,5 +80,24 @@ public class KintaiApi {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static Date createDate(String yyyymmdd) {
+        int year = Integer.valueOf(yyyymmdd.substring(0, 4));
+        int month = Integer.valueOf(yyyymmdd.substring(4, 6));
+        int day = Integer.valueOf(yyyymmdd.substring(6, 8));
+        return new Date(year, month, day);
+    }
+
+    private static StartTime createStartTime(String hhmm) {
+        int hour = Integer.valueOf(hhmm.substring(0, 2));
+        int minute = Integer.valueOf(hhmm.substring(2, 4));
+        return new StartTime(hour, minute);
+    }
+
+    private static EndTime createEndTime(String hhmm) {
+        int hour = Integer.valueOf(hhmm.substring(0, 2));
+        int minute = Integer.valueOf(hhmm.substring(2, 4));
+        return new EndTime(hour, minute);
     }
 }
