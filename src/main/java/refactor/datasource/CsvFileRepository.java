@@ -6,25 +6,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CsvFileRepository implements Repository {
+public class CsvFileRepository implements AttendanceRepository {
     private static final String FILE_NAME = "data.csv";
 
-    public void save(
-            Date date,
-            StartTime startTime,
-            EndTime endTime,
-            WorkingHours workingHours,
-            OvertimeHours overtimeHours,
-            CurrentTime currentTime) {
+    public void save(DailyAttendanceRecord dailyAttendanceRecord) {
         try (FileWriter filewriter = new FileWriter(new File(FILE_NAME), true)) {
             filewriter.write(
                     String.format("%s,%s,%s,%s,%s,%s\n",
-                            date.inYYYMMDD(),
-                            startTime.inHHMM(),
-                            endTime.inHHMM(),
-                            workingHours.inMinutes(),
-                            overtimeHours.inMinuts(),
-                            currentTime.now()));
+                            dailyAttendanceRecord.getDate().inYYYMMDD(),
+                            dailyAttendanceRecord.getStartTime().inHHMM(),
+                            dailyAttendanceRecord.getEndTime().inHHMM(),
+                            dailyAttendanceRecord.getWorkingHours().inMinutes(),
+                            dailyAttendanceRecord.getOvertimeHours().inMinuts(),
+                            dailyAttendanceRecord.getCurrentTime().now()));
         } catch (IOException e) {
             e.printStackTrace();
         }

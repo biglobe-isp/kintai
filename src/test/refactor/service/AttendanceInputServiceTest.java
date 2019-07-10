@@ -18,7 +18,7 @@ import java.util.List;
 import refactor.datasource.CsvFileRepository;
 import refactor.domain.*;
 
-public class KintaiInputServiceTest {
+public class AttendanceInputServiceTest {
     private List<String> inputs = Arrays.asList(
             "20190701 0900 1800",
             "20190702 0900 1200",
@@ -88,35 +88,53 @@ public class KintaiInputServiceTest {
     }
 
     @Test
-    public void inputKintai() throws Exception {
+    public void inputAttendance() throws Exception {
         CurrentTime currentTime = mock(CurrentTime.class);
         when(currentTime.now()).thenReturn("2019-07-09T16:52:31.675");
 
         for (String input : inputs) {
             String[] params = input.split(" ");
 
+            // 勤務日の生成
             String yyyymmdd = params[0];
             Date date = new Date(
                     Integer.valueOf(yyyymmdd.substring(0, 4)),
                     Integer.valueOf(yyyymmdd.substring(4, 6)),
                     Integer.valueOf(yyyymmdd.substring(6, 8)));
 
+            // 勤務開始時刻の生成
             String hhmmStart = params[1];
             StartTime startTime = new StartTime(
                     Integer.valueOf(hhmmStart.substring(0, 2)),
                     Integer.valueOf(hhmmStart.substring(2, 4)));
 
+            // 勤務終了時刻の生成
             String hhmmEnd = params[2];
             EndTime endTime = new EndTime(
                     Integer.valueOf(hhmmEnd.substring(0, 2)),
                     Integer.valueOf(hhmmEnd.substring(2, 4)));
 
-            Repository repository = new CsvFileRepository();
+            // 休憩時間の生成
+            BreakTime breakTime = new BreakTime(endTime);
 
-            KintaiInputService kintaiInputService = new KintaiInputService(
-                    date, startTime, endTime, currentTime, repository);
+            // 勤務時間の生成
+            WorkingHours workingHours = new WorkingHours(startTime, endTime, breakTime);
 
-            kintaiInputService.inputKintai();
+            // 残業時間の生成
+            OvertimeHours overtimeHours = new OvertimeHours(workingHours);
+
+            // 日次勤怠記録の生成
+            DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord(
+                    date, startTime, endTime, workingHours, overtimeHours, breakTime, currentTime);
+
+            // 勤怠リポジトリの生成
+            AttendanceRepository repository = new CsvFileRepository();
+
+            // 勤怠サービスの生成
+            AttendanceInputService attendanceInputService = new AttendanceInputService(
+                    dailyAttendanceRecord, repository);
+
+            attendanceInputService.inputAttendance();
         }
 
         List<String> actual = Files.readAllLines(Paths.get(FILE_NAME), StandardCharsets.UTF_8);

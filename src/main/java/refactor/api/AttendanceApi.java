@@ -2,7 +2,7 @@ package refactor.api;
 
 import refactor.datasource.CsvFileRepository;
 import refactor.domain.*;
-import refactor.service.KintaiInputService;
+import refactor.service.AttendanceInputService;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class KintaiApi {
+public class AttendanceApi {
     public static void main(String[] args) {
         try {
             if (args.length < 1) {
@@ -24,15 +24,12 @@ public class KintaiApi {
                     throw new RuntimeException("引数が足りません");
                 }
 
-                Date date = createDate(args[1]);
-                StartTime startTime = createStartTime(args[2]);
-                EndTime endTime = createEndTime(args[3]);
-                CurrentTime currentTime = new CurrentTime();
-                Repository repository = new CsvFileRepository();
+                DailyAttendanceRecord dailyAttendanceRecord = createDailyAttendanceRecord(args[1], args[2], args[3]);
+                AttendanceRepository repository = new CsvFileRepository();
 
-                KintaiInputService kintaiInputService = new KintaiInputService(
-                        date, startTime, endTime, currentTime, repository);
-                kintaiInputService.inputKintai();
+                AttendanceInputService attendanceInputService = new AttendanceInputService(
+                        dailyAttendanceRecord, repository);
+                attendanceInputService.inputAttendance();
 
             } else if ("total".equals(methodType)) {
                 String yearMonth = args[1];
@@ -80,6 +77,20 @@ public class KintaiApi {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static DailyAttendanceRecord createDailyAttendanceRecord(
+            String yyyymmdd, String hhmmStart, String hhmmEnd) {
+        Date date = createDate(yyyymmdd);
+        StartTime startTime = createStartTime(hhmmStart);
+        EndTime endTime = createEndTime(hhmmEnd);
+        BreakTime breakTime = new BreakTime(endTime);
+        WorkingHours workingHours = new WorkingHours(startTime, endTime, breakTime);
+        OvertimeHours overtimeHours = new OvertimeHours(workingHours);
+        CurrentTime currentTime = new CurrentTime();
+
+        return new DailyAttendanceRecord(
+                date, startTime, endTime, workingHours, overtimeHours, breakTime, currentTime);
     }
 
     private static Date createDate(String yyyymmdd) {
