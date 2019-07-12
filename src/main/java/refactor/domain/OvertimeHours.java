@@ -9,7 +9,7 @@ public class OvertimeHours {
         this.workingHours = Objects.requireNonNull(workingHours);
     }
 
-    public int inMinuts() {
+    public int inMinutes() {
         return Math.max(workingHours.inMinutes() - 8 * 60, 0);
     }
 }

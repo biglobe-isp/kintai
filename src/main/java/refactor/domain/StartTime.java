@@ -4,9 +4,9 @@ public class StartTime {
     private final int hour;
     private final int minute;
 
-    public StartTime(int hour, int minute) {
-        this.hour = hour;
-        this.minute = minute;
+    public StartTime(String hhmm) {
+        hour = Integer.valueOf(hhmm.substring(0, 2));
+        minute = Integer.valueOf(hhmm.substring(2, 4));
     }
 
     public int inMinutes() {

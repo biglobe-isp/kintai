@@ -89,43 +89,24 @@ public class AttendanceInputServiceTest {
 
     @Test
     public void inputAttendance() throws Exception {
-        CurrentTime currentTime = mock(CurrentTime.class);
-        when(currentTime.now()).thenReturn("2019-07-09T16:52:31.675");
+        AttendanceInputTime attendanceInputTime = mock(AttendanceInputTime.class);
+        when(attendanceInputTime.now()).thenReturn("2019-07-09T16:52:31.675");
 
         for (String input : inputs) {
             String[] params = input.split(" ");
 
             // 勤務日の生成
-            String yyyymmdd = params[0];
-            Date date = new Date(
-                    Integer.valueOf(yyyymmdd.substring(0, 4)),
-                    Integer.valueOf(yyyymmdd.substring(4, 6)),
-                    Integer.valueOf(yyyymmdd.substring(6, 8)));
+            WorkingDay workingDay = new WorkingDay(params[0]);
 
             // 勤務開始時刻の生成
-            String hhmmStart = params[1];
-            StartTime startTime = new StartTime(
-                    Integer.valueOf(hhmmStart.substring(0, 2)),
-                    Integer.valueOf(hhmmStart.substring(2, 4)));
+            StartTime startTime = new StartTime(params[1]);
 
             // 勤務終了時刻の生成
-            String hhmmEnd = params[2];
-            EndTime endTime = new EndTime(
-                    Integer.valueOf(hhmmEnd.substring(0, 2)),
-                    Integer.valueOf(hhmmEnd.substring(2, 4)));
-
-            // 休憩時間の生成
-            BreakTime breakTime = new BreakTime(endTime);
-
-            // 勤務時間の生成
-            WorkingHours workingHours = new WorkingHours(startTime, endTime, breakTime);
-
-            // 残業時間の生成
-            OvertimeHours overtimeHours = new OvertimeHours(workingHours);
+            EndTime endTime = new EndTime(params[2]);
 
             // 日次勤怠記録の生成
             DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord(
-                    date, startTime, endTime, workingHours, overtimeHours, breakTime, currentTime);
+                    workingDay, startTime, endTime, attendanceInputTime);
 
             // 勤怠リポジトリの生成
             AttendanceRepository repository = new CsvFileRepository();

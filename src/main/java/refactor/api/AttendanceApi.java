@@ -2,14 +2,8 @@ package refactor.api;
 
 import refactor.datasource.CsvFileRepository;
 import refactor.domain.*;
+import refactor.service.AttendanceAggregateService;
 import refactor.service.AttendanceInputService;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class AttendanceApi {
     public static void main(String[] args) {
@@ -30,46 +24,24 @@ public class AttendanceApi {
                 AttendanceInputService attendanceInputService = new AttendanceInputService(
                         dailyAttendanceRecord, repository);
                 attendanceInputService.inputAttendance();
-
             } else if ("total".equals(methodType)) {
-                String yearMonth = args[1];
+                YearMonth yearMonth = new YearMonth(args[1]);
+
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
 
-                int totalWorkMinutes = 0;
-                int totalOverWorkMinutes = 0;
+                AttendanceRepository attendanceRepository = new CsvFileRepository();
+                AttendanceAggregateService attendanceAggregateService = new AttendanceAggregateService(
+                        attendanceRepository);
 
-                File file = new File("data.csv");
+                String totalWorkingHoursText = String.format(
+                        "勤務時間: %s", attendanceAggregateService.calculateTotalWorkingHours(yearMonth));
+                String totalOvertimeHoursText = String.format(
+                        "残業時間: %s", attendanceAggregateService.calculateTotalOvertimeHours(yearMonth));
 
-                try (
-                        FileReader fr = new FileReader(file);
-                        BufferedReader br = new BufferedReader(fr);
-                ) {
-
-                    String line = br.readLine();
-                    Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-                    Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-                    while (line != null) {
-                        String[] columns = line.split(",");
-                        if (!columns[0].startsWith(yearMonth)) {
-                            continue;
-                        }
-                        totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-                        totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-
-                        line = br.readLine();
-                    }
-
-                    Set<String> keySet = totalWorkMinutesMap.keySet();
-                    for (String key : keySet) {
-                        totalWorkMinutes += totalWorkMinutesMap.get(key);
-                        totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
-                    }
-
-                    System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-                    System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
-                }
+                System.out.println(totalWorkingHoursText);
+                System.out.println(totalOvertimeHoursText);
 
             } else {
                 throw new RuntimeException("methodTypeが不正です");
@@ -81,34 +53,11 @@ public class AttendanceApi {
 
     private static DailyAttendanceRecord createDailyAttendanceRecord(
             String yyyymmdd, String hhmmStart, String hhmmEnd) {
-        Date date = createDate(yyyymmdd);
-        StartTime startTime = createStartTime(hhmmStart);
-        EndTime endTime = createEndTime(hhmmEnd);
-        BreakTime breakTime = new BreakTime(endTime);
-        WorkingHours workingHours = new WorkingHours(startTime, endTime, breakTime);
-        OvertimeHours overtimeHours = new OvertimeHours(workingHours);
-        CurrentTime currentTime = new CurrentTime();
+        WorkingDay workingDay = new WorkingDay(yyyymmdd);
+        StartTime startTime = new StartTime(hhmmStart);
+        EndTime endTime = new EndTime(hhmmEnd);
+        AttendanceInputTime attendanceInputTime = new AttendanceInputTime();
 
-        return new DailyAttendanceRecord(
-                date, startTime, endTime, workingHours, overtimeHours, breakTime, currentTime);
-    }
-
-    private static Date createDate(String yyyymmdd) {
-        int year = Integer.valueOf(yyyymmdd.substring(0, 4));
-        int month = Integer.valueOf(yyyymmdd.substring(4, 6));
-        int day = Integer.valueOf(yyyymmdd.substring(6, 8));
-        return new Date(year, month, day);
-    }
-
-    private static StartTime createStartTime(String hhmm) {
-        int hour = Integer.valueOf(hhmm.substring(0, 2));
-        int minute = Integer.valueOf(hhmm.substring(2, 4));
-        return new StartTime(hour, minute);
-    }
-
-    private static EndTime createEndTime(String hhmm) {
-        int hour = Integer.valueOf(hhmm.substring(0, 2));
-        int minute = Integer.valueOf(hhmm.substring(2, 4));
-        return new EndTime(hour, minute);
+        return new DailyAttendanceRecord(workingDay, startTime, endTime, attendanceInputTime);
     }
 }
