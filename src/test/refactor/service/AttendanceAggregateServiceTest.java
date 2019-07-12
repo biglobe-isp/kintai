@@ -60,10 +60,7 @@ public class AttendanceAggregateServiceTest {
         System.setOut(new PrintStream(new BufferedOutputStream(byteArrayOutputStream)));
 
         // テスト用data.csvを作成
-        for (String input : inputs) {
-            String[] args = input.split(" ");
-            AttendanceApi.main(args);
-        }
+        inputs.stream().forEach(input -> AttendanceApi.main(input.split(" ")));
     }
 
     @After
