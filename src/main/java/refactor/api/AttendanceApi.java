@@ -25,8 +25,6 @@ public class AttendanceApi {
                         dailyAttendanceRecord, repository);
                 attendanceInputService.inputAttendance();
             } else if ("total".equals(methodType)) {
-                YearMonth yearMonth = new YearMonth(args[1]);
-
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
@@ -35,6 +33,7 @@ public class AttendanceApi {
                 AttendanceAggregateService attendanceAggregateService = new AttendanceAggregateService(
                         attendanceRepository);
 
+                YearMonth yearMonth = new YearMonth(args[1]);
                 String totalWorkingHoursText = String.format(
                         "勤務時間: %s", attendanceAggregateService.calculateTotalWorkingHours(yearMonth));
                 String totalOvertimeHoursText = String.format(
