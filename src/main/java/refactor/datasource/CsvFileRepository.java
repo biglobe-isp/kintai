@@ -18,17 +18,15 @@ public class CsvFileRepository implements AttendanceRepository {
 
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].startsWith(yearMonth.toString())) {
-                    continue;
+                if (columns[0].startsWith(yearMonth.toString())) {
+                    WorkingDay date = new WorkingDay(columns[0]);
+                    StartTime startTime = new StartTime(columns[1]);
+                    EndTime endTime = new EndTime(columns[2]);
+                    AttendanceInputTime attendanceInputTime = new AttendanceInputTime(columns[5]);
+                    DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord(
+                            date, startTime, endTime, attendanceInputTime);
+                    monthlyAttendanceRecord.add(date, dailyAttendanceRecord);
                 }
-
-                WorkingDay date = new WorkingDay(columns[0]);
-                StartTime startTime = new StartTime(columns[1]);
-                EndTime endTime = new EndTime(columns[2]);
-                AttendanceInputTime attendanceInputTime = new AttendanceInputTime(columns[5]);
-                DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord(
-                        date, startTime, endTime, attendanceInputTime);
-                monthlyAttendanceRecord.add(date, dailyAttendanceRecord);
 
                 line = br.readLine();
             }

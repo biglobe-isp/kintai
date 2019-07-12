@@ -27,9 +27,10 @@ public class AttendanceAggregateServiceTest {
             "20190711 0900 2200",
             "20190712 0900 2250",
             "20190716 0900 2300",
-            "20190717 0800 1800",
-            "20190718 0800 1900",
+            "20190717 0900 1800",
+            "20190718 0900 1900",
             "20190719 0900 1800",
+            "20190701 0900 1700",
             "20190722 0900 1800",
             "20190723 0900 1800",
             "20190724 0900 1800",
@@ -37,32 +38,9 @@ public class AttendanceAggregateServiceTest {
             "20190726 0900 1800",
             "20190729 0900 1800",
             "20190730 0900 1800",
-            "20190731 0900 1800"
-    );
-
-    private List<String> expected = Arrays.asList(
-            "20190701,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190702,0900,1200,180,0,2019-07-09T16:52:31.675",
-            "20190703,0900,1210,180,0,2019-07-09T16:52:31.675",
-            "20190704,0900,1830,480,0,2019-07-09T16:52:31.675",
-            "20190705,0900,1900,480,0,2019-07-09T16:52:31.675",
-            "20190708,0900,2059,599,119,2019-07-09T16:52:31.675",
-            "20190709,0900,2100,600,120,2019-07-09T16:52:31.675",
-            "20190710,0900,2159,600,120,2019-07-09T16:52:31.675",
-            "20190711,0900,2200,600,120,2019-07-09T16:52:31.675",
-            "20190712,0900,2250,650,170,2019-07-09T16:52:31.675",
-            "20190716,0900,2300,660,180,2019-07-09T16:52:31.675",
-            "20190717,0800,1800,540,60,2019-07-09T16:52:31.675",
-            "20190718,0800,1900,540,60,2019-07-09T16:52:31.675",
-            "20190719,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190722,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190723,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190724,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190725,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190726,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190729,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190730,0900,1800,480,0,2019-07-09T16:52:31.675",
-            "20190731,0900,1800,480,0,2019-07-09T16:52:31.675"
+            "20190731 0900 1800",
+            "20190801 0900 1700",
+            "20190802 0900 2000"
     );
 
     private static final String FILE_NAME = "data.csv";
@@ -73,9 +51,6 @@ public class AttendanceAggregateServiceTest {
         if (file.exists()) {
             file.delete();
         }
-
-        AttendanceInputTime attendanceInputTime = mock(AttendanceInputTime.class);
-        when(attendanceInputTime.now()).thenReturn("2019-07-09T16:52:31.675");
 
         for (String input : inputs) {
             String[] params = input.split(" ");
@@ -88,6 +63,9 @@ public class AttendanceAggregateServiceTest {
 
             // 勤務終了時刻の生成
             EndTime endTime = new EndTime(params[2]);
+
+            // 勤怠入力時刻の生成
+            AttendanceInputTime attendanceInputTime = new AttendanceInputTime();
 
             // 日次勤怠記録の生成
             DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord(
@@ -120,7 +98,7 @@ public class AttendanceAggregateServiceTest {
 
         TotalWorkingHours totalWorkingHours = attendanceAggregateService.calculateTotalWorkingHours(yearMonth);
 
-        Assert.assertEquals("181時間49分", totalWorkingHours.toString());
+        Assert.assertEquals("178時間49分", totalWorkingHours.toString());
     }
 
     @Test
@@ -131,6 +109,6 @@ public class AttendanceAggregateServiceTest {
 
         TotalOvertimeHours totalOvertimeHours = attendanceAggregateService.calculateTotalOvertimeHours(yearMonth);
 
-        Assert.assertEquals("15時間49分", totalOvertimeHours.toString());
+        Assert.assertEquals("13時間49分", totalOvertimeHours.toString());
     }
 }
