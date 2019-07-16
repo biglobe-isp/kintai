@@ -1,13 +1,12 @@
 package refactor.domain;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
+@AllArgsConstructor
 public class OvertimeHours {
+    @NonNull
     private final WorkingHours workingHours;
-
-    public OvertimeHours(WorkingHours workingHours) {
-        this.workingHours = Objects.requireNonNull(workingHours);
-    }
 
     public int inMinutes() {
         return Math.max(workingHours.inMinutes() - 8 * 60, 0);

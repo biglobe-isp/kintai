@@ -1,19 +1,15 @@
 package refactor.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import refactor.domain.*;
 
-import java.util.Objects;
-
+@AllArgsConstructor
 public class AttendanceInputService {
+    @NonNull
     private final DailyAttendanceRecord dailyAttendanceRecord;
+    @NonNull
     private final AttendanceRepository repository;
-
-    public AttendanceInputService(
-            DailyAttendanceRecord dailyAttendanceRecord,
-            AttendanceRepository repository) {
-        this.dailyAttendanceRecord = Objects.requireNonNull(dailyAttendanceRecord);
-        this.repository = Objects.requireNonNull(repository);
-    }
 
     public void inputAttendance() {
         repository.save(dailyAttendanceRecord);

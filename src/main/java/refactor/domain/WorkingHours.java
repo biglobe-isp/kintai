@@ -1,20 +1,16 @@
 package refactor.domain;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
+@AllArgsConstructor
 public class WorkingHours {
+    @NonNull
     private final StartTime startTime;
+    @NonNull
     private final EndTime endTime;
+    @NonNull
     private final BreakTime breakTime;
-
-    public WorkingHours(
-            StartTime startTime,
-            EndTime endTime,
-            BreakTime breakTime) {
-        this.startTime = Objects.requireNonNull(startTime);
-        this.endTime = Objects.requireNonNull(endTime);
-        this.breakTime = Objects.requireNonNull(breakTime);
-    }
 
     public int inMinutes() {
         int workMinutes = endTime.inMinutes() - startTime.inMinutes() - breakTime.inMinutes();

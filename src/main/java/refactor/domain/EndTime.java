@@ -1,7 +1,11 @@
 package refactor.domain;
 
+import lombok.Getter;
+
 public class EndTime {
+    @Getter
     private final int hour;
+    @Getter
     private final int minute;
 
     public EndTime(String hhmm) {
@@ -11,14 +15,6 @@ public class EndTime {
 
     public int inMinutes() {
         return hour * 60 + minute;
-    }
-
-    public int getHour() {
-        return hour;
-    }
-
-    public int getMinute() {
-        return minute;
     }
 
     public String inHHMM() {

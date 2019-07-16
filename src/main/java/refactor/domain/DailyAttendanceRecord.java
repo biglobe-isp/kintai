@@ -1,13 +1,26 @@
 package refactor.domain;
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.NonNull;
 
 public class DailyAttendanceRecord {
+    @Getter
+    @NonNull
     private final WorkingDay workingDay;
+    @Getter
+    @NonNull
     private final StartTime startTime;
+    @Getter
+    @NonNull
     private final EndTime endTime;
+    @Getter
+    @NonNull
     private final AttendanceInputTime attendanceInputTime;
+    @Getter
+    @NonNull
     private final WorkingHours workingHours;
+    @Getter
+    @NonNull
     private final OvertimeHours overtimeHours;
 
     public DailyAttendanceRecord(
@@ -15,35 +28,11 @@ public class DailyAttendanceRecord {
             StartTime startTime,
             EndTime endTime,
             AttendanceInputTime attendanceInputTime) {
-        this.workingDay = Objects.requireNonNull(workingDay);
-        this.startTime = Objects.requireNonNull(startTime);
-        this.endTime = Objects.requireNonNull(endTime);
-        this.attendanceInputTime = Objects.requireNonNull(attendanceInputTime);
+        this.workingDay = workingDay;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.attendanceInputTime = attendanceInputTime;
         this.workingHours = new WorkingHours(startTime, endTime, new BreakTime(endTime));
         this.overtimeHours = new OvertimeHours(workingHours);
-    }
-
-    public WorkingDay getWorkingDay() {
-        return workingDay;
-    }
-
-    public StartTime getStartTime() {
-        return startTime;
-    }
-
-    public EndTime getEndTime() {
-        return endTime;
-    }
-
-    public AttendanceInputTime getAttendanceInputTime() {
-        return attendanceInputTime;
-    }
-
-    public WorkingHours getWorkingHours() {
-        return workingHours;
-    }
-
-    public OvertimeHours getOvertimeHours() {
-        return overtimeHours;
     }
 }

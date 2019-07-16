@@ -1,13 +1,12 @@
 package refactor.domain;
 
-import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
+@AllArgsConstructor
 public class BreakTime {
+    @NonNull
     private final EndTime endTime;
-
-    public BreakTime(EndTime endTime) {
-        this.endTime = Objects.requireNonNull(endTime);
-    }
 
     public int inMinutes() {
         int breakTime = 0;

@@ -1,11 +1,10 @@
 package refactor.domain;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class TotalWorkingHours {
     private final int totalWorkingHoursInMinutes;
-
-    public TotalWorkingHours(int totalWorkingHoursInMinutes) {
-        this.totalWorkingHoursInMinutes = totalWorkingHoursInMinutes;
-    }
 
     @Override
     public String toString() {

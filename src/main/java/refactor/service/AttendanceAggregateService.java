@@ -1,15 +1,13 @@
 package refactor.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import refactor.domain.*;
 
-import java.util.Objects;
-
+@AllArgsConstructor
 public class AttendanceAggregateService {
+    @NonNull
     private final AttendanceRepository attendanceRepository;
-
-    public AttendanceAggregateService(AttendanceRepository attendanceRepository) {
-        this.attendanceRepository = Objects.requireNonNull(attendanceRepository);
-    }
 
     public TotalWorkingHours calculateTotalWorkingHours(YearMonth yearMonth) {
         MonthlyAttendanceRecord monthlyAttendanceRecord = attendanceRepository.findByYearMonth(yearMonth);
