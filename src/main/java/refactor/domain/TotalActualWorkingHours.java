@@ -3,7 +3,7 @@ package refactor.domain;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class TotalWorkingHours {
+public class TotalActualWorkingHours {
     private final int totalWorkingHoursInMinutes;
 
     @Override

@@ -1,8 +1,7 @@
 package refactor.domain;
 
 import lombok.EqualsAndHashCode;
-
-import java.util.Objects;
+import lombok.NonNull;
 
 @EqualsAndHashCode
 public class WorkingDay {
@@ -10,13 +9,14 @@ public class WorkingDay {
     private final int month;
     private final int day;
 
-    public WorkingDay(String yyyymmdd) {
+    public WorkingDay(@NonNull String yyyymmdd) {
         year = Integer.valueOf(yyyymmdd.substring(0, 4));
         month = Integer.valueOf(yyyymmdd.substring(4, 6));
         day = Integer.valueOf(yyyymmdd.substring(6, 8));
     }
 
-    public String inYYYMMDD() {
+    @Override
+    public String toString() {
         return String.format("%d%02d%02d", year, month, day);
     }
 }

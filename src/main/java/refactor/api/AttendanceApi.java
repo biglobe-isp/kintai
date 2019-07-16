@@ -35,7 +35,7 @@ public class AttendanceApi {
 
                 YearMonth yearMonth = new YearMonth(args[1]);
                 String totalWorkingHoursText = String.format(
-                        "勤務時間: %s", attendanceAggregateService.calculateTotalWorkingHours(yearMonth));
+                        "勤務時間: %s", attendanceAggregateService.calculateTotalActualWorkingHours(yearMonth));
                 String totalOvertimeHoursText = String.format(
                         "残業時間: %s", attendanceAggregateService.calculateTotalOvertimeHours(yearMonth));
 

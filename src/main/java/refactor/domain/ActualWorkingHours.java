@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class OvertimeHours {
+public class ActualWorkingHours {
     @Getter
     private final int minutes;
 }

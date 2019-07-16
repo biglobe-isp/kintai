@@ -14,15 +14,15 @@ public class MonthlyAttendanceRecord {
         monthlyAttendanceRecords.put(workingDay, dailyAttendanceRecord);
     }
 
-    public TotalWorkingHours calculateTotalWorkingHours() {
-        int totalWorkingHours = monthlyAttendanceRecords.values().stream()
-                .map(record -> record.getWorkingHours().inMinutes()).reduce(0, Integer::sum);
-        return new TotalWorkingHours(totalWorkingHours);
+    public TotalActualWorkingHours calculateTotalActualWorkingHours() {
+        int totalActualWorkingHours = monthlyAttendanceRecords.values().stream()
+                .map(record -> record.getActualWorkingHours().getMinutes()).reduce(0, Integer::sum);
+        return new TotalActualWorkingHours(totalActualWorkingHours);
     }
 
     public TotalOvertimeHours calculateTotalOvertimeHours() {
         int totalOvertimeHours = monthlyAttendanceRecords.values().stream()
-                .map(record -> record.getOvertimeHours().inMinutes()).reduce(0, Integer::sum);
+                .map(record -> record.getOvertimeHours().getMinutes()).reduce(0, Integer::sum);
         return new TotalOvertimeHours(totalOvertimeHours);
     }
 }

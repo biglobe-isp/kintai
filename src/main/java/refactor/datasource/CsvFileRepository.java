@@ -43,11 +43,11 @@ public class CsvFileRepository implements AttendanceRepository {
         try (FileWriter filewriter = new FileWriter(new File(FILE_NAME), true)) {
             filewriter.write(
                     String.format("%s,%s,%s,%s,%s,%s\n",
-                            dailyAttendanceRecord.getWorkingDay().inYYYMMDD(),
-                            dailyAttendanceRecord.getStartTime().inHHMM(),
-                            dailyAttendanceRecord.getEndTime().inHHMM(),
-                            dailyAttendanceRecord.getWorkingHours().inMinutes(),
-                            dailyAttendanceRecord.getOvertimeHours().inMinutes(),
+                            dailyAttendanceRecord.getWorkingDay(),
+                            dailyAttendanceRecord.getStartTime(),
+                            dailyAttendanceRecord.getEndTime(),
+                            dailyAttendanceRecord.getActualWorkingHours().getMinutes(),
+                            dailyAttendanceRecord.getOvertimeHours().getMinutes(),
                             dailyAttendanceRecord.getAttendanceInputTime().now()));
         } catch (IOException e) {
             throw new RuntimeException("ファイルへの書き込みに失敗しました");

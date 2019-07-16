@@ -1,5 +1,7 @@
 package refactor.domain;
 
+import lombok.NonNull;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,7 +13,7 @@ public class AttendanceInputTime {
         attendanceInputTime = LocalDateTime.now().toString();
     }
 
-    public AttendanceInputTime(String attendanceInputTime) {
+    public AttendanceInputTime(@NonNull String attendanceInputTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ATTENDANCE_INPUT_TIME_FORMAT);
         this.attendanceInputTime = LocalDateTime.parse(attendanceInputTime, formatter).toString();
     }

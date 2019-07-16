@@ -1,38 +1,28 @@
 package refactor.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 
+@Getter
+@AllArgsConstructor
 public class DailyAttendanceRecord {
-    @Getter
     @NonNull
     private final WorkingDay workingDay;
-    @Getter
     @NonNull
     private final StartTime startTime;
-    @Getter
     @NonNull
     private final EndTime endTime;
-    @Getter
     @NonNull
     private final AttendanceInputTime attendanceInputTime;
-    @Getter
-    @NonNull
-    private final WorkingHours workingHours;
-    @Getter
-    @NonNull
-    private final OvertimeHours overtimeHours;
 
-    public DailyAttendanceRecord(
-            WorkingDay workingDay,
-            StartTime startTime,
-            EndTime endTime,
-            AttendanceInputTime attendanceInputTime) {
-        this.workingDay = workingDay;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.attendanceInputTime = attendanceInputTime;
-        this.workingHours = new WorkingHours(startTime, endTime, new BreakTime(endTime));
-        this.overtimeHours = new OvertimeHours(workingHours);
+    public ActualWorkingHours getActualWorkingHours() {
+        return new WorkingHours(startTime, endTime).exclude(LaborRegulations.getBreakTimeList());
+    }
+
+    public OvertimeHours getOvertimeHours() {
+        int actualWorkingHours = getActualWorkingHours().getMinutes();
+        int overtimeHours = Math.max(actualWorkingHours - LaborRegulations.getDailyWorkingTime().getMinutes(), 0);
+        return new OvertimeHours(overtimeHours);
     }
 }
