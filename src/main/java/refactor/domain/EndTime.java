@@ -1,12 +1,9 @@
 package refactor.domain;
 
-import lombok.Getter;
 import lombok.NonNull;
 
 public class EndTime implements Time {
-    @Getter
     private final int hour;
-    @Getter
     private final int minute;
 
     public EndTime(@NonNull String hhmm) {
