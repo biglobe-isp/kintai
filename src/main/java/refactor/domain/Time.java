@@ -1,7 +1,9 @@
 package refactor.domain;
 
+import lombok.NonNull;
+
 public interface Time {
     int minutes();
 
-    boolean isLaterThanOrEqual(Time other);
+    boolean isLaterThanOrEqual(@NonNull Time other);
 }

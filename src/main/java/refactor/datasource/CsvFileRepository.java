@@ -1,5 +1,6 @@
 package refactor.datasource;
 
+import lombok.NonNull;
 import refactor.domain.*;
 
 import java.io.*;
@@ -7,7 +8,7 @@ import java.io.*;
 public class CsvFileRepository implements AttendanceRepository {
     private static final String FILE_NAME = "data.csv";
 
-    public MonthlyAttendanceRecord findByYearMonth(YearMonth yearMonth) {
+    public MonthlyAttendanceRecord findByYearMonth(@NonNull YearMonth yearMonth) {
         MonthlyAttendanceRecord monthlyAttendanceRecord = new MonthlyAttendanceRecord();
 
         try (
@@ -39,7 +40,7 @@ public class CsvFileRepository implements AttendanceRepository {
         return monthlyAttendanceRecord;
     }
 
-    public void save(DailyAttendanceRecord dailyAttendanceRecord) {
+    public void save(@NonNull DailyAttendanceRecord dailyAttendanceRecord) {
         try (FileWriter filewriter = new FileWriter(new File(FILE_NAME), true)) {
             filewriter.write(
                     String.format("%s,%s,%s,%s,%s,%s\n",

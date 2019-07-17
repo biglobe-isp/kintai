@@ -1,7 +1,9 @@
 package refactor.domain;
 
-public interface AttendanceRepository {
-    MonthlyAttendanceRecord findByYearMonth(YearMonth yearMonth);
+import lombok.NonNull;
 
-    void save(DailyAttendanceRecord dailyAttendanceRecord);
+public interface AttendanceRepository {
+    MonthlyAttendanceRecord findByYearMonth(@NonNull YearMonth yearMonth);
+
+    void save(@NonNull DailyAttendanceRecord dailyAttendanceRecord);
 }

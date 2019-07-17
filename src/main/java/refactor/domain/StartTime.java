@@ -15,7 +15,7 @@ public class StartTime implements Time {
         return hour * 60 + minute;
     }
 
-    public boolean isLaterThanOrEqual(Time other) {
+    public boolean isLaterThanOrEqual(@NonNull Time other) {
         return other.minutes() <= minutes();
     }
 

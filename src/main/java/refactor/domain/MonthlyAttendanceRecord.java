@@ -1,5 +1,7 @@
 package refactor.domain;
 
+import lombok.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ public class MonthlyAttendanceRecord {
         monthlyAttendanceRecords = new HashMap<>();
     }
 
-    public void add(WorkingDay workingDay, DailyAttendanceRecord dailyAttendanceRecord) {
+    public void add(@NonNull WorkingDay workingDay, @NonNull DailyAttendanceRecord dailyAttendanceRecord) {
         monthlyAttendanceRecords.put(workingDay, dailyAttendanceRecord);
     }
 
