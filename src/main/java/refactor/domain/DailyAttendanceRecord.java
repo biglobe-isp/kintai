@@ -17,12 +17,10 @@ public class DailyAttendanceRecord {
     private final AttendanceInputTime attendanceInputTime;
 
     public ActualWorkingHours getActualWorkingHours() {
-        return new WorkingHours(startTime, endTime).exclude(LaborRegulations.getBreakTimeList());
+        return new WorkingHours(startTime, endTime).calculateActualWorkingHours();
     }
 
     public OvertimeHours getOvertimeHours() {
-        int actualWorkingHours = getActualWorkingHours().getMinutes();
-        int overtimeHours = Math.max(actualWorkingHours - LaborRegulations.getDailyWorkingTime().getMinutes(), 0);
-        return new OvertimeHours(overtimeHours);
+        return new WorkingHours(startTime, endTime).calculateOvertimeHours();
     }
 }
