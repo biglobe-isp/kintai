@@ -3,7 +3,7 @@ package refactor.domain;
 import lombok.NonNull;
 
 public interface Time {
-    int minutes();
+    int getMinutes();
 
     boolean isLaterThanOrEqual(@NonNull Time other);
 }

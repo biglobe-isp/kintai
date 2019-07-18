@@ -28,11 +28,11 @@ public class TimeZone {
         return Optional.empty();
     }
 
-    private boolean isIncluded(@NonNull Time time) {
-        return time.isLaterThanOrEqual(startTime) && endTime.isLaterThanOrEqual(time);
+    public int getMinutes() {
+        return Math.abs(endTime.getMinutes() - startTime.getMinutes());
     }
 
-    public int minutes() {
-        return Math.abs(endTime.minutes() - startTime.minutes());
+    private boolean isIncluded(@NonNull Time time) {
+        return time.isLaterThanOrEqual(startTime) && endTime.isLaterThanOrEqual(time);
     }
 }

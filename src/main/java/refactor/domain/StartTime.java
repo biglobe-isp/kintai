@@ -11,12 +11,12 @@ public class StartTime implements Time {
         minute = Integer.valueOf(hhmm.substring(2, 4));
     }
 
-    public int minutes() {
+    public int getMinutes() {
         return hour * 60 + minute;
     }
 
     public boolean isLaterThanOrEqual(@NonNull Time other) {
-        return other.minutes() <= minutes();
+        return other.getMinutes() <= getMinutes();
     }
 
     @Override

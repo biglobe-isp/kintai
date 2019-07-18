@@ -20,15 +20,15 @@ public class WorkingHours {
                         map(breakTime -> workingTimeZone.overlap(
                                 new TimeZone(breakTime.getStartTime(), breakTime.getEndTime()))).
                         filter(Optional::isPresent).
-                        mapToInt(timeZone -> timeZone.get().minutes()).
+                        mapToInt(timeZone -> timeZone.get().getMinutes()).
                         sum();
 
-        return new ActualWorkingHours(workingTimeZone.minutes() - totalBreakTime);
+        return new ActualWorkingHours(workingTimeZone.getMinutes() - totalBreakTime);
     }
 
     public OvertimeHours calculateOvertimeHours() {
         int actualWorkingHours = calculateActualWorkingHours().getMinutes();
-        int overtimeHours = Math.max(actualWorkingHours - LaborRegulations.getDailyWorkingTime().getMinutes(), 0);
+        int overtimeHours = Math.max(actualWorkingHours - LaborRegulations.getStandardWorkingTime().getMinutes(), 0);
         return new OvertimeHours(overtimeHours);
     }
 }

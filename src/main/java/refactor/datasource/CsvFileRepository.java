@@ -49,7 +49,7 @@ public class CsvFileRepository implements AttendanceRepository {
                             dailyAttendanceRecord.getEndTime(),
                             dailyAttendanceRecord.getActualWorkingHours().getMinutes(),
                             dailyAttendanceRecord.getOvertimeHours().getMinutes(),
-                            dailyAttendanceRecord.getAttendanceInputTime().now()));
+                            dailyAttendanceRecord.getAttendanceInputTime().getTime()));
         } catch (IOException e) {
             throw new RuntimeException("ファイルへの書き込みに失敗しました");
         }

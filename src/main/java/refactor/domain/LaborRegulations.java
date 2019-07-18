@@ -12,7 +12,7 @@ public class LaborRegulations {
         );
     }
 
-    public static WorkingTime getDailyWorkingTime() {
+    public static WorkingTime getStandardWorkingTime() {
         return new WorkingTime(8 * 60);
     }
 }

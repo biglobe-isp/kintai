@@ -18,7 +18,7 @@ public class AttendanceInputTime {
         this.attendanceInputTime = LocalDateTime.parse(attendanceInputTime, formatter).toString();
     }
 
-    public String now() {
+    public String getTime() {
         return attendanceInputTime;
     }
 }
