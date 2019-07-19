@@ -4,12 +4,17 @@ import lombok.NonNull;
 import refactor.domain.*;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 public class CsvFileRepository implements AttendanceRepository {
     private static final String FILE_NAME = "data.csv";
 
-    public MonthlyAttendanceRecord findByYearMonth(@NonNull YearMonth yearMonth) {
-        MonthlyAttendanceRecord monthlyAttendanceRecord = new MonthlyAttendanceRecord();
+    public MonthlyAttendanceRecord findByExtractionYearMonth(@NonNull ExtractionYearMonth extractionYearMonth) {
+        Map<WorkingDay, DailyAttendanceRecord> monthlyAttendanceRecord = new HashMap<>();
 
         try (
                 FileReader fr = new FileReader(new File(FILE_NAME));
@@ -19,14 +24,14 @@ public class CsvFileRepository implements AttendanceRepository {
 
             while (line != null) {
                 String[] columns = line.split(",");
-                if (columns[0].startsWith(yearMonth.toString())) {
-                    WorkingDay date = new WorkingDay(columns[0]);
-                    StartTime startTime = new StartTime(columns[1]);
-                    EndTime endTime = new EndTime(columns[2]);
+                if (columns[0].startsWith(extractionYearMonth.toString())) {
+                    WorkingDay date = WorkingDay.fromString(columns[0]);
+                    StartTime startTime = StartTime.fromString(columns[1]);
+                    EndTime endTime = EndTime.fromString(columns[2]);
                     AttendanceInputTime attendanceInputTime = new AttendanceInputTime(columns[5]);
                     DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord(
                             date, startTime, endTime, attendanceInputTime);
-                    monthlyAttendanceRecord.add(date, dailyAttendanceRecord);
+                    monthlyAttendanceRecord.put(date, dailyAttendanceRecord);
                 }
 
                 line = br.readLine();
@@ -37,7 +42,9 @@ public class CsvFileRepository implements AttendanceRepository {
             throw new RuntimeException("ファイルの読み込みに失敗しました");
         }
 
-        return monthlyAttendanceRecord;
+        List<DailyAttendanceRecord> dailyAttendanceRecords =
+                monthlyAttendanceRecord.values().stream().collect(toList());
+        return new MonthlyAttendanceRecord(dailyAttendanceRecords);
     }
 
     public void save(@NonNull DailyAttendanceRecord dailyAttendanceRecord) {

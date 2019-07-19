@@ -9,13 +9,13 @@ public class AttendanceAggregateService {
     @NonNull
     private final AttendanceRepository attendanceRepository;
 
-    public TotalActualWorkingHours calculateTotalActualWorkingHours(YearMonth yearMonth) {
-        MonthlyAttendanceRecord monthlyAttendanceRecord = attendanceRepository.findByYearMonth(yearMonth);
+    public TotalActualWorkingHours calculateTotalActualWorkingHours(ExtractionYearMonth extractionYearMonth) {
+        MonthlyAttendanceRecord monthlyAttendanceRecord = attendanceRepository.findByExtractionYearMonth(extractionYearMonth);
         return monthlyAttendanceRecord.calculateTotalActualWorkingHours();
     }
 
-    public TotalOvertimeHours calculateTotalOvertimeHours(YearMonth yearMonth) {
-        MonthlyAttendanceRecord monthlyAttendanceRecord = attendanceRepository.findByYearMonth(yearMonth);
+    public TotalOvertimeHours calculateTotalOvertimeHours(ExtractionYearMonth extractionYearMonth) {
+        MonthlyAttendanceRecord monthlyAttendanceRecord = attendanceRepository.findByExtractionYearMonth(extractionYearMonth);
         return monthlyAttendanceRecord.calculateTotalOvertimeHours();
     }
 }

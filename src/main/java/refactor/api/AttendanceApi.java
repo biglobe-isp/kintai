@@ -5,6 +5,11 @@ import refactor.domain.*;
 import refactor.service.AttendanceAggregateService;
 import refactor.service.AttendanceInputService;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+
 public class AttendanceApi {
     public static void main(String[] args) {
         try {
@@ -33,11 +38,12 @@ public class AttendanceApi {
                 AttendanceAggregateService attendanceAggregateService = new AttendanceAggregateService(
                         attendanceRepository);
 
-                YearMonth yearMonth = new YearMonth(args[1]);
+                YearMonth yearMonth = YearMonth.parse(args[1], DateTimeFormatter.ofPattern("yyyyMM"));
+                ExtractionYearMonth extractionYearMonth = new ExtractionYearMonth(yearMonth);
                 String totalWorkingHoursText = String.format(
-                        "勤務時間: %s", attendanceAggregateService.calculateTotalActualWorkingHours(yearMonth));
+                        "勤務時間: %s", attendanceAggregateService.calculateTotalActualWorkingHours(extractionYearMonth));
                 String totalOvertimeHoursText = String.format(
-                        "残業時間: %s", attendanceAggregateService.calculateTotalOvertimeHours(yearMonth));
+                        "残業時間: %s", attendanceAggregateService.calculateTotalOvertimeHours(extractionYearMonth));
 
                 System.out.println(totalWorkingHoursText);
                 System.out.println(totalOvertimeHoursText);
@@ -52,9 +58,9 @@ public class AttendanceApi {
 
     private static DailyAttendanceRecord createDailyAttendanceRecord(
             String yyyymmdd, String hhmmStart, String hhmmEnd) {
-        WorkingDay workingDay = new WorkingDay(yyyymmdd);
-        StartTime startTime = new StartTime(hhmmStart);
-        EndTime endTime = new EndTime(hhmmEnd);
+        WorkingDay workingDay = WorkingDay.fromString(yyyymmdd);
+        StartTime startTime = StartTime.fromString(hhmmStart);
+        EndTime endTime = EndTime.fromString(hhmmEnd);
         AttendanceInputTime attendanceInputTime = new AttendanceInputTime();
 
         return new DailyAttendanceRecord(workingDay, startTime, endTime, attendanceInputTime);

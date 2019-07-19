@@ -1,22 +1,26 @@
 package refactor.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+@AllArgsConstructor
 @EqualsAndHashCode
 public class WorkingDay {
-    private final int year;
-    private final int month;
-    private final int day;
+    private static final DateTimeFormatter WORKING_DAY_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
+    @NonNull
+    private final LocalDate localDate;
 
-    public WorkingDay(@NonNull String yyyymmdd) {
-        year = Integer.valueOf(yyyymmdd.substring(0, 4));
-        month = Integer.valueOf(yyyymmdd.substring(4, 6));
-        day = Integer.valueOf(yyyymmdd.substring(6, 8));
+    public static WorkingDay fromString(@NonNull String yyymmdd) {
+        LocalDate localDate = LocalDate.parse(yyymmdd, WORKING_DAY_FORMAT);
+        return new WorkingDay(localDate);
     }
 
     @Override
     public String toString() {
-        return String.format("%d%02d%02d", year, month, day);
+        return localDate.format(WORKING_DAY_FORMAT);
     }
 }

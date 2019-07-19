@@ -3,7 +3,7 @@ package refactor.domain;
 import lombok.NonNull;
 
 public interface AttendanceRepository {
-    MonthlyAttendanceRecord findByYearMonth(@NonNull YearMonth yearMonth);
+    MonthlyAttendanceRecord findByExtractionYearMonth(@NonNull ExtractionYearMonth extractionYearMonth);
 
     void save(@NonNull DailyAttendanceRecord dailyAttendanceRecord);
 }
