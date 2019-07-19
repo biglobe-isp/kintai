@@ -5,7 +5,6 @@ import refactor.domain.*;
 import refactor.service.AttendanceAggregateService;
 import refactor.service.AttendanceInputService;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -58,9 +57,11 @@ public class AttendanceApi {
 
     private static DailyAttendanceRecord createDailyAttendanceRecord(
             String yyyymmdd, String hhmmStart, String hhmmEnd) {
-        WorkingDay workingDay = WorkingDay.fromString(yyyymmdd);
-        StartTime startTime = StartTime.fromString(hhmmStart);
-        EndTime endTime = EndTime.fromString(hhmmEnd);
+        WorkingDay workingDay = WorkingDay.fromString(yyyymmdd.substring(6));
+        LocalTime localTimeStart = LocalTime.parse(hhmmStart.substring(7), DateTimeFormatter.ofPattern("HH_mm"));
+        StartTime startTime = new StartTime(localTimeStart);
+        LocalTime localTimeEnd = LocalTime.parse(hhmmEnd.substring(5), DateTimeFormatter.ofPattern("HH_mm"));
+        EndTime endTime = new EndTime(localTimeEnd);
         AttendanceInputTime attendanceInputTime = new AttendanceInputTime();
 
         return new DailyAttendanceRecord(workingDay, startTime, endTime, attendanceInputTime);
