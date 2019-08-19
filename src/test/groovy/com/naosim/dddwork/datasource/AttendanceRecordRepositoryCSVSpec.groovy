@@ -16,7 +16,7 @@ import com.naosim.dddwork.domain.time.WorkingDuration
 class AttendanceRecordRepositoryCSVSpec  extends Specification{
 
 
-    def "AttendenceRecordRepositoryCSV-read-test"() {
+    def "AttendanceRecordRepositoryCSV-read-test"() {
        setup:
        def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
        attendanceRecordRepositoryCSV.delete()
@@ -71,8 +71,5 @@ class AttendanceRecordRepositoryCSVSpec  extends Specification{
         strWorkingDate == "20190401"
         startTime == "0850"
         endTime == "1820"
-
     }
-
-
-    }
+}

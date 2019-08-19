@@ -21,7 +21,7 @@ public class Hour {
 
     private boolean isCorrectHourValue(int hour)
     {
-        if(hour < 0 || hour > 23)
+        if(hour < 0 || hour > 47) // in case of overtime work after midnight AM00:00
             return false;
         return true;
     }

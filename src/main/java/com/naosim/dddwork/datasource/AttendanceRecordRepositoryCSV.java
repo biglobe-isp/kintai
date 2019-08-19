@@ -8,20 +8,21 @@ import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
 import com.naosim.dddwork.domain.time.RecordedTime;
 import com.naosim.dddwork.domain.time.WorkingDuration;
+import com.naosim.dddwork.service.AttendanceRecordRepository;
 
 import java.io.*;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class AttendanceRecordRepositoryCSV {
+public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository {
 
     // data file
     private final String dataFileName = "data.csv";
     // format - 20190403,0900,1900 <- only working date, start time , end time
 
-    TreeMap<WorkingDate, WorkingDuration> attendanceRecords;
+    static TreeMap<WorkingDate, WorkingDuration> attendanceRecords;
 
-    public AttendanceRecordRepositoryCSV() throws IOException {
+    public AttendanceRecordRepositoryCSV()  {
 
         attendanceRecords = new TreeMap<WorkingDate,WorkingDuration>();
     }
@@ -89,7 +90,6 @@ public class AttendanceRecordRepositoryCSV {
 
     public boolean  save()
     {
-
         File file = new File(dataFileName);
 
         try {
@@ -102,9 +102,7 @@ public class AttendanceRecordRepositoryCSV {
                 bw.write(workingDate.toString() +"," +
                             workingDuration.getStartTime().toString() + "," +
                             workingDuration.getEndTime().toString() );
-
-
-
+                bw.newLine();
             }
             bw.close();
         }

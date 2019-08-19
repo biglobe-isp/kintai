@@ -25,4 +25,9 @@ public class WorkingDuration {
         this.endTime = endTime;
     }
 
+    public String toString()
+    {
+        return startTime.toString() +"-" + endTime.toString();
+    }
+
 }
