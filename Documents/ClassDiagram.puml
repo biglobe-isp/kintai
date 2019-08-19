@@ -1,0 +1,102 @@
+@startuml
+
+package Datasource {
+class AttendanceRecordRepositoryCSV {
+-static record : HashMap<WorkingDate,WorkingDuration>
++insert()
++load()
++save()
+}
+}
+
+package Domain {
+class Year {
+-year:int
++getYear()
+}
+class Month {
+-month:int
++getMonth()
+}
+class Day {
+-day:int
++getDay()
+}
+class WorkingDate {
+-year : Year
+-month : Month
+-day : Day
+getYearMonth()
+ketDate()
+}
+
+WorkingDate *-down- Year
+WorkingDate *-down- Month
+WorkingDate *-down- Day
+
+class RecordedTime {
+  -hour : Hour
+  -minute : Minute
+  getMinutes()
+}
+
+class WorkingDuration {
+startTime : RecordedTime
+endTime : RecordedTime
+}
+
+WorkingDuration *-down- RecordedTime  : have 2 
+
+class RegularTimeRule {
+
+static regularTimeStart : RecordedTime 
+staic regularTimeEnd : RecordedTime 
+}
+
+class BreakTimeRule {
+static breakTimeStart : RecordedTime　:休憩開始
+static breakTimeEnd   : RecordedTime　:休憩終了
+}
+
+class OverTimeRule {
+    static finalCutTime   : time  : 以降サービス残業
+}
+
+interface AttendanceRecordRepository {
+-record: HashMap<WorkingDate,WorkingDuration>
++insert()
++load()
++save()
+
+}
+
+}
+package API {
+class CommandLineParserAPI
+}
+package Service
+{
+class AttendanceRecordUpdateService {
+updateAttendanceRecord(WokingDate,WorkingDuration)
+}
+class AttendanceRecordSummaryService
+{
+createAttendanceRecordSummary(Year,Month)
+}
+
+AttendanceRecordUpdateService o--  AttendanceRecordRepository 
+AttendanceRecordUpdateService <.. OverTimeRule
+AttendanceRecordSummaryService o-- AttendanceRecordRepository
+AttendanceRecordSummaryService ..{ BreakTimeRule
+AttendanceRecordSummaryService <.. RegularTimeRule
+
+CommandLineParserAPI --> AttendanceRecordUpdateService
+CommandLineParserAPI --> AttendanceRecordSummaryService
+
+AttendanceRecordRepositoryCSV <.. WorkingDate
+AttendanceRecordRepositoryCSV <.. WorkingDuration
+
+AttendanceRecordRepository o.. AttendanceRecordRepositoryCSV
+
+
+@enduml
