@@ -25,6 +25,9 @@ public class WorkingDate implements Comparable<WorkingDate> {
         return (year.getYear() * 10000) + (month.getMonth()*100) + day.getDay();
     }
 
+    public int getYear() { return year.getYear(); }
+    public int getMonth() { return month.getMonth(); }
+    public int getDay() { return day.getDay(); }
 
     @Override
     public int compareTo(WorkingDate o) {

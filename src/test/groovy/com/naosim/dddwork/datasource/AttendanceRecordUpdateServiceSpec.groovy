@@ -76,6 +76,5 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
         workingDuration1.toString() == "0900-1800"
         workingDuration2.toString() == "0900-2400"
         workingDuration3.toString() == "0900-2400"
-
     }
 }

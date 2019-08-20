@@ -25,6 +25,9 @@ public class RecordedTime implements Comparable<RecordedTime>{
         return iHour * 100 +  iMinutes;
     }
 
+    public Hour getHour() { return hour; }
+    public Minute getMinute() { return minute; }
+
 
 
     @Override

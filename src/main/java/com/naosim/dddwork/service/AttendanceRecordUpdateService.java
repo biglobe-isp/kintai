@@ -16,8 +16,6 @@ import java.util.TreeMap;
 
 public class AttendanceRecordUpdateService {
 
-    private final int FinalCutHour = 24;
-    private final int FinalCutMinutes = 0;
 
     HashMap<WorkingDate,WorkingDuration> attendanceRecords;
     public AttendanceRecordUpdateService(String workingDateParam, String startTimeParam, String endTimeParam)
@@ -30,8 +28,7 @@ public class AttendanceRecordUpdateService {
         RecordedTime endTime = parseTime(endTimeParam);
 
         // insert OverTime Rule
-        OverTimeRule overTimeRule = new OverTimeRule(
-                new RecordedTime( new Hour(FinalCutHour), new Minute(FinalCutMinutes)));
+        OverTimeRule overTimeRule = new OverTimeRule();
 
         // validator working hours
         // 1.if end time > AM00:00 , cut off the rest of working time  after 24:00
