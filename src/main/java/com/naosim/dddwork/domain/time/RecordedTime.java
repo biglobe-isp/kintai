@@ -28,13 +28,10 @@ public class RecordedTime implements Comparable<RecordedTime>{
     public Hour getHour() { return hour; }
     public Minute getMinute() { return minute; }
 
-
-
     @Override
     public int compareTo(RecordedTime o) {
         return this.getValue() - o.getValue();
     }
-
     public String toString()
     {
         return String.format("%04d",this.getValue());
