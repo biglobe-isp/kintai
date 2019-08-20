@@ -13,7 +13,9 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
 
     def "AttendanceRecordUpdateService-Normal" () {
         setup:
-        def attendanceRecordUpdateService = new AttendanceRecordUpdateService("20190402","0900","1800");
+        def attendanceRecordUpdateService = new AttendanceRecordUpdateService()
+        attendanceRecordUpdateService.executeService("20190402","0900","1800")
+
 
         when:
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
@@ -28,7 +30,8 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
 
     def "AttendanceRecordUpdateService-Overtime1" () {
         setup:
-        def attendanceRecordUpdateService = new AttendanceRecordUpdateService("20190402","0900","2530");
+        def attendanceRecordUpdateService = new AttendanceRecordUpdateService();
+        attendanceRecordUpdateService.executeService("20190402","0900","2530")
 
         when:
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
@@ -43,7 +46,8 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
 
     def "AttendanceRecordUpdateService-Overtime2" () {
         setup:
-        def attendanceRecordUpdateService = new AttendanceRecordUpdateService("20190402","0900","0200");
+        def attendanceRecordUpdateService = new AttendanceRecordUpdateService()
+        attendanceRecordUpdateService.executeService("20190402","0900","0200")
 
         when:
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
@@ -58,9 +62,11 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
 
     def "AttendanceRecordUpdateService-MultiEntry" () {
         setup:
-        def attendanceRecordUpdateService1 = new AttendanceRecordUpdateService("20190401","0900","1800");
-        def attendanceRecordUpdateService2 = new AttendanceRecordUpdateService("20190402","0900","2500");
-        def attendanceRecordUpdateService3 = new AttendanceRecordUpdateService("20190403","0900","0200");
+        def attendanceRecordUpdateService = new AttendanceRecordUpdateService();
+
+        attendanceRecordUpdateService.executeService("20190401","0900","1800");
+        attendanceRecordUpdateService.executeService("20190402","0900","2500");
+        attendanceRecordUpdateService.executeService("20190403","0900","0200");
 
         when:
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()

@@ -1,57 +1,45 @@
 package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.datasource.AttendanceRecordRepositoryCSV;
-import com.naosim.dddwork.domain.date.Month;
+import com.naosim.dddwork.domain.AttendanceSummary;
 import com.naosim.dddwork.domain.date.WorkingDate;
-import com.naosim.dddwork.domain.date.Year;
 import com.naosim.dddwork.domain.rules.BreakTimeRule;
 import com.naosim.dddwork.domain.rules.BreakTimeRules;
 import com.naosim.dddwork.domain.rules.RegularTimeRule;
-import com.naosim.dddwork.domain.time.Hour;
-import com.naosim.dddwork.domain.time.Minute;
 import com.naosim.dddwork.domain.time.RecordedTime;
 import com.naosim.dddwork.domain.time.WorkingDuration;
-import groovy.lang.Tuple;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Vector;
 
 
 public class AttendanceRecordSummaryService {
 
-
-    private class  AttendanceSummary
-    {
-        public int regularHours;
-        public int regularMinutes;
-
-        public int overtimeHours;
-        public int overtimeMinutes;
-    }
-
-    private class Duratioin {
-        public int hour;
-        public int minute;
-    }
-
-    private AttendanceSummary summary;
+    private AttendanceSummary attendanceSummary;
 
     private BreakTimeRules breakTimeRules;
     private RegularTimeRule regularTimeRule;
     private boolean employeeFired  = false;
+    private Vector<BreakTimeRule> breakTimes;
 
-    public AttendanceRecordSummaryService(String yearParam, String monthParam)
-    {
-        summary = new AttendanceSummary();
+    public AttendanceRecordSummaryService() {
+
+        // create attendance summary for output of this service
+        attendanceSummary = new AttendanceSummary();
 
         // create regular working hour rule
-        regularTimeRule = new  RegularTimeRule();
+        regularTimeRule = new RegularTimeRule();
 
         // create break time rules
         breakTimeRules = new BreakTimeRules();
+        breakTimes = breakTimeRules.getBreakTimeRules();
+    }
 
+    public AttendanceSummary executeService(String yearParam, String monthParam)
+    {
         // construct  Working Year and Date ( e.g. 2019/12 -> 201912 )
         int dateKey = Integer.parseInt(yearParam) * 100 + Integer.parseInt(monthParam);
 
@@ -65,13 +53,18 @@ public class AttendanceRecordSummaryService {
         {
             if (key.getYearMonth() == dateKey)
             {
-                addSummary(key,attendanceRecords.get(key));
+                boolean ret = addSummary(key,attendanceRecords.get(key));
+                if(ret)
+                {
+                    // You Are FIRED!
+                    attendanceSummary.fired = true;
+                }
             }
         }
-
+        return attendanceSummary;
     }
 
-    private void addSummary(WorkingDate workingDate,WorkingDuration workingDuration)
+    private boolean addSummary(WorkingDate workingDate,WorkingDuration workingDuration)
     {
         // get startTime & endTime
         RecordedTime startTime = workingDuration.getStartTime();
@@ -82,10 +75,45 @@ public class AttendanceRecordSummaryService {
         {
            System.out.println("You are FIRED!!!! ");
            employeeFired = true;
-           return ;
+           return false;
         }
 
+        // calculate working hours
+        Duration workingHours = calculateDuration(workingDate,startTime,endTime);
 
+        // extract break times
+        for(BreakTimeRule rule : breakTimes)
+        {
+            Duration breakDuration = null;
+            if(endTime.getValue()  >= rule.getEndTime().getValue())
+            {
+                // break time is fully contained with working hours
+                breakDuration = calculateDuration(workingDate, rule.getStartTime(), rule.getEndTime());
+            }
+            else if( endTime.getValue() >= rule.getStartTime().getValue() &&
+                     endTime.getValue() < rule.getEndTime().getValue())
+            {
+                // break time is partially contained with working hours
+                breakDuration = calculateDuration(workingDate, rule.getStartTime(), endTime);
+            }
+            if(breakDuration != null)
+            {
+                workingHours = workingHours.minus(breakDuration);
+            }
+        }
+
+        // add working hours divided regular time and over time into the summary
+        if(workingHours.toMinutes() > 8*60)  // more than 8 hours
+        {
+            attendanceSummary.regularTime = attendanceSummary.regularTime.plus(Duration.ofHours(8));
+            Duration overtime = workingHours.minus(Duration.ofHours(8));
+            attendanceSummary.overTime = attendanceSummary.overTime.plus(overtime);
+        }
+        else
+        {
+            attendanceSummary.regularTime = attendanceSummary.regularTime.plus(workingHours);
+        }
+        return true;
     }
 
     private boolean isEmployeeFired()

@@ -14,4 +14,7 @@ public class BreakTimeRule {
         this.endTime = endTime;
     }
 
+    public RecordedTime getStartTime() { return startTime; }
+    public RecordedTime getEndTime() { return endTime; }
+
 }

@@ -16,9 +16,10 @@ import java.util.TreeMap;
 
 public class AttendanceRecordUpdateService {
 
+    public AttendanceRecordUpdateService()
+    {}
 
-    HashMap<WorkingDate,WorkingDuration> attendanceRecords;
-    public AttendanceRecordUpdateService(String workingDateParam, String startTimeParam, String endTimeParam)
+    public boolean executeService(String workingDateParam, String startTimeParam, String endTimeParam)
     {
         // construct  WorkingDate
         WorkingDate workingDate = parseWorkingDate(workingDateParam);
@@ -52,7 +53,7 @@ public class AttendanceRecordUpdateService {
 
        //  update data repository
         attendanceRecords.put(workingDate,workingDuration);
-        repository.save();
+        return repository.save();
     }
 
     private WorkingDate  parseWorkingDate(String param)
