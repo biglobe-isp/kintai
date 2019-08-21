@@ -22,7 +22,6 @@ public class AttendanceRecordSummaryService {
 
     private BreakTimeRules breakTimeRules;
     private RegularTimeRule regularTimeRule;
-    private boolean employeeFired  = false;
     private Vector<BreakTimeRule> breakTimes;
 
     public AttendanceRecordSummaryService() {
@@ -49,20 +48,17 @@ public class AttendanceRecordSummaryService {
 
         // iterate the data to calculate regular working hours and overtime
         Set<WorkingDate> keys = attendanceRecords.keySet();
-        for (WorkingDate key : keys)
-        {
-            if (key.getYearMonth() == dateKey)
-            {
-                boolean ret = addSummary(key,attendanceRecords.get(key));
-                if(ret)
-                {
+        attendanceRecords.forEach((k, v) -> {
+            if (k.getYearMonth() == dateKey) {
+                boolean ret = addSummary(k, v);
+                if (!ret) {
                     // You Are FIRED!
                     attendanceSummary.fired = true;
                 }
             }
-        }
+        });
         return attendanceSummary;
-    }
+}
 
     private boolean addSummary(WorkingDate workingDate,WorkingDuration workingDuration)
     {
@@ -73,9 +69,8 @@ public class AttendanceRecordSummaryService {
         // special quote - if the employee is late in the office, simply fire this guy.
         if(startTime.getValue() > regularTimeRule.getStartTime().getValue())
         {
-           System.out.println("You are FIRED!!!! ");
-           employeeFired = true;
-           return false;
+            System.out.println("You are FIRED!!!! ");
+            return false;
         }
 
         // calculate working hours
@@ -91,7 +86,7 @@ public class AttendanceRecordSummaryService {
                 breakDuration = calculateDuration(workingDate, rule.getStartTime(), rule.getEndTime());
             }
             else if( endTime.getValue() >= rule.getStartTime().getValue() &&
-                     endTime.getValue() < rule.getEndTime().getValue())
+                    endTime.getValue() < rule.getEndTime().getValue())
             {
                 // break time is partially contained with working hours
                 breakDuration = calculateDuration(workingDate, rule.getStartTime(), endTime);
@@ -102,11 +97,11 @@ public class AttendanceRecordSummaryService {
             }
         }
 
-        // add working hours divided regular time and over time into the summary
-        if(workingHours.toMinutes() > 8*60)  // more than 8 hours
+        // add working hours which are regular-time and over-time separately into the summary
+        if(workingHours.toMinutes() > RegularTimeRule.REGULAR_WORKING_MINUTES )  // more than 8 hours
         {
-            attendanceSummary.regularTime = attendanceSummary.regularTime.plus(Duration.ofHours(8));
-            Duration overtime = workingHours.minus(Duration.ofHours(8));
+            attendanceSummary.regularTime = attendanceSummary.regularTime.plus(Duration.ofHours(RegularTimeRule.REGULAR_WORKING_HOURS));
+            Duration overtime = workingHours.minus(Duration.ofHours(RegularTimeRule.REGULAR_WORKING_HOURS));
             attendanceSummary.overTime = attendanceSummary.overTime.plus(overtime);
         }
         else
@@ -114,11 +109,6 @@ public class AttendanceRecordSummaryService {
             attendanceSummary.regularTime = attendanceSummary.regularTime.plus(workingHours);
         }
         return true;
-    }
-
-    private boolean isEmployeeFired()
-    {
-        return  employeeFired;
     }
 
     private Duration calculateDuration(WorkingDate workingDate,RecordedTime startTime, RecordedTime endTime)

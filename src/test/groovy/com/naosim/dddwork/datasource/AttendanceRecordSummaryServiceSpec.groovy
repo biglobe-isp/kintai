@@ -17,11 +17,10 @@ class AttendanceRecordSummaryServiceSpec extends Specification {
         attendanceRecordUpdateService.executeService("20190501","0900","1800")
         attendanceRecordUpdateService.executeService("20190502","0900","1900")
         attendanceRecordUpdateService.executeService("20190503","0900","2000")
-        def fired = attendanceRecordSummaryService.isEmployeeFired()
         def attendanceSummary = attendanceRecordSummaryService.executeService("2019","05")
 
         then:
-        fired == false
+        attendanceSummary.fired == false
         attendanceSummary.toString() == "24:0/1:0"
     }
 
@@ -37,11 +36,10 @@ class AttendanceRecordSummaryServiceSpec extends Specification {
         attendanceRecordUpdateService.executeService("20190501","0900","1735")
         attendanceRecordUpdateService.executeService("20190502","0900","1900")
         attendanceRecordUpdateService.executeService("20190503","0900","2355")
-        def fired = attendanceRecordSummaryService.isEmployeeFired()
         def attendanceSummary = attendanceRecordSummaryService.executeService("2019","05")
 
         then:
-        fired == false
+        attendanceSummary.fired == false
         attendanceSummary.toString() == "23:35/3:55"
     }
 }

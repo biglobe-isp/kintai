@@ -12,6 +12,9 @@ public class RegularTimeRule {
     @Getter
     private final RecordedTime endTime;
 
+    public static final int REGULAR_WORKING_HOURS = 8;
+    public static final int REGULAR_WORKING_MINUTES = 8*60;
+
     public RegularTimeRule()
     {
         // create regular working hour rule

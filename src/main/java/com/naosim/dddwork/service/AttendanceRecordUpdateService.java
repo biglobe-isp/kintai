@@ -11,7 +11,6 @@ import com.naosim.dddwork.domain.time.Minute;
 import com.naosim.dddwork.domain.time.RecordedTime;
 import com.naosim.dddwork.domain.time.WorkingDuration;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 
 public class AttendanceRecordUpdateService {
@@ -28,7 +27,7 @@ public class AttendanceRecordUpdateService {
         RecordedTime startTime = parseTime(startTimeParam);
         RecordedTime endTime = parseTime(endTimeParam);
 
-        // insert OverTime Rule
+        // create OverTime Rule
         OverTimeRule overTimeRule = new OverTimeRule();
 
         // validator working hours
