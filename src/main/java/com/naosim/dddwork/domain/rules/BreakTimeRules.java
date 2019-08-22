@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class BreakTimeRules {
 
-    Vector<BreakTimeRule> breakTimeRules;
+    Vector<BreakTimeRule> breakTimeRulesVector;
 
     public BreakTimeRules()
     {
@@ -26,21 +26,16 @@ public class BreakTimeRules {
         RecordedTime breakTimeEnd3 = new RecordedTime(new Hour(22), new Minute(0));
         BreakTimeRule breakTimeRule3 = new BreakTimeRule(breakTimeStart3,breakTimeEnd3);
 
-        breakTimeRules = new Vector<BreakTimeRule>();
+        breakTimeRulesVector = new Vector<BreakTimeRule>();
 
-        breakTimeRules.add(breakTimeRule1);
-        breakTimeRules.add(breakTimeRule2);
-        breakTimeRules.add(breakTimeRule3);
+        breakTimeRulesVector.add(breakTimeRule1);
+        breakTimeRulesVector.add(breakTimeRule2);
+        breakTimeRulesVector.add(breakTimeRule3);
     }
 
-    public void addBreakTimeRule(BreakTimeRule rule)
+    public Vector<BreakTimeRule> getBreakTimeRulesVector()
     {
-       breakTimeRules.add(rule);
-    }
-
-    public Vector<BreakTimeRule> getBreakTimeRules()
-    {
-        return breakTimeRules;
+        return breakTimeRulesVector;
     }
 
 }

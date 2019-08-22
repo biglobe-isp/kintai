@@ -22,7 +22,7 @@ public class AttendanceRecordSummaryService {
 
     private BreakTimeRules breakTimeRules;
     private RegularTimeRule regularTimeRule;
-    private Vector<BreakTimeRule> breakTimes;
+    private Vector<BreakTimeRule> breakTimeRulesVector;
 
     public AttendanceRecordSummaryService() {
 
@@ -34,10 +34,10 @@ public class AttendanceRecordSummaryService {
 
         // create break time rules
         breakTimeRules = new BreakTimeRules();
-        breakTimes = breakTimeRules.getBreakTimeRules();
+        breakTimeRulesVector = breakTimeRules.getBreakTimeRulesVector();
     }
 
-    public AttendanceSummary executeService(String yearParam, String monthParam)
+    public String executeService(String yearParam, String monthParam)
     {
         // construct  Working Year and Date ( e.g. 2019/12 -> 201912 )
         int dateKey = Integer.parseInt(yearParam) * 100 + Integer.parseInt(monthParam);
@@ -57,8 +57,23 @@ public class AttendanceRecordSummaryService {
                 }
             }
         });
-        return attendanceSummary;
-}
+        return formatString();
+    }
+
+    private String formatString()
+    {
+        if(attendanceSummary.fired)
+        {
+            return "YOU ARE FIRED!!!!!!";
+        }
+        else
+        {
+            return "Regular Working Hours - " + attendanceSummary.regularTime.toHours() + ":" +
+                    attendanceSummary.regularTime.toMinutes()%60 + " OverTime - " +
+                    attendanceSummary.overTime.toHours() + ":" +
+                    attendanceSummary.overTime.toMinutes() %60;
+        }
+    }
 
     private boolean addSummary(WorkingDate workingDate,WorkingDuration workingDuration)
     {
@@ -69,7 +84,7 @@ public class AttendanceRecordSummaryService {
         // special quote - if the employee is late in the office, simply fire this guy.
         if(startTime.getValue() > regularTimeRule.getStartTime().getValue())
         {
-            System.out.println("You are FIRED!!!! ");
+            //System.out.println("You are FIRED!!!! ");
             return false;
         }
 
@@ -77,7 +92,7 @@ public class AttendanceRecordSummaryService {
         Duration workingHours = calculateDuration(workingDate,startTime,endTime);
 
         // extract break times
-        for(BreakTimeRule rule : breakTimes)
+        for(BreakTimeRule rule : breakTimeRulesVector)
         {
             Duration breakDuration = null;
             if(endTime.getValue()  >= rule.getEndTime().getValue())
@@ -96,6 +111,9 @@ public class AttendanceRecordSummaryService {
                 workingHours = workingHours.minus(breakDuration);
             }
         }
+
+        //breakTimeRulesVector.stream().filter((r) ->  { return endTime.getValue() > r.getEndTime().getValue(); })
+        //        .forEach();
 
         // add working hours which are regular-time and over-time separately into the summary
         if(workingHours.toMinutes() > RegularTimeRule.REGULAR_WORKING_MINUTES )  // more than 8 hours
@@ -120,5 +138,11 @@ public class AttendanceRecordSummaryService {
         LocalDateTime to = LocalDateTime.of(year, month, day, endTime.getHour().getHour() , endTime.getMinute().getMinute());
         Duration duration = Duration.between(from, to);
         return duration;
+    }
+
+    // for test purpose
+    public AttendanceSummary getAttendanceSummary()
+    {
+        return attendanceSummary;
     }
 }

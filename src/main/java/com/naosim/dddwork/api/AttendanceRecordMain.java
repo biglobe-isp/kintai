@@ -26,12 +26,7 @@ public class AttendanceRecordMain {
         {
 
             AttendanceRecordSummaryService service = new AttendanceRecordSummaryService();
-            AttendanceSummary summary = service.executeService(args[1],args[2]);
-            if(summary != null)
-            {
-                System.out.println("Regular Working Hours - " + summary.regularTime.toHours() + ":" + summary.regularTime.toMinutes()%60 +
-                        " OverTime - " + summary.overTime.toHours() + ":" + summary.overTime.toMinutes() %60);
-            }
+            System.out.println(service.executeService(args[1],args[2]));
         }
         else
         {
