@@ -1,12 +1,11 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.date.Day;
-import com.naosim.dddwork.domain.date.Month;
-import com.naosim.dddwork.domain.date.WorkingDate;
-import com.naosim.dddwork.domain.date.Year;
+import com.naosim.dddwork.domain.AttendanceRecord;
+import com.naosim.dddwork.domain.AttendanceRecords;
+import com.naosim.dddwork.domain.date.*;
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
-import com.naosim.dddwork.domain.time.RecordedTime;
+import com.naosim.dddwork.domain.time.EntryTime;
 import com.naosim.dddwork.domain.time.WorkingDuration;
 import com.naosim.dddwork.service.AttendanceRecordRepository;
 
@@ -20,17 +19,19 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
     private final String dataFileName = "data.csv";
     // format - 20190403,0900,1900 <- only working date, start time , end time
 
-    static TreeMap<WorkingDate, WorkingDuration> attendanceRecords;
+    static AttendanceRecords attendanceRecords;
 
     public AttendanceRecordRepositoryCSV()  {
-
-        attendanceRecords = new TreeMap<WorkingDate,WorkingDuration>();
     }
 
-
-    public TreeMap<WorkingDate,WorkingDuration> load()
+    public AttendanceRecords load()
     {
-        attendanceRecords = new TreeMap<WorkingDate,WorkingDuration>();
+        return load(null);
+    }
+
+    public AttendanceRecords load(YearMonth yearMonth)
+    {
+        attendanceRecords = new AttendanceRecords();
         // read data file
         File file = new File(dataFileName);
 
@@ -74,10 +75,18 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
                 WorkingDate workingDate = new WorkingDate(year,month,day);
 
                 // parse start hour and min
-                RecordedTime startTime = parseRecordedTime(tokens[1]);
-                RecordedTime endTime = parseRecordedTime(tokens[2]);
+                EntryTime startTime = parseRecordedTime(tokens[1]);
+                EntryTime endTime = parseRecordedTime(tokens[2]);
                 WorkingDuration workingDuration = new WorkingDuration(startTime,endTime);
-                attendanceRecords.put(workingDate,workingDuration);
+                AttendanceRecord attendanceRecord = new AttendanceRecord(workingDate,workingDuration);
+                if(yearMonth == null) {
+                    attendanceRecords.insert(attendanceRecord);
+                }
+                else if(yearMonth.getValue() == workingDate.getYearMonth() )
+                {
+                    attendanceRecords.insert(attendanceRecord);
+                }
+
             }
         }
         catch(IOException ex)
@@ -95,13 +104,12 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
         try {
             FileWriter fw = new FileWriter(file);
             BufferedWriter bw = new BufferedWriter(fw);
-            Set<WorkingDate>  keys = attendanceRecords.keySet();
-            for(WorkingDate workingDate : keys)
+
+            for(AttendanceRecord attendanceRecord : attendanceRecords.getAttendanceRecords())
             {
-                WorkingDuration workingDuration = attendanceRecords.get(workingDate);
-                bw.write(workingDate.toString() +"," +
-                            workingDuration.getStartTime().toString() + "," +
-                            workingDuration.getEndTime().toString() );
+                bw.write(attendanceRecord.getWorkingDate().toString() +"," +
+                        attendanceRecord.getWorkingDuration().getStartTime().toString() + "," +
+                        attendanceRecord.getWorkingDuration().getEndTime().toString() );
                 bw.newLine();
             }
             bw.close();
@@ -124,7 +132,7 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
         }
     }
 
-    private RecordedTime parseRecordedTime(String token)
+    private EntryTime parseRecordedTime(String token)
     {
         if(token.length() != 4)
         {
@@ -133,9 +141,10 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
         }
         Hour hour = new Hour(Integer.parseInt(token.substring(0,2)));
         Minute minute = new Minute(Integer.parseInt(token.substring(2,4)));
-        RecordedTime recordedTime = new RecordedTime(hour,minute);
-        return recordedTime;
+        EntryTime entryTime = new EntryTime(hour,minute);
+        return entryTime;
     }
+
     private boolean isInteger(String s)
     {
         try {

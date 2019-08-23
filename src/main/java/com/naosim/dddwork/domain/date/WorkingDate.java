@@ -1,8 +1,8 @@
 package com.naosim.dddwork.domain.date;
 
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@EqualsAndHashCode
+@Getter
 public class WorkingDate implements Comparable<WorkingDate> {
     private final Year year;
     private final Month month;
@@ -20,14 +20,11 @@ public class WorkingDate implements Comparable<WorkingDate> {
         return  (year.getYear() * 100) + month.getMonth();
     }
 
-    public  int getValue()
+    public int getValue()
     {
         return (year.getYear() * 10000) + (month.getMonth()*100) + day.getDay();
     }
 
-    public int getYear() { return year.getYear(); }
-    public int getMonth() { return month.getMonth(); }
-    public int getDay() { return day.getDay(); }
 
     @Override
     public int compareTo(WorkingDate o) {

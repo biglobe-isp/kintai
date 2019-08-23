@@ -2,15 +2,15 @@ package com.naosim.dddwork.domain.rules;
 
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
-import com.naosim.dddwork.domain.time.RecordedTime;
+import com.naosim.dddwork.domain.time.EntryTime;
 import lombok.Getter;
 
 public class RegularTimeRule {
 
     @Getter
-    private final RecordedTime startTime;
+    private final EntryTime startTime;
     @Getter
-    private final RecordedTime endTime;
+    private final EntryTime endTime;
 
     public static final int REGULAR_WORKING_HOURS = 8;
     public static final int REGULAR_WORKING_MINUTES = 8*60;
@@ -18,14 +18,14 @@ public class RegularTimeRule {
     public RegularTimeRule()
     {
         // create regular working hour rule
-        RecordedTime regularTimeStart = new RecordedTime(new Hour(9), new Minute(0));
-        RecordedTime regularTimeEnd = new RecordedTime(new Hour(18), new Minute(0));
+        EntryTime regularTimeStart = new EntryTime(new Hour(9), new Minute(0));
+        EntryTime regularTimeEnd = new EntryTime(new Hour(18), new Minute(0));
         startTime = regularTimeStart;
         endTime = regularTimeEnd;
     }
 
-    public RecordedTime getStartTime() { return startTime; }
-    public RecordedTime getEndTime() { return endTime; }
+    //public EntryTime getStartTime() { return startTime; }
+    //public EntryTime getEndTime() { return endTime; }
 
 
 }

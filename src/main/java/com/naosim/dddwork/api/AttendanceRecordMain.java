@@ -1,8 +1,15 @@
 package com.naosim.dddwork.api;
 
+import com.naosim.dddwork.domain.AttendanceRecord;
 import com.naosim.dddwork.domain.AttendanceSummary;
+import com.naosim.dddwork.domain.date.WorkingDate;
+import com.naosim.dddwork.domain.date.YearMonth;
+import com.naosim.dddwork.domain.time.EntryTime;
+import com.naosim.dddwork.domain.time.WorkingDuration;
 import com.naosim.dddwork.service.AttendanceRecordSummaryService;
 import com.naosim.dddwork.service.AttendanceRecordUpdateService;
+
+import javax.swing.*;
 
 public class AttendanceRecordMain {
 
@@ -12,7 +19,13 @@ public class AttendanceRecordMain {
         if (args[0].toUpperCase().equals("UPDATE") && args.length == 4)
         {
             AttendanceRecordUpdateService service = new AttendanceRecordUpdateService();
-            boolean success =  service.executeService(args[1], args[2], args[3]);
+            WorkingDate workingDate =  CommandLineParser.parseWorkingDate(args[1]);
+            EntryTime startTime = CommandLineParser.parseEntryTime(args[2]);
+            EntryTime endTime = CommandLineParser.parseEntryTime(args[3]);
+            WorkingDuration workingDuration = new WorkingDuration(startTime,endTime);
+            AttendanceRecord attendanceRecord = new AttendanceRecord(workingDate,workingDuration);
+            boolean success =  service.executeService(attendanceRecord);
+
             if(success)
             {
                System.out.println("Date:" + args[1] + " attendance record is updated successfully.");
@@ -24,9 +37,10 @@ public class AttendanceRecordMain {
         }
         else if (args[0].toUpperCase().equals("SUMMARY") && args.length == 3)
         {
-
             AttendanceRecordSummaryService service = new AttendanceRecordSummaryService();
-            System.out.println(service.executeService(args[1],args[2]));
+            YearMonth yearMonth = CommandLineParser.parseYearMonth(args[2] + args[3]);
+            AttendanceSummary attendanceSummary = service.executeService(yearMonth);
+            // TODO : display result
         }
         else
         {

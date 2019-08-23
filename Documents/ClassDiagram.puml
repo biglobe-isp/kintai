@@ -2,8 +2,7 @@
 
 package Datasource {
 class AttendanceRecordRepositoryCSV {
--static record : HashMap<WorkingDate,WorkingDuration>
-+insert()
+-attendanceRecords : AttendanceRecords 
 +load()
 +save()
 }
@@ -27,47 +26,83 @@ class WorkingDate {
 -month : Month
 -day : Day
 getYearMonth()
-ketDate()
+getDate()
 }
+
 
 WorkingDate *-down- Year
 WorkingDate *-down- Month
 WorkingDate *-down- Day
 
-class RecordedTime {
+class YearMonth {
+-year : Year
+-month : Month
+}
+
+YearMonth *-down= Year
+YearMonth *-down- Month
+
+class EntryTime {
   -hour : Hour
   -minute : Minute
   getMinutes()
 }
 
 class WorkingDuration {
-startTime : RecordedTime
-endTime : RecordedTime
+startTime : EntryTime
+endTime : EntryTime
 }
 
-WorkingDuration *-down- RecordedTime  : have 2 
+WorkingDuration *-down- EntryTime  : have 2 
 
 class RegularTimeRule {
+-startTime : EntryTime 
+-endTime : EntryTime 
+}
 
-static regularTimeStart : RecordedTime 
-staic regularTimeEnd : RecordedTime 
+Enum BreakTimeRules {
+LUNCH_BREAK_TIME,
+EVENING_BREAK_TIME,
+LATE_NIGHT_BREAK_TIME
 }
 
 class BreakTimeRule {
-static breakTimeStart : RecordedTime　:休憩開始
-static breakTimeEnd   : RecordedTime　:休憩終了
+static breakTimeStart : EntryTime　:休憩開始
+static breakTimeEnd   : EntryTime　:休憩終了
 }
+
+BreakTimeRules *-down- BreakTimeRule 
+
 
 class OverTimeRule {
-    static finalCutTime   : time  : 以降サービス残業
+-finalCutTime : entryTime  
 }
 
+class AttendanceRecords {
+-List<AttendanceRecord>
+}
+
+class AttendanceRecord {
+-workingDate : WorkingDate
+-startTime : EntryTime
+-endTime : EntryTime
+}
+
+AttendanceRecords *-down- AttendanceRecord 
+
 interface AttendanceRecordRepository {
--record: HashMap<WorkingDate,WorkingDuration>
+-record: AttendanceRecords
 +insert()
 +load()
 +save()
+}
 
+class AttendanceSummary {
++toString()
++formatString()
+-fired : boolean 
+-regularWorkingHours : Duration
+-overTimeWokringHours : Duration
 }
 
 }
@@ -77,24 +112,28 @@ class CommandLineParserAPI
 package Service
 {
 class AttendanceRecordUpdateService {
-updateAttendanceRecord(WokingDate,WorkingDuration)
+executeSerice(AttendanceRecord)
 }
 class AttendanceRecordSummaryService
 {
-createAttendanceRecordSummary(Year,Month)
+executeService(YearMonth)
 }
 
 AttendanceRecordUpdateService o--  AttendanceRecordRepository 
 AttendanceRecordUpdateService <.. OverTimeRule
 AttendanceRecordSummaryService o-- AttendanceRecordRepository
-AttendanceRecordSummaryService ..{ BreakTimeRule
+AttendanceRecordSummaryService <.. BreakTimeRules
 AttendanceRecordSummaryService <.. RegularTimeRule
+AttendanceRecordSummaryService <.. AttendanceSummary 
+AttendanceRecordSummaryService <.. YearMonth 
 
-CommandLineParserAPI --> AttendanceRecordUpdateService
-CommandLineParserAPI --> AttendanceRecordSummaryService
+CommandLineParserAPI --> AttendanceRecordUpdateService : AttendanceRecord
+CommandLineParserAPI --> AttendanceRecordSummaryService : YearMonth
 
-AttendanceRecordRepositoryCSV <.. WorkingDate
-AttendanceRecordRepositoryCSV <.. WorkingDuration
+AttendanceRecord <.. WorkingDate
+AttendanceRecord <.. WorkingDuration
+AttendanceRecords <.. AttendanceRecord
+AttendanceRecordRepositoryCSV  <.. AttendanceRecords
 
 AttendanceRecordRepository o.. AttendanceRecordRepositoryCSV
 

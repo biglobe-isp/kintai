@@ -1,10 +1,8 @@
 package com.naosim.dddwork.domain.date;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 
-@EqualsAndHashCode
 public class Year {
     @Getter
     private final int year;
@@ -28,8 +26,4 @@ public class Year {
         return true;
     }
 
-    public int getYear()
-    {
-        return year;
-    }
 }

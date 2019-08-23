@@ -6,20 +6,11 @@ import lombok.Getter;
 public class WorkingDuration {
 
     @Getter
-    private final RecordedTime startTime;
+    private final EntryTime startTime;
     @Getter
-    private final RecordedTime endTime;
+    private final EntryTime endTime;
 
-    public RecordedTime getStartTime()
-    {
-        return startTime;
-    }
-    public RecordedTime getEndTime()
-    {
-        return endTime;
-    }
-
-    public WorkingDuration(RecordedTime startTime, RecordedTime endTime)
+    public WorkingDuration(EntryTime startTime, EntryTime endTime)
     {
         this.startTime = startTime;
         this.endTime = endTime;

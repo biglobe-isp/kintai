@@ -1,9 +1,7 @@
 package com.naosim.dddwork.domain.time;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-@EqualsAndHashCode
 public class Minute {
     @Getter
     private final int minute;
@@ -26,8 +24,4 @@ public class Minute {
         return true;
     }
 
-    public int getMinute()
-    {
-        return minute;
-    }
 }

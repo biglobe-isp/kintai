@@ -26,8 +26,8 @@ public class Day {
         return true;
     }
 
-    public int getDay()
-    {
-        return day;
-    }
+    //public int getDay()
+    //{
+    //    return day;
+    //}
 }

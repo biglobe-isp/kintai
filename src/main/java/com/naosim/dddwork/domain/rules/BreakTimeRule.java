@@ -1,20 +1,16 @@
 package com.naosim.dddwork.domain.rules;
 
-import com.naosim.dddwork.domain.time.RecordedTime;
+import com.naosim.dddwork.domain.time.EntryTime;
 import lombok.Getter;
 public class BreakTimeRule {
     @Getter
-    private final RecordedTime startTime;
+    private final EntryTime startTime;
     @Getter
-    private final RecordedTime endTime;
+    private final EntryTime endTime;
 
-    public BreakTimeRule(RecordedTime startTime, RecordedTime endTime)
+    public BreakTimeRule(EntryTime startTime, EntryTime endTime)
     {
         this.startTime = startTime;
         this.endTime = endTime;
     }
-
-    public RecordedTime getStartTime() { return startTime; }
-    public RecordedTime getEndTime() { return endTime; }
-
 }

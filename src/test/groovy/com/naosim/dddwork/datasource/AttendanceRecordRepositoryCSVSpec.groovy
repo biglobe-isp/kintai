@@ -1,9 +1,9 @@
 package com.naosim.dddwork.datasource
 
+import com.naosim.dddwork.domain.AttendanceRecord
 import com.naosim.dddwork.domain.time.Hour
 import com.naosim.dddwork.domain.time.Minute
-import com.naosim.dddwork.domain.time.RecordedTime
-import com.sun.image.codec.jpeg.TruncatedFileException
+import com.naosim.dddwork.domain.time.EntryTime
 import spock.lang.Specification
 import com.naosim.dddwork.domain.date.Year
 import com.naosim.dddwork.domain.date.Month
@@ -22,7 +22,7 @@ class AttendanceRecordRepositoryCSVSpec  extends Specification{
        attendanceRecordRepositoryCSV.delete()
 
         when:
-        def attendanceRecords = attendanceRecordRepositoryCSV.load()
+        def attendanceRecords = attendanceRecordRepositoryCSV.load().getAttendanceRecords()
 
         then:
         attendanceRecords.size() == 0
@@ -41,16 +41,17 @@ class AttendanceRecordRepositoryCSVSpec  extends Specification{
         def workingDate = new WorkingDate(year,month,day)
         def startHour = new Hour(8)
         def startMin = new Minute(50)
-        def startTime = new RecordedTime(startHour,startMin)
+        def startTime = new EntryTime(startHour,startMin)
         def endHour = new Hour(18)
         def endMin = new Minute(20)
-        def endTime = new RecordedTime(endHour,endMin)
+        def endTime = new EntryTime(endHour,endMin)
         def workingDuration = new WorkingDuration(startTime,endTime)
-        attendanceRecords.put(workingDate,workingDuration)
+        def attendanceRecord = new AttendanceRecord(workingDate,workingDuration)
+        attendanceRecords.insert(attendanceRecord)
         def ret = attendanceRecordRepositoryCSV.save()
 
         then:
-        attendanceRecords.size() == 1
+        attendanceRecords.getAttendanceRecords().size() == 1
         ret == true
     }
 
@@ -59,17 +60,10 @@ class AttendanceRecordRepositoryCSVSpec  extends Specification{
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
 
         when:
-        def attendanceRecords = attendanceRecordRepositoryCSV.load()
-        def keys = attendanceRecords.keySet();
-        def workingDate = keys[0]
-        def workingDuration = attendanceRecords.get(workingDate)
-        def strWorkingDate = workingDate.toString()
-        def startTime = workingDuration.getStartTime().toString();
-        def endTime = workingDuration.getEndTime().toString();
+        def attendanceRecords = attendanceRecordRepositoryCSV.load().getAttendanceRecords()
+        def attendanceRecordResult2 = attendanceRecords.get(0)
 
         then:
-        strWorkingDate == "20190401"
-        startTime == "0850"
-        endTime == "1820"
+        attendanceRecordResult2.toString() == "20190401 08:50-18:20"
     }
 }

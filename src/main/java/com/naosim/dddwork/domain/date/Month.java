@@ -26,8 +26,4 @@ public class Month {
         return true;
     }
 
-    public int getMonth()
-    {
-        return month;
-    }
 }

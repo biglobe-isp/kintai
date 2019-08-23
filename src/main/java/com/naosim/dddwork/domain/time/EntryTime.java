@@ -3,12 +3,12 @@ package com.naosim.dddwork.domain.time;
 
 import java.io.Serializable;
 
-public class RecordedTime {
+public class EntryTime {
 
     Hour hour;
     Minute minute;
 
-    public RecordedTime(Hour hour, Minute minute)
+    public EntryTime(Hour hour, Minute minute)
     {
         this.hour = hour;
         this.minute = minute;
