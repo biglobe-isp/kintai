@@ -3,10 +3,13 @@ package com.naosim.dddwork.domain.rules;
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
 import com.naosim.dddwork.domain.time.EntryTime;
-import lombok.Getter;
 
-public class RegularTimeRule {
+public enum RegularTimeRule {
+    
+    REGULAR_TIME_START(9, 0),
+    REGULAR_WORKING_DURATION(8,0);
 
+    /*
     @Getter
     private final EntryTime startTime;
     @Getter
@@ -17,15 +20,20 @@ public class RegularTimeRule {
 
     public RegularTimeRule()
     {
-        // create regular working hour rule
+        // create regular working hours rule
         EntryTime regularTimeStart = new EntryTime(new Hour(9), new Minute(0));
         EntryTime regularTimeEnd = new EntryTime(new Hour(18), new Minute(0));
         startTime = regularTimeStart;
         endTime = regularTimeEnd;
     }
+    */
 
-    //public EntryTime getStartTime() { return startTime; }
-    //public EntryTime getEndTime() { return endTime; }
-
-
+    private EntryTime entryTime;
+    RegularTimeRule(int hour, int minute) {
+        entryTime = new EntryTime(new Hour(hour),new Minute(minute));
+    }
+    public EntryTime getEntryTime()
+    {
+        return entryTime;
+    }
 }

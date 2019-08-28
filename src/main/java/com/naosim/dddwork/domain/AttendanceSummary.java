@@ -5,78 +5,116 @@ import com.naosim.dddwork.domain.rules.BreakTimeRule;
 import com.naosim.dddwork.domain.rules.BreakTimeRules;
 import com.naosim.dddwork.domain.rules.RegularTimeRule;
 import com.naosim.dddwork.domain.time.EntryTime;
+import lombok.Getter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.time.Duration.between;
+import static java.time.Duration.ofMinutes;
+
 
 public class  AttendanceSummary
 {
+    @Getter
     private Duration regularTime = null;
+    @Getter
     private Duration overTime = null;
     private boolean fired;
-
-
+    private static int regularWorkingMinutes;
 
     public AttendanceSummary(AttendanceRecords attendanceRecords)
     {
-        regularTime =  Duration.ofMinutes(0);
-        overTime =  Duration.ofMinutes(0);
+        regularTime = ofMinutes(0);
+        overTime =  ofMinutes(0);
         fired = false;
+
+        // calculate regular working hours in minutes
+        EntryTime regularWorkingDuration = RegularTimeRule.REGULAR_WORKING_DURATION.getEntryTime();
+        regularWorkingMinutes = regularWorkingDuration.getHour().getHour() * 60 + regularWorkingDuration.getMinute().getMinute();
 
         // calculate summary by records
         for(AttendanceRecord attendanceRecord : attendanceRecords.getAttendanceRecords()) {
-            // TODO : check fire case (late in the office)
-            calculateSummary(attendanceRecord);
+            // TODO : check fired case (late in the office)
+            fired = checkFired(attendanceRecord);
+            if(fired)
+            {
+                return ; // stop calculating the summary
+            }
+            // add working time to private variable regularTime and overTime
+            Duration totalWorkingHours  = calculateTotalWorkingHours(attendanceRecord);
+
+            Duration regularWorkingHours = calculateRegularWorkingHours(totalWorkingHours);
+            regularTime = regularTime.plus(regularWorkingHours);
+
+            Duration overtimeWorkingHours = calculateOvertimeWorkingHours(totalWorkingHours);
+            overTime = overTime.plus(overtimeWorkingHours);
         }
     }
 
 
-    // TODO segregate isFired() and addSummary - return value should have meaningful value - not only true/false
-    private void calculateSummary(AttendanceRecord attendanceRecord)
+    public boolean isFired()
     {
+        return fired;
+    }
+
+    public boolean checkFired(AttendanceRecord attendanceRecord)
+    {
+        EntryTime startTime = attendanceRecord.getWorkingDuration().getStartTime();
+        EntryTime regularStatTime = RegularTimeRule.REGULAR_TIME_START.getEntryTime();
+        if(startTime.getValue() >  regularStatTime.getValue())
+        {
+            // late in the office, this guy is FIRED!!!!
+            return true;
+        }
+        return false;
+    }
+
+    Duration calculateTotalWorkingHours(AttendanceRecord attendanceRecord) {
+
         // get startTime & endTime
         EntryTime startTime = attendanceRecord.getWorkingDuration().getStartTime();
         EntryTime endTime = attendanceRecord.getWorkingDuration().getEndTime();
 
         // calculate working hours
-        Duration workingHours = calculateDuration(attendanceRecord.getWorkingDate(),startTime,endTime);
+        Duration workingHours = calculateDuration(attendanceRecord.getWorkingDate(), startTime, endTime);
 
-        // extract break times
-        for(BreakTimeRules r : BreakTimeRules.values())
-        {
-            BreakTimeRule rule = r.getBreakTimeRule();
-            Duration breakDuration = null;
-            if(endTime.getValue()  >= rule.getEndTime().getValue())
-            {
-                // break time is fully contained with working hours
-                breakDuration = calculateDuration(attendanceRecord.getWorkingDate(), rule.getStartTime(), rule.getEndTime());
-            }
-            else if( endTime.getValue() >= rule.getStartTime().getValue() &&
-                    endTime.getValue() < rule.getEndTime().getValue())
-            {
-                // break time is partially contained with working hours
-                breakDuration = calculateDuration(attendanceRecord.getWorkingDate(), rule.getStartTime(), endTime);
-            }
-            if(breakDuration != null)
-            {
-                workingHours = workingHours.minus(breakDuration);
-            }
-        }
+        long breakMinutes = Arrays.stream(BreakTimeRules.values()).
+                map(r -> r.getBreakTimeRule()).
+                map(rule -> getBreakDuration(attendanceRecord.getWorkingDate(), endTime, rule)).
+                filter(Objects::nonNull).
+                collect(Collectors.summingLong(d -> d.toMinutes()));
+        workingHours = workingHours.minus( ofMinutes(breakMinutes));
+        return workingHours;
+    }
 
-        //breakTimeRulesVector.stream().filter((r) ->  { return endTime.getValue() > r.getEndTime().getValue(); })
-        //        .forEach();
+    Duration getBreakDuration (WorkingDate workingDate,EntryTime endTime,BreakTimeRule breakTimeRule)
+    {
+        if (endTime.getValue() >= breakTimeRule.getEndTime().getValue()) {
+            // break time is fully contained with working hours
+            return calculateDuration( workingDate, breakTimeRule.getStartTime(), breakTimeRule.getEndTime());
+        } else if (endTime.getValue() >= breakTimeRule.getStartTime().getValue() &&
+                endTime.getValue() < breakTimeRule.getEndTime().getValue()) {
+            // break time is partially contained with working hours
+            return calculateDuration( workingDate, breakTimeRule.getStartTime(), endTime);
+        }
+        return null;
 
-        // add working hours which are regular-time and over-time separately into the summary
-        if(workingHours.toMinutes() > RegularTimeRule.REGULAR_WORKING_MINUTES )  // more than 8 hours
-        {
-            regularTime = regularTime.plus(Duration.ofHours(RegularTimeRule.REGULAR_WORKING_HOURS));
-            Duration overtime = workingHours.minus(Duration.ofHours(RegularTimeRule.REGULAR_WORKING_HOURS));
-            overTime = overTime.plus(overtime);
-        }
-        else
-        {
-            regularTime = regularTime.plus(workingHours);
-        }
+    }
+
+    Duration calculateRegularWorkingHours(Duration totalWorkingHours)
+    {
+        return totalWorkingHours.toMinutes() > regularWorkingMinutes ?
+                ofMinutes(regularWorkingMinutes) : totalWorkingHours ;
+    }
+
+    Duration calculateOvertimeWorkingHours(Duration totalWorkingHours)
+    {
+        return totalWorkingHours.toMinutes() > regularWorkingMinutes ?
+             totalWorkingHours.minus(ofMinutes(regularWorkingMinutes)) : ofMinutes(0) ;
     }
 
 
@@ -85,9 +123,20 @@ public class  AttendanceSummary
         int year = workingDate.getYear().getYear();
         int month = workingDate.getMonth().getMonth();
         int day = workingDate.getDay().getDay();
+        int endHour = endTime.getHour().getHour();
         LocalDateTime from = LocalDateTime.of(year, month, day, startTime.getHour().getHour() , startTime.getMinute().getMinute());
-        LocalDateTime to = LocalDateTime.of(year, month, day, endTime.getHour().getHour() , endTime.getMinute().getMinute());
-        Duration duration = Duration.between(from, to);
+        LocalDateTime to;
+        if(endHour >= 24) //  over
+        {
+           // increase day ++
+            to = from.plusDays(1);
+            year = to.getYear();
+            month = to.getMonthValue();
+            day = to.getDayOfMonth();
+            endHour = 0;
+        }
+        to = LocalDateTime.of(year, month, day, endHour , endTime.getMinute().getMinute());
+        Duration duration = between(from, to);
         return duration;
     }
 

@@ -5,6 +5,7 @@ import com.naosim.dddwork.domain.time.Minute;
 import com.naosim.dddwork.domain.time.EntryTime;
 import com.naosim.dddwork.domain.time.WorkingDuration;
 
+// TODO make this class to enum
 public class OverTimeRule {
 
     private final int FinalCutHour = 24;

@@ -1,11 +1,9 @@
 package com.naosim.dddwork.datasource
 
 import com.naosim.dddwork.domain.AttendanceRecord
-import com.naosim.dddwork.domain.date.Day
-import com.naosim.dddwork.domain.date.Month
-import com.naosim.dddwork.domain.date.WorkingDate
-import com.naosim.dddwork.domain.date.Year
-import com.naosim.dddwork.domain.date.YearMonth
+import com.naosim.dddwork.domain.AttendanceRecords
+import com.naosim.dddwork.domain.AttendanceSummary
+import com.naosim.dddwork.domain.date.*
 import com.naosim.dddwork.domain.time.EntryTime
 import com.naosim.dddwork.domain.time.Hour
 import com.naosim.dddwork.domain.time.Minute
@@ -30,6 +28,67 @@ class AttendanceRecordSummaryServiceSpec extends Specification {
         def workingDuration = new WorkingDuration(startTime,endTime)
         AttendanceRecord attendanceRecord = new AttendanceRecord(workingDate,workingDuration)
         return attendanceRecord
+    }
+
+    def "AttendanceSummary-fired-case" () {
+        setup:
+        def attendanceRecord1 = createAttendanceRecord(2019,5,1,10,0,18,0)
+        def attendanceRecords = new AttendanceRecords()
+        attendanceRecords.insert(attendanceRecord1)
+
+        when:
+        def attendanceSummary = new AttendanceSummary(attendanceRecords)
+
+        then:
+        attendanceSummary.isFired() == true
+    }
+
+    def "AttendanceSummary-working-hours-calc1-regular" () {
+        setup:
+        def attendanceRecord1 = createAttendanceRecord(2019,5,1,9,0,18,0)
+        def attendanceRecords = new AttendanceRecords()
+        attendanceRecords.insert(attendanceRecord1)
+
+        when:
+        def attendanceSummary = new AttendanceSummary(attendanceRecords)
+        def regularTime = attendanceSummary.getRegularTime()
+        def overTime = attendanceSummary.getOverTime()
+
+        then:
+        regularTime.toHours() == 8
+        overTime.toHours() == 0
+    }
+    def "AttendanceSummary-working-hours-calc2-overtime1" () {
+        setup:
+        def attendanceRecord1 = createAttendanceRecord(2019,5,1,9,0,19,30)
+        def attendanceRecords = new AttendanceRecords()
+        attendanceRecords.insert(attendanceRecord1)
+
+        when:
+        def attendanceSummary = new AttendanceSummary(attendanceRecords)
+        def regularTime = attendanceSummary.getRegularTime()
+        def overTime = attendanceSummary.getOverTime()
+
+        then:
+        regularTime.toHours() == 8
+        overTime.toMinutes() == 30
+    }
+
+    def "AttendanceSummary-working-hours-calc3-overtime-midnight" () {
+        setup:
+        def attendanceRecord1 = createAttendanceRecord(2019,5,1,9,0,24,0)
+        def attendanceRecords = new AttendanceRecords()
+        attendanceRecords.insert(attendanceRecord1)
+
+        when:
+        def attendanceSummary = new AttendanceSummary(attendanceRecords)
+        def regularTime = attendanceSummary.getRegularTime()
+        def overTime = attendanceSummary.getOverTime()
+
+        then:
+        regularTime.toHours() == 8
+        overTime.toHours() == 4
+        overTime.toMinutes() == 240
     }
 
     def "AttendanceRecordSummaryService-TestSimple"() {
