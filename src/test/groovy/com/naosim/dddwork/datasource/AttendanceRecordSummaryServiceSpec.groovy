@@ -30,18 +30,7 @@ class AttendanceRecordSummaryServiceSpec extends Specification {
         return attendanceRecord
     }
 
-    def "AttendanceSummary-fired-case" () {
-        setup:
-        def attendanceRecord1 = createAttendanceRecord(2019,5,1,10,0,18,0)
-        def attendanceRecords = new AttendanceRecords()
-        attendanceRecords.insert(attendanceRecord1)
 
-        when:
-        def attendanceSummary = new AttendanceSummary(attendanceRecords)
-
-        then:
-        attendanceSummary.isFired() == true
-    }
 
     def "AttendanceSummary-working-hours-calc1-regular" () {
         setup:
