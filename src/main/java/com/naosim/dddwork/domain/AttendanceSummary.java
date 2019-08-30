@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import static java.time.Duration.between;
 import static java.time.Duration.ofMinutes;
 
-
 @NoArgsConstructor
 public class AttendanceSummary {
     @Getter
@@ -27,7 +26,9 @@ public class AttendanceSummary {
     private Duration overTime = null;
     @Getter
     private boolean fired;
-    private static int regularWorkingMinutes = RegularTimeRule.REGULAR_WORKING_DURATION.getEntryTime().getHour().getHour() * 60
+    private static int regularWorkingMinutes = RegularTimeRule.REGULAR_WORKING_DURATION.getEntryTime()
+            .getHour()
+            .getHour() * 60
             + RegularTimeRule.REGULAR_WORKING_DURATION.getEntryTime().getMinute().getMinute();
 
     public AttendanceSummary(AttendanceRecords attendanceRecords) {
@@ -98,23 +99,28 @@ public class AttendanceSummary {
                 totalWorkingHours.minus(ofMinutes(regularWorkingMinutes)) : ofMinutes(0);
     }
 
-
     Duration calculateDuration(WorkingDate workingDate, EntryTime startTime, EntryTime endTime) {
 
-        LocalDateTime from = LocalDateTime.of(workingDate.getYear().getYear(), workingDate.getMonth().getMonth(), workingDate.getDay().getDay(),
-                startTime.getHour().getHour(), startTime.getMinute().getMinute());
+        LocalDateTime from = LocalDateTime.of(workingDate.getYear().getYear(),
+                                              workingDate.getMonth().getMonth(),
+                                              workingDate.getDay().getDay(),
+                                              startTime.getHour().getHour(),
+                                              startTime.getMinute().getMinute()
+        );
 
         return endTime.getValue() >= OverTimeRule.FINAL_CUT_TIME.getEntryTime().getValue() ?
                 calculateDurationOverNight(from, startTime) :
-                between(from, LocalDateTime.of(workingDate.getYear().getYear(), workingDate.getMonth().getMonth(), workingDate.getDay().getDay(),
-                        endTime.getHour().getHour(), endTime.getMinute().getMinute()));
+                between(from, LocalDateTime.of(workingDate.getYear().getYear(),
+                                               workingDate.getMonth().getMonth(),
+                                               workingDate.getDay().getDay(),
+                                               endTime.getHour().getHour(),
+                                               endTime.getMinute().getMinute()
+                ));
     }
 
-
-    Duration calculateDurationOverNight(LocalDateTime from , EntryTime startTime)
-    {
+    Duration calculateDurationOverNight(LocalDateTime from, EntryTime startTime) {
         LocalDateTime to = from.plusDays(1).minusHours(startTime.getHour().getHour());
-        return between(from,to);
+        return between(from, to);
     }
 
     public String toString() {
