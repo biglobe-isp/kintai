@@ -8,7 +8,7 @@ public class BreakTimeRule {
     @Getter
     private final EntryTime endTime;
 
-    public BreakTimeRule(EntryTime startTime, EntryTime endTime)
+    BreakTimeRule(EntryTime startTime, EntryTime endTime)
     {
         this.startTime = startTime;
         this.endTime = endTime;

@@ -17,11 +17,7 @@ public class Minute {
 
     private boolean isCorrectMinuteValue(int minute)
     {
-        if(minute < 0 || minute > 59)
-        {
-            return false;
-        }
-        return true;
+        return minute >= 0 && minute <= 59;
     }
 
 }

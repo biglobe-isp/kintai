@@ -1,14 +1,9 @@
 package com.naosim.dddwork.domain.rules;
 
 
+import com.naosim.dddwork.domain.time.EntryTime;
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
-import com.naosim.dddwork.domain.time.EntryTime;
-import com.naosim.dddwork.domain.time.WorkingDuration;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
 public enum BreakTimeRules {
 

@@ -1,12 +1,9 @@
 package com.naosim.dddwork.domain.time;
 
-
-import java.io.Serializable;
-
 public class EntryTime {
 
-    Hour hour;
-    Minute minute;
+    private Hour hour;
+    private Minute minute;
 
     public EntryTime(Hour hour, Minute minute)
     {

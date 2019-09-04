@@ -19,11 +19,7 @@ public class Month {
 
     private boolean isCorrectMonthValue(int month)
     {
-        if(month < 1 || month > 12)
-        {
-            return false;
-        }
-        return true;
+        return month >= 1 && month <= 12;
     }
 
 }

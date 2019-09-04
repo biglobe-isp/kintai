@@ -19,11 +19,7 @@ public class Year {
     // !!! this should retire before 22nd century
     private boolean is21stCentury(int year)
     {
-        if(year < 2000 || year > 2099)
-        {
-            return false;
-        }
-        return true;
+        return year >= 2000 && year <= 2099;
     }
 
 }

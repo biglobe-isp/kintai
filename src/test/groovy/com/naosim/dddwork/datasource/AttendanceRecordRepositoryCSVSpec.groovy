@@ -47,12 +47,11 @@ class AttendanceRecordRepositoryCSVSpec  extends Specification{
         def endTime = new EntryTime(endHour,endMin)
         def workingDuration = new WorkingDuration(startTime,endTime)
         def attendanceRecord = new AttendanceRecord(workingDate,workingDuration)
-        attendanceRecords.insert(attendanceRecord)
-        def ret = attendanceRecordRepositoryCSV.save()
+        attendanceRecords = attendanceRecords.insert(attendanceRecord)
+        attendanceRecordRepositoryCSV.save(attendanceRecords)
 
         then:
         attendanceRecords.getAttendanceRecords().size() == 1
-        ret == true
     }
 
     def "AttendanceRecordRepository-load"() {
