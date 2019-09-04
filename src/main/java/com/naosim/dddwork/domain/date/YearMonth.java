@@ -8,14 +8,12 @@ public class YearMonth {
     @Getter
     private final Month month;
 
-    public YearMonth(Year year, Month month)
-    {
+    public YearMonth(Year year, Month month) {
         this.year = year;
         this.month = month;
     }
 
-    public int getValue()
-    {
+    public int getValue() {
         return year.getYear() * 100 + month.getMonth();
     }
 }

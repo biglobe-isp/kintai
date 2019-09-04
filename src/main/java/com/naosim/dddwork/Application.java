@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class Application implements CommandLineRunner {
-
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(Application.class);
         springApplication.setBannerMode(Banner.Mode.OFF);

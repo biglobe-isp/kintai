@@ -14,7 +14,7 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class AttendanceRecordMain {
-    public static String  command(String[] args) {
+    public static String command(String[] args) {
         if (args.length == 4 && args[0].toUpperCase().equals("UPDATE")) {
             // TODO parameter validation for another 3 , maybe spring parameter annotation? in command line parser
             AttendanceRecordUpdateService service = new AttendanceRecordUpdateService();
@@ -36,8 +36,8 @@ public class AttendanceRecordMain {
 
             return attendanceSummary.fold(Fired::firedMessage, AttendanceSummary::getSummaryMessage);
         } else {
-           return "Usage : java AttendanceRecordMain update YYYYMMDD  HHMM HHMM" +
-                "        java AttendanceRecordMain summary YYYY MM";
+            return "Usage : java AttendanceRecordMain update YYYYMMDD  HHMM HHMM" +
+                    "        java AttendanceRecordMain summary YYYY MM";
         }
     }
 }

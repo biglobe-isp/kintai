@@ -5,9 +5,9 @@ import io.vavr.control.Either;
 import lombok.Getter;
 
 public class Fired {
-
     @Getter
     private boolean fired;
+
     public Either<Fired, AttendanceSummary> get(AttendanceRecords attendanceRecords) {
         AttendanceSummary result;
 
@@ -25,10 +25,7 @@ public class Fired {
         return Either.right(result);
     }
 
-    public String firedMessage()
-    {
+    public String firedMessage() {
         return "You are FIRED!!!!";
     }
-
-
 }

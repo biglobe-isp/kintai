@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class AttendanceRecordUpdateService {
-
     public void update(AttendanceRecord attendanceRecord) {
         attendanceRecord = OverTimeRule.adjustAttendanceRecord(attendanceRecord);
 

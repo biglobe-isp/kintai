@@ -110,8 +110,9 @@ public class AttendanceSummary {
 
     public String getSummaryMessage() {
         return "Regular Working Hours = " + regularTime.toHours() + ":" + regularTime.toMinutes() % 60 +
-               " Over Time Working Hours = " + overTime.toHours() + ":" + overTime.toMinutes() % 60;
+                " Over Time Working Hours = " + overTime.toHours() + ":" + overTime.toMinutes() % 60;
     }
+
     public String toString() {
         return regularTime.toHours() + ":" + regularTime.toMinutes() % 60 + "/" + overTime.toHours() + ":" + overTime.toMinutes() % 60;
     }
