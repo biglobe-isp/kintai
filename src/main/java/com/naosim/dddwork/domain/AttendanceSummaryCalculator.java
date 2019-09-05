@@ -2,22 +2,20 @@ package com.naosim.dddwork.domain;
 
 import com.naosim.dddwork.domain.rules.RegularTimeRule;
 import io.vavr.control.Either;
-import lombok.Getter;
 
 public class AttendanceSummaryCalculator {
-    @Getter
-    private static boolean noDelayCheck;
+    private static AttendanceSummaryFailed attendanceSummaryFailed;
 
-    public static Either<Fired, AttendanceSummary> calculate(AttendanceRecords attendanceRecords) {
+    public static Either<AttendanceSummaryFailed, AttendanceSummary> calculate(AttendanceRecords attendanceRecords) {
 
         // if employee is late in the office even in one time, simply fire this guy
-        noDelayCheck = attendanceRecords.getAttendanceRecords()
+        boolean noDelay = attendanceRecords.getAttendanceRecords()
                 .toJavaStream()
                 .allMatch(r -> r.getWorkingDuration()
                         .getStartTime()
-                        .getValue() <= RegularTimeRule.REGULAR_TIME_START.getEntryTime().getValue());
-        if (!noDelayCheck)
-            return Either.left(new Fired());
+                        .getValue() <= RegularTimeRule.getRegularStartTime().getValue());
+        if (!noDelay)
+            return Either.left(attendanceSummaryFailed);
         else
             return Either.right(new AttendanceSummary().get(attendanceRecords));
     }

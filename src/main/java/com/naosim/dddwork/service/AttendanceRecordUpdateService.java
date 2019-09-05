@@ -12,8 +12,6 @@ public class AttendanceRecordUpdateService {
         attendanceRecord = OverTimeRule.adjustAttendanceRecord(attendanceRecord);
 
         AttendanceRecordRepository repository = new AttendanceRecordRepositoryCSV();
-        //AttendanceRecords attendanceRecords = repository.load();
-
         AttendanceRecords attendanceRecords = repository.load().insert(attendanceRecord);
         repository.save(attendanceRecords);
     }

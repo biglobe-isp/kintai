@@ -17,14 +17,11 @@ import static java.time.Duration.between;
 
 public class AttendanceSummary {
     @Getter
+    private final static boolean fired = false;
+    @Getter
     private Duration regularTime = null;
     @Getter
     private Duration overTime = null;
-    @Getter
-    private final static boolean fired = false;
-    private static int regularWorkingMinutes = RegularTimeRule.REGULAR_WORKING_DURATION.getEntryTime()
-            .getHour()
-            .getHour() * 60 + RegularTimeRule.REGULAR_WORKING_DURATION.getEntryTime().getMinute().getMinute();
 
     AttendanceSummary get(AttendanceRecords attendanceRecords) {
 
@@ -33,9 +30,7 @@ public class AttendanceSummary {
 
         for (AttendanceRecord attendanceRecord : attendanceRecords.getAttendanceRecords()) {
 
-            // add working time to private variable regularTime and overTime
-            Duration totalWorkingHours;
-            totalWorkingHours = calculateTotalWorkingHours(attendanceRecord);
+            Duration totalWorkingHours = calculateTotalWorkingHours(attendanceRecord);
 
             Duration regularWorkingHours = calculateRegularWorkingHours(totalWorkingHours);
             regularTime = regularTime.plus(regularWorkingHours);
@@ -73,13 +68,14 @@ public class AttendanceSummary {
     }
 
     private Duration calculateRegularWorkingHours(Duration totalWorkingHours) {
-        return totalWorkingHours.toMinutes() > regularWorkingMinutes ?
-                Duration.ofMinutes(regularWorkingMinutes) : totalWorkingHours;
+        return totalWorkingHours.toMinutes() > RegularTimeRule.getRegularWorkingMinutes() ?
+                Duration.ofMinutes(RegularTimeRule.getRegularWorkingMinutes()) : totalWorkingHours;
     }
 
     private Duration calculateOvertimeWorkingHours(Duration totalWorkingHours) {
-        return totalWorkingHours.toMinutes() > regularWorkingMinutes ?
-                totalWorkingHours.minus(Duration.ofMinutes(regularWorkingMinutes)) : Duration.ofMinutes(0);
+        return totalWorkingHours.toMinutes() > RegularTimeRule.getRegularWorkingMinutes() ?
+                totalWorkingHours.minus(Duration.ofMinutes(RegularTimeRule.getRegularWorkingMinutes())) : Duration.ofMinutes(
+                0);
     }
 
     private Duration calculateDuration(WorkingDate workingDate, EntryTime startTime, EntryTime endTime) {
@@ -92,10 +88,12 @@ public class AttendanceSummary {
                 startTime.getMinute().getMinute()
         );
 
-        return endTime.getValue() >= OverTimeRule.FINAL_CUT_TIME.getEntryTime().getValue() ?
+
+        return endTime.getValue() >= OverTimeRule.getFinalCutTime().getValue() ?
                 calculateDurationOverNight(from, startTime) :
                 between(from, LocalDateTime.of(
                         workingDate.getYear().getYear(),
+
                         workingDate.getMonth().getMonth(),
                         workingDate.getDay().getDay(),
                         endTime.getHour().getHour(),

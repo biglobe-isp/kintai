@@ -2,7 +2,7 @@ package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.domain.AttendanceRecord;
 import com.naosim.dddwork.domain.AttendanceSummary;
-import com.naosim.dddwork.domain.Fired;
+import com.naosim.dddwork.domain.AttendanceSummaryFailed;
 import com.naosim.dddwork.domain.date.WorkingDate;
 import com.naosim.dddwork.domain.date.YearMonth;
 import com.naosim.dddwork.domain.time.EntryTime;
@@ -24,17 +24,13 @@ public class AttendanceRecordMain {
             WorkingDuration workingDuration = new WorkingDuration(startTime, endTime);
             AttendanceRecord attendanceRecord = new AttendanceRecord(workingDate, workingDuration);
             service.update(attendanceRecord);
-
             return "Date:" + args[1] + " attendance record is updated successfully.";
         } else if (args.length == 3 && args[0].toUpperCase().equals("SUMMARY")) {
             // TODO parameter validation for another one
             AttendanceSummaryService service = new AttendanceSummaryService();
             YearMonth yearMonth = CommandLineParser.parseYearMonth(args[1] + args[2]);
-            Either<Fired, AttendanceSummary> attendanceSummary = service.summary(yearMonth);
-
-            String test = attendanceSummary.fold(Fired::firedMessage, AttendanceSummary::getSummaryMessage);
-
-            return attendanceSummary.fold(Fired::firedMessage, AttendanceSummary::getSummaryMessage);
+            Either<AttendanceSummaryFailed, AttendanceSummary> attendanceSummary = service.summary(yearMonth);
+            return attendanceSummary.fold(x -> "You are FIRED!", AttendanceSummary::getSummaryMessage);
         } else {
             return "Usage : java AttendanceRecordMain update YYYYMMDD  HHMM HHMM" +
                     "        java AttendanceRecordMain summary YYYY MM";

@@ -3,7 +3,7 @@ package com.naosim.dddwork.service
 import com.naosim.dddwork.datasource.AttendanceRecordRepositoryCSV
 import com.naosim.dddwork.domain.AttendanceRecord
 import com.naosim.dddwork.domain.AttendanceRecords
-import com.naosim.dddwork.domain.Fired
+import com.naosim.dddwork.domain.AttendanceSummaryCalculator
 import com.naosim.dddwork.domain.date.Month
 import com.naosim.dddwork.domain.date.Year
 import com.naosim.dddwork.domain.date.YearMonth
@@ -18,10 +18,10 @@ class AttendanceSummaryServiceSpec extends Specification {
         def attendanceRecord1 = get(2019, 5, 1, 9, 0, 18, 0)
         List<AttendanceRecord> list = List.of(attendanceRecord1)
         def attendanceRecords = new AttendanceRecords(list)
-        def uncheckedAttendanceSummary = new Fired()
+        def attendanceSummaryCalculator = new AttendanceSummaryCalculator()
 
         when:
-        def result = uncheckedAttendanceSummary.get(attendanceRecords)
+        def result = attendanceSummaryCalculator.calculate(attendanceRecords)
         def regularTime = result.get().getRegularTime()
         def overTime = result.get().getOverTime()
 
@@ -29,7 +29,6 @@ class AttendanceSummaryServiceSpec extends Specification {
         regularTime.toHours() == 8
         overTime.toHours() == 0
     }
-
 
     def "AttendanceRecordSummaryService-TestSimple"() {
         setup:
