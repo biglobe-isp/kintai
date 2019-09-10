@@ -1,0 +1,14 @@
+@startuml 勤怠入力シーケンス図
+Main -> AttendanceApi: input()
+AttendanceApi -> AttendanceService: input()
+
+AttendanceService -> AttendanceStartAndEndTime: calcTotalWorkingTime(EmployeeRule)
+AttendanceStartAndEndTime -> AttendanceService: attendance
+
+AttendanceService -> AttendanceRepository: saveAttendance(attendance)
+AttendanceRepository -> AttendanceRepository: save
+AttendanceRepository -> AttendanceService
+
+AttendanceService -> AttendanceApi
+AttendanceApi -> Main
+@enduml

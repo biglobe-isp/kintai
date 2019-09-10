@@ -1,0 +1,15 @@
+@startuml 勤怠集計シーケンス図
+Main -> AttendanceApi: total()
+AttendanceApi -> AttendanceService: total(AttendanceMonth)
+
+AttendanceService -> AttendanceRepository: findAttendanceByMonth(AttendanceMonth)
+AttendanceRepository -> AttendanceRepository: find
+AttendanceRepository -> AttendanceService
+
+AttendanceService -> AttendanceService: total
+
+AttendanceService -> AttendanceApi
+
+AttendanceApi -> AttendanceApi: print
+AttendanceApi -> Main
+@enduml

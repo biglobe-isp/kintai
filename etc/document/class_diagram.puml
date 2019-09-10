@@ -1,0 +1,90 @@
+@startuml 勤怠管理クラス図
+package domain {
+    class EmployeeRule<<(E,gray) Entity>> {
+        +BreakTimes getBreakTimes()
+        +Duration getWorkingHour()
+    }
+
+    class BreakTimes<<(E,gray) Entity>> {
+        +Duration totalBreakTime()
+        +BreakTimes intersect(WorkingRange workingRange)
+    }
+
+    class AttendanceStartAndEndTime<<(E,gray) Entity>> {
+        LocalTime startTime
+        LocalTime endTime
+        +Attendance calcTotalWorkingTime(BreakTimes breakTimes)
+    }
+
+    class Attendance<<(E,gray) Entity>> {
+        LocalTime startTime
+        LocalTime endTime
+        Duration workingDuration
+        Duration overWorkingDuration
+    }
+
+    class Attendances<<(V,gray) ValueObject>>
+
+    interface AttendanceRepository<<(R,gray) Repository>> {
+        +void saveAttendance(Attendance attendance)
+        +Optional<Attendance> findAttendanceByMonth(AttendanceDate date)
+        +List<Attendance> findAttendanceByMonth(AttendanceDateMonth month)
+    }
+}
+
+package datasource {
+    class AttendanceRepositoryCsv<<(D,gray) Datasource>> {
+        +void saveAttendance(Attendance attendance)
+        +Optional<Attendance> findAttendanceByMonth(AttendanceDate date)
+        +List<Attendance> findAttendanceByMonth(AttendanceDateMonth month)
+    }
+
+    class AttendanceCsvMapper {
+        +String toCsvRecord
+        +Attendance fromCsvRecord
+    }
+}
+
+package service {
+    class AttendanceService<<(S,orange) Service>> {
+        +void input(AttendanceStartAndEndTime attendanceStartAndEndTime)
+        +WorkingDuration total(AttendanceMonth month)
+    }
+}
+
+package api {
+    class AttendanceApi<<(C,purple) Controller>> {
+        +void input(AttendanceInputRequest request)
+        +void total(AttendanceTotalRequest request, PrintWriter writer)
+    }
+
+    class AttendanceInputRequest
+
+    class AttendanceTotalRequest
+}
+
+/'
+引数が足りないなど、ロジック以前の入力チェックを行う
+DIコンテナ、設定ファイルライブラリ、CLIライブラリは使用しないため、対応する処理はmain関数に記載する
+'/
+class Main
+
+AttendanceRepository <|- AttendanceRepositoryCsv
+
+Attendances --> Attendance
+AttendanceStartAndEndTime --> Attendance
+
+AttendanceRepository --> Attendances
+AttendanceRepository --> AttendanceStartAndEndTime
+
+
+AttendanceService --> AttendanceRepository
+AttendanceService --> EmployeeRule
+EmployeeRule --> BreakTimes
+
+AttendanceApi --> AttendanceService
+
+AttendanceRepositoryCsv --> AttendanceCsvMapper
+
+Main --> AttendanceApi
+@enduml
