@@ -34,7 +34,6 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
 
     public AttendanceRecords load(YearMonth yearMonth) {
         List<AttendanceRecord> records = List.empty();
-        // read data file
         File file = new File(dataFileName);
 
         if (!file.exists()) {
@@ -46,31 +45,26 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
             BufferedReader br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null) {
-                // parse line to attendance record
                 String[] tokens = line.split(",");
                 if (tokens.length != 3) {
                     System.out.println("token size is not 3. wrong format line = " + line);
                     break;
                 }
-                // check all the tokens are numeric
                 for (String s : tokens) {
                     if (!isInteger(s)) {
                         System.out.println("token " + s + " is not numeric.");
                         break;
                     }
                 }
-                // check date format
                 if (tokens[0].length() != 8) {
                     System.out.println("Date format error '" + tokens[0] + "'");
                     break;
                 }
-                // parse field  and create working date
                 Year year = new Year(Integer.parseInt(tokens[0].substring(0, 4)));
                 Month month = new Month(Integer.parseInt(tokens[0].substring(4, 6)));
                 Day day = new Day(Integer.parseInt(tokens[0].substring(6, 8)));
                 WorkingDate workingDate = new WorkingDate(year, month, day);
 
-                // parse start hour and min
                 EntryTime startTime = parseRecordedTime(tokens[1]);
                 EntryTime endTime = parseRecordedTime(tokens[2]);
                 WorkingDuration workingDuration = new WorkingDuration(startTime, endTime);

@@ -9,10 +9,12 @@ import com.naosim.dddwork.domain.date.YearMonth;
 import io.vavr.control.Either;
 
 public class AttendanceSummaryService {
+    private static final AttendanceSummaryCalculator attendanceSummaryCalculator = new AttendanceSummaryCalculator();
+
     public Either<AttendanceSummaryFailed, AttendanceSummary> summary(YearMonth yearMonth) {
         AttendanceRecordRepository repository = new AttendanceRecordRepositoryCSV();
 
         AttendanceRecords attendanceRecords = repository.load(yearMonth);
-        return AttendanceSummaryCalculator.calculate(attendanceRecords);
+        return attendanceSummaryCalculator.calculate(attendanceRecords);
     }
 }

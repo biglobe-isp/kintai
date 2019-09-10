@@ -1,15 +1,10 @@
 package com.naosim.dddwork;
 
 import com.naosim.dddwork.api.AttendanceRecordMain;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-@RequiredArgsConstructor
 public class Application implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(Application.class);
@@ -18,8 +13,7 @@ public class Application implements CommandLineRunner {
         springApplication.run(args);
     }
 
-    @Autowired
-    AttendanceRecordMain attendanceRecordMain;
+    private AttendanceRecordMain attendanceRecordMain = new AttendanceRecordMain();
 
     @Override
     public void run(String... args) {

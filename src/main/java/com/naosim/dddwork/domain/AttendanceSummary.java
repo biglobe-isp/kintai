@@ -1,114 +1,52 @@
 package com.naosim.dddwork.domain;
 
-import com.naosim.dddwork.domain.date.WorkingDate;
-import com.naosim.dddwork.domain.rules.BreakTimeRule;
 import com.naosim.dddwork.domain.rules.BreakTimeRules;
-import com.naosim.dddwork.domain.rules.OverTimeRule;
-import com.naosim.dddwork.domain.rules.RegularTimeRule;
-import com.naosim.dddwork.domain.time.EntryTime;
+import com.naosim.dddwork.domain.rules.RegularWorkingDurationRule;
 import lombok.Getter;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Objects;
-
-import static java.time.Duration.between;
 
 public class AttendanceSummary {
-    @Getter
-    private final static boolean fired = false;
     @Getter
     private Duration regularTime = null;
     @Getter
     private Duration overTime = null;
+    private static BreakTimeRules breakTimeRules = new BreakTimeRules();
+    private static RegularWorkingDurationRule regularWorkingDurationRule = new RegularWorkingDurationRule();
 
     AttendanceSummary get(AttendanceRecords attendanceRecords) {
 
-        regularTime = Duration.ofMinutes(0);
-        overTime = Duration.ofMinutes(0);
+        long regularWorkingMinutes = attendanceRecords.getAttendanceRecords()
+                .map(r -> breakTimeRules.calculateTotalWorkingHours(r))
+                .map(r -> regularWorkingDurationRule.calculateRegularWorkingHours(r).toMinutes())
+                .sum()
+                .longValue();
 
-        for (AttendanceRecord attendanceRecord : attendanceRecords.getAttendanceRecords()) {
+        long overtimeWorkingMinutes = attendanceRecords.getAttendanceRecords()
+                .map(r -> breakTimeRules.calculateTotalWorkingHours(r))
+                .map(r -> regularWorkingDurationRule.calculateOvertimeWorkingHours(r).toMinutes())
+                .sum()
+                .longValue();
 
-            Duration totalWorkingHours = calculateTotalWorkingHours(attendanceRecord);
-
-            Duration regularWorkingHours = calculateRegularWorkingHours(totalWorkingHours);
-            regularTime = regularTime.plus(regularWorkingHours);
-
-            Duration overtimeWorkingHours = calculateOvertimeWorkingHours(totalWorkingHours);
-            overTime = overTime.plus(overtimeWorkingHours);
-        }
-
+        regularTime = Duration.ofMinutes(regularWorkingMinutes);
+        overTime = Duration.ofMinutes(overtimeWorkingMinutes);
         return this;
     }
 
-    //@VisibleForTesting
-    private Duration calculateTotalWorkingHours(AttendanceRecord attendanceRecord) {
-
-        EntryTime startTime = attendanceRecord.getWorkingDuration().getStartTime();
-        EntryTime endTime = attendanceRecord.getWorkingDuration().getEndTime();
-
-        Duration workingHours = calculateDuration(attendanceRecord.getWorkingDate(), startTime, endTime);
-
-        long breakMinutes = Arrays.stream(BreakTimeRules.values())
-                .map(BreakTimeRules::getBreakTimeRule)
-                .map(rule -> getBreakDuration(attendanceRecord.getWorkingDate(), endTime, rule))
-                .filter(Objects::nonNull).mapToLong(Duration::toMinutes).sum();
-
-        return workingHours.minus(Duration.ofMinutes(breakMinutes));
+    public long getRegularWorkingHours() {
+        return regularTime.toHours();
     }
 
-    private Duration getBreakDuration(WorkingDate workingDate, EntryTime endTime, BreakTimeRule breakTimeRule) {
-
-        return endTime.getValue() >= breakTimeRule.getEndTime().getValue() ?
-                calculateDuration(workingDate, breakTimeRule.getStartTime(), breakTimeRule.getEndTime()) :
-                (endTime.getValue() >= breakTimeRule.getStartTime().getValue() &&
-                        endTime.getValue() < breakTimeRule.getEndTime().getValue() ?
-                        calculateDuration(workingDate, breakTimeRule.getStartTime(), endTime) : null);
+    public long getRegularWorkingMinutes() {
+        return regularTime.toMinutes() % 60;
     }
 
-    private Duration calculateRegularWorkingHours(Duration totalWorkingHours) {
-        return totalWorkingHours.toMinutes() > RegularTimeRule.getRegularWorkingMinutes() ?
-                Duration.ofMinutes(RegularTimeRule.getRegularWorkingMinutes()) : totalWorkingHours;
+    public long getOverTimeWorkingHours() {
+        return overTime.toHours();
     }
 
-    private Duration calculateOvertimeWorkingHours(Duration totalWorkingHours) {
-        return totalWorkingHours.toMinutes() > RegularTimeRule.getRegularWorkingMinutes() ?
-                totalWorkingHours.minus(Duration.ofMinutes(RegularTimeRule.getRegularWorkingMinutes())) : Duration.ofMinutes(
-                0);
-    }
-
-    private Duration calculateDuration(WorkingDate workingDate, EntryTime startTime, EntryTime endTime) {
-
-        LocalDateTime from = LocalDateTime.of(
-                workingDate.getYear().getYear(),
-                workingDate.getMonth().getMonth(),
-                workingDate.getDay().getDay(),
-                startTime.getHour().getHour(),
-                startTime.getMinute().getMinute()
-        );
-
-
-        return endTime.getValue() >= OverTimeRule.getFinalCutTime().getValue() ?
-                calculateDurationOverNight(from, startTime) :
-                between(from, LocalDateTime.of(
-                        workingDate.getYear().getYear(),
-
-                        workingDate.getMonth().getMonth(),
-                        workingDate.getDay().getDay(),
-                        endTime.getHour().getHour(),
-                        endTime.getMinute().getMinute()
-                ));
-    }
-
-    private Duration calculateDurationOverNight(LocalDateTime from, EntryTime startTime) {
-        LocalDateTime to = from.plusDays(1).minusHours(startTime.getHour().getHour());
-        return between(from, to);
-    }
-
-    public String getSummaryMessage() {
-        return "Regular Working Hours = " + regularTime.toHours() + ":" + regularTime.toMinutes() % 60 +
-                " Over Time Working Hours = " + overTime.toHours() + ":" + overTime.toMinutes() % 60;
+    public long getOverTimWorkingMinutes() {
+        return overTime.toMinutes() % 60;
     }
 
     public String toString() {

@@ -5,12 +5,10 @@ import com.naosim.dddwork.domain.time.EntryTime;
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
 import com.naosim.dddwork.domain.time.WorkingDuration;
-import lombok.Getter;
 
 public class OverTimeRule {
     private static final int FINAL_CUT_TIME_HOURS = 24;
     private static final int FINAL_CUT_TIME_MINUTES = 0;
-    @Getter
     private static final EntryTime finalCutTime = new EntryTime(
             new Hour(FINAL_CUT_TIME_HOURS),
             new Minute(FINAL_CUT_TIME_MINUTES)

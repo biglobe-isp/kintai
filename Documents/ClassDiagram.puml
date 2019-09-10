@@ -98,16 +98,17 @@ interface AttendanceRecordRepository {
 }
 
 class AttendanceSummary {
-+toString()
-+formatString()
--fired : boolean 
 -regularWorkingHours : Duration
 -overTimeWokringHours : Duration
 }
 
+Enum AttendanceSummaryFailed {
+-FIRED : Fiedl 
+}
 }
 package API {
-class CommandLineParserAPI
+class AttendanceRecordMain
+class CommandLineParser
 }
 package Service
 {
@@ -120,15 +121,19 @@ executeService(YearMonth)
 }
 
 AttendanceRecordUpdateService o--  AttendanceRecordRepository 
-AttendanceRecordUpdateService <.. OverTimeRule
 AttendanceRecordSummaryService o-- AttendanceRecordRepository
-AttendanceRecordSummaryService <.. BreakTimeRules
-AttendanceRecordSummaryService <.. RegularTimeRule
 AttendanceRecordSummaryService <.. AttendanceSummary 
+AttendanceRecordSummaryService <.. AttendanceSummaryFailed
 AttendanceRecordSummaryService <.. YearMonth 
 
-CommandLineParserAPI --> AttendanceRecordUpdateService : AttendanceRecord
-CommandLineParserAPI --> AttendanceRecordSummaryService : YearMonth
+AttendanceSummary <.. OverTimeRule
+AttendanceSummary <.. BreakTimeRules
+AttendanceSummary <.. RegularTimeRule
+AttendanceSummaryFailed <.. RegularTimeRule
+
+AttendanceRecordMain --> CommandLineParser
+AttendanceRecordMain --> AttendanceRecordUpdateService : AttendanceRecord
+AttendanceRecordMain --> AttendanceRecordSummaryService : YearMonth
 
 AttendanceRecord <.. WorkingDate
 AttendanceRecord <.. WorkingDuration

@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain
 
+
 import io.vavr.collection.List
 import spock.lang.Specification
 
