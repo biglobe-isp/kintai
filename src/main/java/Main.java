@@ -1,102 +1,51 @@
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import kintai.api.AttendanceApi;
+import kintai.datasource.AttendanceRepositoryCsv;
+import kintai.domain.AttendanceRepository;
+import kintai.domain.BreakTimes;
+import kintai.domain.EmployeeRule;
+import kintai.domain.WorkingRange;
+import kintai.service.AttendanceService;
+
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalTime;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
+
+        // DI, 設定ファイル相当のコードはそれほど量がないため main に記載
+        AttendanceRepository repository = new AttendanceRepositoryCsv(Paths.get("data.csv"));
+        AttendanceService service = new AttendanceService(repository);
+
+        EmployeeRule employeeRule = new EmployeeRule(new BreakTimes(Arrays.asList(
+                new WorkingRange(LocalTime.of(12, 0), LocalTime.of(13, 0)),
+                new WorkingRange(LocalTime.of(18, 0), LocalTime.of(19, 0)),
+                new WorkingRange(LocalTime.of(21, 0), LocalTime.of(22, 0))
+        )), Duration.ofHours(8));
+
+        AttendanceApi api = new AttendanceApi(service, employeeRule);
+
+        // CLI ライブラリ相当のコードは main に残す
         try {
-            if(args.length < 1) {
+            if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
             }
             String methodType = args[0];
 
-            if("input".equals(methodType)) {
-                if(args.length < 4) {
+            if ("input".equals(methodType)) {
+                if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
                 }
-                String date = args[1];
-                String start = args[2];
-                String end = args[3];
-                String now = LocalDateTime.now().toString();
-
-                int startH = Integer.valueOf(start.substring(0, 2));
-                int startM = Integer.valueOf(start.substring(2, 4));
-
-                int endH = Integer.valueOf(end.substring(0, 2));
-                int endM = Integer.valueOf(end.substring(2, 4));
-
-                int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-                if(endH == 12) {
-                    workMinutes -= endM;
-                } else if(endH >= 13) {
-                    workMinutes -= 60;
-                }
-
-                if(endH == 18) {
-                    workMinutes -= endM;
-                } else if(endH >= 19) {
-                    workMinutes -= 60;
-                }
-
-                if(endH == 21) {
-                    workMinutes -= endM;
-                } else if(endH >= 22) {
-                    workMinutes -= 60;
-                }
-
-                int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-                File file = new File("data.csv");
-                try(FileWriter filewriter = new FileWriter(file, true)) {
-                    filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
-                }
-
-            } else if("total".equals(methodType)) {
+                api.input(args[1], args[2], args[3], LocalDateTime.now());
+            } else if ("total".equals(methodType)) {
                 String yearMonth = args[1];
-                if(args.length < 2) {
+                if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
-
-                int totalWorkMinutes = 0;
-                int totalOverWorkMinutes = 0;
-
-                File file = new File("data.csv");
-
-                try(
-                        FileReader fr = new FileReader(file);
-                        BufferedReader br = new BufferedReader(fr);
-                        ) {
-
-                    String line = br.readLine();
-                    Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-                    Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-                    while(line != null){
-                        String[] columns = line.split(",");
-                        if(!columns[0].startsWith(yearMonth)) {
-                            continue;
-                        }
-                        totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-                        totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-
-                        line = br.readLine();
-                    }
-
-                    Set<String> keySet = totalWorkMinutesMap.keySet();
-                    for(String key : keySet) {
-                        totalWorkMinutes += totalWorkMinutesMap.get(key);
-                        totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
-                    }
-
-                    System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-                    System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
-                }
-
+                api.total(args[1], System.out);
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }
