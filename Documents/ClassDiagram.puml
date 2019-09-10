@@ -1,3 +1,4 @@
+
 @startuml
 
 package Datasource {
@@ -55,12 +56,15 @@ endTime : EntryTime
 
 WorkingDuration *-down- EntryTime  : have 2 
 
-class RegularTimeRule {
--startTime : EntryTime 
--endTime : EntryTime 
+class RegularWorkDurationRule {
+-regularWorkDuration : Duration 
 }
 
-Enum BreakTimeRules {
+class FireConditionRule {
+-mustArraivedTime : Time
+}
+
+class BreakTimeRules {
 LUNCH_BREAK_TIME,
 EVENING_BREAK_TIME,
 LATE_NIGHT_BREAK_TIME
@@ -97,6 +101,10 @@ interface AttendanceRecordRepository {
 +save()
 }
 
+class AttendanceSummaryCalculator {
+calculate()
+}
+
 class AttendanceSummary {
 -regularWorkingHours : Duration
 -overTimeWokringHours : Duration
@@ -120,25 +128,28 @@ class AttendanceRecordSummaryService
 executeService(YearMonth)
 }
 
-AttendanceRecordUpdateService o--  AttendanceRecordRepository 
-AttendanceRecordSummaryService o-- AttendanceRecordRepository
-AttendanceRecordSummaryService <.. AttendanceSummary 
-AttendanceRecordSummaryService <.. AttendanceSummaryFailed
-AttendanceRecordSummaryService <.. YearMonth 
+AttendanceRecordUpdateService -->  AttendanceRecordRepository 
+AttendanceRecordSummaryService --> YearMonth 
+AttendanceRecordSummaryService --> AttendanceRecordRepository
+AttendanceRecordSummaryService --> AttendanceSummaryCalculator 
+AttendanceSummaryCalculator --> FireConditionRule 
+AttendanceSummaryCalculator --> AttendanceSummary
+AttendanceSummaryCalculator --> AttendanceSummaryFailed
 
-AttendanceSummary <.. OverTimeRule
-AttendanceSummary <.. BreakTimeRules
-AttendanceSummary <.. RegularTimeRule
-AttendanceSummaryFailed <.. RegularTimeRule
+
+AttendanceSummary --> OverTimeRule
+AttendanceSummary --> BreakTimeRules
+AttendanceSummary --> RegularWorkDurationRule
+AttendanceSummaryFailed --> RegularWorkDurationRule
 
 AttendanceRecordMain --> CommandLineParser
 AttendanceRecordMain --> AttendanceRecordUpdateService : AttendanceRecord
 AttendanceRecordMain --> AttendanceRecordSummaryService : YearMonth
 
-AttendanceRecord <.. WorkingDate
-AttendanceRecord <.. WorkingDuration
-AttendanceRecords <.. AttendanceRecord
-AttendanceRecordRepositoryCSV  <.. AttendanceRecords
+AttendanceRecord --> WorkingDate
+AttendanceRecord --> WorkingDuration
+AttendanceRecords --> AttendanceRecord
+AttendanceRecordRepositoryCSV  --> AttendanceRecords
 
 AttendanceRecordRepository o.. AttendanceRecordRepositoryCSV
 
