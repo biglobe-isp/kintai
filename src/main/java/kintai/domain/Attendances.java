@@ -1,6 +1,7 @@
 package kintai.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @ToString(includeFieldNames = false)
 public class Attendances {
 
+    @Getter
     private final List<Attendance> values;
 
     public TotalWorkingTime totalWorkingTime() {

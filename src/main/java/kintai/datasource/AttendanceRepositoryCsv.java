@@ -43,7 +43,9 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             Map<LocalDate, Attendance> map = new HashMap<>();
             for (String line : lines) {
                 Attendance attendance = mapper.fromCsvRecord(line);
-                map.put(attendance.getAttendanceDate(), attendance);
+                if (month.contains(attendance.getAttendanceDate())) {
+                    map.put(attendance.getAttendanceDate(), attendance);
+                }
             }
             return new Attendances(new ArrayList<>(map.values()));
         } catch (IOException ex) {
