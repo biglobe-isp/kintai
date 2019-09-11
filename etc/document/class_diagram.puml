@@ -6,37 +6,36 @@ package domain {
     }
 
     class BreakTimes<<(E,gray) Entity>> {
-        +Duration totalBreakTime()
-        +BreakTimes intersect(WorkingRange workingRange)
+        +Duration totalBreakTime(WorkingRange workingRange)
     }
 
     class AttendanceStartAndEndTime<<(E,gray) Entity>> {
         LocalTime startTime
         LocalTime endTime
-        +Attendance calcTotalWorkingTime(BreakTimes breakTimes)
+        +Attendance calcTotalWorkingTime(EmployeeRule employeeRule)
     }
 
     class Attendance<<(E,gray) Entity>> {
+        LocalDate attendanceDate
         LocalTime startTime
         LocalTime endTime
         Duration workingDuration
         Duration overWorkingDuration
+        LocalDateTime inputDateTime
     }
 
     class Attendances<<(V,gray) ValueObject>>
 
     interface AttendanceRepository<<(R,gray) Repository>> {
         +void saveAttendance(Attendance attendance)
-        +Optional<Attendance> findAttendanceByMonth(AttendanceDate date)
-        +List<Attendance> findAttendanceByMonth(AttendanceDateMonth month)
+        +Attendances findAttendanceByMonth(AttendanceDateMonth month)
     }
 }
 
 package datasource {
     class AttendanceRepositoryCsv<<(D,gray) Datasource>> {
         +void saveAttendance(Attendance attendance)
-        +Optional<Attendance> findAttendanceByMonth(AttendanceDate date)
-        +List<Attendance> findAttendanceByMonth(AttendanceDateMonth month)
+        +Attendances findAttendanceByMonth(AttendanceMonth month)
     }
 
     class AttendanceCsvMapper {
@@ -48,7 +47,7 @@ package datasource {
 package service {
     class AttendanceService<<(S,orange) Service>> {
         +void input(AttendanceStartAndEndTime attendanceStartAndEndTime)
-        +WorkingDuration total(AttendanceMonth month)
+        +TotalWorkingTime total(AttendanceMonth month)
     }
 }
 
