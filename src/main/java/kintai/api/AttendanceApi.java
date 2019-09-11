@@ -15,7 +15,7 @@ public class AttendanceApi {
     private final EmployeeRule employeeRule;
     public void input(String date, String start, String end, LocalDateTime now) {
         AttendanceInputRequest request = new AttendanceInputRequest(date, start, end);
-        service.input(request.getEntity(), employeeRule, LocalDateTime.now());
+        service.input(request.getEntity(), employeeRule, now);
     }
 
     public void total(String yearMonth, PrintStream out) {

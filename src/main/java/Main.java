@@ -41,7 +41,6 @@ public class Main {
                 }
                 api.input(args[1], args[2], args[3], LocalDateTime.now());
             } else if ("total".equals(methodType)) {
-                String yearMonth = args[1];
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }

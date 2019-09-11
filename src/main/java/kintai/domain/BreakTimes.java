@@ -16,19 +16,10 @@ public class BreakTimes {
     private final List<WorkingRange> values;
 
     /**
-     * workingRange と重なる（含まれる）範囲の BreakTimes を返却する
+     * workingRange と重なる（含まれる）範囲の休憩時間の合計値を計算する
      * @param workingRange
      * @return
      */
-    public BreakTimes intersect(WorkingRange workingRange) {
-        List<WorkingRange> intersectValues = values.stream()
-                .map(r -> r.intersect(workingRange))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-        return new BreakTimes(intersectValues);
-    }
-
     public Duration totalBreakTime(WorkingRange workingRange) {
         List<WorkingRange> intersectValues = values.stream()
                 .map(r -> r.intersect(workingRange))
