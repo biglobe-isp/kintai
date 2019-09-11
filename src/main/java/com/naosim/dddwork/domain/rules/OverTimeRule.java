@@ -15,7 +15,7 @@ public class OverTimeRule {
     );
 
     // Service Over Time Check
-    public static AttendanceRecord adjustAttendanceRecord(AttendanceRecord attendanceRecord) {
+    public AttendanceRecord adjustAttendanceRecord(AttendanceRecord attendanceRecord) {
         // in case of endTime of workingDuration is over 24:00 , it will be service overtime work(not counted.)
         // Overlapped check e.g. start 9:00 and end 02:00 , 2 hrs service over time work ( again not counted.)
         EntryTime startTime = attendanceRecord.getWorkingDuration().getStartTime();

@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain;
 
-import com.naosim.dddwork.domain.rules.BreakTimeRules;
+import com.naosim.dddwork.domain.rules.BreakTimeRule;
 import com.naosim.dddwork.domain.rules.RegularWorkingDurationRule;
 import lombok.Getter;
 
@@ -11,7 +11,7 @@ public class AttendanceSummary {
     private Duration regularTime = null;
     @Getter
     private Duration overTime = null;
-    private static BreakTimeRules breakTimeRules = new BreakTimeRules();
+    private static BreakTimeRule breakTimeRules = new BreakTimeRule();
     private static RegularWorkingDurationRule regularWorkingDurationRule = new RegularWorkingDurationRule();
 
     AttendanceSummary get(AttendanceRecords attendanceRecords) {

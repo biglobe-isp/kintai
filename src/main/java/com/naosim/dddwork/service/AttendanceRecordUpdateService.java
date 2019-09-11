@@ -8,8 +8,10 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class AttendanceRecordUpdateService {
+    private static OverTimeRule overTimeRule = new OverTimeRule();
+
     public void update(AttendanceRecord attendanceRecord) {
-        attendanceRecord = OverTimeRule.adjustAttendanceRecord(attendanceRecord);
+        attendanceRecord = overTimeRule.adjustAttendanceRecord(attendanceRecord);
 
         AttendanceRecordRepository repository = new AttendanceRecordRepositoryCSV();
         AttendanceRecords attendanceRecords = repository.load().insert(attendanceRecord);

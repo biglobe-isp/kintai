@@ -1,9 +1,9 @@
-
 @startuml
 
 package Datasource {
 class AttendanceRecordRepositoryCSV {
--attendanceRecords : AttendanceRecords 
+-attendanceRecords : AttendanceRecords
++insert(AttendanceRecord)
 +load()
 +save()
 }
@@ -36,83 +36,116 @@ WorkingDate *-down- Month
 WorkingDate *-down- Day
 
 class YearMonth {
--year : Year
+-year :  Year
 -month : Month
++YearMonth(Year,Month)
++getYearMonth() : YearMonth
 }
 
 YearMonth *-down= Year
 YearMonth *-down- Month
 
 class EntryTime {
-  -hour : Hour
-  -minute : Minute
-  getMinutes()
+-hour : Hour
+-minute : Minute
++getHour() : Hour
++getMinutes() : Minute
 }
 
+class Hour {
+-hour : int
++getHour
+}
+
+class Minute {
+-minute : int
++getMinute()
+}
+
+EntryTime *-right- Hour
+EntryTime *-right- Minute
+
 class WorkingDuration {
-startTime : EntryTime
-endTime : EntryTime
+-startTime :  EntryTime
+-endTime : EntryTime
+getStartTime() : EntryTime
+getEndTime() : EntryTime
 }
 
 WorkingDuration *-down- EntryTime  : have 2 
 
 class RegularWorkDurationRule {
--regularWorkDuration : Duration 
+-REGULAR_WORKING_HOURS : int
+-REGULAR_WORKING_MINUTES : int
++calculateRegularWorkingHours()
++calculateOvertimeWorkingHours()
 }
 
 class FireConditionRule {
--mustArraivedTime : Time
+-MUST_ARRIVAL_TIME : int
++isEmployeeFired(AttendanceRecords) : bool
 }
 
-class BreakTimeRules {
+class BreakTimeRule {
++calculateTotalWorkingHours()
+}
+
+enum BreakTimes {
 LUNCH_BREAK_TIME,
 EVENING_BREAK_TIME,
 LATE_NIGHT_BREAK_TIME
 }
 
-class BreakTimeRule {
-static breakTimeStart : EntryTime　:休憩開始
-static breakTimeEnd   : EntryTime　:休憩終了
-}
-
-BreakTimeRules *-down- BreakTimeRule 
+BreakTimeRule *-down- BreakTimes
 
 
 class OverTimeRule {
--finalCutTime : entryTime  
+-FinalCutHours : int
+-FinalCutMinutes : int
+-FinalCutTime : EntryTime
++adjustAttendanceRecord()
 }
 
 class AttendanceRecords {
 -List<AttendanceRecord>
++AttendanceRecords(List<AttendanceRecord>)
++insert(AttendanceRecord)
++getAttendanceRecord() : List<AttendanceRecord>
 }
 
 class AttendanceRecord {
 -workingDate : WorkingDate
--startTime : EntryTime
--endTime : EntryTime
+-workingDuration : WorkingDuration
++getWorkingDate() : WorkingDate
++getWorkingDuration() : WorkingDuration
 }
 
 AttendanceRecords *-down- AttendanceRecord 
 
 interface AttendanceRecordRepository {
 -record: AttendanceRecords
-+insert()
++insert(AttendanceRecord)
 +load()
 +save()
 }
 
 class AttendanceSummaryCalculator {
-calculate()
++calculate() : Either<AttendanceSummaryFailed,AttendanceSummary>
 }
 
 class AttendanceSummary {
 -regularWorkingHours : Duration
--overTimeWokringHours : Duration
+-overTimeWorkingHours : Duration
++get() : AttendanceSummary
++getRegularWorkingHours() : long
++getRegularWorkingMinutes() : long
 }
 
 Enum AttendanceSummaryFailed {
--FIRED : Fiedl 
+-FIRED
 }
+
+
 }
 package API {
 class AttendanceRecordMain
@@ -121,11 +154,11 @@ class CommandLineParser
 package Service
 {
 class AttendanceRecordUpdateService {
-executeSerice(AttendanceRecord)
++update(AttendanceRecord)
 }
 class AttendanceRecordSummaryService
 {
-executeService(YearMonth)
++summary(YearMonth) : Either<AttendanceSummaryFailed,AttendanceSummary>
 }
 
 AttendanceRecordUpdateService -->  AttendanceRecordRepository 
@@ -138,20 +171,18 @@ AttendanceSummaryCalculator --> AttendanceSummaryFailed
 
 
 AttendanceSummary --> OverTimeRule
-AttendanceSummary --> BreakTimeRules
+AttendanceSummary --> BreakTimeRule
 AttendanceSummary --> RegularWorkDurationRule
-AttendanceSummaryFailed --> RegularWorkDurationRule
 
 AttendanceRecordMain --> CommandLineParser
-AttendanceRecordMain --> AttendanceRecordUpdateService : AttendanceRecord
-AttendanceRecordMain --> AttendanceRecordSummaryService : YearMonth
+AttendanceRecordMain --> AttendanceRecordUpdateService
+AttendanceRecordMain --> AttendanceRecordSummaryService
 
 AttendanceRecord --> WorkingDate
 AttendanceRecord --> WorkingDuration
-AttendanceRecords --> AttendanceRecord
 AttendanceRecordRepositoryCSV  --> AttendanceRecords
 
-AttendanceRecordRepository o.. AttendanceRecordRepositoryCSV
+AttendanceRecordRepository <|.. AttendanceRecordRepositoryCSV
 
 
 @enduml
