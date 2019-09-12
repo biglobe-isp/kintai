@@ -19,19 +19,26 @@ public class Attendance {
     private final LocalDate attendanceDate;
 
     @Getter
-    private final LocalTime startTime;
+    private final StartTime startTime;
 
     @Getter
-    private final LocalTime endTime;
+    private final EndTime endTime;
 
     @Getter
-    private final Duration workingDuration;
+    private final WorkingDuration workingDuration;
 
     @Getter
-    private final Duration overWorkingDuration;
+    private final WorkingDuration overWorkingDuration;
 
     @Getter
     private final LocalDateTime inputDateTime;
+
+    public Attendance(AttendanceStartAndEndTime attendanceStartAndEndTime, WorkingDuration workingDuration,
+                      WorkingDuration overWorkingDuration, LocalDateTime now) {
+        this(attendanceStartAndEndTime.getAttendanceDate(),
+                attendanceStartAndEndTime.getStartTime(), attendanceStartAndEndTime.getEndTime(),
+                workingDuration, overWorkingDuration, now);
+    }
 
     public TotalWorkingTime totalWorkingTime() {
         return new TotalWorkingTime(workingDuration, overWorkingDuration);

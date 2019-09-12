@@ -10,29 +10,20 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
-@ToString
+@ToString(includeFieldNames = false)
 public class WorkingRange {
 
-    private final LocalTime from;
-    private final LocalTime to;
+    private final TimeRange value;
 
-    /**
-     * intersect
-     * 引数 other で指定された range と重なる範囲の range を返却する。
-     * 重なる期間がない場合、空の Working Range を返却する
-     * @param other
-     * @return
-     */
-    public Optional<WorkingRange> intersect(WorkingRange other) {
-        LocalTime from = this.from.isAfter(other.from) ? this.from : other.from;
-        LocalTime to = this.to.isBefore(other.to) ? this.to : other.to;
-        if (from.isAfter(to)) {
-            return Optional.empty();
-        }
-        return Optional.of(new WorkingRange(from, to));
+    public WorkingRange(LocalTime from, LocalTime to) {
+        value = new TimeRange(from, to);
     }
 
-    public Duration duration() {
-        return Duration.between(from, to);
+    public Duration overlapDuration(BreakRange breakRange) {
+        return value.overlapDuration(breakRange.getValue());
+    }
+
+    public WorkingDuration workingDuration(Duration breakDuration) {
+        return new WorkingDuration(value.minus(breakDuration));
     }
 }

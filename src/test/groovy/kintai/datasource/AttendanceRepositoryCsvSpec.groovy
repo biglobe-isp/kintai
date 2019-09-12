@@ -2,6 +2,9 @@ package kintai.datasource
 
 import kintai.domain.Attendance
 import kintai.domain.AttendanceMonth
+import kintai.domain.EndTime
+import kintai.domain.StartTime
+import kintai.domain.WorkingDuration
 import spock.lang.Specification
 
 import java.nio.file.Files
@@ -18,10 +21,10 @@ class AttendanceRepositoryCsvSpec extends Specification {
         def now = LocalDateTime.of(LocalDate.of(2019, 9, 10), LocalTime.of(12, 34))
 
         def attendanceDate = LocalDate.of(2019, 9, 2)
-        def startTime = LocalTime.of(9, 0);
-        def endTime = LocalTime.of(20, 0);
-        def workingDuration = Duration.ofMinutes(540)
-        def overWorkingDuration = Duration.ofMinutes(60)
+        def startTime = StartTime.of(9, 0);
+        def endTime = EndTime.of(20, 0);
+        def workingDuration = WorkingDuration.ofMinutes(540)
+        def overWorkingDuration = WorkingDuration.ofMinutes(60)
         def attendance = new Attendance(attendanceDate, startTime, endTime, workingDuration, overWorkingDuration, now)
 
         def repository = new AttendanceRepositoryCsv(tempPath)

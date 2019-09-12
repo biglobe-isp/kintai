@@ -14,7 +14,7 @@ public class AttendanceService {
 
     public Attendance input(AttendanceStartAndEndTime attendanceStartAndEndTime, EmployeeRule employeeRule,
                             LocalDateTime now) {
-        Attendance attendance = attendanceStartAndEndTime.calculateTotalWorkingTime(employeeRule, now);
+        Attendance attendance = employeeRule.calculateTotalWorkingTime(attendanceStartAndEndTime, now);
         repository.saveAttendance(attendance);
         return attendance;
     }

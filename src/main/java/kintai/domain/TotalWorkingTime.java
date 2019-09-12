@@ -16,14 +16,14 @@ import java.time.Duration;
 public class TotalWorkingTime {
 
     @Getter
-    private final Duration workingTime;
+    private final WorkingDuration workingDuration;
 
     @Getter
-    private final Duration overWorkingTime;
+    private final WorkingDuration overWorkingDuration;
 
-    public static final TotalWorkingTime ZERO = new TotalWorkingTime(Duration.ZERO, Duration.ZERO);
+    public static final TotalWorkingTime ZERO = new TotalWorkingTime(WorkingDuration.ZERO, WorkingDuration.ZERO);
 
     public TotalWorkingTime plus(TotalWorkingTime other) {
-        return new TotalWorkingTime(this.workingTime.plus(other.workingTime), this.overWorkingTime.plus(other.overWorkingTime));
+        return new TotalWorkingTime(workingDuration.plus(other.workingDuration), overWorkingDuration.plus(other.overWorkingDuration));
     }
 }

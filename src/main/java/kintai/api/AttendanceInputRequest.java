@@ -1,6 +1,8 @@
 package kintai.api;
 
 import kintai.domain.AttendanceStartAndEndTime;
+import kintai.domain.EndTime;
+import kintai.domain.StartTime;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -20,8 +22,8 @@ public class AttendanceInputRequest {
 
     public AttendanceStartAndEndTime getEntity() {
         LocalDate attendanceDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyyMMdd"));
-        LocalTime startTime = LocalTime.parse(start, DateTimeFormatter.ofPattern("HHmm"));
-        LocalTime endTime = LocalTime.parse(end, DateTimeFormatter.ofPattern("HHmm"));
+        StartTime startTime = StartTime.parse(start, DateTimeFormatter.ofPattern("HHmm"));
+        EndTime endTime = EndTime.parse(end, DateTimeFormatter.ofPattern("HHmm"));
         AttendanceStartAndEndTime attendanceStartAndEndTime = new AttendanceStartAndEndTime(attendanceDate, startTime, endTime);
         return attendanceStartAndEndTime;
     }

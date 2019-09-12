@@ -23,7 +23,7 @@ public class AttendanceApi {
 
         TotalWorkingTime totalWorkingTime = service.total(request.getEntity());
 
-        out.println("勤務時間: " + totalWorkingTime.getWorkingTime().toHours() + "時間" + totalWorkingTime.getWorkingTime().toMinutes() % 60 + "分");
-        out.println("残業時間: " + totalWorkingTime.getOverWorkingTime().toHours() + "時間" + totalWorkingTime.getWorkingTime().toMinutes() % 60 + "分");
+        out.println("勤務時間: " + totalWorkingTime.getWorkingDuration().toHours() + "時間" + totalWorkingTime.getWorkingDuration().getMinutesInHour() + "分");
+        out.println("残業時間: " + totalWorkingTime.getOverWorkingDuration().toHours() + "時間" + totalWorkingTime.getOverWorkingDuration().getMinutesInHour() + "分");
     }
 }
