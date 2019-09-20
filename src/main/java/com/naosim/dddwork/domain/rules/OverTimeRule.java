@@ -1,10 +1,10 @@
 package com.naosim.dddwork.domain.rules;
 
+import com.naosim.dddwork.domain.AdjustedAttendanceRecord;
 import com.naosim.dddwork.domain.AttendanceRecord;
 import com.naosim.dddwork.domain.time.EntryTime;
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
-import com.naosim.dddwork.domain.time.WorkingDuration;
 
 public class OverTimeRule {
     private static final int FINAL_CUT_TIME_HOURS = 24;
@@ -15,20 +15,27 @@ public class OverTimeRule {
     );
 
     // Service Over Time Check
-    public AttendanceRecord adjustAttendanceRecord(AttendanceRecord attendanceRecord) {
+    public AdjustedAttendanceRecord adjustAttendanceRecord(AttendanceRecord attendanceRecord) {
         // in case of endTime of workingDuration is over 24:00 , it will be service overtime work(not counted.)
         // Overlapped check e.g. start 9:00 and end 02:00 , 2 hrs service over time work ( again not counted.)
-        EntryTime startTime = attendanceRecord.getWorkingDuration().getStartTime();
-        EntryTime endTime = attendanceRecord.getWorkingDuration().getEndTime();
-        if (endTime.getValue() > finalCutTime.getValue() ||
-                startTime.getValue() > endTime.getValue()) {
+        int startTimeValue = attendanceRecord.getStartTimeValue();
+        int endTimeValue = attendanceRecord.getEndTimeValue();
+        if (endTimeValue > finalCutTime.getValue() ||
+                startTimeValue > endTimeValue) {
             EntryTime newEndTime = new EntryTime(
                     finalCutTime.getHour(),
                     finalCutTime.getMinute()
             );
-            WorkingDuration workingDuration = new WorkingDuration(startTime, newEndTime);
-            return new AttendanceRecord(attendanceRecord.getWorkingDate(), workingDuration);
+            return new AdjustedAttendanceRecord(
+                    attendanceRecord.getWorkingDate(),
+                    attendanceRecord.getStartTime(),
+                    newEndTime
+            );
         }
-        return attendanceRecord;
+        return new AdjustedAttendanceRecord(
+                attendanceRecord.getWorkingDate(),
+                attendanceRecord.getStartTime(),
+                attendanceRecord.getEndTime()
+        );
     }
 }

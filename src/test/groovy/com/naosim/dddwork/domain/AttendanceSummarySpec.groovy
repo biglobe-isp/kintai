@@ -43,8 +43,8 @@ class AttendanceSummarySpec extends Specification {
         def result = attendanceSummaryCalculator.calculate(attendanceRecords)
 
         then:
-        result.right().get().getRegularTime().toHours() == 8
-        result.right().get().getOverTime().toHours() == 4
+        result.right().get().getRegularWorkingDuration().getRegularWorkingDuration().toHours() == 8
+        result.right().get().getOverTimeWorkingDuration().getOverTimeWorkingDuration().toHours() == 4
     }
 
     def "AttendanceSummary-total-working-hours2"() {
@@ -59,10 +59,10 @@ class AttendanceSummarySpec extends Specification {
         def result = attendanceSummaryCalculator.calculate(attendanceRecords)
 
         then:
-        result.right().get().getRegularTime().toHours() == 8
-        result.right().get().getRegularTime().toMinutes() == 8 * 60
+        result.right().get().getRegularWorkingDuration().getRegularWorkingDuration().toHours() == 8
+        result.right().get().getRegularWorkingDuration().getRegularWorkingDuration().toMinutes() == 8 * 60
 
-        result.right().get().getOverTime().toHours() == 3
-        result.right().get().getOverTime().toMinutes() == 3 * 60 + 30
+        result.right().get().getOverTimeWorkingDuration().getOverTimeWorkingDuration().toHours() == 3
+        result.right().get().getOverTimeWorkingDuration().getOverTimeWorkingDuration().toMinutes() == 3 * 60 + 30
     }
 }

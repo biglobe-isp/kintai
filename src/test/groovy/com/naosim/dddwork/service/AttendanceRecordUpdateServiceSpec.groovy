@@ -26,8 +26,8 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
         def attendanceRecords = result.getAttendanceRecords()
         for (AttendanceRecord attendanceRecord1 : attendanceRecords) {
             if (attendanceRecord1.getWorkingDate().getValue() == 20190401) {
-                if (attendanceRecord1.getWorkingDuration().getStartTime().getValue() == 900 &&
-                        attendanceRecord1.getWorkingDuration().getEndTime().getValue() == 1800)
+                if (attendanceRecord1.getStartTime().getValue() == 900 &&
+                        attendanceRecord1.getEndTime().getValue() == 1800)
                     test = true;
             }
         }
@@ -46,10 +46,12 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
         def repository = new AttendanceRecordRepositoryCSV();
         YearMonth key = new YearMonth(new Year(2019), new Month(4))
         def attendanceRecords = repository.load(key)
-        def workingDuration = attendanceRecords.getAttendanceRecords().get(0).getWorkingDuration()
+        def startTime = attendanceRecords.getAttendanceRecords().get(0).getStartTime()
+        def endTime = attendanceRecords.getAttendanceRecords().get(0).getEndTime()
 
         then:
-        workingDuration.toString() == "0900-2400"
+        startTime.toString() == "0900"
+        endTime.toString() == "2400"
     }
 
     def "AttendanceRecordUpdateService-Overtime2"() {
@@ -61,10 +63,13 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
         YearMonth key = new YearMonth(new Year(2019), new Month(4))
         def attendanceRecords = attendanceRecordRepositoryCSV.load(key)
-        def workingDuration = attendanceRecords.getAttendanceRecords().get(0).getWorkingDuration()
+        def startTime = attendanceRecords.getAttendanceRecords().get(0).getStartTime()
+        def endTime = attendanceRecords.getAttendanceRecords().get(0).getEndTime()
 
         then:
-        workingDuration.toString() == "0900-2400"
+        startTime.toString() == "0900"
+        endTime.toString() == "2400"
+
     }
 
     def "AttendanceRecordUpdateService-MultiEntry"() {
@@ -79,13 +84,24 @@ class AttendanceRecordUpdateServiceSpec extends Specification {
         def attendanceRecordRepositoryCSV = new AttendanceRecordRepositoryCSV()
         YearMonth key = new YearMonth(new Year(2019), new Month(5))
         def attendanceRecords = attendanceRecordRepositoryCSV.load(key)
-        def workingDuration1 = attendanceRecords.getAttendanceRecords().get(0).getWorkingDuration()
-        def workingDuration2 = attendanceRecords.getAttendanceRecords().get(1).getWorkingDuration()
-        def workingDuration3 = attendanceRecords.getAttendanceRecords().get(2).getWorkingDuration()
+
+        def startTime1 = attendanceRecords.getAttendanceRecords().get(0).getStartTime()
+        def endTime1 = attendanceRecords.getAttendanceRecords().get(0).getEndTime()
+
+        def startTime2 = attendanceRecords.getAttendanceRecords().get(1).getStartTime()
+        def endTime2 = attendanceRecords.getAttendanceRecords().get(1).getEndTime()
+
+        def startTime3 = attendanceRecords.getAttendanceRecords().get(2).getStartTime()
+        def endTime3 = attendanceRecords.getAttendanceRecords().get(2).getEndTime()
 
         then:
-        workingDuration1.toString() == "0900-1800"
-        workingDuration2.toString() == "0900-2400"
-        workingDuration3.toString() == "0900-2400"
+        startTime1.toString() == "0900"
+        endTime1.toString() == "1800"
+
+        startTime2.toString() == "0900"
+        endTime2.toString() == "2400"
+
+        startTime3.toString() == "0900"
+        endTime3.toString() == "2400"
     }
 }

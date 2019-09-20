@@ -8,6 +8,6 @@ public class FireConditionRule {
     public boolean isEmployeeFired(AttendanceRecords attendanceRecords) {
 
         return !attendanceRecords.getAttendanceRecords()
-                .forAll(r -> r.getWorkingDuration().getStartTime().getValue() <= MUST_ARRIVAL_TIME_VALUE);
+                .forAll(r -> r.getStartTime().getValue() <= MUST_ARRIVAL_TIME_VALUE);
     }
 }

@@ -1,6 +1,6 @@
 package com.naosim.dddwork;
 
-import com.naosim.dddwork.api.AttendanceRecordMain;
+import com.naosim.dddwork.api.AttendanceAdministrationMain;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,12 +13,12 @@ public class Application implements CommandLineRunner {
         springApplication.run(args);
     }
 
-    private AttendanceRecordMain attendanceRecordMain = new AttendanceRecordMain();
+    private AttendanceAdministrationMain attendanceAdministrationMain = new AttendanceAdministrationMain();
 
     @Override
     public void run(String... args) {
         try {
-            System.out.println(attendanceRecordMain.command(args));
+            System.out.println(attendanceAdministrationMain.command(args));
         } catch (Exception e) {
             e.printStackTrace();
         }

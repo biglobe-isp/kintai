@@ -65,14 +65,8 @@ class Minute {
 EntryTime *-right- Hour
 EntryTime *-right- Minute
 
-class WorkingDuration {
--startTime :  EntryTime
--endTime : EntryTime
-getStartTime() : EntryTime
-getEndTime() : EntryTime
-}
 
-WorkingDuration *-down- EntryTime  : have 2 
+AttendanceRecord *-down- EntryTime  : have 2 
 
 class RegularWorkDurationRule {
 -REGULAR_WORKING_HOURS : int
@@ -86,7 +80,7 @@ class FireConditionRule {
 +isEmployeeFired(AttendanceRecords) : bool
 }
 
-class BreakTimeRule {
+class WorkingDurationExceptBreak {
 +calculateTotalWorkingHours()
 }
 
@@ -96,7 +90,7 @@ EVENING_BREAK_TIME,
 LATE_NIGHT_BREAK_TIME
 }
 
-BreakTimeRule *-down- BreakTimes
+WorkingDurationExceptBreak *-down- BreakTimes
 
 
 class OverTimeRule {
@@ -115,9 +109,11 @@ class AttendanceRecords {
 
 class AttendanceRecord {
 -workingDate : WorkingDate
--workingDuration : WorkingDuration
+-EntryTime : startTime
+-EntryTime : endTime
 +getWorkingDate() : WorkingDate
-+getWorkingDuration() : WorkingDuration
++getStartTime() : EntryTime 
++getEndTime() : EntryTime 
 }
 
 AttendanceRecords *-down- AttendanceRecord 
@@ -134,8 +130,8 @@ class AttendanceSummaryCalculator {
 }
 
 class AttendanceSummary {
--regularWorkingHours : Duration
--overTimeWorkingHours : Duration
+-regularWorkingDuration : RegularWorkingDuration
+-overTimeWorkingDuration : OverTimeWorkingDuration
 +get() : AttendanceSummary
 +getRegularWorkingHours() : long
 +getRegularWorkingMinutes() : long
@@ -145,10 +141,20 @@ Enum AttendanceSummaryFailed {
 -FIRED
 }
 
+class RegularWorkingDuration {
+-regularWorkingDuration : Duration
+}
+class OverTimeWorkingDuration {
+-overTimeWorkingDuration : Duration
+}
+
+class TotalWorkingDuration {
++totalWorkingDuration : Duration
+}
 
 }
 package API {
-class AttendanceRecordMain
+class AttendanceAdministrationMain
 class CommandLineParser
 }
 package Service
@@ -170,19 +176,23 @@ AttendanceSummaryCalculator --> AttendanceSummary
 AttendanceSummaryCalculator --> AttendanceSummaryFailed
 
 
-AttendanceSummary --> OverTimeRule
-AttendanceSummary --> BreakTimeRule
-AttendanceSummary --> RegularWorkDurationRule
+AttendanceRecordUpdateService --> OverTimeRule
+AttendanceSummary --> WorkingDurationExceptBreak
+WorkingDurationExceptBreak --> TotalWorkingDuration
+AttendanceSummary --> RegularWorkingDuration
+AttendanceSummary --> OverTimeWorkingDuration
+RegularWorkingDuration --> RegularWorkDurationRule
+OverTimeWorkingDuration --> RegularWorkDurationRule
 
-AttendanceRecordMain --> CommandLineParser
-AttendanceRecordMain --> AttendanceRecordUpdateService
-AttendanceRecordMain --> AttendanceRecordSummaryService
+AttendanceAdministrationMain --> CommandLineParser
+AttendanceAdministrationMain --> AttendanceRecordUpdateService
+AttendanceAdministrationMain --> AttendanceRecordSummaryService
 
-AttendanceRecord --> WorkingDate
-AttendanceRecord --> WorkingDuration
+AttendanceRecord *-- WorkingDate
 AttendanceRecordRepositoryCSV  --> AttendanceRecords
 
 AttendanceRecordRepository <|.. AttendanceRecordRepositoryCSV
 
 
 @enduml
+

@@ -11,10 +11,10 @@ public class AttendanceRecordUpdateService {
     private static OverTimeRule overTimeRule = new OverTimeRule();
 
     public void update(AttendanceRecord attendanceRecord) {
-        attendanceRecord = overTimeRule.adjustAttendanceRecord(attendanceRecord);
 
         AttendanceRecordRepository repository = new AttendanceRecordRepositoryCSV();
-        AttendanceRecords attendanceRecords = repository.load().insert(attendanceRecord);
+        AttendanceRecords attendanceRecords = repository.load()
+                .insert(overTimeRule.adjustAttendanceRecord(attendanceRecord));
         repository.save(attendanceRecords);
     }
 }

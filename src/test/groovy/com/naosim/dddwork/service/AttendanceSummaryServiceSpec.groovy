@@ -19,16 +19,16 @@ class AttendanceSummaryServiceSpec extends Specification {
         def attendanceRecord1 = get(2019, 5, 1, 9, 0, 18, 0)
         List<AttendanceRecord> list = List.of(attendanceRecord1)
         def attendanceRecords = new AttendanceRecords(list)
-        def attendanceSummaryCalculator = new AttendanceSummaryCalculator();
+        def attendanceSummaryCalculator = new AttendanceSummaryCalculator()
 
         when:
         def result = attendanceSummaryCalculator.calculate(attendanceRecords)
-        def regularTime = result.get().getRegularTime()
-        def overTime = result.get().getOverTime()
+        def regularTime = result.get().getRegularWorkingDuration()
+        def overTime = result.get().getOverTimeWorkingDuration()
 
         then:
-        regularTime.toHours() == 8
-        overTime.toHours() == 0
+        regularTime.getRegularWorkingDuration().toHours() == 8
+        overTime.getOverTimeWorkingDuration().toHours() == 0
     }
 
     def "AttendanceRecordSummaryService-TestSimple"() {

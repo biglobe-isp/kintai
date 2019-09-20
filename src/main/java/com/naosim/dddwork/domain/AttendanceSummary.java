@@ -1,55 +1,55 @@
 package com.naosim.dddwork.domain;
 
-import com.naosim.dddwork.domain.rules.BreakTimeRule;
-import com.naosim.dddwork.domain.rules.RegularWorkingDurationRule;
+import io.vavr.collection.List;
 import lombok.Getter;
 
 import java.time.Duration;
 
 public class AttendanceSummary {
     @Getter
-    private Duration regularTime = null;
+    private RegularWorkingDuration regularWorkingDuration;
     @Getter
-    private Duration overTime = null;
-    private static BreakTimeRule breakTimeRules = new BreakTimeRule();
-    private static RegularWorkingDurationRule regularWorkingDurationRule = new RegularWorkingDurationRule();
+    private OverTimeWorkingDuration overTimeWorkingDuration;
 
-    AttendanceSummary get(AttendanceRecords attendanceRecords) {
+    public AttendanceSummary(AttendanceRecords attendanceRecords) {
 
-        long regularWorkingMinutes = attendanceRecords.getAttendanceRecords()
-                .map(r -> breakTimeRules.calculateTotalWorkingHours(r))
-                .map(r -> regularWorkingDurationRule.calculateRegularWorkingHours(r).toMinutes())
+        List<WorkingDurationExceptBreak> list = attendanceRecords.getAttendanceRecords()
+                .map(r -> new WorkingDurationExceptBreak(r));
+
+        long regularTimeMinutes = list.map(r -> new RegularWorkingDuration(r))
+                .map(r -> r.getRegularWorkingDuration().toMinutes())
+                .sum()
+                .longValue();
+        long overTimeMintes = list.map(r -> new OverTimeWorkingDuration(r))
+                .map(r -> r.getOverTimeWorkingDuration().toMinutes())
                 .sum()
                 .longValue();
 
-        long overtimeWorkingMinutes = attendanceRecords.getAttendanceRecords()
-                .map(r -> breakTimeRules.calculateTotalWorkingHours(r))
-                .map(r -> regularWorkingDurationRule.calculateOvertimeWorkingHours(r).toMinutes())
-                .sum()
-                .longValue();
 
-        regularTime = Duration.ofMinutes(regularWorkingMinutes);
-        overTime = Duration.ofMinutes(overtimeWorkingMinutes);
-        return this;
+        regularWorkingDuration = new RegularWorkingDuration(Duration.ofMinutes(regularTimeMinutes));
+        overTimeWorkingDuration = new OverTimeWorkingDuration(Duration.ofMinutes(overTimeMintes));
     }
 
     public long getRegularWorkingHours() {
-        return regularTime.toHours();
+        return regularWorkingDuration.getRegularWorkingDuration().toHours();
     }
 
     public long getRegularWorkingMinutes() {
-        return regularTime.toMinutes() % 60;
+        return regularWorkingDuration.getRegularWorkingDuration().toMinutes() % 60;
     }
 
     public long getOverTimeWorkingHours() {
-        return overTime.toHours();
+        return overTimeWorkingDuration.getOverTimeWorkingDuration().toHours();
     }
 
     public long getOverTimWorkingMinutes() {
-        return overTime.toMinutes() % 60;
+        return overTimeWorkingDuration.getOverTimeWorkingDuration().toMinutes() % 60;
     }
 
     public String toString() {
-        return regularTime.toHours() + ":" + regularTime.toMinutes() % 60 + "/" + overTime.toHours() + ":" + overTime.toMinutes() % 60;
+        return regularWorkingDuration.getRegularWorkingDuration()
+                .toHours() + ":" + regularWorkingDuration.getRegularWorkingDuration()
+                .toMinutes() % 60 + "/" + overTimeWorkingDuration.getOverTimeWorkingDuration()
+                .toHours() + ":" + overTimeWorkingDuration.getOverTimeWorkingDuration().toMinutes() % 60;
     }
 }

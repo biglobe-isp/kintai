@@ -10,7 +10,6 @@ import com.naosim.dddwork.domain.date.YearMonth;
 import com.naosim.dddwork.domain.time.EntryTime;
 import com.naosim.dddwork.domain.time.Hour;
 import com.naosim.dddwork.domain.time.Minute;
-import com.naosim.dddwork.domain.time.WorkingDuration;
 import com.naosim.dddwork.service.AttendanceRecordRepository;
 import io.vavr.collection.List;
 
@@ -67,8 +66,7 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
 
                 EntryTime startTime = parseRecordedTime(tokens[1]);
                 EntryTime endTime = parseRecordedTime(tokens[2]);
-                WorkingDuration workingDuration = new WorkingDuration(startTime, endTime);
-                AttendanceRecord attendanceRecord = new AttendanceRecord(workingDate, workingDuration);
+                AttendanceRecord attendanceRecord = new AttendanceRecord(workingDate, startTime, endTime);
                 if (yearMonth == null) {
                     records = records.append(attendanceRecord);
                 } else if (yearMonth.getValue() == workingDate.getYearMonth()) {
@@ -92,8 +90,8 @@ public class AttendanceRecordRepositoryCSV implements AttendanceRecordRepository
 
             for (AttendanceRecord attendanceRecord : attendanceRecords.getAttendanceRecords()) {
                 bw.write(attendanceRecord.getWorkingDate().toString() + "," +
-                                 attendanceRecord.getWorkingDuration().getStartTime().toString() + "," +
-                                 attendanceRecord.getWorkingDuration().getEndTime().toString());
+                                 attendanceRecord.getStartTime().toString() + "," +
+                                 attendanceRecord.getEndTime().toString());
                 bw.newLine();
             }
             bw.close();
