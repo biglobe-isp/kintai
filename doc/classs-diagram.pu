@@ -1,0 +1,21 @@
+@startuml
+
+
+package "api" {
+    class sample1
+}
+
+package "service" {
+    class sample2
+}
+
+package "datasource"{
+
+} 
+package "domain"{
+
+} 
+
+sample1--sample2
+
+@enduml
