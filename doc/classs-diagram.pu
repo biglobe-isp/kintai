@@ -1,8 +1,8 @@
 @startuml
-
-
 package "api" {
-    class sample1
+    class Main{
+        main()
+    }
 }
 
 package "service" {
@@ -15,6 +15,11 @@ package "datasource"{
 package "domain"{
 
 } 
+
+'便宜的なデフォルトクラス
+package "default"{
+    class Main_old
+}
 
 sample1--sample2
 
