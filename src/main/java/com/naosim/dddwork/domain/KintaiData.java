@@ -2,20 +2,26 @@ package com.naosim.dddwork.domain;
 
 import com.naosim.dddwork.datasouce.IKintai;
 
-public class KintaiCalcurator implements IKintai {
+public class KintaiData implements IKintai {
     //勤務日
     private WorkDate date;
     //開始時刻
     private WorkTime start;
     //終了時刻
     private WorkTime end;
+    //労働時間
+    private WorkTimeDuration workTime;
+    //残業時間
+    private WorkTimeDuration overWorkTime;
 
     //TODO 休憩時間のロジックは何とかしたい（計算方法とかとか）
     //TODO 勤怠のファクトリクラスを作成
-    public KintaiCalcurator(String date, String start, String end) {
+    public KintaiData(String date, String start, String end) {
         this.date = new WorkDate(date);
         this.start = new WorkTime(start);
         this.end = new WorkTime(end);
+        this.workTime = new WorkTimeDuration(this.calcurateJiturodo());
+        this.overWorkTime = new WorkTimeDuration(this.calcurateZangyo());
 
     }
 

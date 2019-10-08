@@ -1,27 +1,24 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.KintaiCalcurator;
+import com.naosim.dddwork.domain.KintaiData;
 import com.naosim.dddwork.domain.KintaiRepository;
+import com.naosim.dddwork.domain.MonthlyTotalWorkTime;
 
 import java.util.List;
 
 public class KintaiService {
     public static void input(String date, String start, String end) {
-        KintaiCalcurator kintai = new KintaiCalcurator(date, start, end);
+        KintaiData kintai = new KintaiData(date, start, end);
 
         KintaiRepository repository = new KintaiRepository();
         repository.save(kintai);
     }
 
-    public static int[] total(String yymm) {
+    public static MonthlyTotalWorkTime total(String yymm) {
         KintaiRepository repository = new KintaiRepository();
-        List<KintaiCalcurator> list = repository.findKintai(yymm);
-        int totalWorkTime = 0;
-        int totalOverWorkTime = 0;
-        for (KintaiCalcurator k : list) {
-            totalWorkTime += Integer.valueOf(k.getWorkMinutes());
-            totalOverWorkTime += Integer.valueOf(k.getOverWorkMinutes());
-        }
-        return new int[]{totalWorkTime, totalOverWorkTime};
+        List<KintaiData> list = repository.findKintai(yymm);
+        MonthlyTotalWorkTime result = new MonthlyTotalWorkTime(list);
+
+        return result;
     }
 }

@@ -1,4 +1,4 @@
-import com.naosim.dddwork.domain.KintaiCalcurator
+import com.naosim.dddwork.domain.KintaiData
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -7,7 +7,7 @@ class KintaiCalcuratorTest extends Specification {
     @Unroll
     def "CalcurateJiturodo"() {
 
-        def kintai = new KintaiCalcurator(date, start, end);
+        def kintai = new KintaiData(date, start, end);
         expect:
         kintai.getWorkMinutes() == result;
         where:
@@ -18,7 +18,7 @@ class KintaiCalcuratorTest extends Specification {
 
     @Unroll
     def "CalcurateZangyo"() {
-        def kintai = new KintaiCalcurator(date, start, end);
+        def kintai = new KintaiData(date, start, end);
         expect:
         kintai.getOverWorkMinutes() == result;
         where:

@@ -1,13 +1,7 @@
 package com.naosim.dddwork.api;
 
+import com.naosim.dddwork.domain.MonthlyTotalWorkTime;
 import com.naosim.dddwork.service.KintaiService;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -33,10 +27,10 @@ public class Main {
                 throw new RuntimeException("引数が足りません");
             }
             String yearMonth = args[1];
-            int[] kintai = KintaiService.total(yearMonth);
+            MonthlyTotalWorkTime kintai = KintaiService.total(yearMonth);
 
-            System.out.println("勤務時間: " + kintai[0] / 60 + "時間" + kintai[0] % 60 + "分");
-            System.out.println("残業時間: " + kintai[1] / 60 + "時間" + kintai[1] % 60 + "分");
+            System.out.println("勤務時間: " + kintai.getWorkTimeHour() + "時間" + kintai.getWorkTimeMinute() + "分");
+            System.out.println("残業時間: " + kintai.getOverWorkTimeHour() + "時間" + kintai.getOverTimeMinute() + "分");
 
 
         } else {
