@@ -1,4 +1,4 @@
-import domain.KintaiCalcurator
+import com.naosim.dddwork.domain.KintaiCalcurator
 import spock.lang.Specification
 import spock.lang.Unroll
 

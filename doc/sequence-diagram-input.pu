@@ -2,13 +2,18 @@
 JVM->Main:main("input"",日付,開始時刻,終了時刻)
 '入力チェック :UI
 '開始時刻、終了時刻の取得 :UI
-'実労働時間の計算（開始〜終了までの時間-休憩時間）:domain
+'実労働時間の計算（開始〜終了までの時間-休憩時間）:com.naosim.dddwork.domain
 '   休憩時間に労働時間が重ねっている時間帯だけが引き算される
 '残業時間の計算:domainIN
 'CSVファイルへの書き出し:infra
 
-Main->inputKintai:input(日付,hh,mm,hh,mm)
-inputKintai->kintaiCalcurater:calcurateJiturodo()
-inputKintai->kintaiCalcurater:calcurateZangyo()
-inputKintai->CSVwriter:writeCSV()
+Main->inputKintai:input(日付,開始時刻,終了時刻)
+
+create kintaiCalcurater
+inputKintai->kintaiCalcurater:new(日付,開始時刻,終了時刻)
+inputKintai->CSVwriter:writeCSV(kintaiCalcurater)
+CSVwriter->kintaiCalcurater:getDate()
+CSVwriter->kintaiCalcurater:getStart()
+CSVwriter->kintaiCalcurater:getWorkMinutes()
+CSVwriter->kintaiCalcurater:getOverWorkMinutes()
 @enduml

@@ -39,7 +39,7 @@ java Main total
   - api
   - service
   - datasource
-  - domain
+  - com.naosim.dddwork.domain
 
 ### 仕様変更 入力方法変更
 ```
