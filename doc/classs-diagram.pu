@@ -6,30 +6,81 @@ package "api" {
 }
 
 package "service" {
-    class inputKintai{
+    class KintaiService{
         input()
+        total()
     }
 }
 
 package "datasource"{
     class IKintai{
+        getDate()
+        getStart()
+        getEnd()
+        getWorkMinutes()
+        getOverWorkMinute()
 
     }
-class CSVwriter{
-    writeCSV()
+class CsvWriter{
+    writeCsv()
+}
+class CsvReader{
+    getColumn()
 }
 } 
 package "com.naosim.dddwork.domain"{
-class kintaiCalcurater{
+class KintaiData{
     calcurateJiturodo()
     calcurateZangyo()
+}
+class KintaiRepository{
+    save()
+    findKintaiDataByMonth()
+}
+class MontlyTotalworkTime{
+    getWorkTimeHour()
+    getWorkTimeMinute()
+    getOverWorkTimeHour()
+    getOverWorkTimeMinute()
+
+}
+class WorkTime{
+    getHour()
+    getMinute()
+    toString()
+}
+class WorkTimeDuration{
+    getHour()
+    getMinutes()
+}
+class WorkDate{
+    toString()
+}
+class Rest
+class RestTimeService{
+    calcurateRestTime()
 }
 } 
 
 
-Main-->inputKintai
-inputKintai-->kintaiCalcurater
-inputKintai-->CSVwriter
-kintaiCalcurater-|>IKintai
-CSVwriter-->IKintai
+Main-->KintaiService
+Main-->MontlyTotalworkTime
+KintaiService-->KintaiData
+KintaiService-->KintaiRepository
+KintaiService-->MontlyTotalworkTime
+KintaiData-->WorkTime
+KintaiData-->WorkDate
+KintaiData-->WorkTimeDuration
+KintaiData--|>IKintai
+KintaiData-->RestTimeService
+RestTimeService-->Rest
+
+KintaiRepository-->CsvReader
+KintaiRepository-->CsvWriter
+KintaiRepository-->KintaiData
+MontlyTotalworkTime-->WorkTimeDuration
+MontlyTotalworkTime-->KintaiData
+
+
+CsvWriter-->IKintai
 @enduml

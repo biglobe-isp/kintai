@@ -1,25 +1,35 @@
 package com.naosim.dddwork.domain;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 /***
  * 勤務の時刻を表す値オブジェクト
  */
 public class WorkTime {
-    private String time;
+    private LocalTime lt;
 
     public WorkTime(String time) {
-        this.time = time;
+        int hour = Integer.valueOf(time.substring(0, 2));
+        int minute = Integer.valueOf(time.substring(2, 4));
+        this.lt = LocalTime.of(hour, minute);
     }
 
     public int getHour() {
-        return Integer.valueOf(this.time.substring(0, 2));
+        return this.lt.getHour();
     }
 
     public int getMinute() {
-        return Integer.valueOf(this.time.substring(2, 4));
+        return this.lt.getMinute();
+    }
+
+    public LocalTime getLocalTIme() {
+        return this.lt;
     }
 
     @Override
     public String toString() {
-        return time;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmm");
+        return this.lt.format(formatter);
     }
 }

@@ -16,7 +16,7 @@ public class KintaiService {
 
     public static MonthlyTotalWorkTime total(String yymm) {
         KintaiRepository repository = new KintaiRepository();
-        List<KintaiData> list = repository.findKintai(yymm);
+        List<KintaiData> list = repository.findKintaiDataByMonth(yymm);
         MonthlyTotalWorkTime result = new MonthlyTotalWorkTime(list);
 
         return result;

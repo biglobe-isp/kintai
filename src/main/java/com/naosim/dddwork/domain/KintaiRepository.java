@@ -25,10 +25,10 @@ public class KintaiRepository {
      * 年月を元に勤怠データを取得する。
      * @return
      */
-    public List<KintaiData> findKintai(String yymm) {
+    public List<KintaiData> findKintaiDataByMonth(String yymm) {
         List<KintaiData> result = new LinkedList<>();
         Map<String, KintaiData> map = new HashMap<>();
-        File file = new File("data.csv");
+
         try {
             CsvReader reader = new CsvReader();
 

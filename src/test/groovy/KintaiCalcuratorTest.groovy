@@ -13,6 +13,8 @@ class KintaiCalcuratorTest extends Specification {
         where:
         date       | start  | end    || result
         "20191002" | "0900" | "1000" || "60"
+        "20191002" | "0900" | "1200" || "180"
+        "20191002" | "0900" | "1201" || "180"
         "20191003" | "0900" | "1800" || "480"
     }
 

@@ -1,17 +1,20 @@
 package com.naosim.dddwork.domain;
 
+import java.time.Duration;
+
 /***
  * 勤務時間を表す値オブジェクト
  */
 public class WorkTimeDuration {
-    private int minutes = 0;
+    private Duration duration;
 
-    public WorkTimeDuration(int minutes) {
-        this.minutes = minutes;
+    public WorkTimeDuration(long minutes) {
+
+        this.duration = Duration.ofMinutes(minutes);
     }
 
-    public int getWorkTimeMinutes() {
-        return this.minutes;
+    public long getWorkTimeMinutes() {
+        return this.duration.toMinutes();
     }
 
     /***
@@ -19,8 +22,8 @@ public class WorkTimeDuration {
      * 切り捨て
      * @return
      */
-    public int getHour() {
-        return minutes / 60;
+    public long getHour() {
+        return this.duration.toHours();
     }
 
     /***
@@ -29,7 +32,7 @@ public class WorkTimeDuration {
      * @return
      */
 
-    public int getMinutes() {
-        return minutes % 60;
+    public long getMinutes() {
+        return this.duration.toMinutes() % 60;
     }
 }

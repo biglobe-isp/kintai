@@ -21,19 +21,19 @@ public class MonthlyTotalWorkTime {
         this.totalOverWork = new WorkTimeDuration(over);
     }
 
-    public int getWorkTimeHour() {
+    public long getWorkTimeHour() {
         return this.totalWorkTime.getHour();
     }
 
-    public int getWorkTimeMinute() {
+    public long getWorkTimeMinute() {
         return this.totalWorkTime.getMinutes();
     }
 
-    public int getOverWorkTimeHour() {
+    public long getOverWorkTimeHour() {
         return this.totalOverWork.getHour();
     }
 
-    public int getOverTimeMinute() {
+    public long getOverWorkTimeMinute() {
         return this.totalOverWork.getMinutes();
     }
 

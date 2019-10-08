@@ -2,6 +2,8 @@ package com.naosim.dddwork.domain;
 
 import com.naosim.dddwork.datasouce.IKintai;
 
+import java.time.Duration;
+
 public class KintaiData implements IKintai {
     //勤務日
     private WorkDate date;
@@ -15,7 +17,6 @@ public class KintaiData implements IKintai {
     private WorkTimeDuration overWorkTime;
 
     //TODO 休憩時間のロジックは何とかしたい（計算方法とかとか）
-    //TODO 勤怠のファクトリクラスを作成
     public KintaiData(String date, String start, String end) {
         this.date = new WorkDate(date);
         this.start = new WorkTime(start);
@@ -25,50 +26,29 @@ public class KintaiData implements IKintai {
 
     }
 
-    private int calcurateJiturodo() {
-        int endH = this.end.getHour();
-        int endM = this.end.getMinute();
-        int startH = this.start.getHour();
-        int startM = this.start.getMinute();
+    private long calcurateJiturodo() {
+        long workMinutes = Duration.between(this.start.getLocalTIme(), this.end.getLocalTIme()).toMinutes();
+        RestTimeService policy = new RestTimeService();
+        long totalRestTime = policy.calcurateRestTime(this.start.getLocalTIme(), this.end.getLocalTIme());
 
-        int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-        if (endH == 12) {
-            workMinutes -= endM;
-        } else if (endH >= 13) {
-            workMinutes -= 60;
-        }
-
-        if (endH == 18) {
-            workMinutes -= endM;
-        } else if (endH >= 19) {
-            workMinutes -= 60;
-        }
-
-        if (endH == 21) {
-            workMinutes -= endM;
-        } else if (endH >= 22) {
-            workMinutes -= 60;
-        }
-
-        return workMinutes;
+        return workMinutes - totalRestTime;
 
     }
 
-    private int calcurateZangyo() {
-        int workMinutes = calcurateJiturodo();
+    private long calcurateZangyo() {
+        long workMinutes = calcurateJiturodo();
         return Math.max(workMinutes - 8 * 60, 0);
 
     }
 
     @Override
     public String getWorkMinutes() {
-        return String.valueOf(calcurateJiturodo());
+        return String.valueOf(this.workTime.getWorkTimeMinutes());
     }
 
     @Override
     public String getOverWorkMinutes() {
-        return String.valueOf(calcurateZangyo());
+        return String.valueOf(this.overWorkTime.getWorkTimeMinutes());
     }
 
     @Override

@@ -30,7 +30,7 @@ public class Main {
             MonthlyTotalWorkTime kintai = KintaiService.total(yearMonth);
 
             System.out.println("勤務時間: " + kintai.getWorkTimeHour() + "時間" + kintai.getWorkTimeMinute() + "分");
-            System.out.println("残業時間: " + kintai.getOverWorkTimeHour() + "時間" + kintai.getOverTimeMinute() + "分");
+            System.out.println("残業時間: " + kintai.getOverWorkTimeHour() + "時間" + kintai.getOverWorkTimeMinute() + "分");
 
 
         } else {
