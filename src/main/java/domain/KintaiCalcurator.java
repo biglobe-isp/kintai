@@ -1,6 +1,8 @@
 package domain;
 
-public class KintaiCalcurator {
+import com.naosim.dddwork.datasouce.IKintai;
+
+public class KintaiCalcurator implements IKintai {
     private String date;
     private String start;
     private String end;
@@ -9,7 +11,6 @@ public class KintaiCalcurator {
     private int overWorkMinutes = 0;
 
     //TODO 休憩時間のロジックは何とかしたい（計算方法とかとか）
-
     public KintaiCalcurator(String date, String start, String end) {
         this.date = date;
         this.start = start;
@@ -64,19 +65,27 @@ public class KintaiCalcurator {
         return Integer.valueOf(end.substring(2, 4));
     }
 
-
-    public int getWorkMinutes() {
-        return calcurateJiturodo();
+    @Override
+    public String getWorkMinutes() {
+        return String.valueOf(calcurateJiturodo());
     }
 
-    public int getOverWorkMinutes() {
-        return calcurateZangyo();
+    @Override
+    public String getOverWorkMinutes() {
+        return String.valueOf(calcurateZangyo());
     }
 
+    @Override
+    public String getDate() {
+        return this.date;
+    }
+
+    @Override
     public String getStart() {
         return this.start;
     }
 
+    @Override
     public String getEnd() {
         return this.end;
     }

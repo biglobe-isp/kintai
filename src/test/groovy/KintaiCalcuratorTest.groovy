@@ -12,8 +12,8 @@ class KintaiCalcuratorTest extends Specification {
         kintai.getWorkMinutes() == result;
         where:
         date       | start  | end    || result
-        "20191002" | "0900" | "1000" || 60
-        "20191003" | "0900" | "1800" || 480
+        "20191002" | "0900" | "1000" || "60"
+        "20191003" | "0900" | "1800" || "480"
     }
 
     @Unroll
@@ -23,7 +23,7 @@ class KintaiCalcuratorTest extends Specification {
         kintai.getOverWorkMinutes() == result;
         where:
         date       | start  | end    || result
-        "20191002" | "0900" | "1800" || 0
-        "20191003" | "0900" | "2000" || 60
+        "20191002" | "0900" | "1800" || "0"
+        "20191003" | "0900" | "2000" || "60"
     }
 }
