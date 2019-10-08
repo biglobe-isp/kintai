@@ -33,7 +33,7 @@ public class Main {
 
                 int endH = Integer.valueOf(end.substring(0, 2));
                 int endM = Integer.valueOf(end.substring(2, 4));
-                InputKintai.input(date, startH, startM, endH, endM);
+                InputKintai.input(date, start, end);
 
 
             } else if ("total".equals(methodType)) {

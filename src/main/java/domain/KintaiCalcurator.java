@@ -6,60 +6,77 @@ public class KintaiCalcurator {
     private int endMinute;
     private int endHour;
     private String date;
+    private String start;
+    private String end;
 
     private int workMinutes = 0;
     private int overWorkMinutes = 0;
 
 
-    //TODO 開始時間と終了時間はHHMMで保持
     //TODO 実労働、残業時間は必要になった時に計算して返却。（calucurateほげは不要）
     //TODO 休憩時間のロジックは何とかしたい（計算方法とかとか）
 
-
-    public KintaiCalcurator(String date, int startH, int startM, int endH, int endM) {
+    public KintaiCalcurator(String date, String start, String end) {
         this.date = date;
-        this.startHour = startH;
-        this.startMinute = startM;
-        this.endHour = endH;
-        this.endMinute = endM;
-    }
-
-    public void calcurateJiturodo() {
-        int workMinutes = this.endHour * 60 + this.endMinute - (this.startHour * 60 + this.startMinute);
-
-        if (this.endHour == 12) {
-            workMinutes -= this.endMinute;
-        } else if (endHour >= 13) {
-            workMinutes -= 60;
-        }
-
-        if (endHour == 18) {
-            workMinutes -= this.endMinute;
-        } else if (endHour >= 19) {
-            workMinutes -= 60;
-        }
-
-        if (endHour == 21) {
-            workMinutes -= this.endMinute;
-        } else if (endHour >= 22) {
-            workMinutes -= 60;
-        }
-
-        this.workMinutes = workMinutes;
+        this.start = start;
+        this.end = end;
 
     }
 
-    public void calcurateZangyo() {
-        this.overWorkMinutes = Math.max(this.workMinutes - 8 * 60, 0);
+    private int calcurateJiturodo() {
+        int workMinutes = getEndHour() * 60 + getEndMinute() - (getStartHour() * 60 + getStartMinute());
+
+        if (getEndHour() == 12) {
+            workMinutes -= getEndMinute();
+        } else if (getEndHour() >= 13) {
+            workMinutes -= 60;
+        }
+
+        if (getEndHour() == 18) {
+            workMinutes -= getEndMinute();
+        } else if (getEndHour() >= 19) {
+            workMinutes -= 60;
+        }
+
+        if (getEndHour() == 21) {
+            workMinutes -= getEndMinute();
+        } else if (getEndHour() >= 22) {
+            workMinutes -= 60;
+        }
+
+        return workMinutes;
 
     }
+
+    private int calcurateZangyo() {
+        int workMinutes = calcurateJiturodo();
+        return Math.max(workMinutes - 8 * 60, 0);
+
+    }
+
+    private int getStartHour() {
+        return Integer.valueOf(this.start.substring(0, 2));
+    }
+
+    private int getStartMinute() {
+        return Integer.valueOf(this.start.substring(2, 4));
+    }
+
+    private int getEndHour() {
+        return Integer.valueOf(this.end.substring(0, 2));
+    }
+
+    private int getEndMinute() {
+        return Integer.valueOf(end.substring(2, 4));
+    }
+
 
     public int getWorkMinutes() {
-        return this.workMinutes;
+        return calcurateJiturodo();
     }
 
     public int getOverWorkMinutes() {
-        return this.overWorkMinutes;
+        return calcurateZangyo();
     }
 
     public String getStart() {
