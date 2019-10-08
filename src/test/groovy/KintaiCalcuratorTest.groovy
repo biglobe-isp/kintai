@@ -13,7 +13,7 @@ class KintaiCalcuratorTest extends Specification {
         kintai.getWorkMinutes() == result;
         where:
         startH | startM | endH | endM || result
-        9      | 0      | 10   | 0    || 65
+        9      | 0      | 10   | 0    || 60
     }
 
     def "CalcurateZangyo"() {
