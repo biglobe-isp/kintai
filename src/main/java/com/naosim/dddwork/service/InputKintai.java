@@ -11,6 +11,7 @@ public class InputKintai {
         kintai.calcurateJiturodo();
         kintai.calcurateZangyo();
 
+        //[TODO] nowはCSVWriteに移動する（書き込んだ日時）
         String now = LocalDateTime.now().toString();
         CsvWriter.writeCsv(date, kintai, now);
 

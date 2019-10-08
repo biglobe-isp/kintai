@@ -9,6 +9,12 @@ public class KintaiCalcurator {
     private int workMinutes = 0;
     private int overWorkMinutes = 0;
 
+    //TODO 日付を持たせる
+    //TODO 開始時間と終了時間はHHMMで保持
+    //TODO 実労働、残業時間は必要になった時に計算して返却。（calucurateほげは不要）
+    //TODO 休憩時間のロジックは何とかしたい（計算方法とかとか）
+    
+
     public KintaiCalcurator(int startH, int startM, int endH, int endM) {
         this.startHour = startH;
         this.startMinute = startM;

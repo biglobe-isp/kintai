@@ -27,4 +27,5 @@ class kintaiCalcurater{
 Main-->inputKintai
 inputKintai-->kintaiCalcurater
 inputKintai-->CSVwriter
+CSVwriter-->kintaiCalcurater
 @enduml
