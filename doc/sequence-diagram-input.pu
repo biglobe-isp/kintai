@@ -1,9 +1,14 @@
 @startuml
 JVM->Main:main("input"",日付,開始時刻,終了時刻)
-'入力チェック
-'開始時刻、終了時刻の取得
-'実労働時間の計算（開始〜終了までの時間-休憩時間）
+'入力チェック :UI
+'開始時刻、終了時刻の取得 :UI
+'実労働時間の計算（開始〜終了までの時間-休憩時間）:domain
 '   休憩時間に労働時間が重ねっている時間帯だけが引き算される
-'残業時間の計算
-'CSVファイルへの書き出し
+'残業時間の計算:domain
+'CSVファイルへの書き出し:infra
+
+Main->inputKintai:input()
+inputKintai->kintaiCalcurater:calcurateJiturodo()
+inputKintai->kintaiCalcurater:calcurateZangyo()
+inputKintai->CSVwriter:writeCSV()
 @enduml

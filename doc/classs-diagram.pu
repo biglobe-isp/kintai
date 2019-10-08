@@ -6,21 +6,25 @@ package "api" {
 }
 
 package "service" {
-    class sample2
+    class inputKintai{
+        input()
+    }
 }
 
 package "datasource"{
-
+class CSVwriter{
+    writeCSV()
+}
 } 
 package "domain"{
-
+class kintaiCalcurater{
+    calcurateJiturodo()
+    calcurateZangyo()
+}
 } 
 
-'便宜的なデフォルトクラス
-package "default"{
-    class Main_old
-}
 
-sample1--sample2
-
+Main-->inputKintai
+inputKintai-->kintaiCalcurater
+inputKintai-->CSVwriter
 @enduml
