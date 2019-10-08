@@ -27,12 +27,7 @@ public class Main {
                 String start = args[2];
                 String end = args[3];
                 String now = LocalDateTime.now().toString();
-
-                int startH = Integer.valueOf(start.substring(0, 2));
-                int startM = Integer.valueOf(start.substring(2, 4));
-
-                int endH = Integer.valueOf(end.substring(0, 2));
-                int endM = Integer.valueOf(end.substring(2, 4));
+                
                 InputKintai.input(date, start, end);
 
 
