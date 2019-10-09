@@ -18,7 +18,11 @@ public class KintaiRepository {
      * @param kintai
      */
     public void save(KintaiData kintai) {
-        CsvWriter.writeCsv(kintai);
+        try {
+            CsvWriter.writeCsv(kintai);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /***

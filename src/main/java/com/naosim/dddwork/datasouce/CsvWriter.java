@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class CsvWriter {
 
-    public static void writeCsv(IKintai kintai) {
+    public static void writeCsv(IKintai kintai) throws IOException {
         File file = new File("data.csv");
         String now = LocalDateTime.now().toString();
         try (FileWriter filewriter = new FileWriter(file, true)) {
@@ -15,7 +15,7 @@ public class CsvWriter {
                     kintai.getWorkMinutes(),
                     kintai.getOverWorkMinutes(), now));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 }

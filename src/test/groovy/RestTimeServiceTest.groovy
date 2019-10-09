@@ -1,5 +1,6 @@
 import com.naosim.dddwork.domain.Rest
 import com.naosim.dddwork.domain.RestTimeService
+import com.naosim.dddwork.domain.WorkTime
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -13,17 +14,17 @@ class RestTimeServiceTest extends Specification {
         def rests = [rest] as Rest[];
 
         def policy = new RestTimeService(rests);
-        def start = LocalTime.of(startH, startM);
-        def end = LocalTime.of(endH, endM);
+        def start = new WorkTime(startTime);
+        def end = new WorkTime(endTime);
         expect:
-        policy.calcurateRestTime(start, end) == result;
+        policy.calculateRestTime(start, end) == result;
         where:
-        startH | startM | endH | endM || result
-        9      | 0      | 10   | 0    || 0
-        9      | 0      | 12   | 10   || 10
-        12     | 10     | 12   | 50   || 40
-        12     | 50     | 13   | 50   || 10
-        13     | 00     | 13   | 50   || 0
+        startTime | endTime || result
+        "0900"    | "1000"  || 0
+        "0900"    | "1210"  || 10
+        "1210"    | "1250"  || 40
+        "1250"    | "1350"  || 10
+        "1300"    | "1350"  || 0
 
 
     }

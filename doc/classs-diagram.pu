@@ -28,7 +28,7 @@ class CsvReader{
     getColumn()
 }
 } 
-package "com.naosim.dddwork.domain"{
+package "domain"{
 class KintaiData{
     calcurateJiturodo()
     calcurateZangyo()
@@ -71,7 +71,7 @@ KintaiService-->MontlyTotalworkTime
 KintaiData-->WorkTime
 KintaiData-->WorkDate
 KintaiData-->WorkTimeDuration
-KintaiData--|>IKintai
+KintaiData..|>IKintai
 KintaiData-->RestTimeService
 RestTimeService-->Rest
 

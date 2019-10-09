@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain;
 
-/***
+/**
  * 勤務日を表す値オブジェクト
  */
 public class WorkDate {

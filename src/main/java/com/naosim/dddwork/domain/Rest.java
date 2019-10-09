@@ -2,7 +2,7 @@ package com.naosim.dddwork.domain;
 
 import java.time.LocalTime;
 
-/***
+/**
  * 休憩時間
  */
 public class Rest {
@@ -14,11 +14,11 @@ public class Rest {
         this.end = LocalTime.of(endHour, endMinuite);
     }
 
-    public LocalTime getStart() {
+    public LocalTime getStartLocalTime() {
         return this.start;
     }
 
-    public LocalTime getEnd() {
+    public LocalTime getEndLocalTime() {
         return this.end;
     }
 }

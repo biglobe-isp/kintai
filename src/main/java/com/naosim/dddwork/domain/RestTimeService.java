@@ -11,12 +11,14 @@ import java.util.List;
 public class RestTimeService {
     List<Rest> list = new LinkedList<>();
 
+
     public RestTimeService() {
         //デフォルトの休憩時間
         this.list.add(new Rest(12, 00, 13, 00));
         this.list.add(new Rest(18, 00, 19, 00));
         this.list.add(new Rest(21, 00, 22, 00));
     }
+
 
     public RestTimeService(Rest[] list) {
         for (Rest r : list) {
@@ -26,15 +28,17 @@ public class RestTimeService {
 
     /***
      * 指定された開始時刻、終了時刻のから休憩時間扱いになった時間（分）導出する。
-     * @param workStart
-     * @param workEnd
+     * @param start
+     * @param end
      * @return
      */
-    public long calcurateRestTime(LocalTime workStart, LocalTime workEnd) {
+    public long calculateRestTime(WorkTime start, WorkTime end) {
         long result = 0;
+        LocalTime workStart = start.getLocalTIme();
+        LocalTime workEnd = end.getLocalTIme();
         for (Rest r : list) {
-            LocalTime restStart = r.getStart();
-            LocalTime restEnd = r.getEnd();
+            LocalTime restStart = r.getStartLocalTime();
+            LocalTime restEnd = r.getEndLocalTime();
 
 
             //労働時間が休憩時間に重なっていないならその休憩時間は0分

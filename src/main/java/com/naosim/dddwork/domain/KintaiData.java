@@ -4,6 +4,9 @@ import com.naosim.dddwork.datasouce.IKintai;
 
 import java.time.Duration;
 
+/**
+ * 日毎の勤務を表すオブジェクト
+ */
 public class KintaiData implements IKintai {
     //勤務日
     private WorkDate date;
@@ -16,27 +19,26 @@ public class KintaiData implements IKintai {
     //残業時間
     private WorkTimeDuration overWorkTime;
 
-    //TODO 休憩時間のロジックは何とかしたい（計算方法とかとか）
+
     public KintaiData(String date, String start, String end) {
         this.date = new WorkDate(date);
         this.start = new WorkTime(start);
         this.end = new WorkTime(end);
-        this.workTime = new WorkTimeDuration(this.calcurateJiturodo());
-        this.overWorkTime = new WorkTimeDuration(this.calcurateZangyo());
+        this.workTime = new WorkTimeDuration(this.calculateJiturodo());
+        this.overWorkTime = new WorkTimeDuration(this.calculateZangyo());
 
     }
 
-    private long calcurateJiturodo() {
+    private long calculateJiturodo() {
         long workMinutes = Duration.between(this.start.getLocalTIme(), this.end.getLocalTIme()).toMinutes();
-        RestTimeService policy = new RestTimeService();
-        long totalRestTime = policy.calcurateRestTime(this.start.getLocalTIme(), this.end.getLocalTIme());
-
+        RestTimeService service = new RestTimeService();
+        long totalRestTime = service.calculateRestTime(this.start, this.end);
         return workMinutes - totalRestTime;
 
     }
 
-    private long calcurateZangyo() {
-        long workMinutes = calcurateJiturodo();
+    private long calculateZangyo() {
+        long workMinutes = calculateJiturodo();
         return Math.max(workMinutes - 8 * 60, 0);
 
     }
