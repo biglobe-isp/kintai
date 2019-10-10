@@ -13,19 +13,15 @@ package "service" {
 }
 
 package "datasource"{
-    class IKintai{
-        getDate()
-        getStart()
-        getEnd()
-        getWorkMinutes()
-        getOverWorkMinute()
 
-    }
 class CsvWriter{
     writeCsv()
 }
 class CsvReader{
     getColumn()
+}
+class CsvKintaiRepository{
+
 }
 } 
 package "domain"{
@@ -33,11 +29,11 @@ class KintaiData{
     calcurateJiturodo()
     calcurateZangyo()
 }
-class KintaiRepository{
+interface IKintaiDataRepository{
     save()
     findKintaiDataByMonth()
 }
-class MontlyTotalworkTime{
+class MonthlyTotalworkTime{
     getWorkTimeHour()
     getWorkTimeMinute()
     getOverWorkTimeHour()
@@ -64,23 +60,27 @@ class RestTimeService{
 
 
 Main-->KintaiService
-Main-->MontlyTotalworkTime
+Main-->MonthlyTotalworkTime
 KintaiService-->KintaiData
-KintaiService-->KintaiRepository
-KintaiService-->MontlyTotalworkTime
+KintaiService-->IKintaiDataRepository
+KintaiService-->MonthlyTotalworkTime
+KintaiService-->CsvKintaiRepository
+note right on link: DIできないので仕方なしの関係線
 KintaiData-->WorkTime
 KintaiData-->WorkDate
 KintaiData-->WorkTimeDuration
-KintaiData..|>IKintai
 KintaiData-->RestTimeService
 RestTimeService-->Rest
 
-KintaiRepository-->CsvReader
-KintaiRepository-->CsvWriter
-KintaiRepository-->KintaiData
-MontlyTotalworkTime-->WorkTimeDuration
-MontlyTotalworkTime-->KintaiData
+IKintaiDataRepository-->KintaiData
+MonthlyTotalworkTime-->WorkTimeDuration
+MonthlyTotalworkTime-->KintaiData
 
 
-CsvWriter-->IKintai
+CsvKintaiRepository..|>IKintaiDataRepository
+CsvKintaiRepository-->KintaiData
+CsvKintaiRepository-->CsvWriter
+CsvKintaiRepository-->CsvReader
+
+
 @enduml

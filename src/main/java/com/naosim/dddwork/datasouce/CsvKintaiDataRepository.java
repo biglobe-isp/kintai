@@ -1,22 +1,17 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.datasouce;
 
-import com.naosim.dddwork.datasouce.CsvReader;
-import com.naosim.dddwork.datasouce.CsvWriter;
 
-import java.io.File;
+import com.naosim.dddwork.domain.IKintaiDataRepository;
+import com.naosim.dddwork.domain.KintaiData;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class KintaiRepository {
-
-
-    /***
-     * 勤怠データを保存する
-     * @param kintai
-     */
+public class CsvKintaiDataRepository implements IKintaiDataRepository {
+    @Override
     public void save(KintaiData kintai) {
         try {
             CsvWriter.writeCsv(kintai);
@@ -25,10 +20,7 @@ public class KintaiRepository {
         }
     }
 
-    /***
-     * 年月を元に勤怠データを取得する。
-     * @return
-     */
+    @Override
     public List<KintaiData> findKintaiDataByMonth(String yymm) {
         List<KintaiData> result = new LinkedList<>();
         Map<String, KintaiData> map = new HashMap<>();
