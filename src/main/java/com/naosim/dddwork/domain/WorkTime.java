@@ -9,10 +9,14 @@ import java.time.format.DateTimeFormatter;
 public class WorkTime {
     private LocalTime lt;
 
-    public WorkTime(String time) {
+    private WorkTime(String time) {
         int hour = Integer.valueOf(time.substring(0, 2));
         int minute = Integer.valueOf(time.substring(2, 4));
         this.lt = LocalTime.of(hour, minute);
+    }
+
+    public static WorkTime from(LocalTime lt) {
+        return new WorkTime(lt.format(DateTimeFormatter.ofPattern("HHmm")));
     }
 
     public LocalTime getLocalTIme() {

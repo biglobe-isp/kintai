@@ -1,6 +1,8 @@
 package com.naosim.dddwork.domain;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * 日毎の勤務を表すオブジェクト
@@ -16,15 +18,14 @@ public class KintaiData {
     private WorkTimeDuration workTime;
     //残業時間
     private WorkTimeDuration overWorkTime;
+    
 
-
-    public KintaiData(String date, String start, String end) {
-        this.date = new WorkDate(date);
-        this.start = new WorkTime(start);
-        this.end = new WorkTime(end);
+    public KintaiData(LocalDate date, LocalTime start, LocalTime end) {
+        this.date = WorkDate.from(date);
+        this.start = WorkTime.from(start);
+        this.end = WorkTime.from(end);
         this.workTime = new WorkTimeDuration(this.calculateJiturodo());
         this.overWorkTime = new WorkTimeDuration(this.calculateZangyo());
-
     }
 
     private long calculateJiturodo() {
