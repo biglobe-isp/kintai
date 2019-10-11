@@ -7,6 +7,7 @@ import com.naosim.dddwork.domain.MonthlyTotalWorkTime;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.util.List;
 
 public class KintaiService {
@@ -17,11 +18,11 @@ public class KintaiService {
         repository.save(kintai);
     }
 
-    public static MonthlyTotalWorkTime total(LocalDate yymm) {
+
+    public static MonthlyTotalWorkTime total(YearMonth yymm) {
         IKintaiDataRepository repository = new CsvKintaiDataRepository();
         List<KintaiData> list = repository.findKintaiDataByMonth(yymm);
         MonthlyTotalWorkTime result = new MonthlyTotalWorkTime(list);
-
         return result;
     }
 

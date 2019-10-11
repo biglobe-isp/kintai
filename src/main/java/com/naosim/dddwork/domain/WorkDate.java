@@ -17,6 +17,7 @@ public class WorkDate {
     public static WorkDate from(LocalDate lt) {
         return new WorkDate(lt.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
     }
+    
 
     @Override
     public String toString() {

@@ -16,8 +16,6 @@ public class CsvWriter {
             filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", kintai.getDate(), kintai.getStart(), kintai.getEnd(),
                     kintai.getWorkMinutes(),
                     kintai.getOverWorkMinutes(), now));
-        } catch (IOException e) {
-            throw e;
         }
     }
 }

@@ -5,6 +5,7 @@ import com.naosim.dddwork.service.KintaiService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,7 +31,7 @@ public class Main {
                 throw new RuntimeException("引数が足りません");
             }
             String yearMonth = args[1];//YYYYMM
-            MonthlyTotalWorkTime kintai = KintaiService.total(createLocalDate_(yearMonth));
+            MonthlyTotalWorkTime kintai = KintaiService.total(createYearMonth(yearMonth));
 
             System.out.println("勤務時間: " + kintai.getWorkTimeHour() + "時間" + kintai.getWorkTimeMinute() + "分");
             System.out.println("残業時間: " + kintai.getOverWorkTimeHour() + "時間" + kintai.getOverWorkTimeMinute() + "分");
@@ -49,15 +50,15 @@ public class Main {
 
     private static LocalDate createLocalDate(String yyyymmdd) {
         int year = Integer.valueOf(yyyymmdd.substring(0, 4));
-        int mouth = Integer.valueOf(yyyymmdd.substring(4, 6));
+        int month = Integer.valueOf(yyyymmdd.substring(4, 6));
         int day = Integer.valueOf(yyyymmdd.substring(6, 8));
-        return LocalDate.of(year, mouth, day);
+        return LocalDate.of(year, month, day);
     }
 
-    private static LocalDate createLocalDate_(String yyyymm) {
+    private static YearMonth createYearMonth(String yyyymm) {
         int year = Integer.valueOf(yyyymm.substring(0, 4));
-        int mouth = Integer.valueOf(yyyymm.substring(4, 6));
-        return LocalDate.of(year, mouth, 1);
+        int month = Integer.valueOf(yyyymm.substring(4, 6));
+        return YearMonth.of(year, month);
     }
 
 }

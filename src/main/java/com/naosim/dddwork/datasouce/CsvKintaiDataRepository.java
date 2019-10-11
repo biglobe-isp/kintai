@@ -7,6 +7,7 @@ import com.naosim.dddwork.domain.KintaiData;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,6 +22,7 @@ public class CsvKintaiDataRepository implements IKintaiDataRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private List<KintaiData> findKintaiDataByMonth(String yymm) {
@@ -50,8 +52,9 @@ public class CsvKintaiDataRepository implements IKintaiDataRepository {
         return result;
     }
 
+
     @Override
-    public List<KintaiData> findKintaiDataByMonth(LocalDate date) {
+    public List<KintaiData> findKintaiDataByMonth(YearMonth date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYYMM");
         return findKintaiDataByMonth(date.format(formatter));
     }
