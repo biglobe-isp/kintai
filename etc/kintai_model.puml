@@ -1,0 +1,76 @@
+@startuml
+
+package api {
+
+}
+
+package service {
+}
+
+package datasource {
+}
+
+package domain {
+    class Attendance {
+        localDateTime date -->日付
+        startTime -->開始時刻
+        endTime -->終了時刻
+        workMinutes --> 勤務時間
+        overWorkMinutes --> 残業時間
+        breakMinutes --> 休憩時間
+        earlyLeavingMinutes --> 早退時間
+        createdAt --> 作成日
+        updatedAt --> 更新日
+    }
+
+    class TimeUnit {
+        int hour
+        int minutes
+    }
+
+    class MonthlyTotal {
+        yearMonth --> 年月
+        totalWorkMinutes --> 勤務時間合計
+        totalOverWorkMinutes --> 残業時間合計
+    }
+
+    class WorkRegulations {
+        standardStartTime
+        standardEndTime
+        List breakTime  -->休憩時間(増えるかもしれない)
+        coreStartTime --> フレックスがあるかもしれない。当初は900
+        coreEndTime --> フレックスがあるかもしれない。当x初は1800
+
+        maxOverTime --> 残業可能時間(24:00/残業代がつく最終時間)
+
+        standardDailyWorkMinutes --> 1日の基本時間=8
+        standardMonthlyWorkMinutes --> 1ヶ月の基本時間=160 * ただし朝フレックスで1日の基本時間で残業代が発生する場合は0
+        effectiveDate -->本規則の適用日。月の途中で変更可能性あり
+    }
+}
+
+
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+class ArrayList {
+Object[] elementData
+size()
+}!"
+
+enum TimeUnit {
+DAYS
+HOURS
+MINUTES
+}
+
+@enduml
