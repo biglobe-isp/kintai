@@ -47,30 +47,11 @@ package domain {
         standardMonthlyWorkMinutes --> 1ヶ月の基本時間=160 * ただし朝フレックスで1日の基本時間で残業代が発生する場合は0
         effectiveDate -->本規則の適用日。月の途中で変更可能性あり
     }
-}
+
+    'できないといけないことをまとめる
+    '勤務時間算出
 
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
-}!"
-
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
 }
 
 @enduml
