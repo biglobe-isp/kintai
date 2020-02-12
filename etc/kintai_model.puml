@@ -1,57 +1,73 @@
 @startuml
 
 package api {
-
+    class Main {
+        void main()
+    }
 }
 
 package service {
+    class AttendanceService <<Service>> {
+        void registerAttendance(int workDay, int startTime, int endTime)
+        Optional<MonthlySummary> aggregateMonthlyTotal(int workMonth)
+    }
 }
 
 package datasource {
+    class AttendanceRepositoryDb <<Datasource>> {
+        void save(Attendance attendance)
+        Optional<MonthlySummary> aggregate(YearMonth workMonth)
+    }
 }
 
 package domain {
-    class Attendance {
-        localDateTime date -->日付
-        startTime -->開始時刻
-        endTime -->終了時刻
-        workMinutes --> 勤務時間
-        overWorkMinutes --> 残業時間
-        breakMinutes --> 休憩時間
-        earlyLeavingMinutes --> 早退時間
-        createdAt --> 作成日
-        updatedAt --> 更新日
+    class Attendance <<Entity>>{
+        LocaleDate workDay
+        LocaleTime startTime
+        LocaleTime endTime
+        --
+        int breakTimeHour(WorkRegulations workRegulations)
+        int overTimeHour(WorkRegulations workRegulations)
+        int workingHour(WorkRegulations workRegulations)
     }
 
-    class TimeUnit {
-        int hour
-        int minutes
+    class WorkRegulations <<Entity>> {
+        LocaleTime minStartTime
+        LocaleTime maxStartTime
+        LocaleTime minEndTime
+        LocaleTime maxEndTime
+        ArrayList<TimeRange> breakTimes
+        LocaleTime limitEndTime
+        int standardWorkingHours
     }
 
-    class MonthlyTotal {
-        yearMonth --> 年月
-        totalWorkMinutes --> 勤務時間合計
-        totalOverWorkMinutes --> 残業時間合計
+    class TimeRange <<ValueObject>> {
+        int from
+        int to
     }
 
-    class WorkRegulations {
-        standardStartTime
-        standardEndTime
-        List breakTime  -->休憩時間(増えるかもしれない)
-        coreStartTime --> フレックスがあるかもしれない。当初は900
-        coreEndTime --> フレックスがあるかもしれない。当x初は1800
-
-        maxOverTime --> 残業可能時間(24:00/残業代がつく最終時間)
-
-        standardDailyWorkMinutes --> 1日の基本時間=8
-        standardMonthlyWorkMinutes --> 1ヶ月の基本時間=160 * ただし朝フレックスで1日の基本時間で残業代が発生する場合は0
-        effectiveDate -->本規則の適用日。月の途中で変更可能性あり
+    class MonthlySummary <<ValueObject>> {
+        YearMonth workMonth
+        int workingHours
+        int overTimeHours
     }
 
-    'できないといけないことをまとめる
-    '勤務時間算出
+    class YearMonth <<ValueObject>> {
+        int year
+        int month
+    }
 
-
+    interface AttendanceRepository <<Repository>> {
+        void save(Attendance attendance)
+        Optional<MonthlySummary> aggregate(YearMonth workMonth)
+    }
 }
+
+Main --> AttendanceService
+AttendanceService --> AttendanceRepository
+AttendanceRepository <|.. AttendanceRepositoryDb
+WorkRegulations --> TimeRange
+MonthlySummary --> YearMonth
+Attendance --> WorkRegulations
 
 @enduml
