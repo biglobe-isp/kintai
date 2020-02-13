@@ -1,0 +1,177 @@
+@startuml
+
+'TODO:すべてのオブジェクトが関連するように
+
+package api {
+    class Main {
+        'パラメータのValidation
+        'ServiceにわたすEntity, ValueObjectの生成
+        void main()
+    }
+}
+
+package service {
+    class AttendanceService <<Service>> {
+        'ユースケースの実現
+        void registerAttendance(Attendance attendance)
+            '勤務時間の算出
+            '遅刻の場合はNG
+
+        Optional<MonthlySummary> aggregateMonthlyTotal(int workMonth)
+    }
+}
+
+package datasource {
+    class AttendanceRepositoryDb <<Datasource>> {
+        void save(Attendance attendance)
+        Optional<MonthlySummary> aggregate(YearMonth workMonth)
+    }
+}
+
+package domain {
+    'TODO:Entityにはプリミティブな型がないようにする
+
+    class Attendance <<Entity>>{
+        LocaleDate workDay
+        --
+        StartTime startTime
+        EndTime endTime
+        WorkingHours workingHours
+        OverTimeHours overTimeHours
+    }
+
+    class StartTime {
+        TimeUnit startTime
+        --
+        boolean isLateness(WorkRegulations workRegulations)
+    }
+
+    class EndTime {
+        TimeUnit endTime
+        --
+        boolean isLeaveEarly(WorkRegulations workRegulations)
+    }
+
+    class BreakTimeHours {
+        TimeUnit breakTimeHours
+        --
+        TimeUnit get(WorkRegulations workRegulations)
+    }
+
+    class OverTimeHours {
+        TimeUnit overTimeHours
+        --
+        TimeUnit get(WorkRegulations workRegulations)
+    }
+
+    class WorkingHours {
+        TimeUnit workingHours
+        BreakTimeHours breakTimeHours
+        --
+        TimeUnit get(WorkRegulations workRegulations)
+    }
+
+    class WorkRegulations <<Entity>> {
+        LocaleDate effectiveDateFrom
+        LocaleTime effectiveDateTo
+
+        StandardWorkingTime standardWorkingTime
+        StartTime startTime
+        EndTime endTime
+        BreakTimes breakTimes
+    }
+
+    class StartTimeRange {
+        AllowanceTimeRange startTimeRange
+    }
+
+    class EndTimeRange {
+        AllowanceTimeRange endTimeRange
+        LocaleTime maxLimitEndTime
+        --
+    }
+
+    class AllowanceTimeRange {
+        LocaleTime minTime
+        LocaleTime maxTime
+    }
+
+    class BreakTimes {
+        TimeRange lunchBreakTime
+        TimeRange eveningBreakTime
+        TimeRange nightBreakTime
+        --
+        TimeUnit getBreakTimes(xxxxxx)
+    }
+
+    class StandardWorkingTime {
+        TimeRange standardWorkingTime
+    }
+
+    class TimeRange {
+        TimeUnit timeFrom
+        TimeUnit timeTo
+        --
+        int getRange()
+    }
+
+    class TimeUnit {
+        int hour
+        int minutes
+    }
+
+    class MonthlySummary <<ValueObject>> {
+        YearMonth workMonth
+        int workingHours
+        int overTimeHours
+    }
+
+    class YearMonth <<ValueObject>> {
+        int year
+        int month
+    }
+
+    'TODO:RepositoryでAttendanceとMonthlySummaryの２つの関心事がある
+    interface AttendanceRepository <<Repository>> {
+        void save(Attendance attendance)
+        Optional<MonthlySummary> aggregate(YearMonth workMonth)
+    }
+}
+
+Main --> AttendanceService
+AttendanceService --> AttendanceRepository
+AttendanceRepository <|.. AttendanceRepositoryDb
+MonthlySummary --> YearMonth
+
+
+Attendance o-- StartTime
+Attendance o-- EndTime
+Attendance o-- WorkingHours
+Attendance o-- OverTimeHours
+
+WorkingHours o-- BreakTimeHours
+
+StartTime --> WorkRegulations
+EndTime --> WorkRegulations
+BreakTimeHours --> WorkRegulations
+OverTimeHours --> WorkRegulations
+WorkingHours --> WorkRegulations
+
+StartTime o-- TimeUnit
+EndTime o-- TimeUnit
+BreakTimeHours o-- TimeUnit
+OverTimeHours o-- TimeUnit
+WorkingHours o-- TimeUnit
+
+WorkRegulations o-- StandardWorkingTime
+WorkRegulations o-- BreakTimes
+WorkRegulations o-- StartTimeRange
+WorkRegulations o-- EndTimeRange
+
+BreakTimes o-- TimeRange
+StartTimeRange o-- AllowanceTimeRange
+EndTimeRange o-- AllowanceTimeRange
+StandardWorkingTime o-- TimeRange
+TimeRange o-- TimeUnit
+
+@enduml
