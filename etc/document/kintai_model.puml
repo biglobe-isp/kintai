@@ -1,8 +1,5 @@
 @startuml
 
-'TODO:すべてのオブジェクトが関連するように
-'TODO:依存関係の線はあってるのか？
-
 package api {
     class Main {
         'パラメータのValidation
@@ -48,28 +45,24 @@ package domain {
         class StartTime <<ValueObject>> {
             TimeUnit startTime
             --
-            'TODO
             boolean isLateness(WorkRegulations workRegulations)
         }
 
         class EndTime <<ValueObject>> {
             TimeUnit endTime
             --
-            'TODO
             boolean isLeaveEarly(WorkRegulations workRegulations)
         }
 
         class BreakTimeHours <<ValueObject>> {
             TimeUnit breakTimeHours
             --
-            'TODO
             TimeUnit get(WorkRegulations workRegulations)
         }
 
         class OverTimeHours <<ValueObject>> {
             TimeUnit overTimeHours
             --
-            'TODO
             TimeUnit get(WorkRegulations workRegulations)
         }
 
@@ -77,7 +70,6 @@ package domain {
             TimeUnit workingHours
             BreakTimeHours breakTimeHours
             --
-            'TODO
             TimeUnit get(WorkRegulations workRegulations)
         }
     }
