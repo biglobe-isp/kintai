@@ -15,15 +15,15 @@ package service {
     }
 
     class MonthlySummaryService <<Service>> {
-        '当月分の集計
-        Optional<MonthlySummary> acquireMonthlyTotal(YearMonth yearMonth)
+        '当月分のAttendance取得 → 集計処理呼び出し
+        List<MonthlySummary> acquireMonthlyTotal(YearMonth yearMonth)
     }
 }
 
 package datasource {
-    class AttendanceRepositoryDb <<Datasource>> {
+    class AttendanceRepositoryCsv <<Datasource>> {
         void save(Attendance attendance)
-        Optional<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
+        List<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
     }
 
     file csv {
@@ -54,53 +54,42 @@ package domain {
             boolean isLeaveEarly(WorkRegulations workRegulations)
         }
 
-        class BreakTimeHours <<ValueObject>> {
-            TimeUnit breakTimeHours
-            --
-            TimeUnit get(WorkRegulations workRegulations)
-        }
-
         class OverTimeHours <<ValueObject>> {
             TimeUnit overTimeHours
             --
-            TimeUnit get(WorkRegulations workRegulations)
+            TimeUnit get(StartTime startTime, EndTime endTime, WorkRegulations workRegulations)
         }
 
         class WorkingHours <<ValueObject>> {
             TimeUnit workingHours
             BreakTimeHours breakTimeHours
             --
-            TimeUnit get(WorkRegulations workRegulations)
+            TimeUnit get(StartTime startTime, EndTime endTime, WorkRegulations workRegulations)
+        }
+
+        class BreakTimeHours <<ValueObject>> {
+            TimeUnit breakTimeHours
+            --
+            TimeUnit get(StartTime startTime, EndTime endTime, WorkRegulations workRegulations)
         }
     }
 
     package WorkRegulations {
-        class EffectiveWorkRegulation <<DomainService>> {
-            WorkRegulationsInformation getEffectiveWorkRegulations()
-        }
 
-        class WorkRegulations <<Entity>> {
-            LocaleDate effectiveDateFrom
-            LocaleTime effectiveDateTo
-            WorkRegulationsInformation workRegulationsInformation
-            --
-            WorkRegulationsInformation getEffectiveWorkRegulations(Date systemDate)
-        }
-
-        class WorkRegulationsInformation <<ValueObject>> {
-            StandardWorkingTime standardWorkingTime
+        class WorkRegulations <<ValueObject>> {
             StartTime startTime
             EndTime endTime
             BreakTimes breakTimes
         }
 
         class StartTimeRange <<ValueObject>> {
+            LocaleTime standardStartTime
             AllowanceTimeRange startTimeRange
         }
 
         class EndTimeRange <<ValueObject>> {
+            LocaleTime standardEndTime
             AllowanceTimeRange endTimeRange
-            LocaleTime maxLimitEndTime
         }
 
         class AllowanceTimeRange <<ValueObject>> {
@@ -113,15 +102,11 @@ package domain {
             TimeRange eveningBreakTime
             TimeRange nightBreakTime
         }
-
-        class StandardWorkingTime <<ValueObject>> {
-            TimeRange standardWorkingTime
-        }
     }
 
     package MonthlySummary {
         class MonthlySummaryCalculator <<DomainService>> {
-            Optional<MonthlySummary>> aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
+            List<MonthlySummary> aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
         }
 
         class MonthlySummary <<ValueObject>> {
@@ -150,38 +135,36 @@ package domain {
 
     interface AttendanceRepository <<Repository>> {
         void save(Attendance attendance)
-        Optional<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
+        List<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
     }
 }
 
 
 '***** 相関関係 *****
-Main ---> AttendanceService
-Main ---> MonthlySummaryService
+Main ---> service : registerAttendance or AcquireMonthlyTotal
+AttendanceService -[hidden]- MonthlySummaryService
 
 AttendanceService --> AttendanceRepository : save
-AttendanceService -> EffectiveWorkRegulation : getEffectiveWorkRegulations
+AttendanceService -> WorkRegulations
 
-EffectiveWorkRegulation ---> WorkRegulations
-
-MonthlySummaryService --> MonthlySummaryCalculator
-MonthlySummaryCalculator -l-> AttendanceRepository : findSpecifiedYearMonth
+MonthlySummaryService --> AttendanceRepository : 1.find
+MonthlySummaryService --> MonthlySummaryCalculator : 2.aggregate
 MonthlySummaryCalculator --> MonthlySummary
 
 AttendanceRepository ---> Attendance
 MonthlySummaryCalculator ---> Attendance
 
-AttendanceRepositoryDb --> csv
+AttendanceRepositoryCsv --> csv
 
 '依存
-StartTime ...> WorkRegulationsInformation
-EndTime ...> WorkRegulationsInformation
-BreakTimeHours ...> WorkRegulationsInformation
-OverTimeHours ...> WorkRegulationsInformation
-WorkingHours ...> WorkRegulationsInformation
+OverTimeHours ...> WorkRegulations
+WorkingHours ...> WorkRegulations
+BreakTimeHours ...> WorkRegulations
+StartTime ...> WorkRegulations
+EndTime ...> WorkRegulations
 
 '実装
-AttendanceRepository <|... AttendanceRepositoryDb
+AttendanceRepository <|... AttendanceRepositoryCsv
 
 '集約
 Attendance *-- StartTime
@@ -189,12 +172,9 @@ Attendance *-- EndTime
 Attendance *-- WorkingHours
 Attendance *-- OverTimeHours
 
-WorkRegulations *-- WorkRegulationsInformation
-
-WorkRegulationsInformation *-- StandardWorkingTime
-WorkRegulationsInformation *-- BreakTimes
-WorkRegulationsInformation *-- StartTimeRange
-WorkRegulationsInformation *-- EndTimeRange
+WorkRegulations *-- BreakTimes
+WorkRegulations *-- StartTimeRange
+WorkRegulations *-- EndTimeRange
 
 'コンポジション(has-a | 強い集約)
 WorkingHours o-- BreakTimeHours
@@ -202,17 +182,7 @@ StartTimeRange o-- AllowanceTimeRange
 EndTimeRange o-- AllowanceTimeRange
 MonthlySummary o-- YearMonth
 
-'TODO:複雑にみえるためいったんコメントアウト
-'StartTime o-- TimeUnit
-'EndTime o-- TimeUnit
-'BreakTimeHours o-- TimeUnit
-'OverTimeHours o-- TimeUnit
-'
-'WorkingHours o-- TimeUnit
-'BreakTimes o-- TimeRange
-
-'StandardWorkingTime o-- TimeRange
-'TimeRange o-- TimeUnit
-
+WorkRegulations -[hidden]- TimeUnit
+WorkRegulations -[hidden]- TimeRange
 
 @enduml
