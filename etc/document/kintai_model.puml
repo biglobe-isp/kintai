@@ -1,5 +1,6 @@
 @startuml
 
+
 package api {
     class Main {
         'パラメータのValidation
@@ -15,6 +16,9 @@ package service {
     }
 
     note as AttendanceServiceNote
+        ※ オブジェクトの生成が依存してしまっている
+        ※ テスト実装してみて必要であれば変更する
+
         ・WorkRegulations生成
         ・Attendance生成
     end note
