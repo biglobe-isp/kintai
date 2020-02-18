@@ -11,12 +11,18 @@ package api {
 package service {
     class AttendanceService <<Service>> {
         '遅刻の場合はNG → 勤務時間の算出 → 登録
-        void registerAttendance(Attendance attendance)
+        void registerAttendance(LocaleDate workDay, AttendanceTime attendanceTime)
     }
+
+    note as AttendanceServiceNote
+        ・WorkRegulations生成
+        ・Attendance生成
+    end note
+    AttendanceServiceNote .. AttendanceService
 
     class MonthlySummaryService <<Service>> {
         '当月分のAttendance取得 → 集計処理呼び出し
-        List<MonthlySummary> acquireMonthlyTotal(YearMonth yearMonth)
+        MonthlySummary acquireMonthlyTotal(YearMonth yearMonth)
     }
 }
 
@@ -36,51 +42,64 @@ package domain {
         class Attendance <<Entity>>{
             LocaleDate workDay
             --
-            StartTime startTime
-            EndTime endTime
+            AttendanceTime attendanceTime
             WorkingHours workingHours
             OverTimeHours overTimeHours
+        }
+
+        class AttendanceTime <<ValueObject>> {
+            StartTime startTime
+            EndTime endTime
+            --
+            + AttendanceTime(StartTime startTime, EndTime endTime)
         }
 
         class StartTime <<ValueObject>> {
             TimeUnit startTime
             --
-            boolean isLateness(WorkRegulations workRegulations)
+            + StartTime(String startTime)
+            + boolean isLateness(WorkRegulations workRegulations)
         }
 
         class EndTime <<ValueObject>> {
             TimeUnit endTime
             --
-            boolean isLeaveEarly(WorkRegulations workRegulations)
+            + EndTime(String endTime)
+            + boolean isLeaveEarly(WorkRegulations workRegulations)
         }
 
         class OverTimeHours <<ValueObject>> {
             TimeUnit overTimeHours
             --
-            TimeUnit get(StartTime startTime, EndTime endTime, WorkRegulations workRegulations)
+            + OverTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
         }
 
         class WorkingHours <<ValueObject>> {
             TimeUnit workingHours
             BreakTimeHours breakTimeHours
             --
-            TimeUnit get(StartTime startTime, EndTime endTime, WorkRegulations workRegulations)
+            + WorkingHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
         }
 
         class BreakTimeHours <<ValueObject>> {
             TimeUnit breakTimeHours
             --
-            TimeUnit get(StartTime startTime, EndTime endTime, WorkRegulations workRegulations)
+            + BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
         }
     }
 
     package WorkRegulations {
 
         class WorkRegulations <<ValueObject>> {
-            StartTime startTime
-            EndTime endTime
+            StartTimeRange startTimeRange
+            EndTimeRange endTimeRange
             BreakTimes breakTimes
         }
+
+        note as WorkRegulationsNote
+            Singleton
+        end note
+        WorkRegulationsNote .. WorkRegulations
 
         class StartTimeRange <<ValueObject>> {
             LocaleTime standardStartTime
@@ -106,7 +125,7 @@ package domain {
 
     package MonthlySummary {
         class MonthlySummaryCalculator <<DomainService>> {
-            List<MonthlySummary> aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
+            MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
         }
 
         class MonthlySummary <<ValueObject>> {
@@ -130,7 +149,7 @@ package domain {
         TimeUnit timeFrom
         TimeUnit timeTo
         --
-        int getRange()
+        int getRangeMinutes()
     }
 
     interface AttendanceRepository <<Repository>> {
@@ -156,19 +175,19 @@ MonthlySummaryCalculator ---> Attendance
 
 AttendanceRepositoryCsv --> csv
 
-'依存
-OverTimeHours ...> WorkRegulations
-WorkingHours ...> WorkRegulations
-BreakTimeHours ...> WorkRegulations
-StartTime ...> WorkRegulations
-EndTime ...> WorkRegulations
+OverTimeHours ---> WorkRegulations
+WorkingHours ---> WorkRegulations
+BreakTimeHours ---> WorkRegulations
+StartTime ---> WorkRegulations
+EndTime ---> WorkRegulations
 
 '実装
 AttendanceRepository <|... AttendanceRepositoryCsv
 
 '集約
-Attendance *-- StartTime
-Attendance *-- EndTime
+Attendance *-- AttendanceTime
+AttendanceTime *-- StartTime
+AttendanceTime *-- EndTime
 Attendance *-- WorkingHours
 Attendance *-- OverTimeHours
 
@@ -176,11 +195,10 @@ WorkRegulations *-- BreakTimes
 WorkRegulations *-- StartTimeRange
 WorkRegulations *-- EndTimeRange
 
-'コンポジション(has-a | 強い集約)
-WorkingHours o-- BreakTimeHours
-StartTimeRange o-- AllowanceTimeRange
-EndTimeRange o-- AllowanceTimeRange
-MonthlySummary o-- YearMonth
+WorkingHours *-- BreakTimeHours
+StartTimeRange --> AllowanceTimeRange
+EndTimeRange --> AllowanceTimeRange
+MonthlySummary --> YearMonth
 
 WorkRegulations -[hidden]- TimeUnit
 WorkRegulations -[hidden]- TimeRange
