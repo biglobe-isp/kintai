@@ -2,7 +2,7 @@
 
 ## 概要
 
-勤怠管理アプリの[既存コード](./kintai_kadai_main.java)を元に
+勤怠管理アプリの[既存コード](src/main/java/com/naosim/dddwork/kintai_kadai_main.java)を元に
 [課題](./kintai_kadai.md)に取り組むためのリポジトリです。
 
 ## 作業手順
