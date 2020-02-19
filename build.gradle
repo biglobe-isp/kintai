@@ -16,11 +16,30 @@ apply plugin: 'io.spring.dependency-management'
 ext {
     lombokVersion = '1.14.8'
 }
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
 repositories {
     mavenCentral()
 
 }
 
+// Spockはgroovyなのでjavaに対応させる
+sourceSets {
+    main {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/main/java']
+        resources {
+            srcDir 'src/main/java'
+        }
+    }
+
+    test {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/test/groovy', 'src/test/java']
+    }
+}
 
 dependencies {
     compile "io.vavr:vavr:0.9.3"
@@ -34,4 +53,5 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compile 'com.google.guava:guava:18.0'
+    testCompile "cglib:cglib-nodep:3.2.5"
 }
