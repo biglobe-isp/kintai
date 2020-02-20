@@ -14,7 +14,8 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 ext {
-    lombokVersion = '1.14.8'
+    // コレ使いたい→https://blog.y-yuki.net/entry/2017/07/03/100000
+    lombokVersion = '1.16.16'
 }
 
 sourceCompatibility = '1.8'

@@ -38,11 +38,15 @@ package datasource {
 
     file csv {
     }
+
+    class WorkRegulationsRepositoryData <<Datasource>> {
+        WorkRegulations getCurrentRegulations()
+    }
 }
 
 package domain {
 
-    package Attendance {
+    package attendance {
         class Attendance <<Entity>>{
             LocaleDate workDay
             --
@@ -92,7 +96,7 @@ package domain {
         }
     }
 
-    package WorkRegulations {
+    package workregulations {
 
         class WorkRegulations <<ValueObject>> {
             StartTimeRange startTimeRange
@@ -100,24 +104,20 @@ package domain {
             BreakTimes breakTimes
         }
 
-        note as WorkRegulationsNote
-            Singleton
-        end note
-        WorkRegulationsNote .. WorkRegulations
 
         class StartTimeRange <<ValueObject>> {
-            LocaleTime standardStartTime
+            LocalTime standardStartTime
             AllowanceTimeRange startTimeRange
         }
 
         class EndTimeRange <<ValueObject>> {
-            LocaleTime standardEndTime
+            LocalTime standardEndTime
             AllowanceTimeRange endTimeRange
         }
 
         class AllowanceTimeRange <<ValueObject>> {
-            LocaleTime minTime
-            LocaleTime maxTime
+            LocalTime minTime
+            LocalTime maxTime
         }
 
         class BreakTimes <<ValueObject>> {
@@ -127,7 +127,7 @@ package domain {
         }
     }
 
-    package MonthlySummary {
+    package monthlysummary {
         class MonthlySummaryCalculator <<DomainService>> {
             MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
         }
@@ -160,6 +160,10 @@ package domain {
         void save(Attendance attendance)
         List<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
     }
+
+    interface WorkRegulationsRepository <<Repository>> {
+        WorkRegulations getCurrentRegulations()
+    }
 }
 
 
@@ -168,7 +172,7 @@ Main ---> service : registerAttendance or AcquireMonthlyTotal
 AttendanceService -[hidden]- MonthlySummaryService
 
 AttendanceService --> AttendanceRepository : save
-AttendanceService -> WorkRegulations
+AttendanceService --> WorkRegulationsRepository
 
 MonthlySummaryService --> AttendanceRepository : 1.find
 MonthlySummaryService --> MonthlySummaryCalculator : 2.aggregate
@@ -176,6 +180,7 @@ MonthlySummaryCalculator --> MonthlySummary
 
 AttendanceRepository ---> Attendance
 MonthlySummaryCalculator ---> Attendance
+WorkRegulationsRepository ---> WorkRegulations
 
 AttendanceRepositoryCsv --> csv
 
@@ -187,6 +192,7 @@ EndTime ---> WorkRegulations
 
 '実装
 AttendanceRepository <|... AttendanceRepositoryCsv
+WorkRegulationsRepository <|... WorkRegulationsRepositoryData
 
 '集約
 Attendance *-- AttendanceTime
