@@ -9,6 +9,7 @@ public class BreakTimeHours {
     TimeUnit breakTimeHours;
 
     public BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations){
+        // TODO:未実装
         breakTimeHours = null;
     }
 }
