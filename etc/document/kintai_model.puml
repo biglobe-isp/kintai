@@ -106,13 +106,13 @@ package domain {
 
 
         class StartTimeRange <<ValueObject>> {
-            LocalTime standardStartTime
-            AllowanceTimeRange startTimeRange
+            LocalTime standard
+            AllowanceTimeRange range
         }
 
         class EndTimeRange <<ValueObject>> {
-            LocalTime standardEndTime
-            AllowanceTimeRange endTimeRange
+            LocalTime standard
+            AllowanceTimeRange range
         }
 
         class AllowanceTimeRange <<ValueObject>> {

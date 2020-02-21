@@ -8,25 +8,27 @@ import com.naosim.dddwork.domain.workregulations.BreakTimes;
 import com.naosim.dddwork.domain.workregulations.EndTimeRange;
 import com.naosim.dddwork.domain.workregulations.StartTimeRange;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 
+@Component
 public class WorkRegulationsRepositoryData implements WorkRegulationsRepository {
 
     @Override
     public WorkRegulations getCurrentRegulations() {
 
         final StartTimeRange startTimeRange = StartTimeRange.builder()
-                .standardStartTime(LocalTime.of(9, 0))
+                .standard(LocalTime.of(9, 0))
                 // 早出可、遅刻は不可、フレックスなし
-                .startTimeRange(AllowanceTimeRange.of(LocalTime.of(6, 0),
+                .range(AllowanceTimeRange.of(LocalTime.of(6, 0),
                                                       LocalTime.of(9, 0)))
                 .build();
 
         final EndTimeRange endTimeRange = EndTimeRange.builder()
-                .standardEndTime(LocalTime.of(18, 0))
+                .standard(LocalTime.of(18, 0))
                 // 早退は可能
-                .endTimeRange(AllowanceTimeRange.of(LocalTime.of(9, 0),
+                .range(AllowanceTimeRange.of(LocalTime.of(9, 0),
                                                     LocalTime.of(18, 0)))
                 .build();
 

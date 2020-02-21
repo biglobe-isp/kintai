@@ -8,6 +8,6 @@ import java.time.LocalTime;
 @Builder
 @Value
 public class EndTimeRange {
-    LocalTime standardEndTime;
-    AllowanceTimeRange endTimeRange;
+    LocalTime standard;
+    AllowanceTimeRange range;
 }
