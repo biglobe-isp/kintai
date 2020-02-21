@@ -4,7 +4,7 @@ import lombok.Value;
 
 import java.time.LocalTime;
 
-@Value
+@Value(staticConstructor="of")
 public class AllowanceTimeRange {
     LocalTime minTime;
     LocalTime maxTime;

@@ -10,17 +10,17 @@ class TimeRangeSpec extends Specification {
     @Unroll
     def "通常の算出"() {
         setup:
-        def timeUnitFrom = new TimeUnit(inputTimeFrom)
-        def timeUnitTo = new TimeUnit(inputTimeTo)
-        def timeRange = new TimeRange(timeUnitFrom, timeUnitTo)
+        def timeUnitFrom = TimeUnit.of(fromHours, fromMinutes)
+        def timeUnitTo = TimeUnit.of(toHours, toMinutes)
+        def timeRange = TimeRange.of(timeUnitFrom, timeUnitTo)
 
         expect:
         expectedValue == timeRange.getRangeMinutes()
 
         where:
-        inputTimeFrom | inputTimeTo || expectedValue
-        "0900"        | "1800"      || 540
-        "0900"        | "0859"      || 0
-        "0000"        | "2959"      || 1799
+        fromHours | fromMinutes | toHours | toMinutes || expectedValue
+        9         | 0           | 18      | 0         || 540
+        9         | 0           | 8       | 59        || 0
+        0         | 0           | 29      | 59        || 1799
     }
 }

@@ -2,7 +2,7 @@ package com.naosim.dddwork.domain;
 
 import lombok.Value;
 
-@Value
+@Value(staticConstructor="of")
 public class TimeRange {
     TimeUnit timeFrom;
     TimeUnit timeTo;
