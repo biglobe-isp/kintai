@@ -1,6 +1,5 @@
 @startuml
 
-
 package api {
     class Main {
         'パラメータのValidation
@@ -63,34 +62,33 @@ package domain {
         }
 
         class StartTime <<ValueObject>> {
-            TimeUnit startTime
+            LocalTime localTime
             --
             + StartTime(String startTime)
             + boolean isLateness(WorkRegulations workRegulations)
         }
 
         class EndTime <<ValueObject>> {
-            TimeUnit endTime
+            LocalTime localTime
             --
             + EndTime(String endTime)
             + boolean isLeaveEarly(WorkRegulations workRegulations)
         }
 
         class OverTimeHours <<ValueObject>> {
-            TimeUnit overTimeHours
+            TimeUnit timeUnit;
             --
-            + OverTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
+            + OverTimeHours(WorkingHours workingHours, WorkRegulations workRegulations)
         }
 
         class WorkingHours <<ValueObject>> {
-            TimeUnit workingHours
-            BreakTimeHours breakTimeHours
+            TimeUnit timeUnit
             --
-            + WorkingHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
+            + WorkingHours(AttendanceTime attendanceTime, BreakTimeHours breakTimeHours, WorkRegulations workRegulations)
         }
 
         class BreakTimeHours <<ValueObject>> {
-            TimeUnit breakTimeHours
+            TimeUnit timeUnit
             --
             + BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
         }
@@ -107,17 +105,12 @@ package domain {
 
         class StartTimeRange <<ValueObject>> {
             LocalTime standard
-            AllowanceTimeRange range
+            TimeRange range
         }
 
         class EndTimeRange <<ValueObject>> {
             LocalTime standard
-            AllowanceTimeRange range
-        }
-
-        class AllowanceTimeRange <<ValueObject>> {
-            LocalTime minTime
-            LocalTime maxTime
+            TimeRange range
         }
 
         class BreakTimes <<ValueObject>> {
@@ -150,8 +143,8 @@ package domain {
     }
 
     class TimeRange <<ValueObject>> {
-        TimeUnit timeFrom
-        TimeUnit timeTo
+        LocalDate timeFrom
+        LocalDate timeTo
         --
         int getRangeMinutes()
     }
@@ -206,8 +199,6 @@ WorkRegulations *-- StartTimeRange
 WorkRegulations *-- EndTimeRange
 
 WorkingHours *-- BreakTimeHours
-StartTimeRange --> AllowanceTimeRange
-EndTimeRange --> AllowanceTimeRange
 MonthlySummary --> YearMonth
 
 WorkRegulations -[hidden]- TimeUnit

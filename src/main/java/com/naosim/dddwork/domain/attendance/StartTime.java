@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain.attendance;
 
-import com.naosim.dddwork.domain.TimeUnit;
+import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import lombok.Value;
 
@@ -8,11 +8,12 @@ import java.time.LocalTime;
 
 @Value(staticConstructor="of")
 public class StartTime {
-    TimeUnit startTime;
+    TimePoint timePoint;
 
     public boolean isLateness(WorkRegulations workRegulations) {
-        LocalTime maxTime = workRegulations.getStartTimeRange().getRange().getMaxTime();
-        LocalTime compareTime = LocalTime.of(startTime.getHour(), startTime.getMinutes());
+        TimePoint maxTimePoint = workRegulations.getStartTimeRange().getRange().getTimeTo();
+        LocalTime maxTime = LocalTime.of(maxTimePoint.getHour(), maxTimePoint.getMinutes());
+        LocalTime compareTime = LocalTime.of(this.timePoint.getHour(), this.timePoint.getMinutes());
 
         return maxTime.compareTo(compareTime) < 0;
     }
