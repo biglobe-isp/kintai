@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 public class WorkingHours {
      TimeUnit timeUnit;
-
+     
      public static WorkingHours of(AttendanceTime attendanceTime, BreakTimeHours breakTimeHours) {
         return new WorkingHours(attendanceTime, breakTimeHours);
      }
