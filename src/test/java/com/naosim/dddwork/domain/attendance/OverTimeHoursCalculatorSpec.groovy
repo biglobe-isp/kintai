@@ -1,5 +1,7 @@
 package com.naosim.dddwork.domain.attendance
 
+import com.naosim.dddwork.domain.IOverTimeHoursCalculator
+import com.naosim.dddwork.domain.IWorkingHoursCalculator
 import com.naosim.dddwork.domain.TimePoint
 import com.naosim.dddwork.domain.WorkRegulationsRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,10 +10,16 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class OverTimeHoursSpec extends Specification{
+class OverTimeHoursCalculatorSpec extends Specification{
 
     @Autowired
     private WorkRegulationsRepository workRegulationsRepository
+
+    @Autowired
+    private IWorkingHoursCalculator iWorkingHoursCalculator;
+
+    @Autowired
+    private IOverTimeHoursCalculator iOverTimeHoursCalculator;
 
     @Unroll
     def "残業時間算出"() {
@@ -20,12 +28,11 @@ class OverTimeHoursSpec extends Specification{
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
         def attendanceTime = AttendanceTime.of(startTime, endTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
-        def breakTimeHours = BreakTimeHours.of(attendanceTime, workRegulations)
-        def workingHours = WorkingHours.of(attendanceTime, breakTimeHours)
-        def overTimeHours = OverTimeHours.of(workingHours, workRegulations);
+        def workingHours = iWorkingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);
+        def overTimeHours = iOverTimeHoursCalculator.calcOverTimeHours(workingHours, workRegulations);
 
         expect:
-        expectedOverTimeMinutes == overTimeHours.getTimeUnit().getTotalMinutes()
+        expectedOverTimeMinutes == overTimeHours.getTotalMinutes()
 
         where:
         startHours | startMinutes | endHours | endMinutes || expectedOverTimeMinutes
@@ -35,7 +42,7 @@ class OverTimeHoursSpec extends Specification{
         9          | 0            | 20       | 0          || 60
         8          | 0            | 20       | 0          || 120
         9          | 0            | 21       | 0          || 120
-        9          | 0            | 23       | 0          || 120
+        9          | 0            | 23       | 0          || 180
         9          | 0            | 23       | 59         || 239
         9          | 0            | 24       | 00         || 240
         9          | 0            | 25       | 00         || 240

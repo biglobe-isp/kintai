@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain.attendance
 
+import com.naosim.dddwork.domain.IWorkingHoursCalculator
 import com.naosim.dddwork.domain.TimePoint
 import com.naosim.dddwork.domain.WorkRegulationsRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,10 +9,13 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class WorkingHoursSpec extends Specification{
+class WorkingHoursCalculatorSpec extends Specification{
 
     @Autowired
     private WorkRegulationsRepository workRegulationsRepository
+
+    @Autowired
+    private IWorkingHoursCalculator iWorkingHoursCalculator;
 
     @Unroll
     def "勤務時間算出"() {
@@ -20,12 +24,11 @@ class WorkingHoursSpec extends Specification{
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
         def attendanceTime = AttendanceTime.of(startTime, endTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
-        def breakTimeHours = BreakTimeHours.of(attendanceTime, workRegulations)
 
-        def workingHours = WorkingHours.of(attendanceTime, breakTimeHours)
+        def workingHours = iWorkingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);
 
         expect:
-        expectedWorkingTimeMinutes == workingHours.getTimeUnit().getTotalMinutes()
+        expectedWorkingTimeMinutes == workingHours.getTotalMinutes()
 
         where:
         startHours | startMinutes | endHours | endMinutes || expectedWorkingTimeMinutes

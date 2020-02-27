@@ -14,15 +14,6 @@ package service {
         void registerAttendance(LocaleDate workDay, AttendanceTime attendanceTime)
     }
 
-    note as AttendanceServiceNote
-        ※ オブジェクトの生成が依存してしまっている
-        ※ テスト実装してみて必要であれば変更する
-
-        ・WorkRegulations生成
-        ・Attendance生成
-    end note
-    AttendanceServiceNote .. AttendanceService
-
     class MonthlySummaryService <<Service>> {
         '当月分のAttendance取得 → 集計処理呼び出し
         MonthlySummary acquireMonthlyTotal(YearMonth yearMonth)
@@ -46,12 +37,16 @@ package datasource {
 package domain {
 
     package attendance {
+        class AttendanceFactory {
+            Attendance create()
+        }
+
         class Attendance <<Entity>>{
             LocaleDate workDay
             --
             AttendanceTime attendanceTime
-            WorkingHours workingHours
-            OverTimeHours overTimeHours
+            TimeUnit workingHours
+            TimeUnit overTimeHours
         }
 
         class AttendanceTime <<ValueObject>> {
@@ -75,22 +70,18 @@ package domain {
             + boolean isLeaveEarly(WorkRegulations workRegulations)
         }
 
-        class OverTimeHours <<ValueObject>> {
-            TimeUnit timeUnit;
-            --
-            + OverTimeHours(WorkingHours workingHours, WorkRegulations workRegulations)
-        }
-
-        class WorkingHours <<ValueObject>> {
-            TimeUnit timeUnit
-            --
-            + WorkingHours(AttendanceTime attendanceTime, BreakTimeHours breakTimeHours, WorkRegulations workRegulations)
-        }
-
         class BreakTimeHours <<ValueObject>> {
             TimeUnit timeUnit
             --
             + BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
+        }
+
+        class WorkingHoursCalculator {
+            TimeUnit calc();
+        }
+
+        class OvertimeHoursCalculator {
+            TimeUnit calc();
         }
     }
 
@@ -101,7 +92,6 @@ package domain {
             EndTimeRange endTimeRange
             BreakTimes breakTimes
         }
-
 
         class StartTimeRange <<ValueObject>> {
             LocalTime standard
@@ -137,6 +127,11 @@ package domain {
         }
     }
 
+    class TimePoint <<ValueObject>> {
+        int hour
+        int minutes
+    }
+
     class TimeUnit <<ValueObject>> {
         int hour
         int minutes
@@ -147,6 +142,18 @@ package domain {
         LocalDate timeTo
         --
         int getRangeMinutes()
+    }
+
+    interface IAttendanceFactory {
+        Attendance create()
+    }
+
+    interface IWorkingHoursCalculator {
+        TimeUnit calc();
+    }
+
+    interface IOverTimeHoursCalculator {
+        TimeUnit calc();
     }
 
     interface AttendanceRepository <<Repository>> {
@@ -164,21 +171,25 @@ package domain {
 Main ---> service : registerAttendance or AcquireMonthlyTotal
 AttendanceService -[hidden]- MonthlySummaryService
 
+AttendanceService --> IAttendanceFactory
+IAttendanceFactory --> IWorkingHoursCalculator
+IAttendanceFactory --> IOverTimeHoursCalculator
 AttendanceService --> AttendanceRepository : save
 AttendanceService --> WorkRegulationsRepository
+
+WorkingHoursCalculator --> BreakTimeHours
 
 MonthlySummaryService --> AttendanceRepository : 1.find
 MonthlySummaryService --> MonthlySummaryCalculator : 2.aggregate
 MonthlySummaryCalculator --> MonthlySummary
 
-AttendanceRepository ---> Attendance
-MonthlySummaryCalculator ---> Attendance
+AttendanceRepository ---> IAttendanceFactory
+MonthlySummaryCalculator ---> IAttendanceFactory
+AttendanceFactory ---> Attendance
 WorkRegulationsRepository ---> WorkRegulations
 
 AttendanceRepositoryCsv --> csv
 
-OverTimeHours ---> WorkRegulations
-WorkingHours ---> WorkRegulations
 BreakTimeHours ---> WorkRegulations
 StartTime ---> WorkRegulations
 EndTime ---> WorkRegulations
@@ -186,19 +197,19 @@ EndTime ---> WorkRegulations
 '実装
 AttendanceRepository <|... AttendanceRepositoryCsv
 WorkRegulationsRepository <|... WorkRegulationsRepositoryData
+IAttendanceFactory <|... AttendanceFactory
+IWorkingHoursCalculator <|... WorkingHoursCalculator
+IOverTimeHoursCalculator <|... OvertimeHoursCalculator
 
 '集約
 Attendance *-- AttendanceTime
 AttendanceTime *-- StartTime
 AttendanceTime *-- EndTime
-Attendance *-- WorkingHours
-Attendance *-- OverTimeHours
 
 WorkRegulations *-- BreakTimes
 WorkRegulations *-- StartTimeRange
 WorkRegulations *-- EndTimeRange
 
-WorkingHours *-- BreakTimeHours
 MonthlySummary --> YearMonth
 
 WorkRegulations -[hidden]- TimeUnit
