@@ -10,6 +10,8 @@ import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class WorkRegulationsRepositoryData implements WorkRegulationsRepository {
@@ -31,13 +33,19 @@ public class WorkRegulationsRepositoryData implements WorkRegulationsRepository 
                                     TimePoint.of(18, 0)))
                 .build();
 
+        List<TimeRange> breakTimesList = new ArrayList<>();
+        TimeRange lunchBreakTime = TimeRange.of(TimePoint.of(12, 0),
+                                                TimePoint.of(13, 0));
+        breakTimesList.add(lunchBreakTime);
+        TimeRange eveningBreakTime = TimeRange.of(TimePoint.of(18, 0),
+                                                  TimePoint.of(19, 0));
+        breakTimesList.add(eveningBreakTime);
+        TimeRange nightBreakTime = TimeRange.of(TimePoint.of(21, 0),
+                                                TimePoint.of(22, 0));
+        breakTimesList.add(nightBreakTime);
+
         final BreakTimes breakTimes = BreakTimes.builder()
-                .lunchBreakTime(TimeRange.of(TimePoint.of(12, 0),
-                                             TimePoint.of(13, 0)))
-                .eveningBreakTime(TimeRange.of(TimePoint.of(18, 0),
-                                               TimePoint.of(19, 0)))
-                .nightBreakTime(TimeRange.of(TimePoint.of(21, 0),
-                                             TimePoint.of(22, 0)))
+                .list(breakTimesList)
                 .build();
 
         return WorkRegulations.builder()

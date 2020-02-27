@@ -18,10 +18,7 @@ public class BreakTimeHours {
     }
 
     private BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations){
-        List<TimeRange> list = new ArrayList<>();
-        list.add(workRegulations.getBreakTimes().getLunchBreakTime());
-        list.add(workRegulations.getBreakTimes().getEveningBreakTime());
-        list.add(workRegulations.getBreakTimes().getNightBreakTime());
+        List<TimeRange> list = workRegulations.getBreakTimes().getList();
 
         int breakTimeMinutes = 0;
         for (TimeRange timeRange : list) {

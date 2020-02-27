@@ -104,9 +104,7 @@ package domain {
         }
 
         class BreakTimes <<ValueObject>> {
-            TimeRange lunchBreakTime
-            TimeRange eveningBreakTime
-            TimeRange nightBreakTime
+            List<TimeRange> list
         }
     }
 

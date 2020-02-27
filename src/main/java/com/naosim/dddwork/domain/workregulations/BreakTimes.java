@@ -4,10 +4,10 @@ import com.naosim.dddwork.domain.TimeRange;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.List;
+
 @Builder
 @Value
 public class BreakTimes {
-    TimeRange lunchBreakTime;
-    TimeRange eveningBreakTime;
-    TimeRange nightBreakTime;
+    List<TimeRange> list;
 }
