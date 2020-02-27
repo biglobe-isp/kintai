@@ -16,22 +16,6 @@ class EndTimeSpec extends Specification {
     private WorkRegulationsRepository workRegulationsRepository
 
     @Unroll
-    def "早退判断"() {
-        setup:
-        def endTime = EndTime.of(TimePoint.of(hours, minutes))
-        def workRegulations = workRegulationsRepository.getCurrentRegulations()
-
-        expect:
-        expectedValue == endTime.isLeaveEarly(workRegulations)
-
-        where:
-        hours | minutes || expectedValue
-        18    | 1       || false
-        18    | 0       || false
-        17    | 59      || true
-    }
-
-    @Unroll
     def "みなし終了時刻取得"() {
         setup:
         def endTime = EndTime.of(TimePoint.of(hours, minutes))

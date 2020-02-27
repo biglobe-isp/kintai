@@ -11,7 +11,7 @@ package api {
 package service {
     class AttendanceService <<Service>> {
         '遅刻の場合はNG → 勤務時間の算出 → 登録
-        void registerAttendance(LocaleDate workDay, AttendanceTime attendanceTime)
+        void registerAttendance(Attendance attendance)
     }
 
     class MonthlySummaryService <<Service>> {
@@ -39,14 +39,19 @@ package domain {
     package attendance {
         class AttendanceFactory {
             Attendance create()
+            boolean isLateness(WorkRegulations workRegulations)
         }
 
         class Attendance <<Entity>>{
-            LocaleDate workDay
+            WorkDay workDay
             --
             AttendanceTime attendanceTime
             TimeUnit workingHours
             TimeUnit overTimeHours
+        }
+
+        class WorkDay <<ValueObject>> {
+            LocalDate date
         }
 
         class AttendanceTime <<ValueObject>> {
@@ -60,14 +65,12 @@ package domain {
             LocalTime localTime
             --
             + StartTime(String startTime)
-            + boolean isLateness(WorkRegulations workRegulations)
         }
 
         class EndTime <<ValueObject>> {
             LocalTime localTime
             --
             + EndTime(String endTime)
-            + boolean isLeaveEarly(WorkRegulations workRegulations)
         }
 
         class BreakTimeHours <<ValueObject>> {
@@ -167,13 +170,14 @@ package domain {
 
 '***** 相関関係 *****
 Main ---> service : registerAttendance or AcquireMonthlyTotal
+Main ---> IAttendanceFactory
+Main ---> WorkRegulationsRepository
+
 AttendanceService -[hidden]- MonthlySummaryService
 
-AttendanceService --> IAttendanceFactory
 IAttendanceFactory --> IWorkingHoursCalculator
 IAttendanceFactory --> IOverTimeHoursCalculator
 AttendanceService --> AttendanceRepository : save
-AttendanceService --> WorkRegulationsRepository
 
 WorkingHoursCalculator --> BreakTimeHours
 
@@ -203,6 +207,7 @@ IOverTimeHoursCalculator <|... OvertimeHoursCalculator
 Attendance *-- AttendanceTime
 AttendanceTime *-- StartTime
 AttendanceTime *-- EndTime
+Attendance *-- WorkDay
 
 WorkRegulations *-- BreakTimes
 WorkRegulations *-- StartTimeRange

@@ -2,7 +2,13 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.IAttendanceFactory;
+import com.naosim.dddwork.domain.TimePoint;
+import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.Attendance;
+import com.naosim.dddwork.domain.attendance.AttendanceTime;
+import com.naosim.dddwork.domain.attendance.EndTime;
+import com.naosim.dddwork.domain.attendance.StartTime;
+import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,7 +39,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             File file = getCsvFile();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-            String workday = attendance.getWorkDay().format(formatter);
+            String workday = attendance.getWorkDay().getDate().format(formatter);
             String start = attendance.getAttendanceTime().getStartTime().getTimePoint().toString();
             String end = attendance.getAttendanceTime().getEndTime().getTimePoint().toString();
             String workingHours = String.valueOf(attendance.getWorkingHours().getTotalMinutes());
@@ -73,9 +79,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                         continue;
                     }
 
-                    attendanceList.add(iAttendanceFactory.createFromCsv(
-                            columns[0], columns[1], columns[2], columns[4], columns[4]
-                    ));
+                    attendanceList.add(generateAttendance(
+                            columns[0], columns[1], columns[2], columns[3], columns[4]));
 
                     line = br.readLine();
                 }
@@ -88,5 +93,18 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private static File getCsvFile() {
         return new File("data.csv");
+    }
+
+    private Attendance generateAttendance(String workD, String start, String end, String workingH, String OverTimeH) {
+        WorkDay workDay = WorkDay.of(workD);
+
+        TimePoint startTime = TimePoint.of(start);
+        TimePoint endTime = TimePoint.of(end);
+        AttendanceTime attendanceTime = AttendanceTime.of(StartTime.of(startTime), EndTime.of(endTime));
+
+        TimeUnit workingHours = TimeUnit.of(Integer.parseInt(workingH));
+        TimeUnit overTimeHours = TimeUnit.of(Integer.parseInt(OverTimeH));
+
+        return iAttendanceFactory.createFromCsv(workDay, attendanceTime, workingHours, overTimeHours);
     }
 }

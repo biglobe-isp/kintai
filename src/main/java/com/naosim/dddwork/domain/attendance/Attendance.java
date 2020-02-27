@@ -5,14 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
-import java.time.LocalDate;
-
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Attendance {
 
     @Getter
-    private final LocalDate workDay;
+    private final WorkDay workDay;
 
     @Getter
     private AttendanceTime attendanceTime;

@@ -20,8 +20,8 @@ public class TimePoint {
 
     public static TimePoint of(String hourMinutes) {
         String value = Strings.padStart(hourMinutes, 4, '0');
-        int hour = Integer.getInteger(value.substring(0, 1));
-        int minutes = Integer.getInteger(value.substring(2));
+        int hour = Integer.parseInt(value.substring(0, 1));
+        int minutes = Integer.parseInt(value.substring(2));
         return new TimePoint(hour, minutes);
     }
 

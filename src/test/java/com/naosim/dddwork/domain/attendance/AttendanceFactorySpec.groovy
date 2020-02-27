@@ -1,33 +1,36 @@
 package com.naosim.dddwork.domain.attendance
 
+import com.naosim.dddwork.domain.IAttendanceFactory
 import com.naosim.dddwork.domain.TimePoint
+import com.naosim.dddwork.domain.TimeUnit
 import com.naosim.dddwork.domain.WorkRegulationsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.LocalTime
-
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class StartTimeSpec extends Specification{
+class AttendanceFactorySpec extends Specification{
 
     @Autowired
     private WorkRegulationsRepository workRegulationsRepository
 
+    @Autowired
+    private IAttendanceFactory iAttendanceFactory;
+
     @Unroll
-    def "遅刻判断"() {
+    def "遅刻はAttendance生成しない"() {
         setup:
-        def startTime = StartTime.of(TimePoint.of(hours, minutes))
+        def workDay = WorkDay.of("20200301");
+        def attendanceTime = AttendanceTime.of(StartTime.of(TimePoint.of(hours, minutes)),
+                                               EndTime.of(TimePoint.of(18, 0)))
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
 
         expect:
-        expectedValue == startTime.isLateness(workRegulations)
+        expectedValue == iAttendanceFactory.createForRegister(workDay, attendanceTime, workRegulations);
 
         where:
         hours | minutes || expectedValue
-        9     | 0       || false
-        9     | 1       || true
-        8     | 59      || false
+        9     | 1       || null
     }
 }
