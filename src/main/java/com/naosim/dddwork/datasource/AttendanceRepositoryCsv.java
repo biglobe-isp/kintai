@@ -11,7 +11,7 @@ import com.naosim.dddwork.domain.attendance.StartTime;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     private final IAttendanceFactory iAttendanceFactory;

@@ -1,10 +1,6 @@
 package com.naosim.dddwork.api;
 
-import com.google.common.base.Strings;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SpringBootApplication
 public class Main {
@@ -12,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
         com.naosim.dddwork.Main oldMain = new com.naosim.dddwork.Main();
         oldMain.main(args);
-        System.out.println("finished kintai registration!");
     }
 
 

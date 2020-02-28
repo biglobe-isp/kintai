@@ -5,7 +5,6 @@ import com.naosim.dddwork.domain.IOverTimeHoursCalculator;
 import com.naosim.dddwork.domain.IWorkingHoursCalculator;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
-import com.naosim.dddwork.domain.WorkRegulationsRepository;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

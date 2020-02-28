@@ -6,7 +6,7 @@ import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import lombok.Value;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Value
@@ -28,20 +28,31 @@ public class BreakTimeHours {
         this.timeUnit = TimeUnit.of(breakTimeMinutes);
     }
 
-    private int getIncludedBreakTime(AttendanceTime attendanceTime, TimeRange breakTime) {
-        LocalTime endTime;
-        if (attendanceTime.getEndTime().isExceedLimitTime()) {
-            endTime = LocalTime.MAX;
-        } else {
-            endTime = attendanceTime.getEndTime().getTimePoint().getLocalTime();
+    private int getIncludedBreakTime(AttendanceTime attendanceTime, TimeRange breakTimeRange) {
+        LocalTime breakStartTime = breakTimeRange.getTimeFrom().getLocalTime();
+        LocalTime breakEndTime = breakTimeRange.getTimeTo().getLocalTime();
+
+        LocalTime attendanceStartTime = attendanceTime.getStartTime().getTimePoint().getLocalTime();
+        LocalTime attendanceEndTime = attendanceTime.getEndTime().getLastTimeOnTheDay();
+
+        if (attendanceEndTime.compareTo(breakStartTime) < 0) {
+            return 0;
         }
 
-        // 遅刻NGのため終了時刻のみで判断する
-        if (endTime.getHour() == breakTime.getTimeFrom().getHour()) {
-            return endTime.getMinute();
-        } else if(endTime.getHour() >= breakTime.getTimeTo().getHour()) {
-            return breakTime.getRangeMinutes();
+        LocalTime targetStartTime;
+        if (attendanceStartTime.compareTo(breakStartTime) > 0) {
+            targetStartTime = attendanceStartTime;
+        } else {
+            targetStartTime = breakStartTime;
         }
-        return 0;
+
+        LocalTime targetEndTime;
+        if (attendanceEndTime.compareTo(breakEndTime) > 0) {
+            targetEndTime = breakEndTime;
+        } else {
+            targetEndTime = attendanceEndTime;
+        }
+
+        return (int) ChronoUnit.MINUTES.between(targetStartTime, targetEndTime);
     }
 }

@@ -23,4 +23,12 @@ public class EndTime {
             return this.timePoint;
         }
     }
+
+    public LocalTime getLastTimeOnTheDay() {
+        if (isExceedLimitTime()) {
+            return LocalTime.MAX;
+        } else {
+            return LocalTime.of(this.timePoint.getHour(), this.timePoint.getMinutes());
+        }
+    }
 }

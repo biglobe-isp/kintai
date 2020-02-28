@@ -7,13 +7,13 @@ import com.naosim.dddwork.domain.workregulations.BreakTimes;
 import com.naosim.dddwork.domain.workregulations.EndTimeRange;
 import com.naosim.dddwork.domain.workregulations.StartTimeRange;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class WorkRegulationsRepositoryData implements WorkRegulationsRepository {
 
     @Override

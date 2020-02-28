@@ -139,8 +139,8 @@ package domain {
     }
 
     class TimeRange <<ValueObject>> {
-        LocalDate timeFrom
-        LocalDate timeTo
+        TimePoint timeFrom
+        TimePoint timeTo
         --
         int getRangeMinutes()
     }
@@ -169,7 +169,8 @@ package domain {
 
 
 '***** 相関関係 *****
-Main ---> service : registerAttendance or AcquireMonthlyTotal
+Main ---> AttendanceService
+Main ---> MonthlySummaryService
 Main ---> IAttendanceFactory
 Main ---> WorkRegulationsRepository
 
