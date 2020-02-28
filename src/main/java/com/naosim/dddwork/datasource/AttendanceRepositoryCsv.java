@@ -67,12 +67,9 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                     BufferedReader br = new BufferedReader(fr);
             ) {
                 String line = br.readLine();
-                System.out.println("line:" + line);
 
                 while (line != null) {
                     String[] columns = line.split(",");
-                    System.out.println("columns[0]:" + columns[0]);
-                    System.out.println("yearMonth:" + yearMonth);
 
                     if (!columns[0].startsWith(yearMonth.toString())) {
                         line = br.readLine();

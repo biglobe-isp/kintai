@@ -1,9 +1,7 @@
 package com.naosim.dddwork.api
 
-import com.naosim.dddwork.domain.TimeUnit
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
-import spock.lang.Unroll
 
 @SpringBootTest
 class MainSpec extends Specification {
