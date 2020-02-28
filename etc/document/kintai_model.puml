@@ -118,8 +118,8 @@ package domain {
 
         class MonthlySummary <<ValueObject>> {
             YearMonth workMonth
-            int workingHours
-            int overTimeHours
+            TimeUnit workingHours
+            TimeUnit overTimeHours
         }
 
         class YearMonth <<ValueObject>> {
@@ -157,6 +157,10 @@ package domain {
         TimeUnit calc();
     }
 
+    interface IMonthlySummaryCalculator {
+        MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
+    }
+
     interface AttendanceRepository <<Repository>> {
         void save(Attendance attendance)
         List<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
@@ -182,8 +186,8 @@ AttendanceService --> AttendanceRepository : save
 
 WorkingHoursCalculator --> BreakTimeHours
 
-MonthlySummaryService --> AttendanceRepository : 1.find
-MonthlySummaryService --> MonthlySummaryCalculator : 2.aggregate
+MonthlySummaryService --> IMonthlySummaryCalculator
+IMonthlySummaryCalculator --> AttendanceRepository
 MonthlySummaryCalculator --> MonthlySummary
 
 AttendanceRepository ---> IAttendanceFactory
@@ -203,6 +207,7 @@ WorkRegulationsRepository <|... WorkRegulationsRepositoryData
 IAttendanceFactory <|... AttendanceFactory
 IWorkingHoursCalculator <|... WorkingHoursCalculator
 IOverTimeHoursCalculator <|... OvertimeHoursCalculator
+IMonthlySummaryCalculator <|... MonthlySummaryCalculator
 
 '集約
 Attendance *-- AttendanceTime
@@ -218,5 +223,6 @@ MonthlySummary --> YearMonth
 
 WorkRegulations -[hidden]- TimeUnit
 WorkRegulations -[hidden]- TimeRange
+WorkRegulations -[hidden]- TimePoint
 
 @enduml
