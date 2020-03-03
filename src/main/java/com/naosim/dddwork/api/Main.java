@@ -1,9 +1,19 @@
 package com.naosim.dddwork.api;
 
 import com.google.common.base.Strings;
+import com.naosim.dddwork.domain.IAttendanceFactory;
+import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
+import com.naosim.dddwork.domain.WorkRegulationsRepository;
+import com.naosim.dddwork.domain.attendance.Attendance;
+import com.naosim.dddwork.domain.attendance.AttendanceTime;
+import com.naosim.dddwork.domain.attendance.EndTime;
+import com.naosim.dddwork.domain.attendance.StartTime;
+import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.monthlysummary.MonthlySummary;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
+import com.naosim.dddwork.domain.workregulations.WorkRegulations;
+import com.naosim.dddwork.service.AttendanceService;
 import com.naosim.dddwork.service.MonthlySummaryService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,7 +55,42 @@ public class Main {
     }
 
     private static void register(ConfigurableApplicationContext ctx, String[] args) {
-        // TODO:
+        if (args.length < 4) {
+            throw new RuntimeException("引数が足りません");
+        }
+
+        if (!isValidDate(args[1], "yyyyMMdd")) {
+            throw new RuntimeException("日付の形式が正しくありません");
+        }
+
+        if (!isValidTime(args[2]) || !isValidTime(args[3])) {
+            throw new RuntimeException("時刻の形式が正しくありません");
+        }
+
+        WorkDay workDay = WorkDay.of(args[1]);
+        StartTime startTime = StartTime.of(TimePoint.of(Integer.parseInt(args[2].substring(0, 2)),
+                                                        Integer.parseInt(args[2].substring(2))));
+        EndTime endTime = EndTime.of(TimePoint.of(Integer.parseInt(args[3].substring(0, 2)),
+                                                  Integer.parseInt(args[3].substring(2))));
+
+        if (startTime.getTimePoint().getIntValue() > endTime.getTimePoint().getIntValue()) {
+            throw new RuntimeException("開始時刻＞終了時刻は登録できません");
+        }
+
+        AttendanceTime attendanceTime = AttendanceTime.of(startTime, endTime);
+
+        WorkRegulationsRepository workRegulationsRepository = ctx.getBean(WorkRegulationsRepository.class);
+        WorkRegulations workRegulations = workRegulationsRepository.getCurrentRegulations();
+
+        IAttendanceFactory attendanceFactory = ctx.getBean(IAttendanceFactory.class);
+        Attendance attendance = attendanceFactory.createForRegister(workDay, attendanceTime, workRegulations);
+
+        if (attendance == null) {
+            throw new RuntimeException("遅刻は認めません");
+        }
+
+        AttendanceService attendanceService = ctx.getBean(AttendanceService.class);
+        attendanceService.registerAttendance(attendance);
     }
 
     private static void monthlyTotal(ConfigurableApplicationContext ctx, String[] args) {
@@ -53,7 +98,7 @@ public class Main {
             throw new RuntimeException("引数が足りません");
         }
 
-        if (!isValidYearMonth(args[1])) {
+        if (!isValidDate(args[1], "yyyyMM")) {
             throw new RuntimeException("年月の形式が正しくありません");
         }
 
@@ -72,15 +117,15 @@ public class Main {
         return value.getHour() + "時間" + value.getMinutes() + "分";
     }
 
-    private static boolean isValidYearMonth(String inputYearMonth) {
-        if (inputYearMonth.length() != 6) {
+    private static boolean isValidDate(String input, String format) {
+        if (input.length() != format.length()) {
             return false;
         }
 
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
             sdf.setLenient(false);
-            sdf.parse(inputYearMonth);
+            sdf.parse(input);
 
             return true;
 

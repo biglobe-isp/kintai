@@ -29,10 +29,13 @@ public class BreakTimeHours {
     }
 
     private int getIncludedBreakTime(AttendanceTime attendanceTime, TimeRange breakTimeRange) {
-        LocalTime breakStartTime = breakTimeRange.getTimeFrom().getLocalTime();
-        LocalTime breakEndTime = breakTimeRange.getTimeTo().getLocalTime();
+        LocalTime breakStartTime = LocalTime.of(breakTimeRange.getTimeFrom().getHour(),
+                                                breakTimeRange.getTimeFrom().getMinutes());
+        LocalTime breakEndTime = LocalTime.of(breakTimeRange.getTimeTo().getHour(),
+                                              breakTimeRange.getTimeTo().getMinutes());
 
-        LocalTime attendanceStartTime = attendanceTime.getStartTime().getTimePoint().getLocalTime();
+        LocalTime attendanceStartTime = LocalTime.of(attendanceTime.getStartTime().getTimePoint().getHour(),
+                                                     attendanceTime.getStartTime().getTimePoint().getMinutes());
         LocalTime attendanceEndTime = attendanceTime.getEndTime().getLastTimeOnTheDay();
 
         if (attendanceEndTime.compareTo(breakStartTime) < 0) {

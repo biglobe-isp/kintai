@@ -9,8 +9,6 @@ import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
-
 @Component
 public class AttendanceFactory implements IAttendanceFactory {
 
@@ -45,10 +43,8 @@ public class AttendanceFactory implements IAttendanceFactory {
 
     public boolean isLateness(AttendanceTime attendanceTime, WorkRegulations workRegulations) {
         TimePoint maxTimePoint = workRegulations.getStartTimeRange().getRange().getTimeTo();
-        LocalTime maxTime = LocalTime.of(maxTimePoint.getHour(), maxTimePoint.getMinutes());
         TimePoint start = attendanceTime.getStartTime().getTimePoint();
-        LocalTime compareTime = LocalTime.of(start.getHour(), start.getMinutes());
 
-        return maxTime.compareTo(compareTime) < 0;
+        return start.getIntValue() > maxTimePoint.getIntValue();
     }
 }

@@ -1,14 +1,7 @@
 package com.naosim.dddwork.domain.monthlysummary
 
-import com.naosim.dddwork.api.Main
+
 import com.naosim.dddwork.domain.AttendanceRepository
-import com.naosim.dddwork.domain.IWorkingHoursCalculator
-import com.naosim.dddwork.domain.TimePoint
-import com.naosim.dddwork.domain.TimeUnit
-import com.naosim.dddwork.domain.WorkRegulationsRepository
-import com.naosim.dddwork.domain.attendance.AttendanceTime
-import com.naosim.dddwork.domain.attendance.EndTime
-import com.naosim.dddwork.domain.attendance.StartTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -44,5 +37,6 @@ class MonthlySummaryCalculatorSpec extends Specification{
         2020 | 1     || 8             | 0                | 0             | 0
         2020 | 2     || 56            | 15               | 9             | 15
         2020 | 3     || 8             | 0                | 0             | 0
+        2020 | 4     || 0             | 0                | 0             | 0
     }
 }

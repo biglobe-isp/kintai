@@ -25,11 +25,12 @@ public class OverTimeHoursCalculator implements IOverTimeHoursCalculator {
             TimeUnit workingHours, WorkRegulations workRegulations) {
 
         LocalTime standardStart = workRegulations.getStartTimeRange().getStandard();
+
         LocalTime standardEnd = workRegulations.getEndTimeRange().getStandard();
 
         AttendanceTime standardAttendanceTime = AttendanceTime.of(
-                StartTime.of(TimePoint.of(standardStart)),
-                EndTime.of(TimePoint.of(standardEnd)));
+                StartTime.of(TimePoint.of(standardStart.getHour(), standardStart.getMinute())),
+                EndTime.of(TimePoint.of(standardEnd.getHour(), standardEnd.getMinute())));
 
         TimeUnit standardWorkingTime = iWorkingHoursCalculator.calcWorkingHours(standardAttendanceTime, workRegulations);
 

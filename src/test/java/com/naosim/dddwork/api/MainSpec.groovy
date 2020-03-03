@@ -1,9 +1,11 @@
 package com.naosim.dddwork.api
 
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @SpringBootTest
+@ContextConfiguration(locations = ["classpath:context.xml"])
 class MainSpec extends Specification {
     def setup() {
         File file = new File("data.csv");
@@ -140,8 +142,12 @@ class MainSpec extends Specification {
         fields[0] == args[1]
         fields[1] == args[2]
         fields[2] == args[3]
-        fields[3] == "780"   // 勤務時間
-        fields[4] == "300"     // 残業時間
+//        fields[3] == "780"   // 勤務時間
+//        fields[4] == "300"     // 残業時間
+
+        // リファクタリング後は24時以降はサービス残業となる
+        fields[3] == "720"   // 勤務時間
+        fields[4] == "240"     // 残業時間
 
     }
 
@@ -177,20 +183,23 @@ class MainSpec extends Specification {
         when:
         main.main(args)
 
+//        then:
+//        def file = new File("data.csv")
+//        1 == countLines(file)
+//
+//        def lineData = ""
+//        file.eachLine {String line -> lineData = line }
+//
+//        def fields = lineData.split(",")
+//        fields[0] == args[1]
+//        fields[1] == args[2]
+//        fields[2] == args[3]
+//        fields[3] == "420"   // 勤務時間
+//        fields[4] == "0"     // 残業時間
+
         then:
         def file = new File("data.csv")
-        1 == countLines(file)
-
-        def lineData = ""
-        file.eachLine {String line -> lineData = line }
-
-        def fields = lineData.split(",")
-        fields[0] == args[1]
-        fields[1] == args[2]
-        fields[2] == args[3]
-        fields[3] == "420"   // 勤務時間
-        fields[4] == "0"     // 残業時間
-
+        !file.exists()
     }
 
     def "出社時刻＞終了時刻"() {
@@ -201,20 +210,23 @@ class MainSpec extends Specification {
         when:
         main.main(args)
 
+//        then:
+//        def file = new File("data.csv")
+//        1 == countLines(file)
+//
+//        def lineData = ""
+//        file.eachLine {String line -> lineData = line }
+//
+//        def fields = lineData.split(",")
+//        fields[0] == args[1]
+//        fields[1] == args[2]
+//        fields[2] == args[3]
+//        fields[3] == "-480"   // 勤務時間
+//        fields[4] == "0"     // 残業時間
+
         then:
         def file = new File("data.csv")
-        1 == countLines(file)
-
-        def lineData = ""
-        file.eachLine {String line -> lineData = line }
-
-        def fields = lineData.split(",")
-        fields[0] == args[1]
-        fields[1] == args[2]
-        fields[2] == args[3]
-        fields[3] == "-480"   // 勤務時間
-        fields[4] == "0"     // 残業時間
-
+        !file.exists()
     }
 
     def "月次集計"() {
@@ -234,7 +246,29 @@ class MainSpec extends Specification {
         then:
         1 * printStream.println('勤務時間: 56時間15分')
         1 * printStream.println('残業時間: 9時間15分')
-        
+
+        cleanup:
+        System.out = savedSystemOut
+    }
+
+    def "月次集計_対象データなし"() {
+        setup:
+        def savedSystemOut = System.out
+        def printStream = Mock(PrintStream)
+        System.out = printStream
+
+        def main = new Main();
+        def args = ['total', "202004"] as String[]
+
+        new File("data.csv") << new File("data_total.csv").readBytes()
+
+        when:
+        main.main(args)
+
+        then:
+        1 * printStream.println('勤務時間: 0時間0分')
+        1 * printStream.println('残業時間: 0時間0分')
+
         cleanup:
         System.out = savedSystemOut
     }
@@ -248,7 +282,6 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:e.printStackTraceをテストできないため何も登録されないことを確認
         def file = new File("data.csv")
         !file.exists()
     }
@@ -262,7 +295,32 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:e.printStackTraceをテストできないため何も登録されないことを確認
+        def file = new File("data.csv")
+        !file.exists()
+    }
+
+    def "日付桁数不足"() {
+        setup:
+        def main = new Main();
+        def args = ['input', "2020021", "0900", "1800"] as String[]
+
+        when:
+        main.main(args)
+
+        then:
+        def file = new File("data.csv")
+        !file.exists()
+    }
+
+    def "日付桁数超過"() {
+        setup:
+        def main = new Main();
+        def args = ['input', "202002011", "0900", "1800"] as String[]
+
+        when:
+        main.main(args)
+
+        then:
         def file = new File("data.csv")
         !file.exists()
     }
@@ -276,20 +334,47 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:不正な日付でも登録されてしまう
+//        def file = new File("data.csv")
+//        1 == countLines(file)
+//
+//        def lineData = ""
+//        file.eachLine {String line -> lineData = line }
+//
+//        def fields = lineData.split(",")
+//        fields[0] == args[1]
+//        fields[1] == args[2]
+//        fields[2] == args[3]
+//        fields[3] == "480"   // 勤務時間
+//        fields[4] == "0"     // 残業時間
+
         def file = new File("data.csv")
-        1 == countLines(file)
+        !file.exists()
+    }
 
-        def lineData = ""
-        file.eachLine {String line -> lineData = line }
+    def "開始時刻不正_桁数不足"() {
+        setup:
+        def main = new Main();
+        def args = ['input', "20200201", "090", "1800"] as String[]
 
-        def fields = lineData.split(",")
-        fields[0] == args[1]
-        fields[1] == args[2]
-        fields[2] == args[3]
-        fields[3] == "480"   // 勤務時間
-        fields[4] == "0"     // 残業時間
+        when:
+        main.main(args)
 
+        then:
+        def file = new File("data.csv")
+        !file.exists()
+    }
+
+    def "開始時刻不正_桁数超過"() {
+        setup:
+        def main = new Main();
+        def args = ['input', "20200201", "09001", "1800"] as String[]
+
+        when:
+        main.main(args)
+
+        then:
+        def file = new File("data.csv")
+        !file.exists()
     }
 
     def "開始時刻不正_文字列"() {
@@ -301,7 +386,6 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:e.printStackTraceをテストできないため何も登録されないことを確認
         def file = new File("data.csv")
         !file.exists()
     }
@@ -315,19 +399,48 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:不正な日付でも登録されてしまう
+
+//        def file = new File("data.csv")
+//        1 == countLines(file)
+//
+//        def lineData = ""
+//        file.eachLine {String line -> lineData = line }
+//
+//        def fields = lineData.split(",")
+//        fields[0] == args[1]
+//        fields[1] == args[2]
+//        fields[2] == args[3]
+//        fields[3] == "390"   // 勤務時間
+//        fields[4] == "0"     // 残業時間
+
         def file = new File("data.csv")
-        1 == countLines(file)
+        !file.exists()
+    }
 
-        def lineData = ""
-        file.eachLine {String line -> lineData = line }
+    def "終了時刻不正_桁数不足"() {
+        setup:
+        def main = new Main();
+        def args = ['input', "20200201", "0900", "180"] as String[]
 
-        def fields = lineData.split(",")
-        fields[0] == args[1]
-        fields[1] == args[2]
-        fields[2] == args[3]
-        fields[3] == "390"   // 勤務時間
-        fields[4] == "0"     // 残業時間
+        when:
+        main.main(args)
+
+        then:
+        def file = new File("data.csv")
+        !file.exists()
+    }
+
+    def "終了時刻不正_桁数超過"() {
+        setup:
+        def main = new Main();
+        def args = ['input', "20200201", "0900", "18001"] as String[]
+
+        when:
+        main.main(args)
+
+        then:
+        def file = new File("data.csv")
+        !file.exists()
     }
 
     def "終了時刻不正_文字列"() {
@@ -339,10 +452,8 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:e.printStackTraceをテストできないため何も登録されないことを確認
         def file = new File("data.csv")
         !file.exists()
-
     }
 
     def "終了時刻不正_不正時間"() {
@@ -354,111 +465,87 @@ class MainSpec extends Specification {
         main.main(args)
 
         then:
-        // TODO:不正な日付でも登録されてしまう
+
+//        def file = new File("data.csv")
+//        1 == countLines(file)
+//
+//        def lineData = ""
+//        file.eachLine {String line -> lineData = line }
+//
+//        def fields = lineData.split(",")
+//        fields[0] == args[1]
+//        fields[1] == args[2]
+//        fields[2] == args[3]
+//        fields[3] == "570"   // 勤務時間
+//        fields[4] == "90"     // 残業時間
+
         def file = new File("data.csv")
-        1 == countLines(file)
-
-        def lineData = ""
-        file.eachLine {String line -> lineData = line }
-
-        def fields = lineData.split(",")
-        fields[0] == args[1]
-        fields[1] == args[2]
-        fields[2] == args[3]
-        fields[3] == "570"   // 勤務時間
-        fields[4] == "90"     // 残業時間
+        !file.exists()
     }
 
+    def "年月桁数不足"() {
+        setup:
+        def savedSystemOut = System.out
+        def printStream = Mock(PrintStream)
+        System.out = printStream
 
-// TODO:もともとTimeUnitでやろうとしてたこと（引数に不正な値が入ってきた場合）
-//    @Unroll
-//    def "正常系テスト"() {
-//        setup:
-//        def timeUnit = new Time(inputTime)
-//
-//        expect:
-//        timeUnit.isTimeValue(inputTime) == validTime
-//        timeUnit.getHour() == hour
-//        timeUnit.getMinutes() == minutes
-//
-//        where:
-//        inputTime || validTime | hour | minutes
-//        "0000"    || true      | 0    | 0
-//        "0125"    || true      | 1    | 25
-//        "2359"    || true      | 23   | 59
-//        "2400"    || true      | 24   | 00
-//        "2730"    || true      | 27   | 30
-//        "2959"    || true      | 29   | 59
-//    }
-//
-//    def "Nullはエラー"() {
-//        when:
-//        def timeUnit = new TimeUnit(null)
-//
-//        then:
-//        thrown(RuntimeException)
-//    }
-//
-//    def "空文字はエラー"() {
-//        when:
-//        def timeUnit = new TimeUnit("")
-//
-//        then:
-//        thrown(RuntimeException)
-//    }
-//
-//    def "翌朝6時以降はエラー"() {
-//        when:
-//        def timeUnit = new TimeUnit("3000")
-//
-//        then:
-//        thrown(RuntimeException)
-//    }
-//
-//    def "時間が不正の場合はエラー"() {
-//        when:
-//        def timeUnit = new TimeUnit("2360")
-//
-//        then:
-//        thrown(RuntimeException)
-//    }
-//
-//    def "4桁未満の時間はエラー"() {
-//        when:
-//        def timeUnit = new TimeUnit("920")
-//
-//        then:
-//        thrown(RuntimeException)
-//    }
-//
-//    def "5桁以上はエラー"() {
-//        when:
-//        def timeUnit = new TimeUnit("10900")
-//
-//        then:
-//        thrown(RuntimeException)
-//    }
+        def main = new Main();
+        def args = ['total', "20201"] as String[]
 
-// TODO:無限ループに陥る
-//    def "年月不正"() {
-//        setup:
-//        def savedSystemOut = System.out
-//        def printStream = Mock(PrintStream)
-//        System.out = printStream
-//
-//        def main = new Main();
-//        def args = ['total', "yyyymm"] as String[]
-//
-//        new File("data.csv") << new File("data_total.csv").readBytes()
-//
-//        when:
-//        main.main(args)
-//
-//        then:
-//        1 * printStream.println('勤務時間: 0時間0分')
-//        1 * printStream.println('残業時間: 0時間0分')
-//
-//        cleanup:
-//        System.out = savedSystemOut
-//    }
+        new File("data.csv") << new File("data_total.csv").readBytes()
+
+        when:
+        main.main(args)
+
+        then:
+        0 * printStream.println('勤務時間: 0時間0分')
+        0 * printStream.println('残業時間: 0時間0分')
+
+        cleanup:
+        System.out = savedSystemOut
+    }
+
+    def "年月桁数超過"() {
+        setup:
+        def savedSystemOut = System.out
+        def printStream = Mock(PrintStream)
+        System.out = printStream
+
+        def main = new Main();
+        def args = ['total', "2020011"] as String[]
+
+        new File("data.csv") << new File("data_total.csv").readBytes()
+
+        when:
+        main.main(args)
+
+        then:
+        0 * printStream.println('勤務時間: 0時間0分')
+        0 * printStream.println('残業時間: 0時間0分')
+
+        cleanup:
+        System.out = savedSystemOut
+    }
+
+    def "年月不正"() {
+        setup:
+        def savedSystemOut = System.out
+        def printStream = Mock(PrintStream)
+        System.out = printStream
+
+        def main = new Main();
+        def args = ['total', "yyyymm"] as String[]
+
+        new File("data.csv") << new File("data_total.csv").readBytes()
+
+        when:
+        main.main(args)
+
+        then:
+        0 * printStream.println('勤務時間: 0時間0分')
+        0 * printStream.println('残業時間: 0時間0分')
+
+        cleanup:
+        System.out = savedSystemOut
+    }
 }

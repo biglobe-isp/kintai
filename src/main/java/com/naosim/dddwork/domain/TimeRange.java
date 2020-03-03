@@ -2,9 +2,7 @@ package com.naosim.dddwork.domain;
 
 import lombok.Value;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 
 @Value(staticConstructor="of")
 public class TimeRange {

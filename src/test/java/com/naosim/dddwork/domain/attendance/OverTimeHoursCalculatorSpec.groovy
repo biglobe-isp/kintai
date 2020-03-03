@@ -46,5 +46,6 @@ class OverTimeHoursCalculatorSpec extends Specification{
         9          | 0            | 23       | 59         || 239
         9          | 0            | 24       | 00         || 240
         9          | 0            | 25       | 00         || 240
+        9          | 0            | 29       | 59         || 240
     }
 }
