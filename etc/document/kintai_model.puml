@@ -4,19 +4,40 @@ package api {
     class Main {
         'パラメータのValidation
         'ServiceにわたすEntity, ValueObjectの生成
-        void main()
+        void main(args)
+    }
+
+    class RegisterController {
+        void register(WorkDay workDay, NotVerifiedAttendanceTime notVerifiedAttendanceTime)
+    }
+
+    class MonthlyTotalController {
+        void monthlyTotal(args)
+    }
+
+    class DateValidator {
+        String value;
+        String format;
+        --
+        boolean isValid()
+    }
+
+    class TimeValidator {
+        String value;
+        --
+        boolean isValid()
     }
 }
 
 package service {
     class AttendanceService <<Service>> {
         '遅刻の場合はNG → 勤務時間の算出 → 登録
-        void registerAttendance(Attendance attendance)
+        void registerAttendance(WorkDay workDay, VerifiedAttendanceTime attendanceTime)
     }
 
     class MonthlySummaryService <<Service>> {
         '当月分のAttendance取得 → 集計処理呼び出し
-        MonthlySummary acquireMonthlyTotal(YearMonth yearMonth)
+        MonthlySummary acquireMonthlyTotal(VerifiedYearMonth yearMonth)
     }
 }
 
@@ -28,36 +49,39 @@ package datasource {
 
     file csv {
     }
-
-    class WorkRegulationsRepositoryData <<Datasource>> {
-        WorkRegulations getCurrentRegulations()
-    }
 }
 
 package domain {
 
     package attendance {
-        class AttendanceFactory {
+        class AttendanceManufacture {
             Attendance create()
-            boolean isLateness(WorkRegulations workRegulations)
         }
 
         class Attendance <<Entity>>{
             WorkDay workDay
             --
-            AttendanceTime attendanceTime
-            TimeUnit workingHours
-            TimeUnit overTimeHours
+            VerifiedAttendanceTime attendanceTime
+            WorkingHours workingHours
+            OverTimeHours overTimeHours
         }
 
         class WorkDay <<ValueObject>> {
             LocalDate date
         }
 
-        class AttendanceTime <<ValueObject>> {
+        class VerifiedAttendanceTime {
+            StartTime startTime
+            EndTime endTime;
+            --
+            + AttendanceTime(StartTime startTime, EndTime endTime)
+        }
+
+        class NotVerifiedAttendanceTime <<ValueObject>> {
             StartTime startTime
             EndTime endTime
             --
+            + boolean isLateness(WorkRegulations workRegulations)
             + AttendanceTime(StartTime startTime, EndTime endTime)
         }
 
@@ -76,19 +100,31 @@ package domain {
         class BreakTimeHours <<ValueObject>> {
             TimeUnit timeUnit
             --
-            + BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations)
+            + BreakTimeHours(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
+        }
+
+        class WorkingHours {
+            TimeUnit timeUnit
         }
 
         class WorkingHoursCalculator {
-            TimeUnit calc();
+            WorkingHours calc();
+        }
+
+        class OverTimeHours {
+            TimeUnit timeUnit
         }
 
         class OvertimeHoursCalculator {
-            TimeUnit calc();
+            OverTimeHours calc();
         }
     }
 
     package workregulations {
+
+        class WorkRegulationsManufacture <<Datasource>> {
+            WorkRegulations getCurrentRegulations()
+        }
 
         class WorkRegulations <<ValueObject>> {
             StartTimeRange startTimeRange
@@ -145,19 +181,19 @@ package domain {
         int getRangeMinutes()
     }
 
-    interface IAttendanceFactory {
+    interface AttendanceManufacturable {
         Attendance create()
     }
 
-    interface IWorkingHoursCalculator {
+    interface WorkingHoursCalculable {
         TimeUnit calc();
     }
 
-    interface IOverTimeHoursCalculator {
+    interface OverTimeHoursCalculable {
         TimeUnit calc();
     }
 
-    interface IMonthlySummaryCalculator {
+    interface MonthlySummaryCalculable {
         MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth)
     }
 
@@ -166,35 +202,47 @@ package domain {
         List<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
     }
 
-    interface WorkRegulationsRepository <<Repository>> {
+    interface WorkRegulationsManufacturable <<Repository>> {
         WorkRegulations getCurrentRegulations()
     }
 }
 
 
 '***** 相関関係 *****
-Main ---> AttendanceService
-Main ---> MonthlySummaryService
-Main ---> IAttendanceFactory
-Main ---> WorkRegulationsRepository
+'API
+Main ---> RegisterController
+Main ---> MonthlyTotalController
+MonthlyTotalController --> DateValidator
+MonthlyTotalController --> TimeValidator
+MonthlyTotalController --> DateValidator
+RegisterController ---> AttendanceService
+MonthlyTotalController ---> MonthlySummaryService
 
+'Service
 AttendanceService -[hidden]- MonthlySummaryService
-
-IAttendanceFactory --> IWorkingHoursCalculator
-IAttendanceFactory --> IOverTimeHoursCalculator
+AttendanceService ---> AttendanceManufacturable
+AttendanceService ---> WorkRegulationsManufacturable
 AttendanceService --> AttendanceRepository : save
+
+MonthlySummaryService --> MonthlySummaryCalculable
+
+'Domain-Factory/Calcultor
+AttendanceManufacturable --> WorkingHoursCalculable
+AttendanceManufacturable --> OverTimeHoursCalculable
 
 WorkingHoursCalculator --> BreakTimeHours
 
-MonthlySummaryService --> IMonthlySummaryCalculator
-IMonthlySummaryCalculator --> AttendanceRepository
+MonthlySummaryCalculable --> AttendanceRepository
 MonthlySummaryCalculator --> MonthlySummary
+MonthlySummaryCalculator ---> AttendanceManufacturable
 
-AttendanceRepository ---> IAttendanceFactory
-MonthlySummaryCalculator ---> IAttendanceFactory
-AttendanceFactory ---> Attendance
-WorkRegulationsRepository ---> WorkRegulations
+WorkingHoursCalculator ---> WorkingHours
+OvertimeHoursCalculator ---> OverTimeHours
 
+'Repository
+AttendanceRepository ---> AttendanceManufacturable
+AttendanceManufacture ---> Attendance
+WorkRegulationsManufacturable ---> WorkRegulations
 AttendanceRepositoryCsv --> csv
 
 BreakTimeHours ---> WorkRegulations
@@ -203,17 +251,21 @@ EndTime ---> WorkRegulations
 
 '実装
 AttendanceRepository <|... AttendanceRepositoryCsv
-WorkRegulationsRepository <|... WorkRegulationsRepositoryData
-IAttendanceFactory <|... AttendanceFactory
-IWorkingHoursCalculator <|... WorkingHoursCalculator
-IOverTimeHoursCalculator <|... OvertimeHoursCalculator
-IMonthlySummaryCalculator <|... MonthlySummaryCalculator
+WorkRegulationsManufacturable <|... WorkRegulationsManufacture
+AttendanceManufacturable <|... AttendanceManufacture
+WorkingHoursCalculable <|... WorkingHoursCalculator
+OverTimeHoursCalculable <|... OvertimeHoursCalculator
+MonthlySummaryCalculable <|... MonthlySummaryCalculator
 
 '集約
-Attendance *-- AttendanceTime
-AttendanceTime *-- StartTime
-AttendanceTime *-- EndTime
+Attendance *-- VerifiedAttendanceTime
+VerifiedAttendanceTime *-- StartTime
+VerifiedAttendanceTime *-- EndTime
 Attendance *-- WorkDay
+Attendance *-- WorkingHours
+Attendance *-- OverTimeHours
+NotVerifiedAttendanceTime *-- StartTime
+NotVerifiedAttendanceTime *-- EndTime
 
 WorkRegulations *-- BreakTimes
 WorkRegulations *-- StartTimeRange

@@ -23,4 +23,8 @@ public class TimeUnit {
     public int getTotalMinutes() {
         return (this.hour * 60) + this.minutes;
     }
+
+    public String getMonthlyTotalString() {
+        return this.getHour() + "時間" + this.getMinutes() + "分";
+    }
 }

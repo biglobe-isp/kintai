@@ -13,7 +13,7 @@ public class Attendance {
     private final WorkDay workDay;
 
     @Getter
-    private AttendanceTime attendanceTime;
+    private VerifiedAttendanceTime attendanceTime;
 
     @Getter
     private TimeUnit workingHours;

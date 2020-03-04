@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class WorkingHoursCalculator implements IWorkingHoursCalculator {
     @Override
     public TimeUnit calcWorkingHours(
-            AttendanceTime attendanceTime, WorkRegulations workRegulations) {
+            VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations) {
 
         BreakTimeHours breakTimeHours = BreakTimeHours.of(attendanceTime, workRegulations);
 

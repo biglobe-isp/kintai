@@ -5,7 +5,7 @@ import com.naosim.dddwork.domain.IAttendanceFactory;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.Attendance;
-import com.naosim.dddwork.domain.attendance.AttendanceTime;
+import com.naosim.dddwork.domain.attendance.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.attendance.EndTime;
 import com.naosim.dddwork.domain.attendance.StartTime;
 import com.naosim.dddwork.domain.attendance.WorkDay;
@@ -97,7 +97,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
         TimePoint startTime = TimePoint.of(start);
         TimePoint endTime = TimePoint.of(end);
-        AttendanceTime attendanceTime = AttendanceTime.of(StartTime.of(startTime), EndTime.of(endTime));
+        VerifiedAttendanceTime attendanceTime = VerifiedAttendanceTime.of(StartTime.of(startTime), EndTime.of(endTime));
 
         TimeUnit workingHours = TimeUnit.of(Integer.parseInt(workingH));
         TimeUnit overTimeHours = TimeUnit.of(Integer.parseInt(OverTimeH));

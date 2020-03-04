@@ -7,8 +7,6 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.LocalTime
-
 @ContextConfiguration(locations = ["classpath:context.xml"])
 class BreakTimeHoursSpec extends Specification{
 
@@ -20,7 +18,7 @@ class BreakTimeHoursSpec extends Specification{
         setup:
         def startTime = StartTime.of(TimePoint.of(startHours, startMinutes))
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
-        def attendanceTime = AttendanceTime.of(startTime, endTime)
+        def attendanceTime = VerifiedAttendanceTime.of(startTime, endTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
         def breakTimeHours = BreakTimeHours.of(attendanceTime, workRegulations)
 

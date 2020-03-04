@@ -2,7 +2,6 @@ package com.naosim.dddwork.domain.attendance
 
 import com.naosim.dddwork.domain.IAttendanceFactory
 import com.naosim.dddwork.domain.TimePoint
-import com.naosim.dddwork.domain.TimeUnit
 import com.naosim.dddwork.domain.WorkRegulationsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -22,7 +21,7 @@ class AttendanceFactorySpec extends Specification{
     def "遅刻はAttendance生成しない"() {
         setup:
         def workDay = WorkDay.of("20200301");
-        def attendanceTime = AttendanceTime.of(StartTime.of(TimePoint.of(hours, minutes)),
+        def attendanceTime = VerifiedAttendanceTime.of(StartTime.of(TimePoint.of(hours, minutes)),
                                                EndTime.of(TimePoint.of(18, 0)))
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
 

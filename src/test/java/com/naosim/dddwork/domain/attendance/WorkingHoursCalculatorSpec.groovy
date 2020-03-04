@@ -22,7 +22,7 @@ class WorkingHoursCalculatorSpec extends Specification{
         setup:
         def startTime = StartTime.of(TimePoint.of(startHours, startMinutes))
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
-        def attendanceTime = AttendanceTime.of(startTime, endTime)
+        def attendanceTime = VerifiedAttendanceTime.of(startTime, endTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
 
         def workingHours = iWorkingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);

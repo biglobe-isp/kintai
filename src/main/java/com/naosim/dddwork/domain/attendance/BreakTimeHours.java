@@ -13,11 +13,11 @@ import java.util.List;
 public class BreakTimeHours {
     TimeUnit timeUnit;
 
-    public static BreakTimeHours of(AttendanceTime attendanceTime, WorkRegulations workRegulations) {
+    public static BreakTimeHours of(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations) {
         return new BreakTimeHours(attendanceTime, workRegulations);
     }
 
-    private BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations){
+    private BreakTimeHours(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations){
         List<TimeRange> list = workRegulations.getBreakTimes().getList();
 
         int breakTimeMinutes = 0;
@@ -28,7 +28,7 @@ public class BreakTimeHours {
         this.timeUnit = TimeUnit.of(breakTimeMinutes);
     }
 
-    private int getIncludedBreakTime(AttendanceTime attendanceTime, TimeRange breakTimeRange) {
+    private int getIncludedBreakTime(VerifiedAttendanceTime attendanceTime, TimeRange breakTimeRange) {
         LocalTime breakStartTime = LocalTime.of(breakTimeRange.getTimeFrom().getHour(),
                                                 breakTimeRange.getTimeFrom().getMinutes());
         LocalTime breakEndTime = LocalTime.of(breakTimeRange.getTimeTo().getHour(),

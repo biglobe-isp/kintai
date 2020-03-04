@@ -28,7 +28,7 @@ public class OverTimeHoursCalculator implements IOverTimeHoursCalculator {
 
         LocalTime standardEnd = workRegulations.getEndTimeRange().getStandard();
 
-        AttendanceTime standardAttendanceTime = AttendanceTime.of(
+        VerifiedAttendanceTime standardAttendanceTime = VerifiedAttendanceTime.of(
                 StartTime.of(TimePoint.of(standardStart.getHour(), standardStart.getMinute())),
                 EndTime.of(TimePoint.of(standardEnd.getHour(), standardEnd.getMinute())));
 
