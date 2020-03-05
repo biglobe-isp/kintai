@@ -26,3 +26,8 @@ hs_err_pid*
 
 .gradle
 build/
+out/
+
+
+## Generated CSV
+data.csv

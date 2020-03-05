@@ -1,6 +1,7 @@
 package com.naosim.dddwork.domain.attendance;
 
 import com.naosim.dddwork.domain.TimeUnit;
+import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,9 +17,9 @@ public class Attendance {
     private VerifiedAttendanceTime attendanceTime;
 
     @Getter
-    private TimeUnit workingHours;
+    private WorkingHours workingHours;
 
     @Getter
-    private TimeUnit overTimeHours;
+    private OverTimeHours overTimeHours;
 
 }

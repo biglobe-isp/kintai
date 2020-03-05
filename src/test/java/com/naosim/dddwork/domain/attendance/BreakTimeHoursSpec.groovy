@@ -1,7 +1,8 @@
 package com.naosim.dddwork.domain.attendance
 
 import com.naosim.dddwork.domain.TimePoint
-import com.naosim.dddwork.domain.WorkRegulationsRepository
+import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
+import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -11,7 +12,7 @@ import spock.lang.Unroll
 class BreakTimeHoursSpec extends Specification{
 
     @Autowired
-    private WorkRegulationsRepository workRegulationsRepository
+    private WorkRegulationsGeneratable workRegulationsRepository
 
     @Unroll
     def "休憩時間算出"() {

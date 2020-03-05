@@ -1,37 +1,26 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.AttendanceRepository;
-import com.naosim.dddwork.domain.IAttendanceFactory;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
-import com.naosim.dddwork.domain.attendance.Attendance;
-import com.naosim.dddwork.domain.attendance.VerifiedAttendanceTime;
-import com.naosim.dddwork.domain.attendance.EndTime;
-import com.naosim.dddwork.domain.attendance.StartTime;
-import com.naosim.dddwork.domain.attendance.WorkDay;
+import com.naosim.dddwork.domain.attendance.*;
+import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.naosim.dddwork.domain.service.AttendanceGeneratable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
-    private final IAttendanceFactory iAttendanceFactory;
-
-    @Autowired
-    public AttendanceRepositoryCsv(IAttendanceFactory iAttendanceFactory) {
-        this.iAttendanceFactory = iAttendanceFactory;
-    }
+    private final AttendanceGeneratable attendanceGeneratable;
 
     @Override
     public void save(Attendance attendance) {
@@ -42,8 +31,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             String workday = attendance.getWorkDay().getDate().format(formatter);
             String start = attendance.getAttendanceTime().getStartTime().getTimePoint().toString();
             String end = attendance.getAttendanceTime().getEndTime().getTimePoint().toString();
-            String workingHours = String.valueOf(attendance.getWorkingHours().getTotalMinutes());
-            String overTimeHours = String.valueOf(attendance.getOverTimeHours().getTotalMinutes());
+            String workingHours = String.valueOf(attendance.getWorkingHours().getTimeUnit().getTotalMinutes());
+            String overTimeHours = String.valueOf(attendance.getOverTimeHours().getTimeUnit().getTotalMinutes());
             String now = LocalDateTime.now().toString();
 
             try (FileWriter filewriter = new FileWriter(file, true)) {
@@ -99,9 +88,11 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         TimePoint endTime = TimePoint.of(end);
         VerifiedAttendanceTime attendanceTime = VerifiedAttendanceTime.of(StartTime.of(startTime), EndTime.of(endTime));
 
-        TimeUnit workingHours = TimeUnit.of(Integer.parseInt(workingH));
-        TimeUnit overTimeHours = TimeUnit.of(Integer.parseInt(OverTimeH));
+        WorkingHours workingHours = WorkingHours.of(TimeUnit.of(Integer.parseInt(workingH)));
+        OverTimeHours overTimeHours = OverTimeHours.of(TimeUnit.of(Integer.parseInt(OverTimeH)));
 
-        return iAttendanceFactory.createFromCsv(workDay, attendanceTime, workingHours, overTimeHours);
+
+
+        return attendanceGeneratable.createFromCsv(workDay, attendanceTime, workingHours, overTimeHours);
     }
 }

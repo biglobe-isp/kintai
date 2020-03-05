@@ -37,7 +37,7 @@ package service {
 
     class MonthlySummaryService <<Service>> {
         '当月分のAttendance取得 → 集計処理呼び出し
-        MonthlySummary acquireMonthlyTotal(VerifiedYearMonth yearMonth)
+        MonthlySummary acquireMonthlyTotal(YearMonth yearMonth)
     }
 }
 
@@ -54,8 +54,9 @@ package datasource {
 package domain {
 
     package attendance {
-        class AttendanceManufacture {
-            Attendance create()
+        class AttendanceGenerator {
+            Attendance createForRegister(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
+            Attendance createFromCsv(WorkDay workDay, VerifiedAttendanceTime attendanceTime, TimeUnit workingHours, TimeUnit overTimeHours)
         }
 
         class Attendance <<Entity>>{
@@ -108,7 +109,7 @@ package domain {
         }
 
         class WorkingHoursCalculator {
-            WorkingHours calc();
+            WorkingHours calc(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations);
         }
 
         class OverTimeHours {
@@ -116,13 +117,13 @@ package domain {
         }
 
         class OvertimeHoursCalculator {
-            OverTimeHours calc();
+            OverTimeHours calc(WorkingHours workingHours, WorkRegulations workRegulations);
         }
     }
 
     package workregulations {
 
-        class WorkRegulationsManufacture <<Datasource>> {
+        class WorkRegulationsGenerator {
             WorkRegulations getCurrentRegulations()
         }
 
@@ -154,8 +155,8 @@ package domain {
 
         class MonthlySummary <<ValueObject>> {
             YearMonth workMonth
-            TimeUnit workingHours
-            TimeUnit overTimeHours
+            WorkingHours workingHours
+            OverTimeHours overTimeHours
         }
 
         class YearMonth <<ValueObject>> {
@@ -181,16 +182,21 @@ package domain {
         int getRangeMinutes()
     }
 
-    interface AttendanceManufacturable {
-        Attendance create()
+    interface AttendanceGeneratable {
+        Attendance createForRegister(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
+        Attendance createFromCsv(WorkDay workDay, VerifiedAttendanceTime attendanceTime, TimeUnit workingHours, TimeUnit overTimeHours)
+    }
+
+    interface WorkRegulationsGeneratable <<Repository>> {
+        WorkRegulations getCurrentRegulations()
     }
 
     interface WorkingHoursCalculable {
-        TimeUnit calc();
+        TimeUnit calc(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations);
     }
 
     interface OverTimeHoursCalculable {
-        TimeUnit calc();
+        TimeUnit calc(WorkingHours workingHours, WorkRegulations workRegulations);
     }
 
     interface MonthlySummaryCalculable {
@@ -201,10 +207,6 @@ package domain {
         void save(Attendance attendance)
         List<Attendance> findSpecifiedYearMonth(YearMonth workMonth)
     }
-
-    interface WorkRegulationsManufacturable <<Repository>> {
-        WorkRegulations getCurrentRegulations()
-    }
 }
 
 
@@ -212,37 +214,37 @@ package domain {
 'API
 Main ---> RegisterController
 Main ---> MonthlyTotalController
-MonthlyTotalController --> DateValidator
-MonthlyTotalController --> TimeValidator
+RegisterController --> DateValidator
+RegisterController --> TimeValidator
 MonthlyTotalController --> DateValidator
 RegisterController ---> AttendanceService
 MonthlyTotalController ---> MonthlySummaryService
 
 'Service
 AttendanceService -[hidden]- MonthlySummaryService
-AttendanceService ---> AttendanceManufacturable
-AttendanceService ---> WorkRegulationsManufacturable
+AttendanceService ---> AttendanceGeneratable
+AttendanceService ---> WorkRegulationsGeneratable
 AttendanceService --> AttendanceRepository : save
 
 MonthlySummaryService --> MonthlySummaryCalculable
 
 'Domain-Factory/Calcultor
-AttendanceManufacturable --> WorkingHoursCalculable
-AttendanceManufacturable --> OverTimeHoursCalculable
+AttendanceGeneratable--> WorkingHoursCalculable
+AttendanceGeneratable--> OverTimeHoursCalculable
 
 WorkingHoursCalculator --> BreakTimeHours
 
 MonthlySummaryCalculable --> AttendanceRepository
 MonthlySummaryCalculator --> MonthlySummary
-MonthlySummaryCalculator ---> AttendanceManufacturable
+MonthlySummaryCalculator ---> AttendanceGeneratable
 
 WorkingHoursCalculator ---> WorkingHours
 OvertimeHoursCalculator ---> OverTimeHours
 
 'Repository
-AttendanceRepository ---> AttendanceManufacturable
-AttendanceManufacture ---> Attendance
-WorkRegulationsManufacturable ---> WorkRegulations
+AttendanceRepository ---> AttendanceGeneratable
+AttendanceGenerator ---> Attendance
+WorkRegulationsGeneratable ---> WorkRegulations
 AttendanceRepositoryCsv --> csv
 
 BreakTimeHours ---> WorkRegulations
@@ -251,8 +253,8 @@ EndTime ---> WorkRegulations
 
 '実装
 AttendanceRepository <|... AttendanceRepositoryCsv
-WorkRegulationsManufacturable <|... WorkRegulationsManufacture
-AttendanceManufacturable <|... AttendanceManufacture
+WorkRegulationsGeneratable <|... WorkRegulationsGenerator
+AttendanceGeneratable <|... AttendanceGenerator
 WorkingHoursCalculable <|... WorkingHoursCalculator
 OverTimeHoursCalculable <|... OvertimeHoursCalculator
 MonthlySummaryCalculable <|... MonthlySummaryCalculator

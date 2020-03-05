@@ -2,6 +2,7 @@ package com.naosim.dddwork.domain.attendance;
 
 import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.TimeUnit;
+import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import lombok.Value;
 

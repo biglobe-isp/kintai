@@ -1,19 +1,17 @@
 package com.naosim.dddwork.domain.attendance
 
 import com.naosim.dddwork.domain.TimePoint
-import com.naosim.dddwork.domain.WorkRegulationsRepository
+import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.LocalTime
-
 @ContextConfiguration(locations = ["classpath:context.xml"])
 class EndTimeSpec extends Specification {
 
     @Autowired
-    private WorkRegulationsRepository workRegulationsRepository
+    private WorkRegulationsGeneratable workRegulationsRepository
 
     @Unroll
     def "みなし終了時刻取得"() {

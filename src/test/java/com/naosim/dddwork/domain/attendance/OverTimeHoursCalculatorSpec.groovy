@@ -1,9 +1,10 @@
 package com.naosim.dddwork.domain.attendance
 
-import com.naosim.dddwork.domain.IOverTimeHoursCalculator
-import com.naosim.dddwork.domain.IWorkingHoursCalculator
+import com.naosim.dddwork.domain.service.OverTimeHoursCalculable
+import com.naosim.dddwork.domain.service.WorkingHoursCalculable
 import com.naosim.dddwork.domain.TimePoint
-import com.naosim.dddwork.domain.WorkRegulationsRepository
+import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
+import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -13,13 +14,13 @@ import spock.lang.Unroll
 class OverTimeHoursCalculatorSpec extends Specification{
 
     @Autowired
-    private WorkRegulationsRepository workRegulationsRepository
+    private WorkRegulationsGeneratable workRegulationsRepository
 
     @Autowired
-    private IWorkingHoursCalculator iWorkingHoursCalculator;
+    private WorkingHoursCalculable iWorkingHoursCalculator;
 
     @Autowired
-    private IOverTimeHoursCalculator iOverTimeHoursCalculator;
+    private OverTimeHoursCalculable iOverTimeHoursCalculator;
 
     @Unroll
     def "残業時間算出"() {

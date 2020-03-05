@@ -1,4 +1,4 @@
-package com.naosim.dddwork.api;
+package com.naosim.dddwork.api.validator;
 
 import com.google.common.base.Strings;
 import lombok.Value;

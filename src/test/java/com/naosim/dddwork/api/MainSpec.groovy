@@ -1,5 +1,7 @@
 package com.naosim.dddwork.api
 
+
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -7,6 +9,10 @@ import spock.lang.Specification
 @SpringBootTest
 @ContextConfiguration(locations = ["classpath:context.xml"])
 class MainSpec extends Specification {
+
+    @Autowired
+    private Main main;
+
     def setup() {
         File file = new File("data.csv");
         if (file.exists()) {
@@ -29,7 +35,6 @@ class MainSpec extends Specification {
 
     def "標準勤務時間で登録"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "1800"] as String[]
 
         when:
@@ -52,9 +57,7 @@ class MainSpec extends Specification {
 
     def "19時退社で残業は0で登録"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "1900"] as String[]
-        def expected = [args[1],args[2],args[3],"480","0"]
 
         when:
         main.main(args)
@@ -77,7 +80,6 @@ class MainSpec extends Specification {
 
     def "21時退社で残業は2時間で登録"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "2100"] as String[]
 
         when:
@@ -101,7 +103,6 @@ class MainSpec extends Specification {
 
     def "23時退社で残業は3で登録"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "2300"] as String[]
 
         when:
@@ -125,7 +126,6 @@ class MainSpec extends Specification {
 
     def "25時退社の日付跨ぎで残業は24時退社で同じ"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "2500"] as String[]
 
         when:
@@ -153,7 +153,6 @@ class MainSpec extends Specification {
 
     def "早出"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0800", "1700"] as String[]
 
         when:
@@ -177,7 +176,6 @@ class MainSpec extends Specification {
 
     def "遅刻"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "1000", "1900"] as String[]
 
         when:
@@ -204,7 +202,6 @@ class MainSpec extends Specification {
 
     def "出社時刻＞終了時刻"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "0100"] as String[]
 
         when:
@@ -235,7 +232,6 @@ class MainSpec extends Specification {
         def printStream = Mock(PrintStream)
         System.out = printStream
 
-        def main = new Main();
         def args = ['total', "202002"] as String[]
 
         new File("data.csv") << new File("data_total.csv").readBytes()
@@ -257,7 +253,7 @@ class MainSpec extends Specification {
         def printStream = Mock(PrintStream)
         System.out = printStream
 
-        def main = new Main();
+        def main = new Main(registerController);
         def args = ['total', "202004"] as String[]
 
         new File("data.csv") << new File("data_total.csv").readBytes()
@@ -275,7 +271,6 @@ class MainSpec extends Specification {
 
     def "メソッドタイプ不正"() {
         setup:
-        def main = new Main();
         def args = ['output', "20200201", "0900", "1800"] as String[]
 
         when:
@@ -288,7 +283,6 @@ class MainSpec extends Specification {
 
     def "引数が足りない"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900"] as String[]
 
         when:
@@ -301,7 +295,6 @@ class MainSpec extends Specification {
 
     def "日付桁数不足"() {
         setup:
-        def main = new Main();
         def args = ['input', "2020021", "0900", "1800"] as String[]
 
         when:
@@ -314,7 +307,6 @@ class MainSpec extends Specification {
 
     def "日付桁数超過"() {
         setup:
-        def main = new Main();
         def args = ['input', "202002011", "0900", "1800"] as String[]
 
         when:
@@ -327,7 +319,6 @@ class MainSpec extends Specification {
 
     def "日付不正"() {
         setup:
-        def main = new Main();
         def args = ['input', "yyyymmdd", "0900", "1800"] as String[]
 
         when:
@@ -353,7 +344,6 @@ class MainSpec extends Specification {
 
     def "開始時刻不正_桁数不足"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "090", "1800"] as String[]
 
         when:
@@ -366,7 +356,6 @@ class MainSpec extends Specification {
 
     def "開始時刻不正_桁数超過"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "09001", "1800"] as String[]
 
         when:
@@ -379,7 +368,6 @@ class MainSpec extends Specification {
 
     def "開始時刻不正_文字列"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "AAAA", "1800"] as String[]
 
         when:
@@ -392,7 +380,6 @@ class MainSpec extends Specification {
 
     def "開始時刻不正_不正時間"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0990", "1800"] as String[]
 
         when:
@@ -419,7 +406,6 @@ class MainSpec extends Specification {
 
     def "終了時刻不正_桁数不足"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "180"] as String[]
 
         when:
@@ -432,7 +418,6 @@ class MainSpec extends Specification {
 
     def "終了時刻不正_桁数超過"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "18001"] as String[]
 
         when:
@@ -445,7 +430,6 @@ class MainSpec extends Specification {
 
     def "終了時刻不正_文字列"() {
         setup:
-        def main = new Main();
         def args = ['input', "20200201", "0900", "AAAA"] as String[]
 
         when:
@@ -458,7 +442,6 @@ class MainSpec extends Specification {
 
     def "終了時刻不正_不正時間"() {
         setup:
-        def main = new Main()
         def args = ['input', "20200201", "0900", "1990"] as String[]
 
         when:
@@ -489,7 +472,6 @@ class MainSpec extends Specification {
         def printStream = Mock(PrintStream)
         System.out = printStream
 
-        def main = new Main();
         def args = ['total', "20201"] as String[]
 
         new File("data.csv") << new File("data_total.csv").readBytes()
@@ -511,7 +493,6 @@ class MainSpec extends Specification {
         def printStream = Mock(PrintStream)
         System.out = printStream
 
-        def main = new Main();
         def args = ['total', "2020011"] as String[]
 
         new File("data.csv") << new File("data_total.csv").readBytes()
@@ -533,7 +514,6 @@ class MainSpec extends Specification {
         def printStream = Mock(PrintStream)
         System.out = printStream
 
-        def main = new Main();
         def args = ['total', "yyyymm"] as String[]
 
         new File("data.csv") << new File("data_total.csv").readBytes()

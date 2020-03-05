@@ -1,9 +1,10 @@
 package com.naosim.dddwork.domain.monthlysummary;
 
 import com.naosim.dddwork.domain.AttendanceRepository;
-import com.naosim.dddwork.domain.IMonthlySummaryCalculator;
 import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.Attendance;
+import com.naosim.dddwork.domain.service.MonthlySummaryCalculable;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,10 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public class MonthlySummaryCalculator implements IMonthlySummaryCalculator {
+@RequiredArgsConstructor
+public class MonthlySummaryCalculator implements MonthlySummaryCalculable {
 
-    private AttendanceRepository attendanceRepository;
-
-    @Autowired
-    public MonthlySummaryCalculator(AttendanceRepository attendanceRepository) {
-        this.attendanceRepository = attendanceRepository;
-    }
+    private final AttendanceRepository attendanceRepository;
 
     @Override
     public MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth) {
@@ -33,9 +30,9 @@ public class MonthlySummaryCalculator implements IMonthlySummaryCalculator {
 
         for(Attendance attendance : list) {
             totalWorkMinutesMap.put(attendance.getWorkDay().toString(),
-                                    attendance.getWorkingHours().getTotalMinutes());
+                                    attendance.getWorkingHours().getTimeUnit().getTotalMinutes());
             totalOverTimeMinutesMap.put(attendance.getWorkDay().toString(),
-                                        attendance.getOverTimeHours().getTotalMinutes());
+                                        attendance.getOverTimeHours().getTimeUnit().getTotalMinutes());
         }
 
         Set<String> keySet = totalWorkMinutesMap.keySet();

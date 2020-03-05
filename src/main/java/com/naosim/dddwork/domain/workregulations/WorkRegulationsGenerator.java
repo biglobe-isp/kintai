@@ -1,12 +1,8 @@
-package com.naosim.dddwork.datasource;
+package com.naosim.dddwork.domain.workregulations;
 
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeRange;
-import com.naosim.dddwork.domain.WorkRegulationsRepository;
-import com.naosim.dddwork.domain.workregulations.BreakTimes;
-import com.naosim.dddwork.domain.workregulations.EndTimeRange;
-import com.naosim.dddwork.domain.workregulations.StartTimeRange;
-import com.naosim.dddwork.domain.workregulations.WorkRegulations;
+import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
@@ -14,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class WorkRegulationsRepositoryData implements WorkRegulationsRepository {
+public class WorkRegulationsGenerator implements WorkRegulationsGeneratable {
 
     @Override
     public WorkRegulations getCurrentRegulations() {

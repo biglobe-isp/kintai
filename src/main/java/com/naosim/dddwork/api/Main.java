@@ -1,11 +1,15 @@
 package com.naosim.dddwork.api;
 
+import com.naosim.dddwork.api.validator.DateValidator;
+import com.naosim.dddwork.api.validator.EnumDateFormat;
+import com.naosim.dddwork.api.validator.TimeValidator;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.attendance.EndTime;
-import com.naosim.dddwork.domain.attendance.NotVerifiedAttendanceTime;
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime;
 import com.naosim.dddwork.domain.attendance.StartTime;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
@@ -14,31 +18,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 @ComponentScan("com.naosim.dddwork")
 public class Main implements CommandLineRunner {
 
     private final RegisterController registerController;
     private final MonthlyTotalController monthlyTotalController;
 
-    @Autowired
-    public Main(RegisterController registerController, MonthlyTotalController monthlyTotalController) {
-        this.registerController = registerController;
-        this.monthlyTotalController = monthlyTotalController;
-    }
-
     public static void main(String[] args) {
-// リファクタ前
-//        com.naosim.dddwork.Main oldMain = new com.naosim.dddwork.Main();
-//        oldMain.main(args);
-
-        // リファクタ後
         SpringApplication springApplication = new SpringApplication(Main.class);
         springApplication.setBannerMode(Banner.Mode.OFF);
+        springApplication.setLogStartupInfo(false);
         springApplication.run(args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+
         try {
             if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
@@ -95,7 +91,7 @@ public class Main implements CommandLineRunner {
 
         String inputYearMonth = args[1];
         DateValidator dateValidator = DateValidator.of(inputYearMonth);
-        if (dateValidator.isValid(EnumDateFormat.yyyyMM)) {
+        if (!dateValidator.isValid(EnumDateFormat.yyyyMM)) {
             throw new RuntimeException("年月の形式が正しくありません");
         }
 

@@ -1,18 +1,16 @@
 package com.naosim.dddwork.api;
 
-import com.naosim.dddwork.domain.attendance.NotVerifiedAttendanceTime;
-import com.naosim.dddwork.domain.attendance.VerifiedAttendanceTime;
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime;
+import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.service.AttendanceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@RequiredArgsConstructor
 public class RegisterController {
     private final AttendanceService attendanceService;
-
-    public RegisterController(AttendanceService attendanceService) {
-        this.attendanceService = attendanceService;
-    }
 
     public void register(WorkDay workDay, NotVerifiedAttendanceTime notVerifiedAttendanceTime) {
         if (notVerifiedAttendanceTime.isStartGreaterThanEnd()) {

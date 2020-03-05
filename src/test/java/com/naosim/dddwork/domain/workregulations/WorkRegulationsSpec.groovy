@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain.workregulations
 
-import com.naosim.dddwork.domain.WorkRegulationsRepository
+import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -9,7 +9,7 @@ import spock.lang.Specification
 class WorkRegulationsSpec extends Specification {
 
     @Autowired
-    private WorkRegulationsRepository workRegulationsRepository
+    private WorkRegulationsGeneratable workRegulationsRepository
 
     def "標準勤務時間"() {
         setup:
