@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain.attendance
 
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable
 import com.naosim.dddwork.domain.TimePoint
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
@@ -16,20 +17,21 @@ class WorkingHoursCalculatorSpec extends Specification{
     private WorkRegulationsGeneratable workRegulationsRepository
 
     @Autowired
-    private WorkingHoursCalculable iWorkingHoursCalculator;
+    private WorkingHoursCalculable workingHoursCalculator;
 
     @Unroll
     def "勤務時間算出"() {
         setup:
         def startTime = StartTime.of(TimePoint.of(startHours, startMinutes))
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
-        def attendanceTime = VerifiedAttendanceTime.of(startTime, endTime)
-        def workRegulations = workRegulationsRepository.getCurrentRegulations()
+        def notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(startTime, endTime)
+        def attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime)
 
-        def workingHours = iWorkingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);
+        def workRegulations = workRegulationsRepository.getCurrentRegulations()
+        def workingHours = workingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);
 
         expect:
-        expectedWorkingTimeMinutes == workingHours.getTotalMinutes()
+        expectedWorkingTimeMinutes == workingHours.getTimeUnit().getTotalMinutes()
 
         where:
         startHours | startMinutes | endHours | endMinutes || expectedWorkingTimeMinutes

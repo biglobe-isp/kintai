@@ -1,6 +1,8 @@
 package com.naosim.dddwork.domain.attendance
 
-import com.naosim.dddwork.domain.service.AttendanceGeneratable
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime
+import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister
+import com.naosim.dddwork.domain.service.AttendanceGeneratableForRepository
 import com.naosim.dddwork.domain.TimePoint
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
 import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime
@@ -10,27 +12,28 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class AttendanceGeneratorSpec extends Specification{
+class AttendanceGeneratorForRepositorySpec extends Specification{
 
     @Autowired
     private WorkRegulationsGeneratable workRegulationsRepository
 
     @Autowired
-    private AttendanceGeneratable iAttendanceFactory;
+    private AttendanceGeneratableForRegister attendanceGenerator;
 
     @Unroll
     def "遅刻はAttendance生成しない"() {
         setup:
         def workDay = WorkDay.of("20200301");
-        def attendanceTime = VerifiedAttendanceTime.of(StartTime.of(TimePoint.of(hours, minutes)),
-                                               EndTime.of(TimePoint.of(18, 0)))
+        def notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(
+                StartTime.of(TimePoint.of(9, 1)),
+                EndTime.of(TimePoint.of(18, 0)))
+        def attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
 
-        expect:
-        expectedValue == iAttendanceFactory.createForRegister(workDay, attendanceTime, workRegulations);
+        when:
+        attendanceGenerator.create(workDay, attendanceTime, workRegulations);
 
-        where:
-        hours | minutes || expectedValue
-        9     | 1       || null
+        then:
+        thrown(RuntimeException)
     }
 }

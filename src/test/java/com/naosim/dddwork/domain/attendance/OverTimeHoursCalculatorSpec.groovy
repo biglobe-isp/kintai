@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain.attendance
 
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime
 import com.naosim.dddwork.domain.service.OverTimeHoursCalculable
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable
 import com.naosim.dddwork.domain.TimePoint
@@ -17,23 +18,25 @@ class OverTimeHoursCalculatorSpec extends Specification{
     private WorkRegulationsGeneratable workRegulationsRepository
 
     @Autowired
-    private WorkingHoursCalculable iWorkingHoursCalculator;
+    private WorkingHoursCalculable workingHoursCalculator;
 
     @Autowired
-    private OverTimeHoursCalculable iOverTimeHoursCalculator;
+    private OverTimeHoursCalculable overTimeHoursCalculator;
 
     @Unroll
     def "残業時間算出"() {
         setup:
         def startTime = StartTime.of(TimePoint.of(startHours, startMinutes))
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
-        def attendanceTime = VerifiedAttendanceTime.of(startTime, endTime)
+        def notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(startTime, endTime)
+        def attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
-        def workingHours = iWorkingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);
-        def overTimeHours = iOverTimeHoursCalculator.calcOverTimeHours(workingHours, workRegulations);
+
+        def workingHours = workingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);
+        def overTimeHours = overTimeHoursCalculator.calcOverTimeHours(workingHours, workRegulations);
 
         expect:
-        expectedOverTimeMinutes == overTimeHours.getTotalMinutes()
+        expectedOverTimeMinutes == overTimeHours.getTimeUnit().getTotalMinutes();
 
         where:
         startHours | startMinutes | endHours | endMinutes || expectedOverTimeMinutes

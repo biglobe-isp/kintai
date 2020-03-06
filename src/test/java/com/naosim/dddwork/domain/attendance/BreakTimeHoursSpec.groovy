@@ -1,6 +1,7 @@
 package com.naosim.dddwork.domain.attendance
 
 import com.naosim.dddwork.domain.TimePoint
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
 import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +20,8 @@ class BreakTimeHoursSpec extends Specification{
         setup:
         def startTime = StartTime.of(TimePoint.of(startHours, startMinutes))
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
-        def attendanceTime = VerifiedAttendanceTime.of(startTime, endTime)
+        def notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(startTime, endTime)
+        def attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
         def breakTimeHours = BreakTimeHours.of(attendanceTime, workRegulations)
 

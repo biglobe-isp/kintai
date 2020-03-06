@@ -4,9 +4,10 @@ import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.*;
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime;
 import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
-import com.naosim.dddwork.domain.service.AttendanceGeneratable;
+import com.naosim.dddwork.domain.service.AttendanceGeneratableForRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
-    private final AttendanceGeneratable attendanceGeneratable;
+    private final AttendanceGeneratableForRepository attendanceGenerator;
 
     @Override
     public void save(Attendance attendance) {
@@ -86,13 +87,13 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
         TimePoint startTime = TimePoint.of(start);
         TimePoint endTime = TimePoint.of(end);
-        VerifiedAttendanceTime attendanceTime = VerifiedAttendanceTime.of(StartTime.of(startTime), EndTime.of(endTime));
+        NotVerifiedAttendanceTime notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(StartTime.of(startTime),
+                                                                                           EndTime.of(endTime));
+        VerifiedAttendanceTime attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime);
 
         WorkingHours workingHours = WorkingHours.of(TimeUnit.of(Integer.parseInt(workingH)));
         OverTimeHours overTimeHours = OverTimeHours.of(TimeUnit.of(Integer.parseInt(OverTimeH)));
 
-
-
-        return attendanceGeneratable.createFromCsv(workDay, attendanceTime, workingHours, overTimeHours);
+        return attendanceGenerator.create(workDay, attendanceTime, workingHours, overTimeHours);
     }
 }

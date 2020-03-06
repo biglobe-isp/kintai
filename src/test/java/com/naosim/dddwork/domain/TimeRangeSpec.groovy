@@ -1,12 +1,10 @@
 package com.naosim.dddwork.domain
 
-import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.LocalTime
 
-@SpringBootTest
 class TimeRangeSpec extends Specification {
 
     @Unroll

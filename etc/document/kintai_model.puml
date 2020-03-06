@@ -1,31 +1,22 @@
 @startuml
 
+class Application {
+    void main(String[] args)
+}
+
 package api {
-    class Main {
-        'パラメータのValidation
-        'ServiceにわたすEntity, ValueObjectの生成
-        void main(args)
+    'パラメータのValidation
+    'ServiceにわたすEntity, ValueObjectの生成
+    class AttendanceController {
+        + void command(String[] args)
+        - void register(String inputWorkDay, String inputStart, String inputEnd)
+        - void monthlyTotal(String inputYearMonth)
     }
 
-    class RegisterController {
-        void register(WorkDay workDay, NotVerifiedAttendanceTime notVerifiedAttendanceTime)
-    }
-
-    class MonthlyTotalController {
-        void monthlyTotal(args)
-    }
-
-    class DateValidator {
-        String value;
-        String format;
-        --
-        boolean isValid()
-    }
-
-    class TimeValidator {
-        String value;
-        --
-        boolean isValid()
+    class ParamConverter {
+        + YearMonth convertYearMonth(String input)
+        + WorkDay convertWorkDay(String input)
+        + TimePoint convertTimePoint(String input)
     }
 }
 
@@ -54,9 +45,19 @@ package datasource {
 package domain {
 
     package attendance {
-        class AttendanceGenerator {
-            Attendance createForRegister(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
-            Attendance createFromCsv(WorkDay workDay, VerifiedAttendanceTime attendanceTime, TimeUnit workingHours, TimeUnit overTimeHours)
+        class AttendanceFactory {
+            Attendance create(WorkDay workDay,
+                              VerifiedAttendanceTime attendanceTime,
+                              WorkingHours workingHours,
+                              OverTimeHours overTimeHours
+        }
+
+        class AttendanceGeneratorForRegister {
+            Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
+        }
+
+        class AttendanceGeneratorForRepository {
+            Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime, TimeUnit workingHours, TimeUnit overTimeHours)
         }
 
         class Attendance <<Entity>>{
@@ -182,9 +183,12 @@ package domain {
         int getRangeMinutes()
     }
 
-    interface AttendanceGeneratable {
-        Attendance createForRegister(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
-        Attendance createFromCsv(WorkDay workDay, VerifiedAttendanceTime attendanceTime, TimeUnit workingHours, TimeUnit overTimeHours)
+    interface AttendanceGeneratableForRegister {
+        Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
+    }
+
+    interface AttendanceGeneratableForRepository {
+        Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime, TimeUnit workingHours, TimeUnit overTimeHours)
     }
 
     interface WorkRegulationsGeneratable <<Repository>> {
@@ -212,38 +216,39 @@ package domain {
 
 '***** 相関関係 *****
 'API
-Main ---> RegisterController
-Main ---> MonthlyTotalController
-RegisterController --> DateValidator
-RegisterController --> TimeValidator
-MonthlyTotalController --> DateValidator
-RegisterController ---> AttendanceService
-MonthlyTotalController ---> MonthlySummaryService
+Application ---> AttendanceController
+AttendanceController --> ParamConverter
+AttendanceController ---> AttendanceService
+AttendanceController ---> MonthlySummaryService
 
 'Service
 AttendanceService -[hidden]- MonthlySummaryService
-AttendanceService ---> AttendanceGeneratable
+AttendanceService ---> AttendanceGeneratableForRegister
 AttendanceService ---> WorkRegulationsGeneratable
 AttendanceService --> AttendanceRepository : save
 
 MonthlySummaryService --> MonthlySummaryCalculable
 
 'Domain-Factory/Calcultor
-AttendanceGeneratable--> WorkingHoursCalculable
-AttendanceGeneratable--> OverTimeHoursCalculable
+AttendanceGeneratableForRegister--> WorkingHoursCalculable
+AttendanceGeneratableForRegister--> OverTimeHoursCalculable
 
 WorkingHoursCalculator --> BreakTimeHours
 
+AttendanceGeneratorForRepository --> AttendanceFactory
+AttendanceGeneratorForRegister --> AttendanceFactory
+
 MonthlySummaryCalculable --> AttendanceRepository
 MonthlySummaryCalculator --> MonthlySummary
-MonthlySummaryCalculator ---> AttendanceGeneratable
+MonthlySummaryCalculator ---> AttendanceGeneratableForRepository
 
 WorkingHoursCalculator ---> WorkingHours
 OvertimeHoursCalculator ---> OverTimeHours
 
 'Repository
-AttendanceRepository ---> AttendanceGeneratable
-AttendanceGenerator ---> Attendance
+AttendanceRepository ---> AttendanceGeneratableForRepository
+AttendanceGeneratorForRegister ---> Attendance
+AttendanceGeneratorForRepository ---> Attendance
 WorkRegulationsGeneratable ---> WorkRegulations
 AttendanceRepositoryCsv --> csv
 
@@ -254,7 +259,8 @@ EndTime ---> WorkRegulations
 '実装
 AttendanceRepository <|... AttendanceRepositoryCsv
 WorkRegulationsGeneratable <|... WorkRegulationsGenerator
-AttendanceGeneratable <|... AttendanceGenerator
+AttendanceGeneratableForRepository <|... AttendanceGeneratorForRepository
+AttendanceGeneratableForRegister <|... AttendanceGeneratorForRegister
 WorkingHoursCalculable <|... WorkingHoursCalculator
 OverTimeHoursCalculable <|... OvertimeHoursCalculator
 MonthlySummaryCalculable <|... MonthlySummaryCalculator

@@ -8,8 +8,4 @@ import lombok.Value;
 public class NotVerifiedAttendanceTime {
     StartTime startTime;
     EndTime endTime;
-
-    public boolean isStartGreaterThanEnd() {
-        return this.startTime.getTimePoint().getIntValue() > this.endTime.getTimePoint().getIntValue();
-    }
 }

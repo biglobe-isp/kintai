@@ -1,5 +1,6 @@
 package com.naosim.dddwork.domain.attendance.caluculator;
 
+import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
@@ -29,13 +30,13 @@ public class OverTimeHoursCalculator implements OverTimeHoursCalculable {
     public OverTimeHours calcOverTimeHours(
             WorkingHours workingHours, WorkRegulations workRegulations) {
 
-        LocalTime standardStart = workRegulations.getStartTimeRange().getStandard();
+        LocalTime start = workRegulations.getStartTimeRange().getStandard();
+        LocalTime end = workRegulations.getEndTimeRange().getStandard();
+        StartTime standardStart = StartTime.of(TimePoint.of(start.getHour(), start.getMinute()));
+        EndTime standardEnd = EndTime.of(TimePoint.of(end.getHour(), end.getMinute()));
 
-        LocalTime standardEnd = workRegulations.getEndTimeRange().getStandard();
-
-        VerifiedAttendanceTime standardAttendanceTime = VerifiedAttendanceTime.of(
-                StartTime.of(TimePoint.of(standardStart.getHour(), standardStart.getMinute())),
-                EndTime.of(TimePoint.of(standardEnd.getHour(), standardEnd.getMinute())));
+        NotVerifiedAttendanceTime notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(standardStart, standardEnd);
+        VerifiedAttendanceTime standardAttendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime);
 
         WorkingHours standardWorkingTime = workingHoursCalculable.calcWorkingHours(standardAttendanceTime, workRegulations);
 

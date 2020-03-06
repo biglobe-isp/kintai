@@ -4,7 +4,6 @@ import com.naosim.dddwork.domain.service.MonthlySummaryCalculable;
 import com.naosim.dddwork.domain.monthlysummary.MonthlySummary;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
