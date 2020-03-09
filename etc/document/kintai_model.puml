@@ -281,7 +281,6 @@ WorkRegulations *-- EndTimeRange
 
 MonthlySummary --> YearMonth
 
-WorkRegulations -[hidden]- TimeUnit
 WorkRegulations -[hidden]- TimeRange
 WorkRegulations -[hidden]- TimePoint
 
