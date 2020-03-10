@@ -28,7 +28,7 @@ public class EndTime {
         if (isExceedLimitTime()) {
             return LocalTime.MAX;
         } else {
-            return LocalTime.of(this.timePoint.getHour(), this.timePoint.getMinutes());
+            return this.timePoint.getLocalTime();
         }
     }
 }

@@ -3,6 +3,8 @@ package com.naosim.dddwork.domain;
 import com.google.common.base.Strings;
 import lombok.Value;
 
+import java.time.LocalTime;
+
 @Value
 public class TimePoint {
     int hour;
@@ -19,9 +21,11 @@ public class TimePoint {
         return new TimePoint(hour, minutes);
     }
 
-    public int getIntValue() {
+    public int getMinutesValue() {
         return hour * 60 + minutes;
     }
+
+    public LocalTime getLocalTime() { return LocalTime.of(hour, minutes); }
 
     public String toString() {
         return Strings.padStart(String.valueOf(hour), 2, '0')

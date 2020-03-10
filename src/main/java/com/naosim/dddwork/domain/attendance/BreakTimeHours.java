@@ -30,33 +30,34 @@ public class BreakTimeHours {
     }
 
     private int getIncludedBreakTime(VerifiedAttendanceTime attendanceTime, TimeRange breakTimeRange) {
-        LocalTime breakStartTime = LocalTime.of(breakTimeRange.getTimeFrom().getHour(),
-                                                breakTimeRange.getTimeFrom().getMinutes());
-        LocalTime breakEndTime = LocalTime.of(breakTimeRange.getTimeTo().getHour(),
-                                              breakTimeRange.getTimeTo().getMinutes());
-
-        LocalTime attendanceStartTime = LocalTime.of(attendanceTime.getStartTime().getTimePoint().getHour(),
-                                                     attendanceTime.getStartTime().getTimePoint().getMinutes());
+        LocalTime breakStartTime = breakTimeRange.getTimeFrom().getLocalTime();
+        LocalTime breakEndTime = breakTimeRange.getTimeTo().getLocalTime();
+        LocalTime attendanceStartTime = attendanceTime.getStartTime().getTimePoint().getLocalTime();
         LocalTime attendanceEndTime = attendanceTime.getEndTime().getLastTimeOnTheDay();
 
         if (attendanceEndTime.compareTo(breakStartTime) < 0) {
             return 0;
         }
 
-        LocalTime targetStartTime;
-        if (attendanceStartTime.compareTo(breakStartTime) > 0) {
-            targetStartTime = attendanceStartTime;
-        } else {
-            targetStartTime = breakStartTime;
-        }
-
-        LocalTime targetEndTime;
-        if (attendanceEndTime.compareTo(breakEndTime) > 0) {
-            targetEndTime = breakEndTime;
-        } else {
-            targetEndTime = attendanceEndTime;
-        }
+        LocalTime targetStartTime = min(attendanceStartTime, breakStartTime);
+        LocalTime targetEndTime = max(attendanceEndTime, breakEndTime);
 
         return (int) ChronoUnit.MINUTES.between(targetStartTime, targetEndTime);
+    }
+
+    private LocalTime min(LocalTime localTime1, LocalTime localTime2) {
+        if (localTime1.compareTo(localTime2) > 0) {
+            return localTime1;
+        } else {
+            return localTime2;
+        }
+    }
+
+    private LocalTime max(LocalTime localTime1, LocalTime localTime2) {
+        if (localTime1.compareTo(localTime2) > 0) {
+            return localTime2;
+        } else {
+            return localTime1;
+        }
     }
 }

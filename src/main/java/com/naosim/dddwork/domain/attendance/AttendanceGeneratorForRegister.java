@@ -3,7 +3,6 @@ package com.naosim.dddwork.domain.attendance;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister;
-import com.naosim.dddwork.domain.service.AttendanceGeneratableForRepository;
 import com.naosim.dddwork.domain.service.OverTimeHoursCalculable;
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AttendanceGeneratorForRegister implements AttendanceGeneratableForRegister {
 
-    private final AttendanceFactory attendanceFactory;
     private final WorkingHoursCalculable workingHoursCalculable;
     private final OverTimeHoursCalculable overTimeHoursCalculable;
 
@@ -25,13 +23,13 @@ public class AttendanceGeneratorForRegister implements AttendanceGeneratableForR
         }
         WorkingHours workingHours = workingHoursCalculable.calcWorkingHours(attendanceTime, workRegulations);
         OverTimeHours overTimeHours = overTimeHoursCalculable.calcOverTimeHours(workingHours, workRegulations);
-        return attendanceFactory.create(workDay, attendanceTime, workingHours, overTimeHours);
+        return new Attendance(workDay, attendanceTime, workingHours, overTimeHours);
     }
 
     private boolean isLateness(StartTime startTime, WorkRegulations workRegulations) {
         TimePoint maxTimePoint = workRegulations.getStartTimeRange().getRange().getTimeTo();
         TimePoint start = startTime.getTimePoint();
 
-        return start.getIntValue() > maxTimePoint.getIntValue();
+        return start.getMinutesValue() > maxTimePoint.getMinutesValue();
     }
 }

@@ -21,14 +21,6 @@ public class TimeRange {
     }
 
     public boolean isOutOfRange(LocalTime timeValue) {
-        return (this.getLocalTimeFrom().compareTo(timeValue) >= 0 || this.getLocalTimeTo().compareTo(timeValue) <= 0);
-    }
-
-    private LocalTime getLocalTimeFrom() {
-        return LocalTime.of(this.timeFrom.getHour(), this.timeFrom.getMinutes());
-    }
-
-    private LocalTime getLocalTimeTo() {
-        return LocalTime.of(this.timeTo.getHour(), this.timeTo.getMinutes());
+        return (timeFrom.getLocalTime().compareTo(timeValue) >= 0 || timeTo.getLocalTime().compareTo(timeValue) <= 0);
     }
 }

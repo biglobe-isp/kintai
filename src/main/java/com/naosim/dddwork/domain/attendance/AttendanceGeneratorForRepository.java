@@ -8,12 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AttendanceGeneratorForRepository implements AttendanceGeneratableForRepository {
-
-    private final AttendanceFactory attendanceFactory;
-
     @Override
     public Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime,
                              WorkingHours workingHours, OverTimeHours overTimeHours) {
-        return attendanceFactory.create(workDay, attendanceTime, workingHours, overTimeHours);
+        return new Attendance(workDay, attendanceTime, workingHours, overTimeHours);
     }
 }

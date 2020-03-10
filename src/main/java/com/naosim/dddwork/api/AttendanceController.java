@@ -22,29 +22,33 @@ public class AttendanceController {
     private final MonthlySummaryService monthlySummaryService;
 
     public void command(String[] args) {
-        if (args.length < 1) {
-            throw new RuntimeException("引数が足りません");
-        }
-        String methodType = args[0];
-
-        if ("input".equals(methodType)) {
-            if (args.length < 4) {
+        try {
+            if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
             }
-            String inputWorkDay = args[1];
-            String inputStartTime = args[2];
-            String inputEndTime = args[3];
-            register(inputWorkDay, inputStartTime, inputEndTime);
+            String methodType = args[0];
 
-        } else if ("total".equals(methodType)) {
-            if (args.length < 2) {
-                throw new RuntimeException("引数が足りません");
+            if ("input".equals(methodType)) {
+                if (args.length < 4) {
+                    throw new RuntimeException("引数が足りません");
+                }
+                String inputWorkDay = args[1];
+                String inputStartTime = args[2];
+                String inputEndTime = args[3];
+                register(inputWorkDay, inputStartTime, inputEndTime);
+
+            } else if ("total".equals(methodType)) {
+                if (args.length < 2) {
+                    throw new RuntimeException("引数が足りません");
+                }
+                String inputYearMonth = args[1];
+                monthlyTotal(inputYearMonth);
+
+            } else {
+                throw new RuntimeException("methodTypeが不正です");
             }
-            String inputYearMonth = args[1];
-            monthlyTotal(inputYearMonth);
-
-        } else {
-            throw new RuntimeException("methodTypeが不正です");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

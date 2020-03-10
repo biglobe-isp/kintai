@@ -45,12 +45,6 @@ package datasource {
 package domain {
 
     package attendance {
-        class AttendanceFactory {
-            Attendance create(WorkDay workDay,
-                              VerifiedAttendanceTime attendanceTime,
-                              WorkingHours workingHours,
-                              OverTimeHours overTimeHours
-        }
 
         class AttendanceGeneratorForRegister {
             Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations)
@@ -234,9 +228,6 @@ AttendanceGeneratableForRegister--> WorkingHoursCalculable
 AttendanceGeneratableForRegister--> OverTimeHoursCalculable
 
 WorkingHoursCalculator --> BreakTimeHours
-
-AttendanceGeneratorForRepository --> AttendanceFactory
-AttendanceGeneratorForRegister --> AttendanceFactory
 
 MonthlySummaryCalculable --> AttendanceRepository
 MonthlySummaryCalculator --> MonthlySummary

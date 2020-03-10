@@ -12,7 +12,7 @@ public class WorkDay {
         return new WorkDay(workDay);
     }
 
-    public WorkDay(String workDay) {
+    private WorkDay(String workDay) {
         int year = Integer.parseInt(workDay.substring(0, 4));
         int month = Integer.parseInt(workDay.substring(4, 6));
         int dayOfMonth = Integer.parseInt(workDay.substring(6));

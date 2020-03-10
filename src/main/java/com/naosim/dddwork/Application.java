@@ -22,11 +22,6 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        try {
-            attendanceController.command(args);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        attendanceController.command(args);
     }
 }

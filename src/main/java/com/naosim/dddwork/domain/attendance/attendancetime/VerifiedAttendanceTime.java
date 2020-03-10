@@ -18,8 +18,8 @@ public class VerifiedAttendanceTime {
     }
 
     private static boolean isStartGreaterThanEnd(NotVerifiedAttendanceTime notVerifiedAttendanceTime) {
-        int startTime = notVerifiedAttendanceTime.getStartTime().getTimePoint().getIntValue();
-        int endTime = notVerifiedAttendanceTime.getEndTime().getTimePoint().getIntValue();
+        int startTime = notVerifiedAttendanceTime.getStartTime().getTimePoint().getMinutesValue();
+        int endTime = notVerifiedAttendanceTime.getEndTime().getTimePoint().getMinutesValue();
 
         return startTime > endTime;
     }
