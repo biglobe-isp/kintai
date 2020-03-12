@@ -4,8 +4,8 @@ import com.naosim.dddwork.api.validator.ParamConverter;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.attendance.EndTime;
 import com.naosim.dddwork.domain.attendance.StartTime;
-import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime;
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendanceTime.NotVerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.monthlysummary.MonthlySummary;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
@@ -61,9 +61,9 @@ public class AttendanceController {
         NotVerifiedAttendanceTime notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(
                 StartTime.of(startTimePoint), EndTime.of(endTimePoint));
 
-        VerifiedAttendanceTime attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime);
+        VerifiedAttendanceTime verifiedAttendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime);
 
-        attendanceService.registerAttendance(workDay, attendanceTime);
+        attendanceService.registerAttendance(workDay, verifiedAttendanceTime);
     }
 
     private void monthlyTotal(String inputYearMonth) {

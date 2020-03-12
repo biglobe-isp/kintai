@@ -1,7 +1,6 @@
 package com.naosim.dddwork.domain.attendance;
 
 import com.naosim.dddwork.domain.TimePoint;
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister;
 import com.naosim.dddwork.domain.service.OverTimeHoursCalculable;
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable;
@@ -17,10 +16,11 @@ public class AttendanceGeneratorForRegister implements AttendanceGeneratableForR
     private final OverTimeHoursCalculable overTimeHoursCalculable;
 
     @Override
-    public Attendance create(WorkDay workDay, VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations) {
+    public Attendance create(WorkDay workDay, AttendanceTime attendanceTime, WorkRegulations workRegulations) {
         if (isLateness(attendanceTime.getStartTime(), workRegulations)) {
             throw new RuntimeException("遅刻は認めません");
         }
+
         WorkingHours workingHours = workingHoursCalculable.calcWorkingHours(attendanceTime, workRegulations);
         OverTimeHours overTimeHours = overTimeHoursCalculable.calcOverTimeHours(workingHours, workRegulations);
         return new Attendance(workDay, attendanceTime, workingHours, overTimeHours);

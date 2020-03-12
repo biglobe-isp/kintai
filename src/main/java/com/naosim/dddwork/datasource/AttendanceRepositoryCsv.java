@@ -4,8 +4,7 @@ import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.*;
-import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime;
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +29,10 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
             String workday = attendance.getWorkDay().getDate().format(formatter);
+
             String start = attendance.getAttendanceTime().getStartTime().getTimePoint().toString();
             String end = attendance.getAttendanceTime().getEndTime().getTimePoint().toString();
+
             String workingHours = String.valueOf(attendance.getWorkingHours().getTimeUnit().getTotalMinutes());
             String overTimeHours = String.valueOf(attendance.getOverTimeHours().getTimeUnit().getTotalMinutes());
             String now = LocalDateTime.now().toString();
@@ -87,9 +88,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
         TimePoint startTime = TimePoint.of(start);
         TimePoint endTime = TimePoint.of(end);
-        NotVerifiedAttendanceTime notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(StartTime.of(startTime),
-                                                                                           EndTime.of(endTime));
-        VerifiedAttendanceTime attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime);
+        AttendanceTime attendanceTime = AttendanceTime.of(new VerifiedAttendanceTime(
+                StartTime.of(startTime), EndTime.of(endTime)));
 
         WorkingHours workingHours = WorkingHours.of(TimeUnit.of(Integer.parseInt(workingH)));
         OverTimeHours overTimeHours = OverTimeHours.of(TimeUnit.of(Integer.parseInt(OverTimeH)));

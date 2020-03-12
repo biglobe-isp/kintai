@@ -1,10 +1,11 @@
 package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.domain.AttendanceRepository;
+import com.naosim.dddwork.domain.attendance.AttendanceTime;
+import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister;
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable;
 import com.naosim.dddwork.domain.attendance.Attendance;
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,9 @@ public class AttendanceService {
     private final WorkRegulationsGeneratable workRegulationsGeneratable;
     private final AttendanceGeneratableForRegister attendanceGenerator;
 
-    public void registerAttendance(WorkDay workDay, VerifiedAttendanceTime attendanceTime) {
+    public void registerAttendance(WorkDay workDay, VerifiedAttendanceTime verifiedAttendanceTime) {
         WorkRegulations workRegulations = workRegulationsGeneratable.getCurrentRegulations();
+        AttendanceTime attendanceTime = AttendanceTime.of(verifiedAttendanceTime);
         Attendance attendance = attendanceGenerator.create(workDay, attendanceTime, workRegulations);
         attendanceRepository.save(attendance);
     }

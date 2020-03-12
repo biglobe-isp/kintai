@@ -2,9 +2,9 @@ package com.naosim.dddwork.domain.attendance.caluculator;
 
 import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.TimeUnit;
+import com.naosim.dddwork.domain.attendance.AttendanceTime;
 import com.naosim.dddwork.domain.attendance.BreakTimeHours;
 import com.naosim.dddwork.domain.attendance.WorkingHours;
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class WorkingHoursCalculator implements WorkingHoursCalculable {
     @Override
     public WorkingHours calcWorkingHours(
-            VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations) {
+            AttendanceTime attendanceTime, WorkRegulations workRegulations) {
 
         BreakTimeHours breakTimeHours = BreakTimeHours.of(attendanceTime, workRegulations);
 

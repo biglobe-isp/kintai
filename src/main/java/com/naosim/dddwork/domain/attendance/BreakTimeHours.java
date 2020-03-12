@@ -2,7 +2,6 @@ package com.naosim.dddwork.domain.attendance;
 
 import com.naosim.dddwork.domain.TimeRange;
 import com.naosim.dddwork.domain.TimeUnit;
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import lombok.Value;
 
@@ -14,11 +13,11 @@ import java.util.List;
 public class BreakTimeHours {
     TimeUnit timeUnit;
 
-    public static BreakTimeHours of(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations) {
+    public static BreakTimeHours of(AttendanceTime attendanceTime, WorkRegulations workRegulations) {
         return new BreakTimeHours(attendanceTime, workRegulations);
     }
 
-    private BreakTimeHours(VerifiedAttendanceTime attendanceTime, WorkRegulations workRegulations){
+    private BreakTimeHours(AttendanceTime attendanceTime, WorkRegulations workRegulations){
         List<TimeRange> list = workRegulations.getBreakTimes().getList();
 
         int breakTimeMinutes = 0;
@@ -29,9 +28,10 @@ public class BreakTimeHours {
         this.timeUnit = TimeUnit.of(breakTimeMinutes);
     }
 
-    private int getIncludedBreakTime(VerifiedAttendanceTime attendanceTime, TimeRange breakTimeRange) {
+    private int getIncludedBreakTime(AttendanceTime attendanceTime, TimeRange breakTimeRange) {
         LocalTime breakStartTime = breakTimeRange.getTimeFrom().getLocalTime();
         LocalTime breakEndTime = breakTimeRange.getTimeTo().getLocalTime();
+
         LocalTime attendanceStartTime = attendanceTime.getStartTime().getTimePoint().getLocalTime();
         LocalTime attendanceEndTime = attendanceTime.getEndTime().getLastTimeOnTheDay();
 
