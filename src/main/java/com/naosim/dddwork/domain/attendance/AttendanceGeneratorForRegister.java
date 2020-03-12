@@ -5,6 +5,7 @@ import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister;
 import com.naosim.dddwork.domain.service.OverTimeHoursCalculable;
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
+import com.naosim.dddwork.exception.InvalidAttendanceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +17,9 @@ public class AttendanceGeneratorForRegister implements AttendanceGeneratableForR
     private final OverTimeHoursCalculable overTimeHoursCalculable;
 
     @Override
-    public Attendance create(WorkDay workDay, AttendanceTime attendanceTime, WorkRegulations workRegulations) {
+    public Attendance create(WorkDay workDay, AttendanceTime attendanceTime, WorkRegulations workRegulations) throws InvalidAttendanceException {
         if (isLateness(attendanceTime.getStartTime(), workRegulations)) {
-            throw new RuntimeException("遅刻は認めません");
+            throw new InvalidAttendanceException("遅刻は認めません");
         }
 
         WorkingHours workingHours = workingHoursCalculable.calcWorkingHours(attendanceTime, workRegulations);

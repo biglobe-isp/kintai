@@ -48,33 +48,29 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
     }
 
     @Override
-    public List<Attendance> findSpecifiedYearMonth(YearMonth yearMonth) {
+    public List<Attendance> findSpecifiedYearMonth(YearMonth yearMonth) throws IOException {
         List<Attendance> attendanceList = new ArrayList<>();
-        try {
-            File file = getCsvFile();
+        File file = getCsvFile();
 
-            try (
-                    FileReader fr = new FileReader(file);
-                    BufferedReader br = new BufferedReader(fr);
-            ) {
-                String line = br.readLine();
+        try (
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+        ) {
+            String line = br.readLine();
 
-                while (line != null) {
-                    String[] columns = line.split(",");
+            while (line != null) {
+                String[] columns = line.split(",");
 
-                    if (!columns[0].startsWith(yearMonth.toString())) {
-                        line = br.readLine();
-                        continue;
-                    }
-
-                    attendanceList.add(generateAttendance(
-                            columns[0], columns[1], columns[2], columns[3], columns[4]));
-
+                if (!columns[0].startsWith(yearMonth.toString())) {
                     line = br.readLine();
+                    continue;
                 }
+
+                attendanceList.add(generateAttendance(
+                        columns[0], columns[1], columns[2], columns[3], columns[4]));
+
+                line = br.readLine();
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
         return attendanceList;
     }

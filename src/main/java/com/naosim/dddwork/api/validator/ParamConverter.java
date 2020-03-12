@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
+import com.naosim.dddwork.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -13,24 +14,24 @@ import java.util.regex.Pattern;
 @Component
 public class ParamConverter {
 
-    public YearMonth convertYearMonth(String input) {
+    public YearMonth convertYearMonth(String input) throws ValidationException {
         if (!isDateValid(input, EnumDateFormat.yyyyMM)) {
-            throw new RuntimeException("年月の形式がただしくありません");
+            throw new ValidationException("年月の形式がただしくありません");
         }
         return YearMonth.of(Integer.parseInt(input.substring(0, 4)),
                             Integer.parseInt(input.substring(4, 6)));
     }
 
-    public WorkDay convertWorkDay(String input) {
+    public WorkDay convertWorkDay(String input) throws ValidationException {
         if (!isDateValid(input, EnumDateFormat.yyyyMMdd)) {
-            throw new RuntimeException("日付の形式がただしくありません");
+            throw new ValidationException("日付の形式がただしくありません");
         }
         return WorkDay.of(input);
     }
 
-    public TimePoint convertTimePoint(String input) {
+    public TimePoint convertTimePoint(String input) throws ValidationException {
         if (!isTimeValid(input)) {
-            throw new RuntimeException("時刻の形式がただしくありません");
+            throw new ValidationException("時刻の形式がただしくありません");
         }
         return TimePoint.of(Integer.parseInt(input.substring(0, 2)),
                             Integer.parseInt(input.substring(2)));

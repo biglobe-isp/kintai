@@ -8,6 +8,7 @@ import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable;
 import com.naosim.dddwork.domain.attendance.Attendance;
 import com.naosim.dddwork.domain.attendance.WorkDay;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
+import com.naosim.dddwork.exception.InvalidAttendanceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class AttendanceService {
     private final WorkRegulationsGeneratable workRegulationsGeneratable;
     private final AttendanceGeneratableForRegister attendanceGenerator;
 
-    public void registerAttendance(WorkDay workDay, VerifiedAttendanceTime verifiedAttendanceTime) {
+    public void registerAttendance(WorkDay workDay, VerifiedAttendanceTime verifiedAttendanceTime) throws InvalidAttendanceException {
         WorkRegulations workRegulations = workRegulationsGeneratable.getCurrentRegulations();
         AttendanceTime attendanceTime = AttendanceTime.of(verifiedAttendanceTime);
         Attendance attendance = attendanceGenerator.create(workDay, attendanceTime, workRegulations);

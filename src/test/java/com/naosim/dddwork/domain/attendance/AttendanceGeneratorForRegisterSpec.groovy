@@ -6,13 +6,14 @@ import com.naosim.dddwork.api.attendancetime.NotVerifiedAttendanceTime
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister
 import com.naosim.dddwork.domain.TimePoint
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
+import com.naosim.dddwork.exception.InvalidAttendanceException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @ContextConfiguration(locations = ["classpath:context.xml"])
-class AttendanceGeneratorForRepositorySpec extends Specification{
+class AttendanceGeneratorForRegisterSpec extends Specification{
 
     @Autowired
     private WorkRegulationsGeneratable workRegulationsRepository
@@ -35,6 +36,6 @@ class AttendanceGeneratorForRepositorySpec extends Specification{
         attendanceGenerator.create(workDay, attendanceTime, workRegulations);
 
         then:
-        thrown(RuntimeException)
+        thrown(InvalidAttendanceException)
     }
 }

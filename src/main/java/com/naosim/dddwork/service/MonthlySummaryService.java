@@ -8,6 +8,7 @@ import com.naosim.dddwork.domain.monthlysummary.YearMonth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -17,7 +18,7 @@ public class MonthlySummaryService {
     private final AttendanceRepository attendanceRepository;
     private final MonthlySummaryCalculable monthlySummaryCalculator;
 
-    public MonthlySummary acquireMonthlyTotal(YearMonth yearMonth) {
+    public MonthlySummary acquireMonthlyTotal(YearMonth yearMonth) throws IOException {
         List<Attendance> attendanceList = attendanceRepository.findSpecifiedYearMonth(yearMonth);
         return monthlySummaryCalculator.aggregateSpecifiedMonthAttendance(attendanceList);
     }
