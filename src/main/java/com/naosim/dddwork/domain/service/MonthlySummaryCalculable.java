@@ -1,8 +1,10 @@
 package com.naosim.dddwork.domain.service;
 
+import com.naosim.dddwork.domain.attendance.Attendance;
 import com.naosim.dddwork.domain.monthlysummary.MonthlySummary;
-import com.naosim.dddwork.domain.monthlysummary.YearMonth;
+
+import java.util.List;
 
 public interface MonthlySummaryCalculable {
-    MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth);
+    MonthlySummary aggregateSpecifiedMonthAttendance(List<Attendance> attendanceList);
 }

@@ -5,7 +5,6 @@ import lombok.Value;
 
 @Value(staticConstructor = "of")
 public class MonthlySummary {
-    YearMonth workMonth;
     TimeUnit workingHours;
     TimeUnit overTimeHours;
 }

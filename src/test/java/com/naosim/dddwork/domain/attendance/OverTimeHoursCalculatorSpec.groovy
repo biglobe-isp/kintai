@@ -1,11 +1,11 @@
 package com.naosim.dddwork.domain.attendance
 
-import com.naosim.dddwork.domain.attendance.attendancetime.NotVerifiedAttendanceTime
+import com.naosim.dddwork.api.attendancetime.NotVerifiedAttendanceTime
 import com.naosim.dddwork.domain.service.OverTimeHoursCalculable
 import com.naosim.dddwork.domain.service.WorkingHoursCalculable
 import com.naosim.dddwork.domain.TimePoint
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable
-import com.naosim.dddwork.domain.attendance.attendancetime.VerifiedAttendanceTime
+import com.naosim.dddwork.api.attendancetime.VerifiedAttendanceTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
@@ -29,7 +29,8 @@ class OverTimeHoursCalculatorSpec extends Specification{
         def startTime = StartTime.of(TimePoint.of(startHours, startMinutes))
         def endTime = EndTime.of(TimePoint.of(endHours, endMinutes))
         def notVerifiedAttendanceTime = NotVerifiedAttendanceTime.of(startTime, endTime)
-        def attendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime)
+        def verifiedAttendanceTime = VerifiedAttendanceTime.of(notVerifiedAttendanceTime)
+        def attendanceTime = AttendanceTime.of(verifiedAttendanceTime)
         def workRegulations = workRegulationsRepository.getCurrentRegulations()
 
         def workingHours = workingHoursCalculator.calcWorkingHours(attendanceTime, workRegulations);

@@ -4,7 +4,7 @@ import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.TimePoint;
 import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.*;
-import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.monthlysummary.YearMonth;
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRepository;
 import lombok.RequiredArgsConstructor;

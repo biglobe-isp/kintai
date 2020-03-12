@@ -2,7 +2,7 @@ package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.attendance.AttendanceTime;
-import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.AttendanceGeneratableForRegister;
 import com.naosim.dddwork.domain.service.WorkRegulationsGeneratable;
 import com.naosim.dddwork.domain.attendance.Attendance;

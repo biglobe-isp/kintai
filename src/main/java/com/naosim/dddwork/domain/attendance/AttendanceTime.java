@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain.attendance;
 
-import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendancetime.VerifiedAttendanceTime;
 import lombok.Value;
 
 @Value

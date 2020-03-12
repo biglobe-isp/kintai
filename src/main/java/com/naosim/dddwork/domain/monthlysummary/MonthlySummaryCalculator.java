@@ -1,11 +1,9 @@
 package com.naosim.dddwork.domain.monthlysummary;
 
-import com.naosim.dddwork.domain.AttendanceRepository;
 import com.naosim.dddwork.domain.TimeUnit;
 import com.naosim.dddwork.domain.attendance.Attendance;
 import com.naosim.dddwork.domain.service.MonthlySummaryCalculable;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -17,18 +15,15 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class MonthlySummaryCalculator implements MonthlySummaryCalculable {
 
-    private final AttendanceRepository attendanceRepository;
-
     @Override
-    public MonthlySummary aggregateSpecifiedMonthAttendance(YearMonth yearMonth) {
-        List<Attendance> list = attendanceRepository.findSpecifiedYearMonth(yearMonth);
+    public MonthlySummary aggregateSpecifiedMonthAttendance(List<Attendance> attendanceList) {
         int totalWorkingHours = 0;
         int totalOverTimeHours = 0;
 
         Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
         Map<String, Integer> totalOverTimeMinutesMap = new HashMap<>();
 
-        for(Attendance attendance : list) {
+        for(Attendance attendance : attendanceList) {
             totalWorkMinutesMap.put(attendance.getWorkDay().toString(),
                                     attendance.getWorkingHours().getTimeUnit().getTotalMinutes());
             totalOverTimeMinutesMap.put(attendance.getWorkDay().toString(),
@@ -41,6 +36,6 @@ public class MonthlySummaryCalculator implements MonthlySummaryCalculable {
             totalOverTimeHours += totalOverTimeMinutesMap.get(key);
         }
 
-        return MonthlySummary.of(yearMonth, TimeUnit.of(totalWorkingHours), TimeUnit.of(totalOverTimeHours));
+        return MonthlySummary.of(TimeUnit.of(totalWorkingHours), TimeUnit.of(totalOverTimeHours));
     }
 }

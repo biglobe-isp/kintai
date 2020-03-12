@@ -8,7 +8,7 @@ import com.naosim.dddwork.domain.attendance.EndTime;
 import com.naosim.dddwork.domain.attendance.OverTimeHours;
 import com.naosim.dddwork.domain.attendance.StartTime;
 import com.naosim.dddwork.domain.attendance.WorkingHours;
-import com.naosim.dddwork.api.attendanceTime.VerifiedAttendanceTime;
+import com.naosim.dddwork.api.attendancetime.VerifiedAttendanceTime;
 import com.naosim.dddwork.domain.service.OverTimeHoursCalculable;
 import com.naosim.dddwork.domain.workregulations.WorkRegulations;
 import org.springframework.beans.factory.annotation.Autowired;

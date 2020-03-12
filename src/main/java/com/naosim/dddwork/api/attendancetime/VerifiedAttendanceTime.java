@@ -1,4 +1,4 @@
-package com.naosim.dddwork.api.attendanceTime;
+package com.naosim.dddwork.api.attendancetime;
 
 import com.naosim.dddwork.domain.attendance.EndTime;
 import com.naosim.dddwork.domain.attendance.StartTime;
