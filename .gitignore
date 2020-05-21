@@ -23,9 +23,3 @@ hs_err_pid*
 
 # IntelliJ
 .idea/
-
-# gradle
-.gradle/
-
-# csv
-data.csv
