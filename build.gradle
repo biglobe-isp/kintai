@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'application'
+    id 'jacoco'
+}
+
+mainClassName = 'kintai.Main'
+
+def defaultEncoding = 'UTF-8'
+
+[AbstractCompile, Javadoc].each {
+    tasks.withType(it).each { it.options.encoding = defaultEncoding }
+}
