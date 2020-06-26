@@ -1,5 +1,12 @@
 # 開発チュートリアル（勤怠管理）
 
+## Setup
+```
+mkdir -p ~/.m2
+mv ~/.m2/settings.xml ~/.m2/settings.xml.origin
+cp ./settings.xml ~/.m2/settings.xml
+```
+
 ## How to Build
 ```
 ./mvnw clean package
