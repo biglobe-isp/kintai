@@ -1,5 +1,20 @@
 # 開発チュートリアル（勤怠管理）
 
+## How to Build
+```
+./mvnw clean package
+```
+
+## How to Run
+```
+java -jar target/kintai-1.0.0.jar input 2020-06-26 1404 1800
+
+cat data.csv
+2020-06-26,1404,1800,176,0,2020-06-26T14:04:48.430
+```
+
+----
+
 ## 概要
 
 勤怠管理アプリの[既存コード](./kintai_kadai_main.java)を元に
