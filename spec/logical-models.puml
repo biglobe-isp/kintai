@@ -1,0 +1,127 @@
+@startuml
+
+package java.time {
+    class LocalDate
+    class LocalTime
+    class LocalDateTime
+    class Duration
+}
+
+package vo {
+    class 年
+    class 月
+    class 日
+    class 時
+    class 分
+    class 秒
+
+    class 日付 {
+      - value: LocalDateTime
+      {static} of(年, 月, 日): 日付
+    }
+    日付 --* LocalDate
+
+    class 時刻 {
+      - value: LocalTime
+      {static} 時刻 of(時, 分)
+      {static} 時刻 of(時, 分, 秒)
+    }
+    時刻 --* LocalTime
+
+    class 時間 {
+      - value: Duration
+      {static} 時間 of(時刻, 時刻)
+    }
+    時間 --* Duration
+
+    class 日時 {
+      - value: LocalDateTime
+      {static} of(年, 月, 日, 時, 分, 秒): 日時
+      {static} of(日付, 時刻): 日時
+    }
+    日時 --* LocalDateTime
+
+    class 出勤日 {
+      {static} of(年, 月, 日): 出勤日
+      {static} of(日付): 出勤日
+    }
+    出勤日 --|> 日付
+
+    class 出勤時刻
+    出勤時刻 --|> 時刻
+
+    class 退勤時刻
+    退勤時刻 --|> 時刻
+
+    class 実労時間
+    実労時間 --|> 時間
+
+    class 残業時間
+    残業時間 --|> 時間
+
+    class 休憩時間
+    休憩時間 --|> 時間
+
+    class 打刻日時 {
+      {static} of(年, 月, 日, 時, 分, 秒): 打刻日時
+      {static} of(日付, 時刻): 打刻日時
+      {static} of(日時): 打刻日時
+    }
+    打刻日時 --|> 日時
+}
+
+package domain {
+    class 在席時間 {
+      - 実労時間: 実労時間
+      - 休憩時間: 休憩時間
+      - 残業時間: 残業時間
+      {static} of(出勤時刻, 退勤時刻): 在席時間
+    }
+    在席時間 --|> 時間
+    在席時間 ..> 出勤時刻
+    在席時間 ..> 退勤時刻
+    在席時間 --* 実労時間
+    在席時間 --* 休憩時間
+    在席時間 --* 残業時間
+
+    class 出勤記録 {
+      - 出勤日: 出勤日
+      - 在席時間: 在席時間
+      - 打刻日時: 打刻日時
+    }
+    出勤記録 --* 出勤日
+    出勤記録 -* 在席時間
+    出勤記録 --* 打刻日時
+
+    interface 勤怠リポジトリ <<Repository>> {
+      ----
+      + save(出勤記録)
+    }
+    勤怠リポジトリ ..> 出勤記録
+
+
+    package service {
+        ' Puncher
+        class タイムカード <<Service>> {
+          - リポジトリ: 勤怠リポジトリ
+          ----
+          + 打刻(出勤記録)
+        }
+        タイムカード -* 勤怠リポジトリ
+        タイムカード ..> 出勤記録
+    }
+}
+
+package repository.file {
+    class ファイルデータストア {
+    }
+
+    class 勤怠ファイルリポジトリ <<Repository>> {
+      - データストア: データストア
+      ----
+    }
+    勤怠ファイルリポジトリ ..|> 勤怠リポジトリ
+    勤怠ファイルリポジトリ -* ファイルデータストア
+}
+
+@enduml
