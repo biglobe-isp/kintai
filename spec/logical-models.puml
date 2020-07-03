@@ -17,7 +17,7 @@ package domain {
         class 秒
 
         class 日付 {
-          - value: LocalDateTime
+          - value: LocalDate
           {static} of(年, 月, 日): 日付
         }
         日付 *--> LocalDate
