@@ -4,20 +4,24 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.temporal.TemporalAmount
+import kotlin.math.min
 
 data class Year(
         val value: Int
-) {
+) : Comparable<Year> {
     init {
         if (value < 1) {
             throw IllegalArgumentException("value is less than 1")
         }
     }
+
+    override fun compareTo(other: Year): Int = value.compareTo(other.value)
 }
 
 data class Month(
         val value: Int
-) {
+) : Comparable<Month> {
     init {
         if (value < 1) {
             throw IllegalArgumentException("value is less than 1")
@@ -26,11 +30,13 @@ data class Month(
             throw IllegalArgumentException("value is greater than 12")
         }
     }
+
+    override fun compareTo(other: Month): Int = value.compareTo(other.value)
 }
 
 data class Day(
         val value: Int
-) {
+) : Comparable<Day> {
     init {
         if (value < 1) {
             throw IllegalArgumentException("value is less than 1")
@@ -39,11 +45,13 @@ data class Day(
             throw IllegalArgumentException("value is greater than 31")
         }
     }
+
+    override fun compareTo(other: Day): Int = value.compareTo(other.value)
 }
 
 data class Hour(
         val value: Int
-) {
+) : Comparable<Hour> {
     init {
         if (value < 0) {
             throw IllegalArgumentException("value is less than 0")
@@ -52,11 +60,15 @@ data class Hour(
             throw IllegalArgumentException("value is greater than 23")
         }
     }
+
+    operator fun plus(other: Hour): Hour = Hour(value + other.value)
+
+    override fun compareTo(other: Hour): Int = value.compareTo(other.value)
 }
 
 data class Minute(
         val value: Int
-) {
+) : Comparable<Minute> {
     init {
         if (value < 0) {
             throw IllegalArgumentException("value is less than 0")
@@ -65,11 +77,13 @@ data class Minute(
             throw IllegalArgumentException("value is greater than 59")
         }
     }
+
+    override fun compareTo(other: Minute): Int = value.compareTo(other.value)
 }
 
 data class Second(
         val value: Int
-) {
+) : Comparable<Second> {
     init {
         if (value < 0) {
             throw IllegalArgumentException("value is less than 0")
@@ -78,6 +92,8 @@ data class Second(
             throw IllegalArgumentException("value is greater than 59")
         }
     }
+
+    override fun compareTo(other: Second): Int = value.compareTo(other.value)
 }
 
 open class Time(
@@ -92,6 +108,17 @@ open class Time(
                 hour.value, minute.value, second.value
         ))
     }
+
+    operator fun minus(other: Time): TimeSpan = TimeSpan(Duration.between(value, other.value))
+    operator fun plus(other: Second): Time = Time(LocalTime.ofSecondOfDay(
+            hour.value * 60L * 60L + minute.value * 60L + second.value + other.value
+    ))
+    operator fun plus(other: Minute): Time = Time(LocalTime.ofSecondOfDay(
+            hour.value * 60L * 60L + minute.value * 60L + other.value * 60L + second.value
+    ))
+    operator fun plus(other: Hour): Time = Time(LocalTime.ofSecondOfDay(
+            hour.value * 60L * 60L + other.value * 60L * 60L + minute.value * 60L + second.value
+    ))
 
     override fun compareTo(other: Time): Int = value.compareTo(other.value)
 
@@ -119,25 +146,40 @@ open class Time(
 }
 
 open class TimeSpan(
+        val value: Duration
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as TimeSpan
+
+        if (value != other.value) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return value.hashCode()
+    }
+}
+
+open class TimeRange(
         val start: Time,
         val end: Time
-) {
+): TimeSpan(Duration.between(start.value, end.value)) {
     init {
         if (end < start) {
             throw IllegalArgumentException("end is less than start")
         }
     }
 
-    val duration: Duration get() = Duration.between(
-            LocalTime.of(start.value.hour, start.value.minute),
-            LocalTime.of(end.value.hour, end.value.minute)
-    )
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
+        if (!super.equals(other)) return false
 
-        other as TimeSpan
+        other as TimeRange
 
         if (start != other.start) return false
         if (end != other.end) return false
@@ -146,7 +188,8 @@ open class TimeSpan(
     }
 
     override fun hashCode(): Int {
-        var result = start.hashCode()
+        var result = super.hashCode()
+        result = 31 * result + start.hashCode()
         result = 31 * result + end.hashCode()
         return result
     }
