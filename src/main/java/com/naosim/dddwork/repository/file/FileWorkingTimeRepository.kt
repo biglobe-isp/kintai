@@ -64,7 +64,7 @@ class FileWorkingTimeRepository(
 
                     WorkingTimeRecord(
                             workingDate = workingDate,
-                            workingTimeRange = WorkingTimeRange(
+                            workingTimeRange = WorkingTimeRange.of(
                                     punchInTime = punchInTime,
                                     punchOutTime = punchOutTime,
                                     rule = workingTimeRule

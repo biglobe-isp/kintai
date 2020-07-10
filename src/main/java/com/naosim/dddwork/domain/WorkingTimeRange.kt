@@ -6,59 +6,61 @@ import java.time.Duration
 class WorkingTimeRange(
         punchInTime: PunchInTime,
         punchOutTime: PunchOutTime,
-        rule: WorkingTimeRule
+        val scheduledWorkingTimeSpan: ScheduledWorkingTimeSpan,
+        val extraWorkingTimeSpan: ExtraWorkingTimeSpan,
+        val restTimeSpan: RestTimeSpan
 ): TimeRange(punchInTime, punchOutTime) {
-    val scheduledWorkingTimeSpan: ScheduledWorkingTimeSpan
-    val extraWorkingTimeSpan: ExtraWorkingTimeSpan
-    val restTimeSpan: RestTimeSpan
+    companion object {
+        fun of(punchInTime: PunchInTime, punchOutTime: PunchOutTime, rule: WorkingTimeRule): WorkingTimeRange {
+            var workingTimeSpanAsMinute = Minute((punchOutTime - punchInTime).value.toMinutes().toInt())
+            var restTimeSpanAsMinute = Minute(0)
 
-    init {
-        var workingTimeSpanAsMinute = Minute((punchOutTime - punchInTime).value.toMinutes().toInt())
-        var restTimeSpanAsMinute = Minute(0)
+            if (punchOutTime == rule.lunchBreakBorder) {
+                workingTimeSpanAsMinute -= punchOutTime.minute
+                restTimeSpanAsMinute += punchOutTime.minute
+            }
+            if (punchOutTime >= rule.lunchBreakBorder + Hour(1)) {
+                workingTimeSpanAsMinute -= Hour(1)
+                restTimeSpanAsMinute += Hour(1)
+            }
 
-        if (punchOutTime == rule.lunchBreakBorder) {
-            workingTimeSpanAsMinute -= punchOutTime.minute
-            restTimeSpanAsMinute += punchOutTime.minute
-        }
-        if (punchOutTime >= rule.lunchBreakBorder + Hour(1)) {
-            workingTimeSpanAsMinute -= Hour(1)
-            restTimeSpanAsMinute += Hour(1)
-        }
+            if (punchOutTime == rule.nightBreakBorder) {
+                workingTimeSpanAsMinute -= punchOutTime.minute
+                restTimeSpanAsMinute += punchOutTime.minute
+            }
+            if (punchOutTime >= rule.nightBreakBorder + Hour(1)) {
+                workingTimeSpanAsMinute -= Hour(1)
+                restTimeSpanAsMinute += Hour(1)
+            }
 
-        if (punchOutTime == rule.nightBreakBorder) {
-            workingTimeSpanAsMinute -= punchOutTime.minute
-            restTimeSpanAsMinute += punchOutTime.minute
-        }
-        if (punchOutTime >= rule.nightBreakBorder + Hour(1)) {
-            workingTimeSpanAsMinute -= Hour(1)
-            restTimeSpanAsMinute += Hour(1)
-        }
+            if (punchOutTime == rule.midnightBreakBorder) {
+                workingTimeSpanAsMinute -= punchOutTime.minute
+                restTimeSpanAsMinute += punchOutTime.minute
+            }
+            if (punchOutTime >= rule.midnightBreakBorder + Hour(1)) {
+                workingTimeSpanAsMinute -= Hour(1)
+                restTimeSpanAsMinute += Hour(1)
+            }
 
-        if (punchOutTime == rule.midnightBreakBorder) {
-            workingTimeSpanAsMinute -= punchOutTime.minute
-            restTimeSpanAsMinute += punchOutTime.minute
-        }
-        if (punchOutTime >= rule.midnightBreakBorder + Hour(1)) {
-            workingTimeSpanAsMinute -= Hour(1)
-            restTimeSpanAsMinute += Hour(1)
-        }
+            val scheduledWorkingTimeSpanMinutes = Minute(rule.scheduledWorkingTimeSpan.value.toMinutes().toInt())
+            val extraWorkingTimeSpanAsMinute: Minute = workingTimeSpanAsMinute - scheduledWorkingTimeSpanMinutes
 
-        val scheduledWorkingTimeSpanMinutes = Minute(rule.scheduledWorkingTimeSpan.value.toMinutes().toInt())
-        val extraWorkingTimeSpanAsMinute: Minute = workingTimeSpanAsMinute - scheduledWorkingTimeSpanMinutes
-
-        scheduledWorkingTimeSpan = if (workingTimeSpanAsMinute > scheduledWorkingTimeSpanMinutes) {
-            rule.scheduledWorkingTimeSpan
-        } else {
-            ScheduledWorkingTimeSpan(Duration.ofMinutes(workingTimeSpanAsMinute.value.toLong()))
+            return WorkingTimeRange(
+                    punchInTime = punchInTime,
+                    punchOutTime = punchOutTime,
+                    scheduledWorkingTimeSpan = if (workingTimeSpanAsMinute > scheduledWorkingTimeSpanMinutes) {
+                        rule.scheduledWorkingTimeSpan
+                    } else {
+                        ScheduledWorkingTimeSpan(Duration.ofMinutes(workingTimeSpanAsMinute.value.toLong()))
+                    },
+                    extraWorkingTimeSpan = if (extraWorkingTimeSpanAsMinute > Minute(0)) {
+                        ExtraWorkingTimeSpan(Duration.ofMinutes(extraWorkingTimeSpanAsMinute.value.toLong()))
+                    } else {
+                        ExtraWorkingTimeSpan(Duration.ZERO)
+                    },
+                    restTimeSpan = RestTimeSpan(Duration.ofMillis(restTimeSpanAsMinute.value.toLong()))
+            )
         }
-
-        extraWorkingTimeSpan = if (extraWorkingTimeSpanAsMinute > Minute(0)) {
-            ExtraWorkingTimeSpan(Duration.ofMinutes(extraWorkingTimeSpanAsMinute.value.toLong()))
-        } else {
-            ExtraWorkingTimeSpan(Duration.ZERO)
-        }
-
-        restTimeSpan = RestTimeSpan(Duration.ofMillis(restTimeSpanAsMinute.value.toLong()))
     }
 
     class ScheduledWorkingTimeSpan(

@@ -1,9 +1,6 @@
 package com.naosim.dddwork.service
 
-import com.naosim.dddwork.domain.WorkingTimeRange
-import com.naosim.dddwork.domain.WorkingTimeRecord
-import com.naosim.dddwork.domain.WorkingTimeRepository
-import com.naosim.dddwork.domain.WorkingTimeRule
+import com.naosim.dddwork.domain.*
 import com.naosim.dddwork.domain.vo.*
 import java.time.Duration
 import java.time.LocalDateTime
@@ -15,7 +12,7 @@ class WorkingTimeManagementService(
     fun punch(workingDate: WorkingDate, punchInTime: PunchInTime, punchOutTime: PunchOutTime) {
         workingTimeRepository.save(WorkingTimeRecord(
                 workingDate = workingDate,
-                workingTimeRange = WorkingTimeRange(
+                workingTimeRange = WorkingTimeRange.of(
                         punchInTime = punchInTime,
                         punchOutTime = punchOutTime,
                         rule = workingTimeRule

@@ -1,5 +1,6 @@
 package com.naosim.dddwork.presentation
 
+import com.naosim.dddwork.domain.TotalWorkingTimeSummary
 import com.naosim.dddwork.domain.WorkingTimeRepository
 import com.naosim.dddwork.domain.vo.*
 import com.naosim.dddwork.repository.file.FileWorkingTimeRepository
