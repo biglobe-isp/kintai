@@ -96,7 +96,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>com.naosim.dddwork.Main</Main-Class>
+                            <Main-Class>com.naosim.dddwork.presentation.CommandLine</Main-Class>
                         </manifestEntries>
                     </archive>
                     <appendAssemblyId>false</appendAssemblyId>
