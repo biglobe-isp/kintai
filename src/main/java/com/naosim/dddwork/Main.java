@@ -69,23 +69,17 @@ public class Main {
 
                 File file = new File("data.csv");
 
-                try(
-                        FileReader fr = new FileReader(file);
-                        BufferedReader br = new BufferedReader(fr);
-                        ) {
-
-                    String line = br.readLine();
+                try(FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
+                    String line;
                     Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
                     Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-                    while(line != null){
+                    while((line = br.readLine()) != null){
                         String[] columns = line.split(",");
                         if(!columns[0].startsWith(yearMonth)) {
                             continue;
                         }
                         totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
                         totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-
-                        line = br.readLine();
                     }
 
                     Set<String> keySet = totalWorkMinutesMap.keySet();
