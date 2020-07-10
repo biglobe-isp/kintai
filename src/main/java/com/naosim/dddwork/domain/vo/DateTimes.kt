@@ -56,9 +56,6 @@ data class Hour(
         if (value < 0) {
             throw IllegalArgumentException("value is less than 0")
         }
-        if (value > 23) {
-            throw IllegalArgumentException("value is greater than 23")
-        }
     }
 
     operator fun plus(other: Hour): Hour = Hour(value + other.value)
@@ -73,12 +70,15 @@ data class Minute(
         if (value < 0) {
             throw IllegalArgumentException("value is less than 0")
         }
-        if (value > 59) {
-            throw IllegalArgumentException("value is greater than 59")
-        }
     }
 
     override fun compareTo(other: Minute): Int = value.compareTo(other.value)
+
+    operator fun minus(other: Minute): Minute = Minute(value - other.value)
+    operator fun minus(other: Hour): Minute = Minute(value - other.value * 60)
+
+    operator fun plus(other: Minute): Minute = Minute(value + other.value)
+    operator fun plus(other: Hour): Minute = Minute(value + other.value * 60)
 }
 
 data class Second(
@@ -87,9 +87,6 @@ data class Second(
     init {
         if (value < 0) {
             throw IllegalArgumentException("value is less than 0")
-        }
-        if (value > 59) {
-            throw IllegalArgumentException("value is greater than 59")
         }
     }
 
@@ -109,15 +106,15 @@ open class Time(
         ))
     }
 
-    operator fun minus(other: Time): TimeSpan = TimeSpan(Duration.between(value, other.value))
-    operator fun plus(other: Second): Time = Time(LocalTime.ofSecondOfDay(
-            hour.value * 60L * 60L + minute.value * 60L + second.value + other.value
+    operator fun minus(other: Time): TimeSpan = TimeSpan(Duration.between(other.value, value))
+    operator fun plus(other: Second): Time = Time(LocalTime.of(
+            hour.value, minute.value, second.value + other.value
     ))
-    operator fun plus(other: Minute): Time = Time(LocalTime.ofSecondOfDay(
-            hour.value * 60L * 60L + minute.value * 60L + other.value * 60L + second.value
+    operator fun plus(other: Minute): Time = Time(LocalTime.of(
+            hour.value, minute.value + other.value, second.value
     ))
-    operator fun plus(other: Hour): Time = Time(LocalTime.ofSecondOfDay(
-            hour.value * 60L * 60L + other.value * 60L * 60L + minute.value * 60L + second.value
+    operator fun plus(other: Hour): Time = Time(LocalTime.of(
+            hour.value + other.value, minute.value, second.value
     ))
 
     override fun compareTo(other: Time): Int = value.compareTo(other.value)
@@ -226,7 +223,7 @@ open class Date(
 
 open class DateTime(
         val value: LocalDateTime
-) {
+) : Comparable<DateTime> {
     val date: Date = Date(LocalDate.of(value.year, value.month.value, value.dayOfMonth))
     val time: Time = Time(LocalTime.of(value.hour, value.minute, value.second))
 
@@ -242,6 +239,8 @@ open class DateTime(
                 date.value, time.value
         ))
     }
+
+    override fun compareTo(other: DateTime): Int = value.compareTo(other.value)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
