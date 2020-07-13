@@ -12,53 +12,46 @@ class WorkingTimeRange(
 ): TimeRange(punchInTime, punchOutTime) {
     companion object {
         fun of(punchInTime: PunchInTime, punchOutTime: PunchOutTime, rule: WorkingTimeRule): WorkingTimeRange {
-            var workingTimeSpanAsMinute = Minute((punchOutTime - punchInTime).value.toMinutes().toInt())
-            var restTimeSpanAsMinute = Minute(0)
+            var workingTimeSpan = TimeSpan((punchOutTime - punchInTime).value)
+            var restTimeSpan = ZERO
 
-            if (punchOutTime == rule.lunchBreakBorder) {
-                workingTimeSpanAsMinute -= punchOutTime.minute
-                restTimeSpanAsMinute += punchOutTime.minute
+            if (punchOutTime == rule.lunchBreakBorder || punchOutTime == rule.nightBreakBorder || punchOutTime == rule.midnightBreakBorder) {
+                workingTimeSpan -= of(punchOutTime.minute)
+                restTimeSpan += of(punchOutTime.minute)
             }
+
             if (punchOutTime >= rule.lunchBreakBorder + Hour(1)) {
-                workingTimeSpanAsMinute -= Hour(1)
-                restTimeSpanAsMinute += Hour(1)
+                workingTimeSpan -= of(Hour(1))
+                restTimeSpan += of(Hour(1))
             }
 
-            if (punchOutTime == rule.nightBreakBorder) {
-                workingTimeSpanAsMinute -= punchOutTime.minute
-                restTimeSpanAsMinute += punchOutTime.minute
-            }
             if (punchOutTime >= rule.nightBreakBorder + Hour(1)) {
-                workingTimeSpanAsMinute -= Hour(1)
-                restTimeSpanAsMinute += Hour(1)
+                workingTimeSpan -= of(Hour(1))
+                restTimeSpan += of(Hour(1))
             }
 
-            if (punchOutTime == rule.midnightBreakBorder) {
-                workingTimeSpanAsMinute -= punchOutTime.minute
-                restTimeSpanAsMinute += punchOutTime.minute
-            }
             if (punchOutTime >= rule.midnightBreakBorder + Hour(1)) {
-                workingTimeSpanAsMinute -= Hour(1)
-                restTimeSpanAsMinute += Hour(1)
+                workingTimeSpan -= of(Hour(1))
+                restTimeSpan += of(Hour(1))
             }
 
-            val scheduledWorkingTimeSpanMinutes = Minute(rule.scheduledWorkingTimeSpan.value.toMinutes().toInt())
-            val extraWorkingTimeSpanAsMinute: Minute = workingTimeSpanAsMinute - scheduledWorkingTimeSpanMinutes
+            val scheduledWorkingTimeSpan = rule.scheduledWorkingTimeSpan
+            val extraWorkingTimeSpan: TimeSpan = workingTimeSpan - scheduledWorkingTimeSpan
 
             return WorkingTimeRange(
                     punchInTime = punchInTime,
                     punchOutTime = punchOutTime,
-                    scheduledWorkingTimeSpan = if (workingTimeSpanAsMinute > scheduledWorkingTimeSpanMinutes) {
+                    scheduledWorkingTimeSpan = if (workingTimeSpan > scheduledWorkingTimeSpan) {
                         rule.scheduledWorkingTimeSpan
                     } else {
-                        ScheduledWorkingTimeSpan(Duration.ofMinutes(workingTimeSpanAsMinute.value.toLong()))
+                        ScheduledWorkingTimeSpan(workingTimeSpan.value)
                     },
-                    extraWorkingTimeSpan = if (extraWorkingTimeSpanAsMinute > Minute(0)) {
-                        ExtraWorkingTimeSpan(Duration.ofMinutes(extraWorkingTimeSpanAsMinute.value.toLong()))
+                    extraWorkingTimeSpan = if (extraWorkingTimeSpan > ZERO) {
+                        ExtraWorkingTimeSpan(extraWorkingTimeSpan.value)
                     } else {
-                        ExtraWorkingTimeSpan(Duration.ZERO)
+                        ExtraWorkingTimeSpan.ZERO
                     },
-                    restTimeSpan = RestTimeSpan(Duration.ofMillis(restTimeSpanAsMinute.value.toLong()))
+                    restTimeSpan = RestTimeSpan(restTimeSpan.value)
             )
         }
     }
@@ -77,6 +70,10 @@ class WorkingTimeRange(
     class ExtraWorkingTimeSpan(
             value: Duration
     ): TimeSpan(value) {
+        companion object {
+            val ZERO: ExtraWorkingTimeSpan = ExtraWorkingTimeSpan(Duration.ZERO)
+        }
+
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false

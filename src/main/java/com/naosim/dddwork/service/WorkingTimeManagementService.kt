@@ -24,7 +24,9 @@ class WorkingTimeManagementService(
     fun total(year: Year, month: Month): TotalWorkingTimeSummary = workingTimeRepository.findByYearAndMonth(year, month, workingTimeRule)
             .fold(TotalWorkingTimeSummary(TimeSpan(Duration.ZERO), TimeSpan(Duration.ZERO))) { acc, it ->
                 TotalWorkingTimeSummary(
-                        totalWorkingTimeSpan = TimeSpan(acc.totalWorkingTimeSpan.value + it.workingTimeRange.value),
+                        totalWorkingTimeSpan = TimeSpan(acc.totalWorkingTimeSpan.value
+                                + it.workingTimeRange.scheduledWorkingTimeSpan.value
+                                + it.workingTimeRange.extraWorkingTimeSpan.value),
                         totalExtraWorkingTimeSpan = TimeSpan(acc.totalExtraWorkingTimeSpan.value + it.workingTimeRange.extraWorkingTimeSpan.value)
                 )
             }
