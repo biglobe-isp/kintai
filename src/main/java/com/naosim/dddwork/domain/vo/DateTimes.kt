@@ -54,7 +54,7 @@ data class Hour(
 ) : Comparable<Hour> {
     init {
         if (value < 0) {
-            throw IllegalArgumentException("value is less than 0")
+            throw IllegalArgumentException("Hour value is less than 0 ($value)")
         }
     }
 
@@ -68,7 +68,7 @@ data class Minute(
 ) : Comparable<Minute> {
     init {
         if (value < 0) {
-            throw IllegalArgumentException("value is less than 0")
+            throw IllegalArgumentException("Minute value is less than 0 ($value)")
         }
     }
 
@@ -86,7 +86,7 @@ data class Second(
 ) : Comparable<Second> {
     init {
         if (value < 0) {
-            throw IllegalArgumentException("value is less than 0")
+            throw IllegalArgumentException("Second value is less than 0 ($value)")
         }
     }
 
@@ -144,7 +144,23 @@ open class Time(
 
 open class TimeSpan(
         val value: Duration
-) {
+) : Comparable<TimeSpan> {
+    companion object {
+        val ZERO: TimeSpan = TimeSpan(Duration.ZERO)
+
+        private fun ofMinutes(minuteSpan: Long): TimeSpan = TimeSpan(Duration.ofMinutes(minuteSpan))
+        private fun ofMinutes(minuteSpan: Int): TimeSpan = ofMinutes(minuteSpan.toLong())
+        fun of(minuteSpan: Minute): TimeSpan = ofMinutes(minuteSpan.value)
+
+        private fun ofHours(hourSpan: Long) = TimeSpan(Duration.ofHours(hourSpan))
+        private fun ofHours(hourSpan: Int) = ofHours(hourSpan.toLong())
+        fun of(hourSpan: Hour): TimeSpan = ofHours(hourSpan.value)
+    }
+
+    operator fun minus(other: TimeSpan): TimeSpan = TimeSpan(value - other.value)
+    operator fun plus(other: TimeSpan): TimeSpan = TimeSpan(value + other.value)
+    override fun compareTo(other: TimeSpan): Int = value.compareTo(other.value)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
