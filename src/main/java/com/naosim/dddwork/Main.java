@@ -10,7 +10,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class Main {
+    private static final String DEFAULT_FILE_PATH = "data.csv";
+    private static final String SYSPROP_NAME_FILE_PATH = "kintai.file.path";
+
     public static void main(String[] args) {
+        String filePath = System.getProperty(SYSPROP_NAME_FILE_PATH) != null ?
+                System.getProperty(SYSPROP_NAME_FILE_PATH) : DEFAULT_FILE_PATH;
+
         try {
             if(args.length < 1) {
                 throw new RuntimeException("引数が足りません");
@@ -53,7 +59,7 @@ public class Main {
                 }
 
                 int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-                File file = new File("data.csv");
+                File file = new File(filePath);
                 try(FileWriter filewriter = new FileWriter(file, true)) {
                     filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
                 }
@@ -67,7 +73,7 @@ public class Main {
                 int totalWorkMinutes = 0;
                 int totalOverWorkMinutes = 0;
 
-                File file = new File("data.csv");
+                File file = new File(filePath);
 
                 try(FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
                     String line;

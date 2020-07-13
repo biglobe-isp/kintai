@@ -15,15 +15,18 @@ class CommandLine(
         private val workingTimeManagementService: WorkingTimeManagementService
 ) {
     companion object {
-        private const val FILE_PATH = "data1.csv"
-
-        // 依存関係管理
-        val repos: WorkingTimeRepository = FileWorkingTimeRepository(Paths.get(FILE_PATH))
-        val service: WorkingTimeManagementService = WorkingTimeManagementService(repos)
-        val command: CommandLine = CommandLine(service)
+        private const val SYSPROP_NAME_FILE_PATH = "kintai.file.path"
+        private const val DEFAULT_FILE_PATH = "data.csv"
 
         @JvmStatic
         fun main(args: Array<String>) {
+            // 依存関係管理
+            val repos: WorkingTimeRepository = FileWorkingTimeRepository(Paths.get(
+                    System.getProperty(SYSPROP_NAME_FILE_PATH) ?: DEFAULT_FILE_PATH
+            ))
+            val service: WorkingTimeManagementService = WorkingTimeManagementService(repos)
+            val command: CommandLine = CommandLine(service)
+
             if (args.isEmpty()) {
                 throw IllegalArgumentException("コマンドライン引数がありません。")
             }
