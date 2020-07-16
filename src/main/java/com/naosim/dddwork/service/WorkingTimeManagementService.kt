@@ -2,7 +2,6 @@ package com.naosim.dddwork.service
 
 import com.naosim.dddwork.domain.*
 import com.naosim.dddwork.domain.vo.*
-import java.time.Duration
 import java.time.LocalDateTime
 
 class WorkingTimeManagementService(
@@ -22,12 +21,10 @@ class WorkingTimeManagementService(
     }
 
     fun total(year: Year, month: Month): TotalWorkingTimeSummary = workingTimeRepository.findByYearAndMonth(year, month, workingTimeRule)
-            .fold(TotalWorkingTimeSummary(TimeSpan(Duration.ZERO), TimeSpan(Duration.ZERO))) { acc, it ->
+            .fold(TotalWorkingTimeSummary(WorkingTimeRange.ActualWorkingTimeSpan.ZERO, WorkingTimeRange.ExtraWorkingTimeSpan.ZERO)) { acc, it ->
                 TotalWorkingTimeSummary(
-                        totalWorkingTimeSpan = TimeSpan(acc.totalWorkingTimeSpan.value
-                                + it.workingTimeRange.scheduledWorkingTimeSpan.value
-                                + it.workingTimeRange.extraWorkingTimeSpan.value),
-                        totalExtraWorkingTimeSpan = TimeSpan(acc.totalExtraWorkingTimeSpan.value + it.workingTimeRange.extraWorkingTimeSpan.value)
+                        totalWorkingTimeSpan = acc.totalWorkingTimeSpan + it.workingTimeRange.actualWorkingTimeSpan,
+                        totalExtraWorkingTimeSpan = acc.totalExtraWorkingTimeSpan + it.workingTimeRange.extraWorkingTimeSpan
                 )
             }
 }

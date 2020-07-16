@@ -4,8 +4,6 @@ import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.temporal.TemporalAmount
-import kotlin.math.min
 
 data class Year(
         val value: Int
@@ -107,18 +105,12 @@ open class Time(
     }
 
     operator fun minus(other: Time): TimeSpan = TimeSpan(Duration.between(other.value, value))
-    operator fun plus(other: Second): Time = Time(LocalTime.of(
-            hour.value, minute.value, second.value + other.value
-    ))
-    operator fun plus(other: Minute): Time = Time(LocalTime.of(
-            hour.value, minute.value + other.value, second.value
-    ))
-    operator fun plus(other: Hour): Time = Time(LocalTime.of(
-            hour.value + other.value, minute.value, second.value
-    ))
+    operator fun plus(other: Second): Time = Time(LocalTime.of(hour.value, minute.value, second.value + other.value))
+    operator fun plus(other: Minute): Time = Time(LocalTime.of(hour.value, minute.value + other.value, second.value))
+    operator fun plus(other: Hour): Time = Time(LocalTime.of(hour.value + other.value, minute.value, second.value))
+    operator fun plus(other: TimeSpan): Time = Time(LocalTime.of(hour.value, minute.value, second.value) + other.value)
 
     override fun compareTo(other: Time): Int = value.compareTo(other.value)
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -157,8 +149,11 @@ open class TimeSpan(
         fun of(hourSpan: Hour): TimeSpan = ofHours(hourSpan.value)
     }
 
-    operator fun minus(other: TimeSpan): TimeSpan = TimeSpan(value - other.value)
-    operator fun plus(other: TimeSpan): TimeSpan = TimeSpan(value + other.value)
+    val minutesPart: Minute get() = Minute(value.toMinutes().toInt() % 60)
+    val hoursPart: Hour get() = Hour(value.toMinutes().toInt() / 60)
+
+    open operator fun minus(other: TimeSpan): TimeSpan = TimeSpan(value - other.value)
+    open operator fun plus(other: TimeSpan): TimeSpan = TimeSpan(value + other.value)
     override fun compareTo(other: TimeSpan): Int = value.compareTo(other.value)
 
     override fun equals(other: Any?): Boolean {
@@ -180,12 +175,14 @@ open class TimeSpan(
 open class TimeRange(
         val start: Time,
         val end: Time
-): TimeSpan(Duration.between(start.value, end.value)) {
+) {
     init {
         if (end < start) {
             throw IllegalArgumentException("end is less than start")
         }
     }
+
+    fun toTimeSpan(): TimeSpan = TimeSpan(Duration.between(start.value, end.value))
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

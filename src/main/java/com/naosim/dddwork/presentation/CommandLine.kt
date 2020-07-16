@@ -65,14 +65,10 @@ class CommandLine(
 
     fun printTotal(yearMonthString: String) {
         val yearMonth: YearMonth = YearMonth.from(DateTimeFormatter.ofPattern("uuuu-MM").parse(yearMonthString))
-        val year: Year = Year(yearMonth.year)
-        val month: Month = Month(yearMonth.monthValue)
+        val summary: TotalWorkingTimeSummary = workingTimeManagementService.total(
+                Year(yearMonth.year), Month(yearMonth.monthValue))
 
-        val summary: TotalWorkingTimeSummary = workingTimeManagementService.total(year, month)
-        val totalWorkingTimeSpanAsMinutes = summary.totalWorkingTimeSpan.value.toMinutes()
-        val totalExtraWorkingTimeSpanAsMinutes = summary.totalExtraWorkingTimeSpan.value.toMinutes()
-
-        println("勤務時間: ${totalWorkingTimeSpanAsMinutes / 60}時間${totalWorkingTimeSpanAsMinutes % 60}分")
-        println("残業時間: ${totalExtraWorkingTimeSpanAsMinutes / 60}時間${totalExtraWorkingTimeSpanAsMinutes % 60}分")
+        println("勤務時間: ${summary.totalWorkingTimeSpan.hoursPart.value}時間${summary.totalWorkingTimeSpan.minutesPart.value}分")
+        println("残業時間: ${summary.totalExtraWorkingTimeSpan.hoursPart.value}時間${summary.totalExtraWorkingTimeSpan.minutesPart.value}分")
     }
 }

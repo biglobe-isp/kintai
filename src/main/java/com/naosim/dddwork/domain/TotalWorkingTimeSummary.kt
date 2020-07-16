@@ -1,8 +1,6 @@
 package com.naosim.dddwork.domain
 
-import com.naosim.dddwork.domain.vo.TimeSpan
-
 data class TotalWorkingTimeSummary (
-        val totalWorkingTimeSpan: TimeSpan,
-        val totalExtraWorkingTimeSpan: TimeSpan
+        val totalWorkingTimeSpan: WorkingTimeRange.ActualWorkingTimeSpan,
+        val totalExtraWorkingTimeSpan: WorkingTimeRange.ExtraWorkingTimeSpan
 )

@@ -5,11 +5,12 @@ import com.naosim.dddwork.domain.WorkingTimeRecord
 import com.naosim.dddwork.domain.WorkingTimeRepository
 import com.naosim.dddwork.domain.WorkingTimeRule
 import com.naosim.dddwork.domain.vo.*
-import com.naosim.dddwork.domain.vo.Month
-import com.naosim.dddwork.domain.vo.Year
 import java.io.FileOutputStream
 import java.nio.file.Path
-import java.time.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.stream.Collectors
 
@@ -33,8 +34,7 @@ class FileWorkingTimeRepository(
                             workingTimeRecord.workingDate.value.format(DateTimeFormatter.ofPattern("uuuu-MM-dd")),
                             workingTimeRecord.workingTimeRange.start.value.format(DateTimeFormatter.ofPattern("HHmm")),
                             workingTimeRecord.workingTimeRange.end.value.format(DateTimeFormatter.ofPattern("HHmm")),
-                            workingTimeRecord.workingTimeRange.scheduledWorkingTimeSpan.value.toMinutes()
-                                    + workingTimeRecord.workingTimeRange.extraWorkingTimeSpan.value.toMinutes(),
+                            workingTimeRecord.workingTimeRange.actualWorkingTimeSpan.value.toMinutes(),
                             workingTimeRecord.workingTimeRange.extraWorkingTimeSpan.value.toMinutes(),
                             workingTimeRecord.punchedDateTime.value.format(DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSS"))
                     ))
