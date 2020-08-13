@@ -13,41 +13,6 @@ class WorkingTimeRange(
         val extraWorkingTimeSpan: ExtraWorkingTimeSpan,
         val restTimeSpan: RestTimeSpan
 ): TimeRange(punchInTime, punchOutTime) {
-    companion object {
-        fun of(punchInTime: PunchInTime, punchOutTime: PunchOutTime, rule: WorkingTimeRule): WorkingTimeRange {
-            var workingTimeSpan: TimeSpan = punchOutTime - punchInTime
-            var restTimeSpan = RestTimeSpan.ZERO
-
-            if (rule.evalBreakTimeOnPunchedOut(punchOutTime)) {
-                workingTimeSpan -= TimeSpan.of(punchOutTime.minute)
-                restTimeSpan += TimeSpan.of(punchOutTime.minute)
-            }
-
-            if (rule.evalPastLunchBreakOnPunchedOut(punchOutTime)) {
-                workingTimeSpan -= WorkingTimeRule.FIXED_REST_TIME
-                restTimeSpan += WorkingTimeRule.FIXED_REST_TIME
-            }
-
-            if (rule.evalPastNightBreakOnPunchedOut(punchOutTime)) {
-                workingTimeSpan -= WorkingTimeRule.FIXED_REST_TIME
-                restTimeSpan += WorkingTimeRule.FIXED_REST_TIME
-            }
-
-            if (rule.evalPastMidnightBreakOnPunchedOut(punchOutTime)) {
-                workingTimeSpan -= WorkingTimeRule.FIXED_REST_TIME
-                restTimeSpan += WorkingTimeRule.FIXED_REST_TIME
-            }
-
-            return WorkingTimeRange(
-                    punchInTime = punchInTime,
-                    punchOutTime = punchOutTime,
-                    scheduledWorkingTimeSpan = rule.bindToScheduledWorkingTimeSpan(workingTimeSpan),
-                    extraWorkingTimeSpan = ExtraWorkingTimeSpan.of(workingTimeSpan - rule.scheduledWorkingTimeSpan),
-                    restTimeSpan = RestTimeSpan.of(restTimeSpan)
-            )
-        }
-    }
-
     val actualWorkingTimeSpan: ActualWorkingTimeSpan get() =
         ActualWorkingTimeSpan.of(scheduledWorkingTimeSpan) + extraWorkingTimeSpan
 

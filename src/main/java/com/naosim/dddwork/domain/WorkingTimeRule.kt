@@ -6,25 +6,67 @@ import java.time.Duration
 data class WorkingTimeRule(
         val scheduledWorkingTimeSpan: WorkingTimeRange.ScheduledWorkingTimeSpan =
                 WorkingTimeRange.ScheduledWorkingTimeSpan(Duration.ofHours(8L)),
-        val lunchBreakBorder: Time = Time.of(Hour(12), Minute(0)),
-        val nightBreakBorder: Time = Time.of(Hour(18), Minute(0)),
-        val midnightBreakBorder: Time = Time.of(Hour(21), Minute(0))
+        val breakTimeRanges: List<TimeRange> = listOf(
+                TimeRange(Time.of(Hour(12), Minute(0)), Time.of(Hour(13), Minute(0))),
+                TimeRange(Time.of(Hour(18), Minute(0)), Time.of(Hour(19), Minute(0))),
+                TimeRange(Time.of(Hour(21), Minute(0)), Time.of(Hour(22), Minute(0)))
+        )
 ) {
-    companion object {
-        val FIXED_REST_TIME: WorkingTimeRange.RestTimeSpan = WorkingTimeRange.RestTimeSpan(Duration.ofHours(1L))
+    fun calcWorkingTimeRange(punchInTime: PunchInTime, punchOutTime: PunchOutTime): WorkingTimeRange {
+        val restTimeSpan = calcRestTimeSpan(punchInTime, punchOutTime)
+        val workingTimeSpan = punchOutTime - punchInTime - restTimeSpan
+        val scheduledWorkingTimeSpan =
+                if (workingTimeSpan < scheduledWorkingTimeSpan)
+                    WorkingTimeRange.ScheduledWorkingTimeSpan.of(workingTimeSpan)
+                else scheduledWorkingTimeSpan
+        val extraWorkingTimeSpan =
+                if (workingTimeSpan > scheduledWorkingTimeSpan)
+                    WorkingTimeRange.ExtraWorkingTimeSpan.of(workingTimeSpan - scheduledWorkingTimeSpan)
+                else WorkingTimeRange.ExtraWorkingTimeSpan.ZERO
+
+        return WorkingTimeRange(
+                punchInTime = punchInTime,
+                punchOutTime = punchOutTime,
+                scheduledWorkingTimeSpan = scheduledWorkingTimeSpan,
+                extraWorkingTimeSpan = extraWorkingTimeSpan,
+                restTimeSpan = restTimeSpan
+        )
     }
 
-    fun evalPastLunchBreakOnPunchedOut(punchedOutTime: PunchOutTime): Boolean = punchedOutTime >= lunchBreakBorder + FIXED_REST_TIME
-    fun evalPastNightBreakOnPunchedOut(punchedOutTime: PunchOutTime): Boolean = punchedOutTime >= nightBreakBorder + FIXED_REST_TIME
-    fun evalPastMidnightBreakOnPunchedOut(punchedOutTime: PunchOutTime): Boolean = punchedOutTime >= midnightBreakBorder + FIXED_REST_TIME
-    fun evalBreakTimeOnPunchedOut(punchedOutTime: PunchOutTime): Boolean = punchedOutTime.hour == lunchBreakBorder.hour
-            || punchedOutTime.hour == nightBreakBorder.hour
-            || punchedOutTime.hour == midnightBreakBorder.hour
+    private fun calcRestTimeSpan(punchInTime: PunchInTime, punchOutTime: PunchOutTime): WorkingTimeRange.RestTimeSpan {
+        var start: Time = punchInTime
+        var end: Time = punchOutTime
+        var restTimeSpan = TimeSpan.ZERO
 
-    fun bindToScheduledWorkingTimeSpan(workingTimeSpan: TimeSpan): WorkingTimeRange.ScheduledWorkingTimeSpan =
-            WorkingTimeRange.ScheduledWorkingTimeSpan.of(if (workingTimeSpan > scheduledWorkingTimeSpan) {
-                scheduledWorkingTimeSpan
-            } else {
-                workingTimeSpan
-            })
+        breakTimeRanges.forEach {
+            if (punchOutTime < it.start) {
+                return@forEach
+            }
+
+            val breakTimeRange = TimeRange(
+                    start = if (punchInTime > it.start) punchInTime else it.start,
+                    end = if (punchOutTime < it.end) punchOutTime else it.end
+            )
+
+            when {
+                start in breakTimeRange && end in breakTimeRange -> {
+                    restTimeSpan += breakTimeRange.toTimeSpan()
+                    return@forEach
+                }
+                start in breakTimeRange -> {
+                    restTimeSpan += breakTimeRange.toTimeSpan()
+                    start = breakTimeRange.end
+                }
+                end in breakTimeRange -> {
+                    restTimeSpan += breakTimeRange.toTimeSpan()
+                    end = breakTimeRange.start
+                }
+                else -> {
+                    restTimeSpan += breakTimeRange.toTimeSpan()
+                }
+            }
+        }
+
+        return WorkingTimeRange.RestTimeSpan.of(restTimeSpan)
+    }
 }

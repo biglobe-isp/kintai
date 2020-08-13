@@ -132,6 +132,10 @@ open class Time(
         result = 31 * result + second.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "Time(value=$value, hour=$hour, minute=$minute, second=$second)"
+    }
 }
 
 open class TimeSpan(
@@ -170,6 +174,10 @@ open class TimeSpan(
     override fun hashCode(): Int {
         return value.hashCode()
     }
+
+    override fun toString(): String {
+        return "TimeSpan(value=$value)"
+    }
 }
 
 open class TimeRange(
@@ -178,11 +186,13 @@ open class TimeRange(
 ) {
     init {
         if (end < start) {
-            throw IllegalArgumentException("end is less than start")
+            throw IllegalArgumentException("end is less than start (end: $end, start: $start)")
         }
     }
 
     fun toTimeSpan(): TimeSpan = TimeSpan(Duration.between(start.value, end.value))
+
+    operator fun contains(time: Time) = time >= start && time <= end
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

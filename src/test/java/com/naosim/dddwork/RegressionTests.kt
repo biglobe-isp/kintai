@@ -1,7 +1,9 @@
 package com.naosim.dddwork
 
 import com.naosim.dddwork.presentation.CommandLine
+import jdk.nashorn.internal.ir.annotations.Ignore
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
@@ -52,19 +54,23 @@ class RegressionTests {
                 RegressionTests::class.java.getResource("RegressionTests_data.csv").path)
 
         val originOut = System.out
-        val strBuf = ByteArrayOutputStream()
-        System.setOut(PrintStream(strBuf))
 
-        arrayOf("total", "2020-07").let {
-            Main.main(it)
-            val expected = strBuf.toString("UTF-8")
-            strBuf.reset()
+        try {
+            val strBuf = ByteArrayOutputStream()
+            System.setOut(PrintStream(strBuf))
 
-            CommandLine.main(it)
-            val actual = strBuf.toString("UTF-8")
-            strBuf.reset()
+            arrayOf("total", "2020-07").let {
+                Main.main(it)
+                val expected = strBuf.toString("UTF-8")
+                strBuf.reset()
 
-            Assertions.assertThat(actual).isEqualTo(expected)
+                CommandLine.main(it)
+                val actual = strBuf.toString("UTF-8")
+                strBuf.reset()
+
+                Assertions.assertThat(actual).isEqualTo(expected)
+            }
+        } finally {
             System.setOut(originOut)
         }
     }

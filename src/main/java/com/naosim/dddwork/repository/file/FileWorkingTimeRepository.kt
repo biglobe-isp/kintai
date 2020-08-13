@@ -64,10 +64,10 @@ class FileWorkingTimeRepository(
 
                     WorkingTimeRecord(
                             workingDate = workingDate,
-                            workingTimeRange = WorkingTimeRange.of(
+                            workingTimeRange = workingTimeRule.calcWorkingTimeRange(
                                     punchInTime = punchInTime,
-                                    punchOutTime = punchOutTime,
-                                    rule = workingTimeRule
+                                    punchOutTime = punchOutTime
+
                             ),
                             punchedDateTime = punchedDateTime
                     )
