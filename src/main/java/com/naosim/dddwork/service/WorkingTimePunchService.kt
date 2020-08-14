@@ -4,7 +4,7 @@ import com.naosim.dddwork.domain.*
 import com.naosim.dddwork.domain.vo.*
 import java.time.LocalDateTime
 
-class WorkingTimeManagementService(
+class WorkingTimePunchService(
         private val workingTimeRepository: WorkingTimeRepository,
         private val workingTimeRule: WorkingTimeRule = WorkingTimeRule()
 ) {
@@ -19,9 +19,4 @@ class WorkingTimeManagementService(
                 punchedDateTime = PunchedDateTime(LocalDateTime.now())
         ))
     }
-
-    fun total(year: Year, month: Month): TotalWorkingTimeSummary =
-            workingTimeRepository.findByYearAndMonth(year, month, workingTimeRule).let {
-                TotalWorkingTimeSummary.of(it)
-            }
 }
