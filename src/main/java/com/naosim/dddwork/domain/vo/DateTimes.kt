@@ -143,14 +143,6 @@ open class TimeSpan(
 ) : Comparable<TimeSpan> {
     companion object {
         val ZERO: TimeSpan = TimeSpan(Duration.ZERO)
-
-        private fun ofMinutes(minuteSpan: Long): TimeSpan = TimeSpan(Duration.ofMinutes(minuteSpan))
-        private fun ofMinutes(minuteSpan: Int): TimeSpan = ofMinutes(minuteSpan.toLong())
-        fun of(minuteSpan: Minute): TimeSpan = ofMinutes(minuteSpan.value)
-
-        private fun ofHours(hourSpan: Long) = TimeSpan(Duration.ofHours(hourSpan))
-        private fun ofHours(hourSpan: Int) = ofHours(hourSpan.toLong())
-        fun of(hourSpan: Hour): TimeSpan = ofHours(hourSpan.value)
     }
 
     val minutesPart: Minute get() = Minute(value.toMinutes().toInt() % 60)
