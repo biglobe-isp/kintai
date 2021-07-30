@@ -12,13 +12,13 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         try {
-            if(args.length < 1) {
+            if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
             }
             String methodType = args[0];
 
-            if("input".equals(methodType)) {
-                if(args.length < 4) {
+            if ("input".equals(methodType)) {
+                if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
                 }
                 String date = args[1];
@@ -34,32 +34,39 @@ public class Main {
 
                 int workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
-                if(endH == 12) {
+                if (endH == 12) {
                     workMinutes -= endM;
-                } else if(endH >= 13) {
+                } else if (endH >= 13) {
                     workMinutes -= 60;
                 }
 
-                if(endH == 18) {
+                if (endH == 18) {
                     workMinutes -= endM;
-                } else if(endH >= 19) {
+                } else if (endH >= 19) {
                     workMinutes -= 60;
                 }
 
-                if(endH == 21) {
+                if (endH == 21) {
                     workMinutes -= endM;
-                } else if(endH >= 22) {
+                } else if (endH >= 22) {
                     workMinutes -= 60;
                 }
 
                 int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
                 File file = new File("data.csv");
-                try(FileWriter filewriter = new FileWriter(file, true)) {
-                    filewriter.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, workMinutes, overWorkMinutes, now));
+                try (FileWriter filewriter = new FileWriter(file, true)) {
+                    filewriter.write(String.format(
+                            "%s,%s,%s,%s,%s,%s\n",
+                            date,
+                            start,
+                            end,
+                            workMinutes,
+                            overWorkMinutes,
+                            now
+                    ));
                 }
-
-            } else if("total".equals(methodType)) {
-                if(args.length < 2) {
+            } else if ("total".equals(methodType)) {
+                if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
                 String yearMonth = args[1];
@@ -69,17 +76,16 @@ public class Main {
 
                 File file = new File("data.csv");
 
-                try(
+                try (
                         FileReader fr = new FileReader(file);
-                        BufferedReader br = new BufferedReader(fr);
-                        ) {
-
+                        BufferedReader br = new BufferedReader(fr)
+                ) {
                     String line = br.readLine();
                     Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
                     Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
-                    while(line != null){
+                    while (line != null) {
                         String[] columns = line.split(",");
-                        if(!columns[0].startsWith(yearMonth)) {
+                        if (!columns[0].startsWith(yearMonth)) {
                             continue;
                         }
                         totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
@@ -89,7 +95,7 @@ public class Main {
                     }
 
                     Set<String> keySet = totalWorkMinutesMap.keySet();
-                    for(String key : keySet) {
+                    for (String key : keySet) {
                         totalWorkMinutes += totalWorkMinutesMap.get(key);
                         totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
                     }
@@ -97,7 +103,6 @@ public class Main {
                     System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
                     System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
                 }
-
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }
