@@ -9,27 +9,24 @@ import com.naosim.dddwork.domain.Attendance;
 
 public class KintaiService {
 
-    Rule[] rules = new Rule[2];
+    private Rule[] rules = new Rule[2];
 
     public KintaiService() {
         // 勤怠サービスで使う就業規則情報をとりあえずここのコンストラクタで作ってます
         TimeSpan workingHours1 = new TimeSpan("0900", "1800");
-        TimeSpan[] rests1 = {
-                new TimeSpan("1200", "1300"),
-                new TimeSpan("1800", "1900"),
-                new TimeSpan("2100", "2200"),
-        };
+        List<TimeSpan> rests1 = new ArrayList<>();
+        rests1.add(new TimeSpan("1200", "1300"));
+        rests1.add(new TimeSpan("1800", "1900"));
+        rests1.add(new TimeSpan("2100", "2200"));
         this.rules[0]= new Rule(workingHours1, null, "20170114", rests1);
         // 来月15日を2017/01/15と仮定してルールを追加
         TimeSpan workingHours2 = new TimeSpan("0900", "1800");
-        TimeSpan[] rests2 = {
-                new TimeSpan("1200", "1300"),
-                new TimeSpan("1500", "1600"),
-                new TimeSpan("1800", "1900"),
-                new TimeSpan("2100", "2200"),
-        };
+        List<TimeSpan> rests2 = new ArrayList<>();
+        rests2.add(new TimeSpan("1200", "1300"));
+        rests2.add(new TimeSpan("1500", "1600"));
+        rests2.add(new TimeSpan("1800", "1900"));
+        rests2.add(new TimeSpan("2100", "2200"));
         this.rules[1]= new Rule(workingHours2, "20170115", null, rests2);
-
     }
     public void regist(String date, String start, String end) {
         System.out.println(String.format("service/regist params: date=%s start=%s end=%s", date, start, end));
@@ -47,13 +44,13 @@ public class KintaiService {
         if (useRule == null) throw new RuntimeException("入力された日付に適用できる就業規則がないので登録できません");
 
         // 就業規則を適用させる
-        attendance.applyRule(useRule);
+        Attendance applyedAttendance = attendance.applyRule(useRule);
 
         // 入力された勤怠を登録
         CsvDb db = new CsvDb();
         String[] items = { date, start, end,
-                String.valueOf(attendance.getWorkMinutes()),
-                String.valueOf(attendance.getOrverWorkMinutes())};
+                String.valueOf(applyedAttendance.getWorkMinutes()),
+                String.valueOf(applyedAttendance.getOrverWorkMinutes())};
 
         try {
             db.add(items);

@@ -1,22 +1,17 @@
 package com.naosim.dddwork.domain;
 
-import java.security.acl.LastOwnerException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
+import java.util.List;
 
 public class Rule {
-    TimeSpan workingHourSpan;
-    LocalDate validTermFrom;
-    LocalDate validTermTo;
-    TimeSpan[] rests;
+    private final TimeSpan workingHourSpan;
+    private final LocalDate validTermFrom;
+    private final LocalDate validTermTo;
+    private final List<TimeSpan> rests;
 
-
-    public Rule(TimeSpan workingHourSpan) {
-        this(workingHourSpan, null, null);
-    }
-
-    public Rule(TimeSpan workingHourSpan, String validTermFrom, String validTermTo) {
+    public Rule(TimeSpan workingHourSpan, String validTermFrom, String validTermTo, List<TimeSpan> rests) {
         this.workingHourSpan = workingHourSpan;
         if (validTermFrom == null) {
             this.validTermFrom = LocalDate.MIN;
@@ -32,15 +27,6 @@ public class Rule {
                     .withResolverStyle(ResolverStyle.STRICT)
                     .parse(validTermTo, LocalDate::from);
         }
-    }
-
-    public Rule(TimeSpan workingHourSpan, TimeSpan[] rests) {
-        this(workingHourSpan);
-        this.rests = rests;
-    }
-
-    public Rule(TimeSpan workingHourSpan, String validTermFrom, String validTermTo, TimeSpan[] rests) {
-        this(workingHourSpan, validTermFrom, validTermTo);
         this.rests = rests;
     }
 
@@ -54,7 +40,7 @@ public class Rule {
         return this.workingHourSpan;
     }
 
-    public TimeSpan[] getRests() {
+    public List<TimeSpan> getRests() {
         return this.rests;
     }
 
@@ -62,9 +48,9 @@ public class Rule {
 
         int workMinutes = this.workingHourSpan.getMinutes();
         for (TimeSpan rest : this.rests) {
-            if (this.workingHourSpan.endTimeHour == rest.getStartTimeHour()) {
-                workMinutes -= this.workingHourSpan.endTimeMinute;
-            } else if (this.workingHourSpan.endTimeHour >= rest.getEndTimeHour()) {
+            if (this.workingHourSpan.getEndTimeHour() == rest.getStartTimeHour()) {
+                workMinutes -= this.workingHourSpan.getEndTimeMinute();
+            } else if (this.workingHourSpan.getEndTimeHour() >= rest.getEndTimeHour()) {
                 workMinutes -= 60;
             }
         }

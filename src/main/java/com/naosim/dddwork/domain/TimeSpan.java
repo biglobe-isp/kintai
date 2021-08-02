@@ -1,10 +1,10 @@
 package com.naosim.dddwork.domain;
 
 public class TimeSpan {
-    int startTimeHour;
-    int startTimeMinute;
-    int endTimeHour;
-    int endTimeMinute;
+    private final int startTimeHour;
+    private final int startTimeMinute;
+    private final int endTimeHour;
+    private final int endTimeMinute;
 
     public TimeSpan(String start, String end) {
         if (!start.matches("[0-9]{4}")) {
