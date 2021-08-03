@@ -6,12 +6,19 @@ import java.time.format.ResolverStyle;
 import java.util.List;
 
 public class Rule {
+    private final RuleId ruleId;
     private final TimeSpan workingHourSpan;
     private final LocalDate validTermFrom;
     private final LocalDate validTermTo;
     private final List<TimeSpan> rests;
 
-    public Rule(TimeSpan workingHourSpan, String validTermFrom, String validTermTo, List<TimeSpan> rests) {
+    public Rule(
+            String ruleId,
+            TimeSpan workingHourSpan,
+            String validTermFrom,
+            String validTermTo,
+            List<TimeSpan> rests) {
+        this.ruleId = new RuleId(ruleId);
         this.workingHourSpan = workingHourSpan;
         if (validTermFrom == null) {
             this.validTermFrom = LocalDate.MIN;
@@ -32,8 +39,7 @@ public class Rule {
 
     public boolean isValid(LocalDate targetDate) {
         if (targetDate.isBefore(this.validTermFrom)) return false;
-        if (targetDate.isAfter(this.validTermTo)) return false;
-        return true;
+        return !targetDate.isAfter(this.validTermTo);
     }
 
     public TimeSpan getWorkingHourSpan() {
@@ -55,5 +61,9 @@ public class Rule {
             }
         }
         return workMinutes;
+    }
+
+    public RuleId getRuleId() {
+        return this.ruleId;
     }
 }

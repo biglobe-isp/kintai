@@ -5,35 +5,36 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Attendance {
-
-    private final String date;
-    private final String start;
-    private final String end;
+    private final String yyyymmdd;
+    private final String starthhmm;
+    private final String endhhmm;
     private final LocalDate targetDate;
     private final TimeSpan time;
     private final int workMinutes, orverWorkMinutes;
     private final Rule rule;
 
-    public Attendance(String date, String start, String end) {
-        System.out.println(String.format("domain/Attendance params: date=%s start=%s end=%s", date, start, end));
+    public Attendance(String yyyymmdd, String starthhmm, String endhhmm) {
+        System.out.println(String.format("domain/Attendance params: yyyymmdd=%s starthhmm=%s endhhmm=%s", yyyymmdd,
+                                         starthhmm, endhhmm
+        ));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        this.date = date;
-        this.start = start;
-        this.end = end;
-        this.targetDate = LocalDate.parse(date, formatter);
-        this.time = new TimeSpan(start, end);
+        this.yyyymmdd = yyyymmdd;
+        this.starthhmm = starthhmm;
+        this.endhhmm = endhhmm;
+        this.targetDate = LocalDate.parse(yyyymmdd, formatter);
+        this.time = new TimeSpan(starthhmm, endhhmm);
         this.workMinutes = this.time.getMinutes();
         this.orverWorkMinutes = 0;
         this.rule = null;
     }
 
-    private Attendance(String date, String start, String end, Rule rule) {
-        this.date = date;
-        this.start = start;
-        this.end = end;
+    private Attendance(String yyyymmdd, String starthhmm, String endhhmm, Rule rule) {
+        this.yyyymmdd = yyyymmdd;
+        this.starthhmm = starthhmm;
+        this.endhhmm = endhhmm;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        this.targetDate = LocalDate.parse(date, formatter);
-        this.time = new TimeSpan(start, end);
+        this.targetDate = LocalDate.parse(yyyymmdd, formatter);
+        this.time = new TimeSpan(starthhmm, endhhmm);
 
         // 就業規則を適用しない稼働時間を再算出
         int workMinutes = this.time.getMinutes();
@@ -54,19 +55,52 @@ public class Attendance {
         this.rule = rule;
     }
 
-    public Attendance applyRule(Rule rule) {
-        return new Attendance(this.date, this.start, this.end, rule);
+    public Attendance(
+            String yyyymmdd,
+            String starthhmm,
+            String endhhmm,
+            int workMinutes,
+            int orverWorkMinutes) {
+        this.yyyymmdd = yyyymmdd;
+        this.starthhmm = starthhmm;
+        this.endhhmm = endhhmm;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        this.targetDate = LocalDate.parse(yyyymmdd, formatter);
+        this.time = new TimeSpan(starthhmm, endhhmm);
+        this.workMinutes = workMinutes;
+        this.orverWorkMinutes = orverWorkMinutes;
+        this.rule = null;
     }
 
-    public LocalDate getTargetDate(){
+    public Attendance applyRule(Rule rule) {
+        return new Attendance(this.yyyymmdd, this.starthhmm, this.endhhmm, rule);
+    }
+
+    public LocalDate getTargetDate() {
         return this.targetDate;
     }
 
     public int getWorkMinutes() {
         return this.workMinutes;
     }
+
     public int getOrverWorkMinutes() {
         return this.orverWorkMinutes;
     }
-    public Rule getRule() { return  this.rule;}
+
+    public String getYyyymmdd() {
+        return this.yyyymmdd;
+    }
+
+    public String getStarthhmm() {
+        return this.starthhmm;
+    }
+
+    public String getEndhhmm() {
+        return this.endhhmm;
+    }
+
+    public Rule getRule() {
+        return this.rule;
+    }
 }
