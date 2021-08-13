@@ -1,5 +1,6 @@
 package jp.co.esumit.kintai.domain;
 
+import jp.co.esumit.kintai.datasource.AppConst;
 import jp.co.esumit.kintai.domain.field.EndTime;
 import jp.co.esumit.kintai.domain.field.OfficeMinutes;
 import jp.co.esumit.kintai.domain.field.StartTime;
@@ -15,23 +16,15 @@ public class CalcOfficeMinutes {
 
         int officeMinutes = endH * 60 + endM - (startH * 60 + startM);
 
-        if (endH == 12) {
-            officeMinutes -= endM;
-        } else if (endH >= 13) {
-            officeMinutes -= 60;
+
+        for (int[] breakTime : AppConst.BREAK_TIMES) {
+            if (endH == breakTime[0]) {
+                officeMinutes -= endM;
+            } else if (endH >= breakTime[1]) {
+                officeMinutes -= 60;
+            }
         }
 
-        if (endH == 18) {
-            officeMinutes -= endM;
-        } else if (endH >= 19) {
-            officeMinutes -= 60;
-        }
-
-        if (endH == 21) {
-            officeMinutes -= endM;
-        } else if (endH >= 22) {
-            officeMinutes -= 60;
-        }
         return new OfficeMinutes(officeMinutes);
     }
 }

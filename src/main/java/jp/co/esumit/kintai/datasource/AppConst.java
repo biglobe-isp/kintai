@@ -12,17 +12,24 @@ public final class AppConst {
         public static final String TOTAL = "total";
     }
 
-    /**
-     * 引数
-     */
-    public static class ArgsCount {
-        public static final int INPUT_CNT = 4;
-        public static final int TOTAL_CNT = 2;
-    }
+    /** 登録時刻のパターン **/
+    public static final String PATTERN_REGISTERED_TIME = "yyyy/MM/dd HH:mm:ss";
 
     /** 定時間[分]　**/
-    public static final int fixedMinutes = 8 * 60;
+    public static final int FIXED_MINUTES = 8 * 60;
 
     /** 出力ファイル名 **/
     public static final String FILE_NAME = "data.csv";
+
+    /**
+     * input時のPrefix
+     */
+    public static class Prefix {
+        public static final String DATE = "-date:";
+        public static final String START = "-start:";
+        public static final String END = "-end:";
+    }
+
+    /** 休憩時間 **/
+    public static final int[][] BREAK_TIMES = {{12,13},{15,16},{18,19},{21,22}};
 }

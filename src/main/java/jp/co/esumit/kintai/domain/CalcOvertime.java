@@ -7,6 +7,6 @@ import jp.co.esumit.kintai.domain.field.Overtime;
 public class CalcOvertime {
 
     public Overtime getOverTime(OfficeMinutes officeMins){
-        return new Overtime(Math.max(0, officeMins.getValue() - AppConst.fixedMinutes));
+        return new Overtime(Math.max(0, officeMins.getValue() - AppConst.FIXED_MINUTES));
     }
 }
