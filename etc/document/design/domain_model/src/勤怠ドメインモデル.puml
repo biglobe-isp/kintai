@@ -1,0 +1,110 @@
+@startuml
+
+
+package ドメイン{
+
+    class 勤怠ドメイン{
+     CSVカラム inputDomain(対象日付, 開始時刻, 終了時刻)
+     コンソール出力内容 outputDomain(List<CSVカラム>)
+    }
+
+    class 勤務時間計算{
+     勤務時間 getOfficeMinutes(開始時刻 開始時刻, 終了時刻)
+    }
+
+    class 残業時間計算{
+     残業時間 getOverTime(勤務時間)
+    }
+
+    class 登録時刻計算{
+     登録時刻 getRegisteredTime()
+    }
+
+    package フィールド {
+        class 対象日付 {
+
+        }
+
+        class 開始時刻 {
+         {field} 開始時間
+         {field} 開始分
+        }
+
+        class 開始時間{
+        }
+        class 開始分{
+        }
+
+        class 終了時刻 {
+         {field} 終了時間
+         {field} 終了分
+        }
+
+        class 終了時間{
+        }
+
+        class 終了分{
+        }
+
+        class 勤務時間{
+        }
+
+        class 残業時間{
+        }
+
+        class 登録時刻{
+        }
+
+        class 総勤務時間{
+        }
+
+        class 総残業時間{
+        }
+    }
+}
+
+開始時刻 --> 開始時間
+開始時刻 --> 開始分
+終了時刻 --> 終了時間
+終了時刻 --> 終了分
+
+
+package データソース.CSV{
+
+    class コンソール出力内容{
+     {field} 総勤務時間
+     {field} 総残業時間
+    }
+
+    コンソール出力内容 --> 総勤務時間
+    コンソール出力内容 --> 総残業時間
+
+    class CSVカラム{
+     {field} 対象日付
+     {field} 開始時刻
+     {field} 終了時刻
+     {field} 勤務時間
+     {field} 残業時間
+     {field} 登録時刻
+    }
+
+    CSVカラム --> 対象日付
+    CSVカラム --> 開始時刻
+    CSVカラム --> 終了時刻
+    CSVカラム --> 勤務時間
+    CSVカラム --> 残業時間
+    CSVカラム --> 登録時刻
+
+
+
+    class Reader{
+
+    }
+
+    class Writer{
+
+    }
+}
+
+
+@enduml
