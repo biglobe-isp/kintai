@@ -1,14 +1,11 @@
 package jp.co.esumit.kintai.domain;
 
-import jp.co.esumit.kintai.datasource.csv.ConsoleOutput;
-import jp.co.esumit.kintai.datasource.csv.CsvColumns;
-import jp.co.esumit.kintai.domain.field.EndTime;
-import jp.co.esumit.kintai.domain.field.OfficeMinutes;
-import jp.co.esumit.kintai.domain.field.Overtime;
-import jp.co.esumit.kintai.domain.field.StartTime;
-import jp.co.esumit.kintai.domain.field.TargetDay;
-import jp.co.esumit.kintai.domain.field.TotalOfficeMinutes;
-import jp.co.esumit.kintai.domain.field.TotalOvertime;
+import jp.co.esumit.kintai.domain.kintai_info.KintaiInfo;
+import jp.co.esumit.kintai.domain.kintai_info.office_minutes.OfficeMinutes;
+import jp.co.esumit.kintai.domain.kintai_info.overtime_minutes.OvertimeMinutes;
+import jp.co.esumit.kintai.domain.summary.MonthlySummary;
+import jp.co.esumit.kintai.domain.summary.total_office_minutes.TotalOfficeMinutes;
+import jp.co.esumit.kintai.domain.summary.total_overtime_minutes.TotalOvertimeMinutes;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -17,56 +14,53 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class KintaiDomainOutputDomainTest {
-
-
     @Test
-    public void n001(){
+    public void n001() {
 
 
-        List<CsvColumns> inputCsvColsList = this.getCsvColumns(5);
+        List<KintaiInfo> inputCsvColsList = this.getCsvColumns(5);
 
-        TotalOfficeMinutes expOfficeMins = new TotalOfficeMinutes(540*5);
-        TotalOvertime expOvertime = new TotalOvertime(60*5);
+        TotalOfficeMinutes expOfficeMins = new TotalOfficeMinutes(540 * 5);
+        TotalOvertimeMinutes expOvertime = new TotalOvertimeMinutes(60 * 5);
 
-        ConsoleOutput expConsoleOutput = new ConsoleOutput(expOfficeMins,expOvertime);
+        MonthlySummary expMonthlySummary = new MonthlySummary(expOfficeMins, expOvertime);
 
-        this.executeTest(inputCsvColsList,expConsoleOutput,null);
-
+        this.executeTest(inputCsvColsList, expMonthlySummary, null);
     }
 
-    private void executeTest(List<CsvColumns> inputCsvColsList, ConsoleOutput expConsoleOutput,Exception expException){
+    private void executeTest(
+            List<KintaiInfo> inputCsvColsList,
+            MonthlySummary expMonthlySummary,
+            Exception expException) {
 
-        KintaiDomain testClass = new KintaiDomain();
+        //KintaiDomain testClass = new KintaiDomain();
 
         Exception actException = null;
-        ConsoleOutput actConsoleOutput = null;
+        MonthlySummary actMonthlySummary = null;
 
         try {
-            actConsoleOutput = testClass.outputDomain(inputCsvColsList);
-        }catch(Exception e){
+            //  actMonthlySummary = testClass.outputDomain(inputCsvColsList);
+        } catch (Exception e) {
             actException = e;
         }
 
-        assertEquals("ConsoleOutput",expConsoleOutput,actConsoleOutput);
-        assertEquals("Exception",expException,actException);
+        assertEquals("MonthlySummary", expMonthlySummary, actMonthlySummary);
+        assertEquals("Exception", expException, actException);
     }
 
+    private List<KintaiInfo> getCsvColumns(int csvCount) {
 
-    private List<CsvColumns> getCsvColumns(int csvCount){
-
-        List<CsvColumns> csvColumnsList = new ArrayList<>();
+        List<KintaiInfo> kintaiInfoList = new ArrayList<>();
 
 
-        for(int i = 0; i < csvCount; i++){
+        for (int i = 0; i < csvCount; i++) {
 
             OfficeMinutes of = new OfficeMinutes(540);
-            Overtime ov = new Overtime(60);
-            CsvColumns csvCol = new CsvColumns(null,null,null,of,ov,null);
-            csvColumnsList.add(csvCol);
-
+            OvertimeMinutes ov = new OvertimeMinutes(60);
+            KintaiInfo csvCol = new KintaiInfo(null, null, null, of, ov, null);
+            kintaiInfoList.add(csvCol);
         }
 
-        return csvColumnsList;
+        return kintaiInfoList;
     }
-
 }

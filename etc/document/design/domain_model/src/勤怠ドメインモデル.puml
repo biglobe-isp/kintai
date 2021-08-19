@@ -1,109 +1,200 @@
 @startuml
 
 
-package ドメイン{
+package API{
 
-    class 勤怠ドメイン{
-     CSVカラム inputDomain(対象日付, 開始時刻, 終了時刻)
-     コンソール出力内容 outputDomain(List<CSVカラム>)
+    class 勤怠{
+     {method} main(String args[])
     }
 
-    class 勤務時間計算{
-     勤務時間 getOfficeMinutes(開始時刻 開始時刻, 終了時刻)
+    class コントローラ{
+     + {method} executeInput(String[])
+     + {method} executeTotal(String[])
+     + {method} consoleOut()
     }
 
-    class 残業時間計算{
-     残業時間 getOverTime(勤務時間)
+    class バリデータ{
+     + {method} isValidArgs(String[])
+     - {method} isValidMethodType(String)
     }
 
-    class 登録時刻計算{
-     登録時刻 getRegisteredTime()
-    }
-
-    package フィールド {
-        class 対象日付 {
-
-        }
-
-        class 開始時刻 {
-         {field} 開始時間
-         {field} 開始分
-        }
-
-        class 開始時間{
-        }
-        class 開始分{
-        }
-
-        class 終了時刻 {
-         {field} 終了時間
-         {field} 終了分
-        }
-
-        class 終了時間{
-        }
-
-        class 終了分{
-        }
-
-        class 勤務時間{
-        }
-
-        class 残業時間{
-        }
-
-        class 登録時刻{
-        }
-
-        class 総勤務時間{
-        }
-
-        class 総残業時間{
-        }
-    }
 }
 
-開始時刻 --> 開始時間
-開始時刻 --> 開始分
-終了時刻 --> 終了時間
-終了時刻 --> 終了分
+package サービス{
 
+    class 入力サービス{
+
+       + void persist(対象日付, 開始時刻, 終了時刻, レポジトリ)
+       - 登録時刻 getRegisteredTime()
+    }
+
+    class 月間集計サービス{
+
+       + 月間サマリ getMonthlySummary(対象年月、レポジトリ)
+
+    }
+
+    top to bottom direction
+    入力サービス -[hidden]-月間集計サービス
+}
+
+
+package ドメイン{
+
+    package リポジトリ{
+        interface 勤怠リポジトリ{
+           void write(勤怠情報)
+           List<勤怠情報> read(対象年月)
+        }
+    }
+
+    package 勤怠情報{
+
+        class 勤怠情報{
+         {field} 対象日付
+         {field} 開始時刻
+         {field} 終了時刻
+         {field} 勤務時間
+         {field} 残業時間
+         {field} 登録時刻
+        }
+
+        class 勤怠情報メーカー{
+        -{field}　勤務時間計算
+        -{field}　残業時間計算
+        +{method} 勤怠情報 create(対象日付, 開始時刻, 終了時刻)
+        }
+
+        勤怠情報 --> 対象日付
+        勤怠情報 --> 開始時刻
+        勤怠情報 --> 終了時刻
+        勤怠情報 --> 勤務時間
+        勤怠情報 --> 残業時間
+        勤怠情報 --> 登録時刻
+
+        package 対象日付{
+            class 対象日付 {
+             void valid(対象日付)
+            }
+        }
+
+        package 開始時刻{
+            class 開始時刻 {
+             -{field} 開始時間
+             -{field} 開始分
+             void valid(開始時刻)
+            }
+            class 開始時間{
+            }
+            class 開始分{
+            }
+            開始時刻 --> 開始時間
+            開始時刻 --> 開始分
+        }
+
+        package 終了時刻{
+            class 終了時刻 {
+             -{field} 終了時間
+             -{field} 終了分
+             void valid(終了時刻)
+            }
+            class 終了時間{
+            }
+            class 終了分{
+            }
+            終了時刻 --> 終了時間
+            終了時刻 --> 終了分
+        }
+
+        package 勤務時間{
+            class 勤務時間{
+            }
+            class 勤務時間計算{
+             {field} int[][] 休憩時間
+             {method} 勤務時間 calc(開始時刻, 終了時刻)
+            }
+            勤務時間 .d. 勤務時間計算
+
+            勤怠情報メーカー -down-> 勤務時間計算
+        }
+
+        package 残業時間{
+            class 残業時間{
+            }
+            class 残業時間計算{
+             {field} int 定時間
+             {method} 残業時間 calc(勤務時間)
+            }
+            残業時間 .d. 残業時間計算
+
+            勤怠情報メーカー -down-> 残業時間計算
+        }
+
+        package 登録時刻{
+            class 登録時刻{
+            }
+        }
+    }
+
+    package サマリ{
+
+        class 月間サマリ{
+         {field} 総勤務時間
+         {field} 総残業時間
+        }
+
+        class 月間サマリメーカー{
+         -{field} 総勤務時間計算
+         -{field} 総残業時間計算
+         +{method} 月間サマリ create(List<勤怠情報>)
+        }
+
+        package 対象年月{
+            class 対象年月 {
+             void valid(対象年月)
+            }
+        }
+
+        package 総勤務時間{
+            class 総勤務時間{
+            }
+            class 総勤務時間計算{
+             {method} 総勤務時間 calc(List<勤怠情報>)
+            }
+            総勤務時間 .d. 総勤務時間計算
+
+            月間サマリメーカー -down-> 総勤務時間計算
+        }
+
+        package 総残業時間{
+            class 総残業時間{
+            }
+            class 総残業時間計算{
+             {method} 総残業時間 calc(List<勤怠情報>)
+            }
+            総残業時間 .d. 総残業時間計算
+
+            月間サマリメーカー -down-> 総残業時間計算
+        }
+
+        月間サマリ --> 総勤務時間
+        月間サマリ --> 総残業時間
+    }
+
+    top to bottom direction
+    勤怠情報 -[hidden]- サマリ
+    サマリ -[hidden]- リポジトリ
+
+}
 
 package データソース.CSV{
 
-    class コンソール出力内容{
-     {field} 総勤務時間
-     {field} 総残業時間
+    class Csvリポジトリ{
+       + void write(勤怠情報)
+       + List<勤怠情報> read(対象年月)
     }
 
-    コンソール出力内容 --> 総勤務時間
-    コンソール出力内容 --> 総残業時間
-
-    class CSVカラム{
-     {field} 対象日付
-     {field} 開始時刻
-     {field} 終了時刻
-     {field} 勤務時間
-     {field} 残業時間
-     {field} 登録時刻
-    }
-
-    CSVカラム --> 対象日付
-    CSVカラム --> 開始時刻
-    CSVカラム --> 終了時刻
-    CSVカラム --> 勤務時間
-    CSVカラム --> 残業時間
-    CSVカラム --> 登録時刻
-
-
-
-    class Reader{
-
-    }
-
-    class Writer{
-
-    }
+    勤怠リポジトリ --|> Csvリポジトリ
 }
 
 
