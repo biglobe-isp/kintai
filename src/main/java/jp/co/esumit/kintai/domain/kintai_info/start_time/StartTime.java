@@ -1,8 +1,14 @@
 package jp.co.esumit.kintai.domain.kintai_info.start_time;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Value
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class StartTime {
     private final StartHour startHr;
     private final StartMinute startMin;
@@ -15,17 +21,9 @@ public class StartTime {
         this.startMin = new StartMinute(startTime);
     }
 
-    public StartHour getStartHr() {
-        return this.startHr;
-    }
-
     public int getStartHrValue() {
 
         return this.startHr.getValue();
-    }
-
-    public StartMinute getStartMin() {
-        return this.startMin;
     }
 
     public int getStartMinValue() {
@@ -38,6 +36,10 @@ public class StartTime {
                 "%02d%02d",
                 this.getStartHrValue(), this.getStartMinValue()
         );
+    }
+
+    public int getMinutes() {
+        return this.getStartHrValue() * 60 + this.getStartMinValue();
     }
 
     private void valid(String startTime) {

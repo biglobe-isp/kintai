@@ -1,4 +1,4 @@
-package jp.co.esumit.kintai.domain.summary.total_overtime_minutes;
+package jp.co.esumit.kintai.domain.summary.total_actual_working_minutes;
 
 import jp.co.esumit.kintai.domain.kintai_info.KintaiInfo;
 import lombok.AccessLevel;
@@ -9,14 +9,14 @@ import java.util.List;
 
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class TotalOvertimeMinutes {
+public class TotalActualWorkingMinutes {
     private final int value;
 
-    public static TotalOvertimeMinutes create(List<KintaiInfo> targetList) {
+    public static TotalActualWorkingMinutes create(List<KintaiInfo> targetList) {
 
-        return new TotalOvertimeMinutes(
+        return new TotalActualWorkingMinutes(
                 targetList.stream()
-                        .mapToInt(KintaiInfo::getOvertimeValue)
+                        .mapToInt(KintaiInfo::getActualWorkingMinutesValue)
                         .reduce(0, Integer::sum));
     }
 }

@@ -1,5 +1,8 @@
 package jp.co.esumit.kintai.api;
 
+import jp.co.esumit.kintai.api.controller.InputController;
+import jp.co.esumit.kintai.api.controller.TotalController;
+
 public class Kintai {
     public static void main(String args[]) {
         try {
@@ -7,20 +10,20 @@ public class Kintai {
             Validator validator = new Validator();
             validator.isValidArgs(args);
 
-            KintaiController controller = new KintaiController();
 
             switch (args[0]) {
                 //**入力**
                 case MethodType.INPUT:
 
-                    controller.executeInput(args);
+                    InputController input = new InputController();
+                    input.execute(args);
                     break;
 
                 //**出力**
                 case MethodType.TOTAL:
 
-                    controller.executeTotal(args);
-                    controller.consoleOut();
+                    TotalController total = new TotalController();
+                    total.execute(args);
                     break;
 
                 default:

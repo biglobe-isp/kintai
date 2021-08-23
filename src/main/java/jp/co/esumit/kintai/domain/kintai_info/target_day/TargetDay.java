@@ -1,11 +1,15 @@
 package jp.co.esumit.kintai.domain.kintai_info.target_day;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TargetDay {
-    private final String value;
+    String value;
 
     public TargetDay(String value) {
         this.valid(value);

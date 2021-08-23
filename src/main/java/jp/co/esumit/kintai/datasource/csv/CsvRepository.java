@@ -2,7 +2,7 @@ package jp.co.esumit.kintai.datasource.csv;
 
 import jp.co.esumit.kintai.domain.kintai_info.KintaiInfo;
 import jp.co.esumit.kintai.domain.kintai_info.end_time.EndTime;
-import jp.co.esumit.kintai.domain.kintai_info.office_minutes.OfficeMinutes;
+import jp.co.esumit.kintai.domain.kintai_info.operation_and_working_minutes.ActualWorkingMinutes;
 import jp.co.esumit.kintai.domain.kintai_info.overtime_minutes.OvertimeMinutes;
 import jp.co.esumit.kintai.domain.kintai_info.registered_time.RegisteredTime;
 import jp.co.esumit.kintai.domain.kintai_info.start_time.StartTime;
@@ -24,15 +24,14 @@ public class CsvRepository implements KintaiRepository {
     @Override
     public void write(KintaiInfo kintaiInfo) {
 
-        String date = kintaiInfo.getTargetDay().getValue();
-        String start = kintaiInfo.getStartTime().toString();
-        String end = kintaiInfo.getEndTime().toString();
-        String officeMins = String.valueOf(kintaiInfo.getOfficeMinutesValue());
-        String overtimeMins = String.valueOf(kintaiInfo.getOvertimeValue());
-        String registeredTime = kintaiInfo.getRegisteredTime().getValue();
-
         try (FileWriter fw = new FileWriter(csvFileName, true)) {
-            fw.write(String.format("%s,%s,%s,%s,%s,%s\n", date, start, end, officeMins, overtimeMins, registeredTime));
+            fw.write(String.format("%s,%s,%s,%s,%s,%s\n"
+                    , kintaiInfo.getTargetDay().getValue()
+                    , kintaiInfo.getStartTime().toString()
+                    , kintaiInfo.getEndTime().toString()
+                    , kintaiInfo.getActualWorkingMinutesValue()
+                    , kintaiInfo.getOvertimeValue()
+                    , kintaiInfo.getRegisteredTime().getValue()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +58,7 @@ public class CsvRepository implements KintaiRepository {
                         new TargetDay(columns[0]),
                         new StartTime(columns[1]),
                         new EndTime(columns[2]),
-                        new OfficeMinutes(Integer.parseInt(columns[3])),
+                        new ActualWorkingMinutes(Integer.parseInt(columns[3])),
                         new OvertimeMinutes(Integer.parseInt(columns[4])),
                         new RegisteredTime(columns[5])
                 );

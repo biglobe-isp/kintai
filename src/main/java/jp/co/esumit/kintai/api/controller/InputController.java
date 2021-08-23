@@ -1,22 +1,16 @@
-package jp.co.esumit.kintai.api;
+package jp.co.esumit.kintai.api.controller;
 
 import jp.co.esumit.kintai.datasource.csv.CsvRepository;
 import jp.co.esumit.kintai.domain.kintai_info.end_time.EndTime;
 import jp.co.esumit.kintai.domain.kintai_info.start_time.StartTime;
 import jp.co.esumit.kintai.domain.kintai_info.target_day.TargetDay;
 import jp.co.esumit.kintai.domain.repository.KintaiRepository;
-import jp.co.esumit.kintai.domain.summary.MonthlySummary;
-import jp.co.esumit.kintai.domain.summary.target_year_month.TargetYearMonth;
 import jp.co.esumit.kintai.service.KintaiInfoService;
-import jp.co.esumit.kintai.service.MonthlySummaryService;
-import org.springframework.stereotype.Controller;
 
-@Controller
-public class KintaiController {
+public class InputController {
     KintaiRepository repository = new CsvRepository();
-    MonthlySummary output;
 
-    public void executeInput(String args[]) {
+    public void execute(String args[]) {
 
         KintaiInfoService kintaiInfoService = new KintaiInfoService();
 
@@ -51,21 +45,5 @@ public class KintaiController {
 //        }
 
         kintaiInfoService.persist(targetday, startTime, endTime, repository);
-    }
-
-    public void executeTotal(String args[]) {
-
-        MonthlySummaryService monthlySummaryService = new MonthlySummaryService();
-        TargetYearMonth targetYM = new TargetYearMonth(args[1]);
-
-        output = monthlySummaryService.getMonthlySummary(targetYM, repository);
-    }
-
-    public void consoleOut() {
-
-        System.out.println("勤務時間: " + output.getTotalOfficeMinsValue() / 60 + "時間"
-                                   + output.getTotalOfficeMinsValue() % 60 + "分");
-        System.out.println("残業時間: " + output.getTotalOvertimeValue() / 60 + "時間"
-                                   + output.getTotalOvertimeValue() % 60 + "分");
     }
 }

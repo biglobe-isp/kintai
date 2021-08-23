@@ -1,11 +1,16 @@
 package jp.co.esumit.kintai.domain.kintai_info.end_time;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Value
+@RequiredArgsConstructor
 public class EndTime {
-    public final EndHour endHr;
-    public final EndMinute endMin;
+    private final EndHour endHr;
+    private final EndMinute endMin;
 
     public EndTime(String endTime) {
 
@@ -15,16 +20,9 @@ public class EndTime {
         this.endMin = new EndMinute(endTime);
     }
 
-    public EndHour getEndHr() {
-        return this.endHr;
-    }
-
     public int getEndHrValue() {
-        return this.endHr.getValue();
-    }
 
-    public EndMinute getEndMin() {
-        return this.endMin;
+        return this.endHr.getValue();
     }
 
     public int getEndMinValue() {
@@ -37,6 +35,11 @@ public class EndTime {
                 "%02d%02d",
                 this.getEndHrValue(), this.getEndMinValue()
         );
+    }
+
+    public int getMinutes() {
+
+        return this.getEndHrValue() * 60 + this.getEndMinValue();
     }
 
     private void valid(String endTime) {
