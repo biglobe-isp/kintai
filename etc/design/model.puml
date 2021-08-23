@@ -25,6 +25,8 @@ package domain {
         + ZonedTimePoint getEndTimePoint()
         + default boolean contains(ZonedTimePoint timePoint)
         + default boolean containsAll(TimeInterval interval)
+        + default boolean within(TimeInterval interval)
+        + default TimeIntervalComparedStatus getComparedStatus(TimeInterval interval)
     }
 
     package 労働時間 {
@@ -32,34 +34,34 @@ package domain {
             - StartTime startTime
             - EndTime endTime
         }
-        class WorkingTimeMinutes {
+        class ActualWorkingTimeMinutes {
             - long minutes
-            - WorkingTimeMinutes(long time)
-            {static} + WorkingTimeMinutes create(WorkingTimeInterval workingTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
-            - WorkingTimeMinutes minusBreakTime(WorkingTimeInterval workingTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
+            - {static} TimeLengthCalculator TimeLengthCalculator
+            + ActualWorkingTimeMinutes(WorkingTimeInterval interval, ActualBreakTimeMinutes actualBreakTimeMinutes)
         }
         WorkingTimeInterval *--> StartTime
         WorkingTimeInterval *--> EndTime
     }
 
     package 休憩時間 {
-        class BreakTimeInterval implements TimeInterval {
-            - StartTime startTime
-            - EndTime endTime
-            + BreakTimeInterval intersect(WorkingInterval workingInterval)
-        }
-        class BreakTimeMinutes {
+        class ActualBreakTimeMinutes {
             - long minutes
-            + BreakTimeMinutes add(long addtionalMinutes)
         }
-        BreakTimeInterval *--> StartTime
-        BreakTimeInterval *--> EndTime
+
+        class ActualBreakTimeMinutesCalculator {
+            - WorkingTimeInterval workingTimeInterval
+            - RegulatedBreakTimeShift regulatedBreakTimeShift
+            - {static} TimeLengthCalculator TimeLengthCalculator
+            + ActualBreakTimeMinutesCalculator(WorkingTimeInteval workingTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
+            + ActualBreakTimeMinutes calculate()
+            - long intersect(RegulatedBreakTimeInterval regulatedBreakTimeInterval)
+        }
+
     }
 
     package 就業規則 {
-        class RegulatedWorkingTimeInterval implements TimeInterval {
-            - StartTime startTime
-            - EndTime endTime
+        class RegulatedWorkingTimeMinutes {
+            - long minutes
         }
         class RegulatedBreakTimeInterval implements TimeInterval {
             - StartTime startTime
@@ -68,67 +70,70 @@ package domain {
         class RegulatedBreakTimeShift {
             - List<RegulatedBreakTimeInterval> breakTimeInterval
         }
-        RegulatedWorkingTimeInterval *--> StartTime
-        RegulatedWorkingTimeInterval *--> EndTime
+        RegulatedBreakTimeInterval *--> StartTime
+        RegulatedBreakTimeInterval *--> EndTime
         RegulatedBreakTimeShift o--> RegulatedBreakTimeInterval
     }
 
     package 残業時間　{
-        class OvertimeInterval implements TimeInterval {
-            - StartTime startTime
-            - EndTime endTime
-            + List<OvertimeInterval> diff(WorkingTimeInterval workingTimeInterval, RegulatedWorkingTimeInterval regulatedWorkingTimeInterval)
-        }
-        class OvertimeMinutes {
+        class ActualOvertimeMinutes {
             - long minutes
-            {static} + OverTimeMinutes create(WorkingTimeInterval workingTimeInterval, RegulatedTimeInterval regulatedTimeInterval)
+            + ActualOvertimeMinutes(ActualWorkingTimeMinutes actualWorkingTimeMinutes, RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes)
+            - hasOvertime()
         }
-        OvertimeInterval *--> StartTime
-        OvertimeInterval *--> EndTime
     }
 
-    class TimeIntervalLengthCalculator {
-        + static calculate(TimeIntervalLengthUnits unit, TimeInterval interval)
+    class TimeLengthCalculator {
+        - TimeUnits unit
+        + calculate(TimeInterval interval)
+        + calculate(ZonedTimePoint from ZonedTimePoint to)
     }
-    enum TimeIntervalLengthUnits {
+    enum TimeUnits {
         MINUTES
         HOURS
+    }
+    enum TimeIntervalComparedStatus {
+        WITHIN
+        CONTAIN
+        EQUAL_OR_BEFORE
+        EQUAL_OR_AFTER
+        OUT_OF
     }
 
     class AttendanceRecording {
         - AttendanceDate attendanceDate
         - WorkingTimeInterval workingTimeInterval
-        - WorkingTimeMinutes WorkingTimeMinutes
-        - OvertimeMinutes overtimeMinutes
+        - ActualWorkingTimeMinutes actualWorkingTimeMinutes
+        - ActualOvertimeMinutes actualOvertimeMinutes
     }
 
     class AttendanceAggregation {
     }
 
-    TimeIntervalLengthCalculator --> TimeIntervalLengthUnits
-    TimeIntervalLengthCalculator --> TimeInterval
+    TimeLengthCalculator --> TimeUnits
+    TimeLengthCalculator --> TimeInterval
+    TimeLengthCalculator --> ZonedTimePoint
 
     TimeInterval --> ZonedTimePoint
-
-    BreakTimeInterval --> TimeInterval
-    BreakTimeInterval --> RegulatedBreakTimeInterval
-    OvertimeInterval --> WorkingTimeInterval
-    OvertimeInterval --> RegulatedWorkingTimeInterval
-
-    WorkingTimeMinutes --> TimeIntervalLengthCalculator
-    WorkingTimeMinutes --> RegulatedBreakTimeShift
-    WorkingTimeMinutes --> WorkingTimeInterval
-    WorkingTimeMinutes --> RegulatedBreakTimeInterval
-    WorkingTimeMinutes --> BreakTimeInterval
-    WorkingTimeMinutes --> BreakTimeMinutes
-
-    OvertimeMinutes --> WorkingTimeInterval
-    OvertimeMinutes --> RegulatedWorkingTimeInterval
-    OvertimeMinutes --> TimeIntervalLengthCalculator
-    OvertimeMinutes --> RegulatedBreakTimeShift
-    OvertimeMinutes --> BreakTimeMinutes
+    TimeInterval --> TimeIntervalComparedStatus
 
 
+    ActualBreakTimeMinutesCalculator *--> WorkingTimeInterval
+    ActualBreakTimeMinutesCalculator *--> RegulatedBreakTimeShift
+    ActualBreakTimeMinutesCalculator *--> TimeLengthCalculator
+    ActualBreakTimeMinutesCalculator --> ActualBreakTimeMinutes
+
+    ActualWorkingTimeMinutes *--> TimeLengthCalculator
+    ActualWorkingTimeMinutes --> WorkingTimeInterval
+    ActualWorkingTimeMinutes --> ActualBreakTimeMinutes
+
+    ActualOvertimeMinutes *--> ActualWorkingTimeMinutes
+    ActualOvertimeMinutes *--> RegulatedWorkingTimeMinutes
+
+    AttendanceRecording *--> AttendanceDate
+    AttendanceRecording *--> WorkingTimeInterval
+    AttendanceRecording *--> ActualWorkingTimeMinutes
+    AttendanceRecording *--> ActualOvertimeMinutes
 
 }
 
