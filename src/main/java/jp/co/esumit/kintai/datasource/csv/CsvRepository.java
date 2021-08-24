@@ -11,12 +11,12 @@ import jp.co.esumit.kintai.domain.repository.KintaiRepository;
 import jp.co.esumit.kintai.domain.summary.target_year_month.TargetYearMonth;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class CsvRepository implements KintaiRepository {
     final String csvFileName = "data.csv";
@@ -24,14 +24,59 @@ public class CsvRepository implements KintaiRepository {
     @Override
     public void write(KintaiInfo kintaiInfo) {
 
-        try (FileWriter fw = new FileWriter(csvFileName, true)) {
-            fw.write(String.format("%s,%s,%s,%s,%s,%s\n"
-                    , kintaiInfo.getTargetDay().getValue()
-                    , kintaiInfo.getStartTime().toString()
-                    , kintaiInfo.getEndTime().toString()
-                    , kintaiInfo.getActualWorkingMinutesValue()
-                    , kintaiInfo.getOvertimeValue()
-                    , kintaiInfo.getRegisteredTime().getValue()));
+
+        boolean isDuplicated = false;
+        StringJoiner sj = new StringJoiner("\n");
+
+        try {
+
+            FileReader fr = new FileReader(csvFileName);
+            BufferedReader br = new BufferedReader(fr);
+
+            String line = br.readLine();
+
+            while (line != null) {
+
+                if (line.startsWith(kintaiInfo.getTargetDay().getValue())) {
+
+                    sj.add(String.format("%s,%s,%s,%s,%s,%s"
+                            , kintaiInfo.getTargetDay().getValue()
+                            , kintaiInfo.getStartTime().toString()
+                            , kintaiInfo.getEndTime().toString()
+                            , kintaiInfo.getActualWorkingMinutesValue()
+                            , kintaiInfo.getOvertimeValue()
+                            , kintaiInfo.getRegisteredTime().getValue()));
+
+                    isDuplicated = true;
+                } else {
+                    sj.add(line);
+                }
+
+                line = br.readLine();
+            }
+
+            if (!isDuplicated) {
+
+                sj.add(String.format("%s,%s,%s,%s,%s,%s"
+                        , kintaiInfo.getTargetDay().getValue()
+                        , kintaiInfo.getStartTime().toString()
+                        , kintaiInfo.getEndTime().toString()
+                        , kintaiInfo.getActualWorkingMinutesValue()
+                        , kintaiInfo.getOvertimeValue()
+                        , kintaiInfo.getRegisteredTime().getValue()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            flush(sj.toString());
+        }
+    }
+
+    private void flush(String contents) {
+
+        try (FileWriter fw = new FileWriter(csvFileName)) {
+
+            fw.write(contents);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,7 +87,7 @@ public class CsvRepository implements KintaiRepository {
 
         List<KintaiInfo> targetColumn = new ArrayList<>();
 
-        try (FileReader fr = new FileReader(new File(csvFileName));
+        try (FileReader fr = new FileReader(csvFileName);
              BufferedReader br = new BufferedReader(fr)) {
 
             String line = br.readLine();

@@ -7,14 +7,11 @@ import jp.co.esumit.kintai.domain.kintai_info.overtime_minutes.OvertimeMinutes;
 import jp.co.esumit.kintai.domain.kintai_info.registered_time.RegisteredTime;
 import jp.co.esumit.kintai.domain.kintai_info.start_time.StartTime;
 import jp.co.esumit.kintai.domain.kintai_info.target_day.TargetDay;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 @Value
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class KintaiInfo {
     private final TargetDay targetDay;
     private final StartTime startTime;
