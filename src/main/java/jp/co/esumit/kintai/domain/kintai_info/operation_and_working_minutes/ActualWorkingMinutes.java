@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 public class ActualWorkingMinutes {
-    private final int value;
+    int value;
 
     public static ActualWorkingMinutes create(OperatingMinutes operatingMinutes, EndTime endTime) {
         return new ActualWorkingMinutes(operatingMinutes.getValue() - calcTotalBreakMinutes(endTime));

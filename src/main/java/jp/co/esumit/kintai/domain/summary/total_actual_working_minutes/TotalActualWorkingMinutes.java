@@ -10,7 +10,7 @@ import java.util.List;
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TotalActualWorkingMinutes {
-    private final int value;
+    int value;
 
     public static TotalActualWorkingMinutes create(List<KintaiInfo> targetList) {
 

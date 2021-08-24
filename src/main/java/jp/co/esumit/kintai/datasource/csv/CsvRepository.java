@@ -24,50 +24,25 @@ public class CsvRepository implements KintaiRepository {
     @Override
     public void write(KintaiInfo kintaiInfo) {
 
-
-        boolean isDuplicated = false;
         StringJoiner sj = new StringJoiner("\n");
 
-        try {
-
-            FileReader fr = new FileReader(csvFileName);
-            BufferedReader br = new BufferedReader(fr);
+        try (FileReader fr = new FileReader(csvFileName);
+             BufferedReader br = new BufferedReader(fr)) {
 
             String line = br.readLine();
-
             while (line != null) {
-
-                if (line.startsWith(kintaiInfo.getTargetDay().getValue())) {
-
-                    sj.add(String.format("%s,%s,%s,%s,%s,%s"
-                            , kintaiInfo.getTargetDay().getValue()
-                            , kintaiInfo.getStartTime().toString()
-                            , kintaiInfo.getEndTime().toString()
-                            , kintaiInfo.getActualWorkingMinutesValue()
-                            , kintaiInfo.getOvertimeValue()
-                            , kintaiInfo.getRegisteredTime().getValue()));
-
-                    isDuplicated = true;
-                } else {
+                if (!line.startsWith(kintaiInfo.getTargetDay().getValue())) {
                     sj.add(line);
+                    //NOTE:対象日付:targetDayが一致する行以外をsjに値を渡す
+                    // 　→対象日付が一致するものは行を削除。
                 }
-
                 line = br.readLine();
             }
-
-            if (!isDuplicated) {
-
-                sj.add(String.format("%s,%s,%s,%s,%s,%s"
-                        , kintaiInfo.getTargetDay().getValue()
-                        , kintaiInfo.getStartTime().toString()
-                        , kintaiInfo.getEndTime().toString()
-                        , kintaiInfo.getActualWorkingMinutesValue()
-                        , kintaiInfo.getOvertimeValue()
-                        , kintaiInfo.getRegisteredTime().getValue()));
-            }
+            sj.add(kintaiInfo.toStringWithComma());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
+            //値をCSVに出力する。
             flush(sj.toString());
         }
     }
@@ -75,7 +50,6 @@ public class CsvRepository implements KintaiRepository {
     private void flush(String contents) {
 
         try (FileWriter fw = new FileWriter(csvFileName)) {
-
             fw.write(contents);
         } catch (IOException e) {
             e.printStackTrace();

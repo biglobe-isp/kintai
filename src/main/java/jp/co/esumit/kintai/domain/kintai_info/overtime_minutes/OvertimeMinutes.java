@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 public class OvertimeMinutes {
-    private final int value;
+    int value;
 
     public static OvertimeMinutes create(ActualWorkingMinutes actualWorkingMinutes) {
         return new OvertimeMinutes(Math.max(0, actualWorkingMinutes.getValue() - 8 * 60));

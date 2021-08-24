@@ -9,7 +9,7 @@ import java.util.Date;
 @Value
 @RequiredArgsConstructor
 public class RegisteredTime {
-    private final String value;
+    String value;
 
     public static RegisteredTime create() {
         Date date = new Date();

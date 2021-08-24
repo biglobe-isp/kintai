@@ -9,22 +9,16 @@ import lombok.val;
 
 import java.time.LocalTime;
 
-/**
- * 勤務時間
- */
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OperatingMinutes {
-    private final int value;
+    int value;
 
     public static OperatingMinutes create(StartTime startTime, EndTime endTime) {
 
         valid(startTime, endTime);
         return new OperatingMinutes(endTime.getMinutes() - startTime.getMinutes());
     }
-
-    //　NOTE:　getValueで計算するのもあり　→
-    //　ValueObjectをもたせる。という案もある
 
     private static void valid(StartTime startTime, EndTime endTime) {
 

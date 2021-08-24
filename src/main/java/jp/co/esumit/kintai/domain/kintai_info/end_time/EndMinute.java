@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 public class EndMinute {
-    private final int value;
+    int value;
 
     public EndMinute(String endTime) {
         this.value = Integer.parseInt(endTime.substring(2));

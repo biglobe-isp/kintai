@@ -13,12 +13,12 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 public class KintaiInfo {
-    private final TargetDay targetDay;
-    private final StartTime startTime;
-    private final EndTime endTime;
-    private final ActualWorkingMinutes actualWorkingMinutes;
-    private final OvertimeMinutes overtimeMinutes;
-    private final RegisteredTime registeredTime;
+    TargetDay targetDay;
+    StartTime startTime;
+    EndTime endTime;
+    ActualWorkingMinutes actualWorkingMinutes;
+    OvertimeMinutes overtimeMinutes;
+    RegisteredTime registeredTime;
 
     public static KintaiInfo create(TargetDay targetDay, StartTime startTime, EndTime endTime) {
 
@@ -35,6 +35,17 @@ public class KintaiInfo {
                 overtimeMinutes,
                 registeredTime
         );
+    }
+
+    public String toStringWithComma() {
+
+        return String.format("%s,%s,%s,%s,%s,%s"
+                , getTargetDay().getValue()
+                , getStartTime().toString()
+                , getEndTime().toString()
+                , getActualWorkingMinutesValue()
+                , getOvertimeValue()
+                , getRegisteredTime().getValue());
     }
 
     public int getActualWorkingMinutesValue() {

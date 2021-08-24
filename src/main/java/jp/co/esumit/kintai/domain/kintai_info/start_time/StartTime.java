@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class StartTime {
-    private final StartHour startHr;
-    private final StartMinute startMin;
+    StartHour startHr;
+    StartMinute startMin;
 
     public StartTime(String startTime) {
 

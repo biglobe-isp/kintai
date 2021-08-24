@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 @Value
 @RequiredArgsConstructor
 public class EndTime {
-    private final EndHour endHr;
-    private final EndMinute endMin;
+    EndHour endHr;
+    EndMinute endMin;
 
     public EndTime(String endTime) {
 

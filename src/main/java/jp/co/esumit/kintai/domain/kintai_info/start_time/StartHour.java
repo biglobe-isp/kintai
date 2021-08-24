@@ -6,7 +6,7 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor
 public class StartHour {
-    private final int value;
+    int value;
 
     public StartHour(String startTime) {
         this.value = Integer.parseInt(startTime.substring(0, 2));

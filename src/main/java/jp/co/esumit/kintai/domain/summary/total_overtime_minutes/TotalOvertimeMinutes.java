@@ -10,7 +10,7 @@ import java.util.List;
 @Value
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TotalOvertimeMinutes {
-    private final int value;
+    int value;
 
     public static TotalOvertimeMinutes create(List<KintaiInfo> targetList) {
 
