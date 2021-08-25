@@ -1,136 +1,182 @@
 @startuml
 
 package domain {
-    class ZonedTimePoint {
-        - ZonedDateTime time
-        + boolean isEqual(ZonedTimePoint comparison) 
-        + boolean isBefore(ZonedTimePoint comparison) 
-        + boolean isAfter(ZonedTimePoint comparison) 
-        + boolean isEqualOrBefore(ZonedTimePoint comparison) 
-        + boolean isEqualOrAfter(ZonedTimePoint comparison) 
-    }
-    class StartTime {
-        - ZonedTimePoint timePoint
-    }
-    class EndTime {
-        - ZonedTimePoint timePoint
-    }
-    StartTime *--> ZonedTimePoint
-    EndTime *--> ZonedTimePoint
-    
-    interface TimeInterval {
-        + ZonedTimePoint getStartTimePoint()
-        + ZonedTimePoint getEndTimePoint()
-        + default boolean contains(ZonedTimePoint timePoint)
-        + default boolean containsAll(TimeInterval interval)
-        + default boolean within(TimeInterval interval)
-        + default TimeIntervalComparedStatus getComparedStatus(TimeInterval comparison)
-        + default int between(TimeInterval interval, TimeUnits unit)
-        + {static} int between(ZonedTimePoint start, ZonedTimePoint end, TimeUnits unit)
-        + default int intersect(TimeInterval comparison, TimeUnits unit)
-    }
-
-    package 出勤情報 {
-        class AttendanceDate {
-            - ZonedDateTime date
+    package 打刻 {
+        class AttendanceRecord {
+            - LocalDate ymd
+            - LocalTime startTime
+            - LocalTime endTime
+            - int workingTimeMinutes
+            - int overtimeMinutes
+            + AttendanceRecord(AttendanceDate date, AttendanceTimeInterval interval,
+                                    ActualWorkingTimeMinutes workingTimeMinutes, ActualOvertimeMinutes overtimeMinutes)
         }
-        class AttendanceTimeInterval implements TimeInterval {
-            - StartTime startTime
-            - EndTime endTime
-        } 
-        class AttendanceTimeMinutes {
-            - int minutes
-            + AttendanceTimeMinutes(AttendanceTimeInterval attendanceTimeInterval)
-        } 
+
+        class AttendanceRecords {
+            - List<AttendanceRecord> records
+        }
+
+        package 出勤情報 {
+            class AttendanceDate {
+                - ZonedDateTime date
+            }
+            class AttendanceTimeInterval {
+                - StartTime startTime
+                - EndTime endTime
+            } 
+            class AttendanceTimeMinutes {
+                - TimeLength minutes
+                + AttendanceTimeMinutes(AttendanceTimeInterval attendanceTimeInterval)
+            }       
+        }
+
+        package 残業時間　{
+            class ActualOvertimeMinutes {
+                - TimeLength minutes
+                + ActualOvertimeMinutes(ActualWorkingTimeMinutes actualWorkingTimeMinutes, RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes)
+                + int intValue()
+                - boolean hasOvertime()
+
+            }
+        }
+        package 労働時間 {
+            class ActualWorkingTimeMinutes {
+                - TimeLength minutes
+                + ActualWorkingTimeMinutes(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes)
+                + int intValue()
+                - TimeLength subtractBreakTime(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes)
+            }
+        }
+        package 休憩時間 {
+            class ActualBreakTimeMinutes {
+                - TimeLength minutes
+                + ActualBreakTimeMinutes(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
+                - TimeLength sumIntersection(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
+            }
+        }
+
+        package 就業規則 {
+            class RegulatedWorkingTimeMinutes {
+                - int minutes
+            }
+            class RegulatedBreakTimeInterval {
+                - StartTime startTime
+                - EndTime endTime
+            }
+            class RegulatedBreakTimeShift {
+                - List<RegulatedBreakTimeInterval> breakTimeInterval
+            }
+        }
+        class ZonedTimePoint {
+            - ZonedDateTime time
+            + boolean isEqual(ZonedTimePoint comparison) 
+            + boolean isBefore(ZonedTimePoint comparison) 
+            + boolean isAfter(ZonedTimePoint comparison) 
+            + boolean isEqualOrBefore(ZonedTimePoint comparison) 
+            + boolean isEqualOrAfter(ZonedTimePoint comparison) 
+        }
+        class StartTime {
+            - ZonedTimePoint timePoint
+        }
+        class EndTime {
+            - ZonedTimePoint timePoint
+        }
+
+        class TimeLength {
+            - long value
+            - TimeUnits unit
+            + TimeLength add(TimeLength addition)
+            + TimeLength subtract(TimeLength subtraction)
+            + boolean moreThan(TimeLength comparison)
+            + boolean lessThan(TimeLength comparison)
+            - boolean isSameUnit(TimeLength comparison)
+        }
+        
+        interface TimeInterval {
+            + ZonedTimePoint getStartTimePoint()
+            + ZonedTimePoint getEndTimePoint()
+            + default boolean contains(ZonedTimePoint timePoint)
+            + default boolean containsAll(TimeInterval interval)
+            + default boolean within(TimeInterval interval)
+            + default TimeIntervalComparedStatus getComparedStatus(TimeInterval comparison)
+            + default TimeLength between(TimeInterval interval, TimeUnits unit)
+            + {static} TimeLength between(ZonedTimePoint start, ZonedTimePoint end, TimeUnits unit)
+            + default TimeLength intersect(TimeInterval comparison, TimeUnits unit)
+        }
+        
+        enum TimeUnits {
+            MINUTES
+            HOURS
+        }
+        enum TimeIntervalComparedStatus {
+            WITHIN
+            CONTAIN
+            EQUAL_OR_BEFORE
+            EQUAL_OR_AFTER
+            OUT_OF
+        }
+
+        AttendanceRecords o--> AttendanceRecord
+        AttendanceRecord -down-> AttendanceDate
+        AttendanceRecord -down-> AttendanceTimeInterval
+        AttendanceRecord -left-> ActualOvertimeMinutes
+        AttendanceRecord -left-> ActualWorkingTimeMinutes
+
+        ActualOvertimeMinutes *--> TimeLength
+        ActualOvertimeMinutes -down-> ActualWorkingTimeMinutes
+        ActualOvertimeMinutes --> RegulatedWorkingTimeMinutes
+
+        ActualWorkingTimeMinutes *--> TimeLength
+        ActualWorkingTimeMinutes -left-> AttendanceTimeMinutes
+        ActualWorkingTimeMinutes -down-> ActualBreakTimeMinutes
+
+        ActualBreakTimeMinutes *--> TimeLength
+        ActualBreakTimeMinutes --> AttendanceTimeInterval
+        ActualBreakTimeMinutes --> RegulatedBreakTimeShift
+
+        AttendanceTimeMinutes *--> TimeLength
+        AttendanceTimeMinutes --> AttendanceTimeInterval
         AttendanceTimeInterval *--> StartTime
-        AttendanceTimeInterval *--> EndTime       
-    }
+        AttendanceTimeInterval *--> EndTime
+        AttendanceTimeInterval .|> TimeInterval
 
-    package 休憩時間 {
-        class ActualBreakTimeMinutes {
-            - int minutes
-            + ActualBreakTimeMinutes(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
-            - sumIntersection(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift)
-        }
-    }
-    package 残業時間　{
-        class ActualOvertimeMinutes {
-            - int minutes
-            + ActualOvertimeMinutes(ActualWorkingTimeMinutes actualWorkingTimeMinutes, RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes)
-            - hasOvertime()
-        }
-    }
-    package 労働時間 {
-        class ActualWorkingTimeMinutes {
-            - int minutes
-            + ActualWorkingTimeMinutes(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes)
-            - int minusBreakTime(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes)
-        }
-    }
-
-    package 就業規則 {
-        class RegulatedWorkingTimeMinutes {
-            - int minutes
-        }
-        class RegulatedBreakTimeInterval implements TimeInterval {
-            - StartTime startTime
-            - EndTime endTime
-        }
-        class RegulatedBreakTimeShift {
-            - List<RegulatedBreakTimeInterval> breakTimeInterval
-        }
+        RegulatedBreakTimeInterval .|> TimeInterval
         RegulatedBreakTimeInterval *--> StartTime
         RegulatedBreakTimeInterval *--> EndTime
         RegulatedBreakTimeShift o--> RegulatedBreakTimeInterval
+
+        StartTime *--> ZonedTimePoint
+        EndTime *--> ZonedTimePoint
+
+        TimeLength *--> TimeUnits
+
+        TimeInterval --> ZonedTimePoint
+        TimeInterval --> TimeIntervalComparedStatus
+        TimeInterval --> TimeLength
+        TimeInterval --> TimeUnits
     }
 
-    enum TimeUnits {
-        MINUTES
-        HOURS
-    }
-    enum TimeIntervalComparedStatus {
-        WITHIN
-        CONTAIN
-        EQUAL_OR_BEFORE
-        EQUAL_OR_AFTER
-        OUT_OF
-    }
-
-    class AttendanceRecord {
-        - LocalDate ymd
-        - LocalTime startTime
-        - LocalTime endTime
-        - int workingTimeMinutes
-        - int overtimeMinutes
-        + AttendanceRecord(AttendanceDate date, AttendanceTimeInterval interval,
-                                ActualWorkingTimeMinutes workingTimeMinutes, ActualOvertimeMinutes overtimeMinutes)
-    }
-
-    TimeInterval --> ZonedTimePoint
-    TimeInterval --> TimeIntervalComparedStatus
-    TimeInterval --> TimeUnits
-
-    AttendanceTimeMinutes --> AttendanceTimeInterval
-    AttendanceTimeMinutes --> TimeUnits
-
-    ActualBreakTimeMinutes --> AttendanceTimeInterval
-    ActualBreakTimeMinutes --> RegulatedBreakTimeShift
-    ActualBreakTimeMinutes --> TimeUnits
-
-    ActualWorkingTimeMinutes --> AttendanceTimeMinutes
-    ActualWorkingTimeMinutes --> ActualBreakTimeMinutes
-    ActualWorkingTimeMinutes --> TimeUnits
-
-    ActualOvertimeMinutes --> ActualWorkingTimeMinutes
-    ActualOvertimeMinutes --> RegulatedWorkingTimeMinutes
-
-    AttendanceRecord -right-> AttendanceDate
-    AttendanceRecord -right-> AttendanceTimeInterval
-    AttendanceRecord -right-> ActualWorkingTimeMinutes
-    AttendanceRecord -right-> ActualOvertimeMinutes
-    AttendanceRecords o--> AttendanceRecord
-
+    ' package 月次集計 {
+    '     class AttendanceAggregationMonthly {
+    '         - int totalWorkingTimeMinutes
+    '         - int totalOvertimeMinutes
+    '     }
+    '     class AggregationMonth {
+    '         - YearMonth yearMonth
+    '     }
+    ' }
 }
+
+' package controller {
+'     class AttendanceController {
+'         - AttendanceRecordingService attendanceRecordService
+'         - AttendanceAggregationService attendanceAggregationService
+'         + void record(String[] inputParams)
+'         + void aggregateMonthly(String[] inputParams)
+'     }
+'     AttendanceController *--> AttendanceRecordingService
+'     AttendanceController *--> AttendanceAggregationService
+' }
 
 ' package service {
 '     class AttendanceRecordingService {
@@ -140,49 +186,50 @@ package domain {
 '     }
 '     class AttendanceAggregationService {
 '         - AttendanceRepository attendanceRepository
-'         + AttendanceAggregation aggregateMonthly(AggregationMonth aggregationMonth)
+'         + AttendanceAggregationMonthly aggregateMonthly(AggregationMonth aggregationMonth)
 '     }
 '     interface AttendanceRepository {
-'         + register(AttendanceRecord attendanceRecord)
-'         + fetchMonthly(AggregationMonth aggregationMonth)
+'         + void register(AttendanceRecord attendanceRecord)
+'         + AttendanceAggregationMonthly fetchMonthly(AggregationMonth aggregationMonth)
 '     }
 '     interface RegulationRepository {
 '         + fetchBreakTimeIntervalShift(AttendanceDate attendanceDate)
 '         + RegulatedWorkingTimeMinutes fetchRegulatedWorkingTimeMinutes(AttendanceDate attendanceDate)
 '     }
 '     AttendanceRecordingService   *--> AttendanceRepository
+'     AttendanceRecordingService   *--> RegulationRepository
 '     AttendanceAggregationService *--> AttendanceRepository
 ' }
 
 ' package datasource {
-'     class AttendanceRepositoryCsv implements AttendanceRepository {
+'     class AttendanceRepositoryCsv {
 '         + void register(AttendanceRecord attendanceRecord)
-'         + AttendanceRecords fetchMonthly(AggregationMonth aggregationMonth)
+'         + AttendanceAggregationMonthly fetchMonthly(AggregationMonth aggregationMonth)
 '     }
-'     class AttendanceRepositoryCsv implements RegulationRepository {
+'     class RegulationRepositoryCsv {
 '         + BreakTimeIntervalShift fetchBreakTimeList(AttendanceDate attendanceDate)
 '         + RegulatedWorkingTimeMinutes fetchRegulatedWorkingTimeMinutes(AttendanceDate attendanceDate)
 '     }
-'     ' class AttendanceCsvDao {
-'         ' - CsvDao<AttendanceRecordEntity> csvDao 
-'         ' + void register(AttendanceRecord attendanceRecord)
-'         ' + AttendanceRecordEntities fetchAll(AttendanceDate attendanceDate)
-'         ' + AttendaceRecordEntities fetchMonthly(AggregationMonth aggregationMonth)
-'     ' }
-'     ' class RegulatedBreakTimeCsvDao {
-'         ' - CsvDao<RegulatedBreakTimeEntity> csvDao 
-'         ' + RegulatedBreakTimeEntities fetchAll(AttendanceDate attendanceDate)
-'     ' }
-'     ' class RegulatedWorkingTimeMinutesCsvDao {
-'         ' - CsvDao<RegulatedWorkingTimeMinutesEntity)
-'         ' + void write(Writer writer, T bean)
-'         ' + RegulatedWorkingTimeMinutesEntity fetch(AttendanceDate attendanceDate)
-'     ' }
-'     ' class CsvDao<T> {
-'         ' + void writeAll(Writer writer, List<T> beans)
-'         ' + void write(Writer writer, T bean)
-'         ' + List<T> read(Reader reader, Class<? extends T> type)
-'     ' }
+'     class AttendanceCsvDao {
+'         - CsvDao<AttendanceRecordEntity> csvDao 
+'         + void register(AttendanceRecord attendanceRecord)
+'         + AttendanceRecordEntities fetchAll(AttendanceDate attendanceDate)
+'         + AttendaceRecordEntities fetchMonthly(AggregationMonth aggregationMonth)
+'     }
+'     class RegulatedBreakTimeCsvDao {
+'         - CsvDao<RegulatedBreakTimeEntity> csvDao 
+'         + RegulatedBreakTimeEntities fetchAll(AttendanceDate attendanceDate)
+'     }
+'     class RegulatedWorkingTimeMinutesCsvDao {
+'         - CsvDao<RegulatedWorkingTimeMinutesEntity> csvDao
+'         + void write(Writer writer, T bean)
+'         + RegulatedWorkingTimeMinutesEntity fetch(AttendanceDate attendanceDate)
+'     }
+'     class CsvDao<T> {
+'         + void writeAll(Writer writer, List<T> beans)
+'         + void write(Writer writer, T bean)
+'         + List<T> read(Reader reader, Class<? extends T> type)
+'     }
 '     class AttendanceRecordEntities {
 '         - List<AttendanceRecordEntity> records
 '         + void upsert(AttendanceRecord record)   
@@ -212,17 +259,24 @@ package domain {
 '         - LocalDate validEndDate
 '         - int regulatedWorkingTimeMinutes
 '     }
-' }
+'     AttendanceRepositoryCsv .up.|> AttendanceRepository
+'     AttendanceRepositoryCsv --> AttendanceCsvDao
+'     AttendanceRecordEntities o--> AttendanceRecordEntity
+'     AttendanceCsvDao --> AttendanceRecordEntities
+'     AttendanceCsvDao --> AttendanceRecordEntity
+'     AttendanceCsvDao *--> CsvDao
 
-' package controller {
-'     class AttendanceController {
-'         - AttendanceRecordingService attendanceRecordService
-'         - AttendanceAggregationService attendanceAggregationService
-'         + void record()
-'         + void aggregate()
-'     }
-'     AttendanceController *--> AttendanceRecordingService
-'     AttendanceController *--> AttendanceAggregationService
+'     RegulationRepositoryCsv .up.|> RegulationRepository
+'     RegulationRepositoryCsv --> RegulatedBreakTimeCsvDao
+'     RegulationRepositoryCsv --> RegulatedWorkingTimeMinutesCsvDao
+
+'     RegulatedBreakTimeCsvDao --> RegulatedBreakTimeEntities
+'     RegulatedBreakTimeCsvDao --> RegulatedBreakTimeEntity
+'     RegulatedBreakTimeCsvDao *--> CsvDao
+'     RegulatedBreakTimeEntities o--> RegulatedBreakTimeEntity
+
+'     RegulatedWorkingTimeMinutesCsvDao --> RegulatedWorkingTimeMinutesEntity
+'     RegulatedWorkingTimeMinutesCsvDao *--> CsvDao
 ' }
 
 @enduml
