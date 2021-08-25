@@ -1,10 +1,13 @@
 package com.naosim.dddwork.kintai.controller;
 
+import com.naosim.dddwork.kintai.domain.aggregation.AggregationMonth;
+import com.naosim.dddwork.kintai.domain.aggregation.AttendanceAggregationMonthly;
 import com.naosim.dddwork.kintai.domain.timerecord.AttendanceRecord;
 import com.naosim.dddwork.kintai.domain.timerecord.EndTime;
 import com.naosim.dddwork.kintai.domain.timerecord.StartTime;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeInterval;
+import com.naosim.dddwork.kintai.service.aggregation.AttendanceAggregationService;
 import com.naosim.dddwork.kintai.service.timerecord.AttendanceRecordingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class AttendanceController {
     private final AttendanceRecordingService attendanceRecordingService;
+    private final AttendanceAggregationService attendanceAggregationService;
 
     public void record(String[] inputParams) {
         try {
@@ -36,7 +40,18 @@ public class AttendanceController {
     }
 
     public void aggregateMonthly(String[] inputParams) {
-        // TODO:
+        AggregationMonth aggregationMonth = new AggregationMonth(inputParams[0]);
+        AttendanceAggregationMonthly aggregationMonthly = attendanceAggregationService.aggregateMonthly(aggregationMonth);
+        System.out.println("集計対象：" + aggregationMonth.getYearMonth());
+        // TODO: ControllerでSysoutしない
+        // TODO: N時間N分のような形で出力する
+        // TODO: if文やめる
+        if (aggregationMonthly.getTotalOvertimeMinutes().isPresent()) {
+            System.out.println("労働時間合計は" + aggregationMonthly.getTotalWorkingTimeMinutes().get() + "分です。");
+            System.out.println("残業時間合計は" + aggregationMonthly.getTotalOvertimeMinutes().get() + "分です。");
+        } else {
+            System.out.println("対象の月は働いていません。");
+        }
     }
 
 }

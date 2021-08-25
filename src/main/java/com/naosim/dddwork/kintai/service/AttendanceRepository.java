@@ -6,4 +6,5 @@ import com.naosim.dddwork.kintai.domain.timerecord.AttendanceRecord;
 
 public interface AttendanceRepository {
     public void register(AttendanceRecord attendanceRecord);
+    public AttendanceAggregationMonthly fetchMonthly(AggregationMonth aggregationMonth);
 }

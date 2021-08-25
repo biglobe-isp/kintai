@@ -22,4 +22,14 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             attendanceCsvDao.register(records);
         }
     }
+
+    @Override
+    public AttendanceAggregationMonthly fetchMonthly(AggregationMonth aggregationMonth) {
+        AttendanceCsvDao attendanceCsvDao = new AttendanceCsvDao();
+        AttendanceRecordEntities records = attendanceCsvDao.fetchMonthly(aggregationMonth);
+        return new AttendanceAggregationMonthly(
+                records.getRecords().stream().map(AttendanceRecordEntity::getWorkingTimeMinutes).reduce(Integer::sum),
+                records.getRecords().stream().map(AttendanceRecordEntity::getOvertimeMinutes).reduce(Integer::sum)
+        );
+    }
 }
