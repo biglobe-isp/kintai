@@ -30,7 +30,7 @@ public class AttendanceRecord {
         this.ymd = date.getZonedDateTime().toLocalDate();
         this.startTime = interval.getStartTimePoint().getZonedDateTime().toLocalTime();
         this.endTime = interval.getEndTimePoint().getZonedDateTime().toLocalTime();
-        this.workingTimeMinutes = workingTimeMinutes.getMinutes();
-        this.overtimeMinutes = overtimeMinutes.getMinutes();
+        this.workingTimeMinutes = workingTimeMinutes.intValue();
+        this.overtimeMinutes = overtimeMinutes.intValue();
     }
 }

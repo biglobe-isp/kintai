@@ -68,17 +68,22 @@ public interface TimeInterval {
         return OUT_OF;
     }
 
-    default int between(TimeUnits unit) {
+    default TimeLength between(TimeUnits unit) {
         return between(this.getStartTimePoint(), this.getEndTimePoint(), unit);
     }
 
-    static int between(ZonedTimePoint start, ZonedTimePoint end, TimeUnits unit) {
-        if (start == null || end == null || unit == null) return 0;
-        return (int)unit.getChronoUnit().between(start.getZonedDateTime(), end.getZonedDateTime());
+    static TimeLength between(ZonedTimePoint start, ZonedTimePoint end, TimeUnits unit) {
+        if (start == null || end == null || unit == null) {
+            return new TimeLength(0, unit);
+        }
+        return new TimeLength(
+                unit.getChronoUnit().between(start.getZonedDateTime(), end.getZonedDateTime()),
+                unit
+        );
     }
 
     // TODO: valueobjectにする
-    default int intersect(TimeInterval comparison, TimeUnits unit) {
+    default TimeLength intersect(TimeInterval comparison, TimeUnits unit) throws Exception {
         switch(this.getComparedStatus(comparison)) {
             case WITHIN:
                 return this.between(unit);
@@ -89,10 +94,9 @@ public interface TimeInterval {
             case EQUAL_OR_AFTER:
                 return between(this.getStartTimePoint(), comparison.getEndTimePoint(), unit);
             case OUT_OF:
-                return 0;
+                return new TimeLength(0, unit);
             default:
-                // TODO: エラーハンドリング
-                return 0;
+                throw new Exception("時間間隔の積集合取得で予期せぬエラーが発生しました。");
         }
     }
 }

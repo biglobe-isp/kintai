@@ -1,5 +1,6 @@
 package com.naosim.dddwork.kintai.domain.timerecord.breaktime;
 
+import com.naosim.dddwork.kintai.domain.timerecord.TimeLength;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTimeShift;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActualBreakTimeMinutes {
 
-    int minutes;
+    TimeLength minutes;
 
     public ActualBreakTimeMinutes(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift) {
         if (attendanceTimeInterval == null || regulatedBreakTimeShift == null) {
@@ -21,11 +22,19 @@ public class ActualBreakTimeMinutes {
         this.minutes = sumIntersection(attendanceTimeInterval, regulatedBreakTimeShift);
     }
 
-    private int sumIntersection(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift) {
+    private TimeLength sumIntersection(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift) {
         return regulatedBreakTimeShift
                 .getIntervals()
                 .stream()
-                .map((regulatedBreakTimeInterval) -> attendanceTimeInterval.intersect(regulatedBreakTimeInterval, MINUTES))
-                .reduce( 0, (minutes, additionalMinutes) -> minutes + additionalMinutes);
+                .map((regulatedBreakTimeInterval) -> {
+                    // TODO: エラーハンドリングをどうにかする
+                    try {
+                        return attendanceTimeInterval.intersect(regulatedBreakTimeInterval, MINUTES);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
+                .reduce(new TimeLength(0, MINUTES), TimeLength::add);
     }
 }

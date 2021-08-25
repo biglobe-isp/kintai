@@ -27,11 +27,11 @@ public class AttendanceRecordingService {
         RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes = regulationRepository.fetchRegulatedWorkingTimeMinutes(attendanceDate);
         // 勤務時間（拘束時間）を取得
         AttendanceTimeMinutes attendanceTimeMinutes = new AttendanceTimeMinutes(attendanceTimeInterval);
-        // 実休憩時間を取得
+        // 実休憩時間を取得(勤務時間と規定休憩時間の積集合の合計)
         ActualBreakTimeMinutes actualBreakTimeMinutes = new ActualBreakTimeMinutes(attendanceTimeInterval, regulatedBreakTimeShift);
-        // 実労働時間を取得
+        // 実労働時間を取得(勤務時間 - 実休憩時間)
         ActualWorkingTimeMinutes actualWorkingTimeMinutes = new ActualWorkingTimeMinutes(attendanceTimeMinutes, actualBreakTimeMinutes);
-        // 残業時間を取得
+        // 残業時間を取得(実労働時間 - 規定労働時間)
         ActualOvertimeMinutes overtimeMinutes = new ActualOvertimeMinutes(actualWorkingTimeMinutes, regulatedWorkingTimeMinutes);
 
         AttendanceRecord attendanceRecord = new AttendanceRecord(attendanceDate, attendanceTimeInterval,

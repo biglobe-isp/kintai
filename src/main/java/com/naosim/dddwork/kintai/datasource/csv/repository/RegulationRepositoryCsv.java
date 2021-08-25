@@ -7,6 +7,7 @@ import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedBreakTimeEntity;
 import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedWorkingTimeMinutesEntity;
 import com.naosim.dddwork.kintai.domain.timerecord.EndTime;
 import com.naosim.dddwork.kintai.domain.timerecord.StartTime;
+import com.naosim.dddwork.kintai.domain.timerecord.TimeLength;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTimeShift;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
 
 @Repository
 public class RegulationRepositoryCsv implements RegulationRepository {
@@ -47,6 +50,6 @@ public class RegulationRepositoryCsv implements RegulationRepository {
     public RegulatedWorkingTimeMinutes fetchRegulatedWorkingTimeMinutes(AttendanceDate attendanceDate) {
         RegulatedWorkingTimeMinutesCsvDao regulatedWorkingTimeMinutesCsvDao = new RegulatedWorkingTimeMinutesCsvDao();
         RegulatedWorkingTimeMinutesEntity record = regulatedWorkingTimeMinutesCsvDao.fetch();
-        return new RegulatedWorkingTimeMinutes(record.getRegulatedWorkingTimeMinutes());
+        return new RegulatedWorkingTimeMinutes(new TimeLength(record.getRegulatedWorkingTimeMinutes(), MINUTES));
     }
 }

@@ -1,5 +1,6 @@
 package com.naosim.dddwork.kintai.domain.timerecord.workingtime;
 
+import com.naosim.dddwork.kintai.domain.timerecord.TimeLength;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeMinutes;
 import com.naosim.dddwork.kintai.domain.timerecord.breaktime.ActualBreakTimeMinutes;
 import lombok.AccessLevel;
@@ -10,16 +11,16 @@ import lombok.Value;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActualWorkingTimeMinutes {
 
-    int minutes;
+    TimeLength minutes;
 
-    public ActualWorkingTimeMinutes(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes) throws Exception {
-        this.minutes = minusBreakTime(attendanceTimeMinutes, actualBreakTimeMinutes);
-        if (this.minutes < 0) {
-            throw new Exception("労働時間が不正です。マイナスの値が入っています。");
-        }
+    public ActualWorkingTimeMinutes(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes) {
+        this.minutes = subtractBreakTime(attendanceTimeMinutes, actualBreakTimeMinutes);
     }
 
-    private int minusBreakTime(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes) {
-        return attendanceTimeMinutes.getMinutes() - actualBreakTimeMinutes.getMinutes();
+    public int intValue() {
+        return (int)this.minutes.getLength();
+    }
+    private TimeLength subtractBreakTime(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes) {
+        return attendanceTimeMinutes.getMinutes().subtract(actualBreakTimeMinutes.getMinutes());
     }
 }
