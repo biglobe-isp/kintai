@@ -27,3 +27,8 @@ hs_err_pid*
 # gradle
 .gradle
 /build
+
+# datasources please add yourself
+src/main/resources/csv/attendance_data.csv
+src/main/resources/csv/regulated_break_time_shift.csv
+src/main/resources/csv/regulated_working_time_minutes.csv
