@@ -1,51 +1,39 @@
 package com.naosim.dddwork.kintai.domain.timerecord;
 
+import lombok.NonNull;
+import lombok.Value;
+
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeIntervalComparedStatus.CONTAIN_ALL;
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeIntervalComparedStatus.EQUAL_OR_AFTER;
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeIntervalComparedStatus.EQUAL_OR_BEFORE;
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeIntervalComparedStatus.OUT_OF;
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeIntervalComparedStatus.WITHIN;
 
-public interface TimeInterval {
-    // TODO: メソッド名の再考
-    public ZonedTimePoint getStartTimePoint();
-    public ZonedTimePoint getEndTimePoint();
+@Value
+public class TimeInterval {
+    @NonNull
+    StartTime startTime;
+    @NonNull
+    EndTime endTime;
 
-    // 引数の時刻がインターバルの中に入っているか
-    default boolean contains(ZonedTimePoint timePoint) {
-        if (timePoint == null) {
-            return false;
+    public TimeInterval(StartTime startTime, EndTime endTime) {
+        if (startTime.getTimePoint().isAfter(endTime.getTimePoint())) {
+            throw new IllegalStateException("開始時刻が終了時刻より後になっています。");
         }
-        if (timePoint.isEqualOrAfter(this.getStartTimePoint()) && timePoint.isEqualOrBefore(this.getEndTimePoint())) {
-            return true;
-        }
-        return false;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
-    // 引数のインターバルを内包しているか
-    default boolean containsAll(TimeInterval interval) {
-        if (interval == null) {
-            return false;
-        }
-        if (this.contains(interval.getStartTimePoint()) && this.contains(interval.getEndTimePoint())) {
-            return true;
-        }
-        return false;
+    public ZonedTimePoint getStartTimePoint() {
+        return this.startTime.getTimePoint();
     }
 
-    // 引数のインターバルに内包されているか
-    default boolean within(TimeInterval interval) {
-        if (interval == null) {
-            return false;
-        }
-        if (interval.contains(this.getStartTimePoint()) && interval.contains(this.getEndTimePoint())) {
-            return true;
-        }
-        return false;
+    public ZonedTimePoint getEndTimePoint() {
+        return this.endTime.getTimePoint();
     }
 
     // 両者のインターバルを比較した状態を返す
-    default TimeIntervalComparedStatus getComparedStatus(TimeInterval comparison) {
+    public TimeIntervalComparedStatus getComparedStatus(TimeInterval comparison) {
         // 引数のインターバルを内包している状態
         if (this.containsAll(comparison)) {
             return CONTAIN_ALL;
@@ -55,24 +43,24 @@ public interface TimeInterval {
             return WITHIN;
         }
         // 部分的に被っていて開始時間がはみ出ている
-        if (!comparison.contains(this.getStartTimePoint())
-                && comparison.contains(this.getEndTimePoint())) {
+        if (!comparison.contains(this.startTime.getTimePoint())
+                && comparison.contains(this.endTime.getTimePoint())) {
             return EQUAL_OR_BEFORE;
         }
         // 部分的に被っていて終了時間がはみ出ている
-        if (comparison.contains(this.getStartTimePoint())
-                && !comparison.contains(this.getEndTimePoint())) {
+        if (comparison.contains(this.startTime.getTimePoint())
+                && !comparison.contains(this.endTime.getTimePoint())) {
             return EQUAL_OR_AFTER;
         }
         // 全く被っていない
         return OUT_OF;
     }
 
-    default TimeLength between(TimeUnits unit) {
-        return between(this.getStartTimePoint(), this.getEndTimePoint(), unit);
+    public TimeLength between(TimeUnits unit) {
+        return between(this.startTime.getTimePoint(), this.endTime.getTimePoint(), unit);
     }
 
-    static TimeLength between(ZonedTimePoint start, ZonedTimePoint end, TimeUnits unit) {
+    public static TimeLength between(ZonedTimePoint start, ZonedTimePoint end, TimeUnits unit) {
         if (start == null || end == null || unit == null) {
             return new TimeLength(0, unit);
         }
@@ -82,21 +70,36 @@ public interface TimeInterval {
         );
     }
 
-    // TODO: valueobjectにする
-    default TimeLength intersect(TimeInterval comparison, TimeUnits unit) throws Exception {
-        switch(this.getComparedStatus(comparison)) {
-            case WITHIN:
-                return this.between(unit);
-            case CONTAIN_ALL:
-                return comparison.between(unit);
-            case EQUAL_OR_BEFORE:
-                return between(comparison.getStartTimePoint(), this.getEndTimePoint(), unit);
-            case EQUAL_OR_AFTER:
-                return between(this.getStartTimePoint(), comparison.getEndTimePoint(), unit);
-            case OUT_OF:
-                return new TimeLength(0, unit);
-            default:
-                throw new Exception("時間間隔の積集合取得で予期せぬエラーが発生しました。");
+    // 引数の時刻がインターバルの中に入っているか
+    private boolean contains(ZonedTimePoint timePoint) {
+        if (timePoint == null) {
+            return false;
         }
+        if (timePoint.isEqualOrAfter(this.startTime.getTimePoint()) && timePoint.isEqualOrBefore(this.endTime.getTimePoint())) {
+            return true;
+        }
+        return false;
+    }
+
+    // 引数のインターバルを内包しているか
+    private boolean containsAll(TimeInterval interval) {
+        if (interval == null) {
+            return false;
+        }
+        if (this.contains(interval.startTime.getTimePoint()) && this.contains(interval.endTime.getTimePoint())) {
+            return true;
+        }
+        return false;
+    }
+
+    // 引数のインターバルに内包されているか
+    private boolean within(TimeInterval interval) {
+        if (interval == null) {
+            return false;
+        }
+        if (interval.contains(this.startTime.getTimePoint()) && interval.contains(this.endTime.getTimePoint())) {
+            return true;
+        }
+        return false;
     }
 }

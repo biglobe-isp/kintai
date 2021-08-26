@@ -7,6 +7,7 @@ import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedBreakTimeEntity;
 import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedWorkingTimeMinutesEntity;
 import com.naosim.dddwork.kintai.domain.timerecord.EndTime;
 import com.naosim.dddwork.kintai.domain.timerecord.StartTime;
+import com.naosim.dddwork.kintai.domain.timerecord.TimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.TimeLength;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTimeInterval;
@@ -34,8 +35,10 @@ public class RegulationRepositoryCsv implements RegulationRepository {
             RegulatedBreakTimeInterval interval = null;
             try {
                 interval = new RegulatedBreakTimeInterval(
-                        new StartTime(attendanceDate.getZonedDateTime(), entity.getBreakTimeStart()),
-                        new EndTime(attendanceDate.getZonedDateTime(), entity.getBreakTimeEnd())
+                        new TimeInterval(
+                            new StartTime(attendanceDate.getZonedDateTime(), entity.getBreakTimeStart()),
+                            new EndTime(attendanceDate.getZonedDateTime(), entity.getBreakTimeEnd())
+                        )
                 );
                 regulatedBreakTimeIntervalList.add(interval);
             } catch (Exception e) {

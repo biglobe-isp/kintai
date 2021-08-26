@@ -9,6 +9,8 @@ import com.naosim.dddwork.kintai.domain.timerecord.AttendanceRecord;
 import com.naosim.dddwork.kintai.service.AttendanceRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+
 @Repository
 public class AttendanceRepositoryCsv implements AttendanceRepository {
 
@@ -17,8 +19,9 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         Object lockObj = new Object();
         AttendanceCsvDao attendanceCsvDao = new AttendanceCsvDao();
         synchronized (lockObj) {
-            AttendanceRecordEntities records = attendanceCsvDao.fetchAll();
-            records.upsert(attendanceRecord);
+            // TODO: リファクタ
+            AttendanceRecordEntities records = new AttendanceRecordEntities(new ArrayList<>());
+            records.add(attendanceRecord);
             attendanceCsvDao.register(records);
         }
     }
@@ -28,8 +31,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         AttendanceCsvDao attendanceCsvDao = new AttendanceCsvDao();
         AttendanceRecordEntities records = attendanceCsvDao.fetchMonthly(aggregationMonth);
         return new AttendanceAggregationMonthly(
-                records.getRecords().stream().map(AttendanceRecordEntity::getWorkingTimeMinutes).reduce(Integer::sum),
-                records.getRecords().stream().map(AttendanceRecordEntity::getOvertimeMinutes).reduce(Integer::sum)
+                records.getRecords().stream().map(AttendanceRecordEntity::getActualWorkingTimeMinutes).reduce(Integer::sum),
+                records.getRecords().stream().map(AttendanceRecordEntity::getActualOvertimeMinutes).reduce(Integer::sum)
         );
     }
 }

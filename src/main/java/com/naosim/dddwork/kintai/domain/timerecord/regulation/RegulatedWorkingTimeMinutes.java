@@ -6,5 +6,5 @@ import lombok.Value;
 @Value
 public class RegulatedWorkingTimeMinutes {
 
-    TimeLength minutes;
+    TimeLength length;
 }

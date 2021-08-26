@@ -13,13 +13,13 @@ import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActualBreakTimeMinutes {
 
-    TimeLength minutes;
+    TimeLength length;
 
     public ActualBreakTimeMinutes(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift) {
         if (attendanceTimeInterval == null || regulatedBreakTimeShift == null) {
             throw new IllegalArgumentException("労働時間、または休憩時間が取得できませんでした。");
         }
-        this.minutes = sumIntersection(attendanceTimeInterval, regulatedBreakTimeShift);
+        this.length = sumIntersection(attendanceTimeInterval, regulatedBreakTimeShift);
     }
 
     private TimeLength sumIntersection(AttendanceTimeInterval attendanceTimeInterval, RegulatedBreakTimeShift regulatedBreakTimeShift) {

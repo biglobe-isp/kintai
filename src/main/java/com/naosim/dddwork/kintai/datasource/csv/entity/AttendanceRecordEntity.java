@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 public class AttendanceRecordEntity {
     @CsvDate("yyyy-MM-dd")
     @CsvBindByPosition(position = 0)
-    private LocalDate ymd;
+    private LocalDate attendanceDate;
 
     @CsvDate("HH:mm")
     @CsvBindByPosition(position = 1)
@@ -23,10 +23,10 @@ public class AttendanceRecordEntity {
     private LocalTime endTime;
 
     @CsvBindByPosition(position = 3)
-    private int workingTimeMinutes;
+    private int actualWorkingTimeMinutes;
 
     @CsvBindByPosition(position = 4)
-    private int overtimeMinutes;
+    private int actualOvertimeMinutes;
 
     @CsvDate("yyyy-MM-dd'T'HH:mm:ss.SSSXXX'['VV']'")
     @CsvBindByPosition(position = 5)

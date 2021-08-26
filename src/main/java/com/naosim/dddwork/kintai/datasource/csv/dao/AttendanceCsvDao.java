@@ -10,9 +10,16 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+// TODO: エラーハンドリング
+// TODO: pathをconfigから読み込む
 public class AttendanceCsvDao {
 
     private final CsvDao<AttendanceRecordEntity> csvDao;
@@ -34,24 +41,32 @@ public class AttendanceCsvDao {
     }
 
     public AttendanceRecordEntities fetchMonthly(AggregationMonth aggregationMonth) {
-        List<AttendanceRecordEntity> records = null;
+        Map<LocalDate, AttendanceRecordEntity> recordMap = null;
         try (Reader reader = Files.newBufferedReader(Paths.get("/Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv"))) {
-            records = csvDao
+            recordMap = csvDao
                     .read(reader, AttendanceRecordEntity.class)
                     .stream()
-                    .filter(rec -> aggregationMonth.getYearMonth().getYear() == rec.getYmd().getYear()
-                            && aggregationMonth.getYearMonth().getMonth() == rec.getYmd().getMonth())
-                    .collect(Collectors.toList());
+                    // TODO: 判定メソッド作る
+                    .filter(rec -> aggregationMonth.getYearMonth().getYear() == rec.getAttendanceDate().getYear()
+                            && aggregationMonth.getYearMonth().getMonth() == rec.getAttendanceDate().getMonth())
+                    .collect(Collectors.toMap(
+                            AttendanceRecordEntity::getAttendanceDate,
+                            rec -> rec,
+                            (oldVal, newVal) -> newVal,
+                            HashMap::new
+                    ));
         } catch (IOException ie) {
             ie.printStackTrace();
         } catch (CsvException ce) {
             ce.printStackTrace();
         }
-        return new AttendanceRecordEntities(records);
+        return new AttendanceRecordEntities(new ArrayList<>(recordMap.values()));
     }
 
     public void register(AttendanceRecordEntities records) {
-        try (Writer writer = Files.newBufferedWriter(Paths.get("/Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv"))) {
+        try (Writer writer = Files.newBufferedWriter(Paths.get("/Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv"),
+                                                     StandardOpenOption.APPEND
+        )) {
             csvDao.writeAll(writer, records.getRecords());
         } catch (IOException ie) {
             ie.printStackTrace();

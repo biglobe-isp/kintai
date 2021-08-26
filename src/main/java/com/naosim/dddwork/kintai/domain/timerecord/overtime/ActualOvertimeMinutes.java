@@ -10,23 +10,23 @@ import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
 @Value
 public class ActualOvertimeMinutes {
 
-    TimeLength minutes;
+    TimeLength length;
 
     public ActualOvertimeMinutes(ActualWorkingTimeMinutes actualWorkingTimeMinutes, RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes) {
         if (hasOvertime(actualWorkingTimeMinutes, regulatedWorkingTimeMinutes)) {
-            this.minutes = actualWorkingTimeMinutes.getMinutes().subtract(regulatedWorkingTimeMinutes.getMinutes());
+            this.length = actualWorkingTimeMinutes.getLength().subtract(regulatedWorkingTimeMinutes.getLength());
             return;
         }
-        this.minutes = new TimeLength(0, MINUTES);
+        this.length = new TimeLength(0, MINUTES);
 
     }
 
     public int intValue() {
-        return (int)this.minutes.getLength();
+        return (int)this.length.getLength();
     }
 
     private boolean hasOvertime(ActualWorkingTimeMinutes actualWorkingTimeMinutes, RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes) {
-        if (actualWorkingTimeMinutes.getMinutes().moreThan(regulatedWorkingTimeMinutes.getMinutes())) {
+        if (actualWorkingTimeMinutes.getLength().isLonger(regulatedWorkingTimeMinutes.getLength())) {
             return true;
         }
         return false;

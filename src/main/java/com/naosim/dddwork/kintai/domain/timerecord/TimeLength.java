@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.Value;
 
 @Value
+// TimeLengthが汎用的すぎる??
 public class TimeLength {
 
     long length;
@@ -32,18 +33,11 @@ public class TimeLength {
         return new TimeLength(this.length - subtraction.length, this.unit);
     }
 
-    public boolean moreThan(TimeLength comparison) {
+    public boolean isLonger(TimeLength comparison) {
         if (!isSameUnit(comparison)) {
             throw new IllegalArgumentException("単位が違う時間を比較することはできません。");
         }
         return this.length > comparison.length;
-    }
-
-    public boolean lessThan(TimeLength comparison) {
-        if (!isSameUnit(comparison)) {
-            throw new IllegalArgumentException("単位が違う時間を比較することはできません。");
-        }
-        return this.length < comparison.length;
     }
 
     private boolean isSameUnit(TimeLength comparison) {

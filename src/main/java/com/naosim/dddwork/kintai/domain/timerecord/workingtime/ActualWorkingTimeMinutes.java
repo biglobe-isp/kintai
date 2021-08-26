@@ -11,16 +11,18 @@ import lombok.Value;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActualWorkingTimeMinutes {
 
-    TimeLength minutes;
+    TimeLength length;
 
     public ActualWorkingTimeMinutes(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes) {
-        this.minutes = subtractBreakTime(attendanceTimeMinutes, actualBreakTimeMinutes);
+        this.length = subtractBreakTime(attendanceTimeMinutes, actualBreakTimeMinutes);
     }
 
     public int intValue() {
-        return (int)this.minutes.getLength();
+        return (int)this.length.getLength();
     }
+
     private TimeLength subtractBreakTime(AttendanceTimeMinutes attendanceTimeMinutes, ActualBreakTimeMinutes actualBreakTimeMinutes) {
-        return attendanceTimeMinutes.getMinutes().subtract(actualBreakTimeMinutes.getMinutes());
+        return attendanceTimeMinutes.subtract(actualBreakTimeMinutes);
     }
+
 }
