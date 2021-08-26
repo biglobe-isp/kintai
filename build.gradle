@@ -2,11 +2,15 @@ plugins {
 	id 'org.springframework.boot' version '2.5.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+    id 'groovy'
 }
 ext {
     lombokVersion = '1.18.20'
     opencsvVersion = '5.5.1'
     commonsLoggingVersion = '1.2'
+    spockVersion = '2.0-groovy-3.0'
+    objenesisVersion = '3.0.1'
+    cglibVersion = '3.2.10'
 }
 group = 'src.main.java.com.naosim.dddwork'
 version = '0.0.1-SNAPSHOT'
@@ -26,6 +30,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // spock
+    testImplementation "org.spockframework:spock-core:${spockVersion}"
+    testImplementation "org.spockframework:spock-spring:${spockVersion}"
+    testImplementation "org.objenesis:objenesis:${objenesisVersion}"
+    testImplementation "cglib:cglib:${cglibVersion}"
 }
 
 test {
