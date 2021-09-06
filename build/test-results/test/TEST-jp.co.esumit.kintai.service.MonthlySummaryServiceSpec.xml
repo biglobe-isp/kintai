@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="jp.co.esumit.kintai.service.MonthlySummaryServiceSpec" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-09-06T11:11:31" hostname="smtkm.local" time="0.118">
+  <properties/>
+  <testcase name="getRecordList検証 [targetYm: 202101, expTargetYm: TargetYearMonth(value=202101), #0]" classname="jp.co.esumit.kintai.service.MonthlySummaryServiceSpec" time="0.091"/>
+  <testcase name="getRecordList検証 [targetYm: 202201, expTargetYm: TargetYearMonth(value=202201), #1]" classname="jp.co.esumit.kintai.service.MonthlySummaryServiceSpec" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

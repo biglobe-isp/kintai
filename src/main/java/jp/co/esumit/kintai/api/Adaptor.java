@@ -1,8 +1,8 @@
 package jp.co.esumit.kintai.api;
 
-import jp.co.esumit.kintai.domain.kintai_info.end_time.EndTime;
-import jp.co.esumit.kintai.domain.kintai_info.start_time.StartTime;
-import jp.co.esumit.kintai.domain.kintai_info.target_day.TargetDay;
+import jp.co.esumit.kintai.domain.kintai_record.target_day.TargetDay;
+import jp.co.esumit.kintai.domain.kintai_record.time_card.EndTime;
+import jp.co.esumit.kintai.domain.kintai_record.time_card.StartTime;
 
 import java.util.Arrays;
 

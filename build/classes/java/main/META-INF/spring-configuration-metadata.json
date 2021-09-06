@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "app.csv",
+      "type": "jp.co.esumit.kintai.config.AppProperties",
+      "sourceType": "jp.co.esumit.kintai.config.AppProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.csv.kintai-data-csv",
+      "type": "java.lang.String",
+      "sourceType": "jp.co.esumit.kintai.config.AppProperties"
+    }
+  ],
+  "hints": []
+}

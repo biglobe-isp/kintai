@@ -1,22 +1,17 @@
 package jp.co.esumit.kintai.domain.summary.target_year_month;
 
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Value
 public class TargetYearMonth {
     String value;
 
     public TargetYearMonth(String value) {
-        this.valid(value);
+        valid(value);
         this.value = value;
-    }
-
-    public String getValue() {
-        return this.value;
     }
 
     private void valid(String value) {
