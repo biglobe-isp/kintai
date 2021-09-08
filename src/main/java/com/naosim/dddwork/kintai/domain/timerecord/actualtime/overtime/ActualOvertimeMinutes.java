@@ -1,8 +1,9 @@
-package com.naosim.dddwork.kintai.domain.timerecord.overtime;
+package com.naosim.dddwork.kintai.domain.timerecord.actualtime.overtime;
 
 import com.naosim.dddwork.kintai.domain.timerecord.TimeLength;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedWorkingTimeMinutes;
-import com.naosim.dddwork.kintai.domain.timerecord.workingtime.ActualWorkingTimeMinutes;
+import com.naosim.dddwork.kintai.domain.timerecord.actualtime.workingtime.ActualWorkingTimeMinutes;
+import lombok.NonNull;
 import lombok.Value;
 
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
@@ -10,6 +11,7 @@ import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
 @Value
 public class ActualOvertimeMinutes {
 
+    @NonNull
     TimeLength length;
 
     public ActualOvertimeMinutes(ActualWorkingTimeMinutes actualWorkingTimeMinutes, RegulatedWorkingTimeMinutes regulatedWorkingTimeMinutes) {
@@ -18,7 +20,10 @@ public class ActualOvertimeMinutes {
             return;
         }
         this.length = new TimeLength(0, MINUTES);
+    }
 
+    public ActualOvertimeMinutes(TimeLength timeLength) {
+        this.length = timeLength;
     }
 
     public int intValue() {

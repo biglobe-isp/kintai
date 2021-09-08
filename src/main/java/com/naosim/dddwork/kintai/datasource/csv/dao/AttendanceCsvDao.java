@@ -1,9 +1,12 @@
 package com.naosim.dddwork.kintai.datasource.csv.dao;
 
+import com.naosim.dddwork.kintai.datasource.csv.config.AppCsvProperties;
 import com.naosim.dddwork.kintai.datasource.csv.entity.AttendanceRecordEntities;
 import com.naosim.dddwork.kintai.datasource.csv.entity.AttendanceRecordEntity;
 import com.naosim.dddwork.kintai.domain.aggregation.AggregationMonth;
 import com.opencsv.exceptions.CsvException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,65 +17,38 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// TODO: エラーハンドリング
-// TODO: pathをconfigから読み込む
+@Component
+@RequiredArgsConstructor
 public class AttendanceCsvDao {
+    private final CsvDao<AttendanceRecordEntity> csvDao = new CsvDao<>();
+    private final AppCsvProperties appCsvProperties;
 
-    private final CsvDao<AttendanceRecordEntity> csvDao;
-
-    public AttendanceCsvDao() {
-        this.csvDao = new CsvDao<>();
-    }
-
-    public AttendanceRecordEntities fetchAll() {
-        List<AttendanceRecordEntity> records = null;
-        try (Reader reader = Files.newBufferedReader(Paths.get("/Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv"))) {
-            records = csvDao.read(reader, AttendanceRecordEntity.class);
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (CsvException ce) {
-            ce.printStackTrace();
-        }
-        return new AttendanceRecordEntities(records);
-    }
-
-    public AttendanceRecordEntities fetchMonthly(AggregationMonth aggregationMonth) {
-        Map<LocalDate, AttendanceRecordEntity> recordMap = null;
-        try (Reader reader = Files.newBufferedReader(Paths.get("/Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv"))) {
+    public AttendanceRecordEntities fetchMonthly(AggregationMonth aggregationMonth) throws IOException {
+        Map<LocalDate, AttendanceRecordEntity> recordMap;
+        try (Reader reader = Files.newBufferedReader(Paths.get(appCsvProperties.getAttendanceDataPath()))) {
             recordMap = csvDao
                     .read(reader, AttendanceRecordEntity.class)
                     .stream()
-                    // TODO: 判定メソッド作る
-                    .filter(rec -> aggregationMonth.getYearMonth().getYear() == rec.getAttendanceDate().getYear()
-                            && aggregationMonth.getYearMonth().getMonth() == rec.getAttendanceDate().getMonth())
+                    .filter(rec -> aggregationMonth.equalsYearMonth(rec.getAttendanceDate()))
                     .collect(Collectors.toMap(
                             AttendanceRecordEntity::getAttendanceDate,
                             rec -> rec,
                             (oldVal, newVal) -> newVal,
                             HashMap::new
                     ));
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (CsvException ce) {
-            ce.printStackTrace();
         }
         return new AttendanceRecordEntities(new ArrayList<>(recordMap.values()));
     }
 
-    public void register(AttendanceRecordEntities records) {
-        try (Writer writer = Files.newBufferedWriter(Paths.get("/Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv"),
-                                                     StandardOpenOption.APPEND
+    public void register(AttendanceRecordEntities records) throws IOException, CsvException {
+        try (Writer writer = Files.newBufferedWriter(
+                Paths.get(appCsvProperties.getAttendanceDataPath()),
+                StandardOpenOption.APPEND
         )) {
             csvDao.writeAll(writer, records.getRecords());
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (CsvException ce) {
-            ce.printStackTrace();
         }
     }
-
 }

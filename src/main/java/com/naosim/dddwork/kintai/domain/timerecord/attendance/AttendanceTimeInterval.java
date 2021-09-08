@@ -12,9 +12,7 @@ public class AttendanceTimeInterval {
     @NonNull
     TimeInterval interval;
 
-    // TODO: 9:00以降の出勤はクビ（Exception）にする
-
-    public TimeLength intersect(RegulatedBreakTimeInterval regulatedBreakTimeInterval, TimeUnits unit) throws Exception {
+    public TimeLength intersect(RegulatedBreakTimeInterval regulatedBreakTimeInterval, TimeUnits unit) throws RuntimeException{
         switch(this.interval.getComparedStatus(regulatedBreakTimeInterval.getInterval())) {
             case WITHIN:
                 return between(unit);
@@ -27,7 +25,7 @@ public class AttendanceTimeInterval {
             case OUT_OF:
                 return new TimeLength(0, unit);
             default:
-                throw new Exception("時間間隔の重なり取得に失敗しました。");
+                throw new RuntimeException("時間間隔の重なり取得に失敗しました。");
         }
     }
 

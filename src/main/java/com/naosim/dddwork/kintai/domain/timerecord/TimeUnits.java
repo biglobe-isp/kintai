@@ -8,7 +8,7 @@ public enum TimeUnits {
 
     private final ChronoUnit chronoUnit;
 
-    private TimeUnits(ChronoUnit chronoUnit) {
+    TimeUnits(ChronoUnit chronoUnit) {
         this.chronoUnit = chronoUnit;
     }
 

@@ -18,7 +18,7 @@ public class TimeInterval {
 
     public TimeInterval(StartTime startTime, EndTime endTime) {
         if (startTime.getTimePoint().isAfter(endTime.getTimePoint())) {
-            throw new IllegalStateException("開始時刻が終了時刻より後になっています。");
+            throw new IllegalArgumentException("開始時刻が終了時刻より後になっています。");
         }
         this.startTime = startTime;
         this.endTime = endTime;
@@ -30,6 +30,14 @@ public class TimeInterval {
 
     public ZonedTimePoint getEndTimePoint() {
         return this.endTime.getTimePoint();
+    }
+
+    public int getStartHour() {
+        return this.startTime.getTimePoint().getHour();
+    }
+
+    public int getStartMinute() {
+        return this.startTime.getTimePoint().getMinute();
     }
 
     // 両者のインターバルを比較した状態を返す

@@ -3,7 +3,6 @@ package com.naosim.dddwork.kintai.datasource.csv.repository;
 import com.naosim.dddwork.kintai.datasource.csv.dao.RegulatedBreakTimeCsvDao;
 import com.naosim.dddwork.kintai.datasource.csv.dao.RegulatedWorkingTimeMinutesCsvDao;
 import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedBreakTimeEntities;
-import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedBreakTimeEntity;
 import com.naosim.dddwork.kintai.datasource.csv.entity.RegulatedWorkingTimeMinutesEntity;
 import com.naosim.dddwork.kintai.domain.timerecord.EndTime;
 import com.naosim.dddwork.kintai.domain.timerecord.StartTime;
@@ -12,47 +11,53 @@ import com.naosim.dddwork.kintai.domain.timerecord.TimeLength;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTimeShift;
+import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedWorkingTimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedWorkingTimeMinutes;
 import com.naosim.dddwork.kintai.service.RegulationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
 
 @Repository
+@RequiredArgsConstructor
 public class RegulationRepositoryCsv implements RegulationRepository {
+    private final RegulatedBreakTimeCsvDao regulatedBreakTimeCsvDao;
+    private final RegulatedWorkingTimeMinutesCsvDao regulatedWorkingTimeMinutesCsvDao;
 
     @Override
-    public RegulatedBreakTimeShift fetchBreakTimeShift(AttendanceDate attendanceDate) {
-        RegulatedBreakTimeCsvDao regulatedBreakTimeCsvDao = new RegulatedBreakTimeCsvDao();
+    public RegulatedBreakTimeShift fetchBreakTimeShift(AttendanceDate attendanceDate) throws Exception {
         RegulatedBreakTimeEntities records = regulatedBreakTimeCsvDao.fetchAll();
-        List<RegulatedBreakTimeInterval> regulatedBreakTimeIntervalList = new ArrayList<>();
-        // HACK: for文やめたい
-        for (RegulatedBreakTimeEntity entity : records.getRecords()) {
-            // TODO: マスタの有効開始終了チェック
-            RegulatedBreakTimeInterval interval = null;
-            try {
-                interval = new RegulatedBreakTimeInterval(
+
+        // TODO: マスタの有効開始終了チェック
+        List<RegulatedBreakTimeInterval> regulatedBreakTimeIntervalList = records.getRecords()
+                .stream()
+                .map(regulatedBreakTimeEntity -> new RegulatedBreakTimeInterval(
                         new TimeInterval(
-                            new StartTime(attendanceDate.getZonedDateTime(), entity.getBreakTimeStart()),
-                            new EndTime(attendanceDate.getZonedDateTime(), entity.getBreakTimeEnd())
-                        )
-                );
-                regulatedBreakTimeIntervalList.add(interval);
-            } catch (Exception e) {
-                // TODO: エラーハンドリング
-                e.printStackTrace();
-            }
-        }
+                                new StartTime(attendanceDate, regulatedBreakTimeEntity.getBreakTimeStart()),
+                                new EndTime(attendanceDate, regulatedBreakTimeEntity.getBreakTimeEnd())
+                        )))
+                .collect(Collectors.toList());
+
         return new RegulatedBreakTimeShift(regulatedBreakTimeIntervalList);
     }
 
     @Override
-    public RegulatedWorkingTimeMinutes fetchRegulatedWorkingTimeMinutes(AttendanceDate attendanceDate) {
-        RegulatedWorkingTimeMinutesCsvDao regulatedWorkingTimeMinutesCsvDao = new RegulatedWorkingTimeMinutesCsvDao();
+    public RegulatedWorkingTimeMinutes fetchRegulatedWorkingTimeMinutes(AttendanceDate attendanceDate) throws Exception {
         RegulatedWorkingTimeMinutesEntity record = regulatedWorkingTimeMinutesCsvDao.fetch();
         return new RegulatedWorkingTimeMinutes(new TimeLength(record.getRegulatedWorkingTimeMinutes(), MINUTES));
+    }
+
+    @Override
+    public RegulatedWorkingTimeInterval fetchRegulatedWorkingTimeInterval(AttendanceDate attendanceDate) {
+        // TODO: CSVから値を取得する
+        return new RegulatedWorkingTimeInterval(
+                new TimeInterval(
+                        new StartTime(attendanceDate, "0900"),
+                        new EndTime(attendanceDate, "1800")
+                ));
     }
 }

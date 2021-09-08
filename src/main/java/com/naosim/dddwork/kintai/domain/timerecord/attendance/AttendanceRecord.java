@@ -1,9 +1,6 @@
-package com.naosim.dddwork.kintai.domain.timerecord;
+package com.naosim.dddwork.kintai.domain.timerecord.attendance;
 
-import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
-import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeInterval;
-import com.naosim.dddwork.kintai.domain.timerecord.overtime.ActualOvertimeMinutes;
-import com.naosim.dddwork.kintai.domain.timerecord.workingtime.ActualWorkingTimeMinutes;
+import com.naosim.dddwork.kintai.domain.timerecord.actualtime.ActualMinutes;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -17,9 +14,7 @@ public class AttendanceRecord {
     @NonNull
     AttendanceTimeInterval attendanceTimeInterval;
     @NonNull
-    ActualWorkingTimeMinutes actualWorkingTimeMinutes;
-    @NonNull
-    ActualOvertimeMinutes actualOvertimeMinutes;
+    ActualMinutes actualMinutes;
 
     public LocalDate getAttendanceLocalDate() {
         return this.attendanceDate.getZonedDateTime().toLocalDate();
@@ -31,5 +26,13 @@ public class AttendanceRecord {
 
     public LocalTime getAttendanceEndLocalTime() {
         return this.attendanceTimeInterval.getInterval().getEndTimePoint().getZonedDateTime().toLocalTime();
+    }
+
+    public int getActualWorkingTimeMinutesLength() {
+        return this.actualMinutes.getActualWorkingTimeMinutes().intValue();
+    }
+
+    public int getActualOvertimeMinutesLength() {
+        return this.actualMinutes.getActualOvertimeMinutes().intValue();
     }
 }

@@ -17,12 +17,7 @@ public class CsvDao<T> {
         beanToCsv.write(beans);
     }
 
-    public void write(Writer writer, T bean) throws CsvException {
-        StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(writer).build();
-        beanToCsv.write(bean);
-    }
-
-    public List<T> read(Reader reader, Class<? extends T> type) throws CsvException {
+    public List<T> read(Reader reader, Class<? extends T> type) {
         CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader).withType(type).build();
         return csvToBean.parse();
     }

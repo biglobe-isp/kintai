@@ -7,5 +7,5 @@ public enum TimeIntervalComparedStatus {
     EQUAL_OR_AFTER,
     OUT_OF;
 
-    private TimeIntervalComparedStatus() {}
+    TimeIntervalComparedStatus() {}
 }

@@ -3,6 +3,7 @@ package com.naosim.dddwork.kintai.domain.timerecord.attendance;
 import lombok.Value;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -13,7 +14,7 @@ public class AttendanceDate {
 
     public AttendanceDate(String attendanceDate) throws Exception {
         if (attendanceDate == null || "".equals(attendanceDate)) {
-            throw new IllegalArgumentException("引数が足りません。");
+            throw new IllegalArgumentException("出勤日がありません。");
         }
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -22,6 +23,10 @@ public class AttendanceDate {
         } catch (Exception e) {
             throw new Exception("不正な日付です。");
         }
+    }
+
+    public AttendanceDate(LocalDate attendanceDate) {
+        this.zonedDateTime = attendanceDate.atStartOfDay(ZoneId.systemDefault());
     }
     
 }

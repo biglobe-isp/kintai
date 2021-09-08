@@ -3,8 +3,10 @@ package com.naosim.dddwork.kintai.domain.timerecord;
 import lombok.NonNull;
 import lombok.Value;
 
+import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.MINUTES;
+import static com.naosim.dddwork.kintai.domain.timerecord.TimeUnits.HOURS;
+
 @Value
-// TimeLengthが汎用的すぎる??
 public class TimeLength {
 
     long length;
@@ -38,6 +40,15 @@ public class TimeLength {
             throw new IllegalArgumentException("単位が違う時間を比較することはできません。");
         }
         return this.length > comparison.length;
+    }
+
+    public TimeLength minuteToHour() {
+        return new TimeLength(this.length / 60, HOURS);
+    }
+
+    //HACK: 名前が微妙・・・
+    public TimeLength extractRemainderMinutes() {
+        return new TimeLength(this.length % 60, MINUTES);
     }
 
     private boolean isSameUnit(TimeLength comparison) {
