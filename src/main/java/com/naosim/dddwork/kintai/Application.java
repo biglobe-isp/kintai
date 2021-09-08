@@ -1,7 +1,7 @@
 package com.naosim.dddwork.kintai;
 
 import com.naosim.dddwork.kintai.config.ApplicationConfiguration;
-import com.naosim.dddwork.kintai.controller.AttendanceServiceHandler;
+import com.naosim.dddwork.kintai.controller.AttendanceHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -17,10 +17,10 @@ public class Application {
 
     public static void main(String[] args) {
         try (ConfigurableApplicationContext ctx = SpringApplication.run(Application.class, args)) {
-            AttendanceServiceHandler app = ctx.getBean(AttendanceServiceHandler.class);
+            AttendanceHandler app = ctx.getBean(AttendanceHandler.class);
             app.call(args);
         } catch (Exception e) {
             e.printStackTrace();
         }
-	}
+    }
 }
