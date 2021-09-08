@@ -1,6 +1,5 @@
 package com.naosim.dddwork.kintai.domain.timerecord;
 
-import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -14,13 +13,6 @@ import java.time.ZoneId;
 public class EndTime {
 
     ZonedTimePoint timePoint;
-
-    public EndTime(AttendanceDate attendanceDate, String endTime) {
-        if (attendanceDate == null || endTime == null) {
-            throw new IllegalArgumentException("出勤日または終了時間がありません。");
-        }
-        this.timePoint = new ZonedTimePoint(attendanceDate.getZonedDateTime(), endTime);
-    }
 
     public EndTime(LocalDate attendanceDate, LocalTime endTime) {
         if (attendanceDate == null || endTime == null) {

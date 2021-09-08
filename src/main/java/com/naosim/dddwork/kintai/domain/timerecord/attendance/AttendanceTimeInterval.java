@@ -12,7 +12,7 @@ public class AttendanceTimeInterval {
     @NonNull
     TimeInterval interval;
 
-    public TimeLength intersect(RegulatedBreakTimeInterval regulatedBreakTimeInterval, TimeUnits unit) throws RuntimeException{
+    public TimeLength intersect(RegulatedBreakTimeInterval regulatedBreakTimeInterval, TimeUnits unit) {
         switch(this.interval.getComparedStatus(regulatedBreakTimeInterval.getInterval())) {
             case WITHIN:
                 return between(unit);
@@ -32,5 +32,27 @@ public class AttendanceTimeInterval {
     public TimeLength between(TimeUnits unit) {
         return this.interval.between(unit);
     }
+
+    // TODO: 24時以降の入力も受け付けられるようにするが、サービス残業とみなして23:59として打刻する
+
+//        public AttendanceTimeInterval(TimeInterval interval) {
+//        this.interval = excludeUnpaidOvertime(interval);
+//    }
+//    private TimeInterval excludeUnpaidOvertime(TimeInterval interval) {
+//        if (interval.getStartTimePoint().getZonedDateTime().getDayOfMonth()
+//                != interval.getEndTimePoint().getZonedDateTime().getDayOfMonth()) {
+//            return new TimeInterval(
+//                    new StartTime(
+//                            interval.getStartTimePoint().getZonedDateTime().toLocalDate(),
+//                            interval.getStartTimePoint().getZonedDateTime().toLocalTime()
+//                    ),
+//                    new EndTime(
+//                            interval.getStartTimePoint().getZonedDateTime().toLocalDate(),
+//                            LocalTime.of(23, 59)
+//                    )
+//            );
+//        }
+//        return interval;
+//    }
 
 }

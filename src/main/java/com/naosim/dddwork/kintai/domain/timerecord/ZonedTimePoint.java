@@ -12,20 +12,6 @@ import java.time.ZonedDateTime;
 public class ZonedTimePoint {
     ZonedDateTime zonedDateTime;
 
-    public ZonedTimePoint(ZonedDateTime date, String hhmm) {
-        if (date == null || hhmm == null) {
-            throw new IllegalArgumentException("日付か時刻が取得できませんでした。");
-        }
-        //TODO: 24時以降も入力自体は受け付けられるようにして、サービス残業のトルツメを実装
-        if (!isHHmm(hhmm)) {
-            throw new IllegalArgumentException("不正な時刻です。");
-        }
-
-        this.zonedDateTime = date
-                .plusHours(Integer.parseInt(hhmm.substring(0, 2)))
-                .plusMinutes(Integer.parseInt(hhmm.substring(2)));
-    }
-
     public ZonedTimePoint(ZonedDateTime date, LocalTime hhmm) {
         if (date == null || hhmm == null) {
             throw new IllegalArgumentException("日付か時刻が取得できませんでした。");
@@ -33,13 +19,6 @@ public class ZonedTimePoint {
         this.zonedDateTime = date
                 .plusHours(hhmm.getHour())
                 .plusMinutes(hhmm.getMinute());
-    }
-
-    private boolean isHHmm(String hhmm) {
-        if (hhmm == null || hhmm.length() != 4) {
-            return false;
-        }
-        return hhmm.matches("^([0-1][0-9]|2[0-3])([0-5][0-9])$");
     }
 
     public int getHour() {

@@ -17,6 +17,7 @@ import com.naosim.dddwork.kintai.service.RegulationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,8 +38,8 @@ public class RegulationRepositoryCsv implements RegulationRepository {
                 .stream()
                 .map(regulatedBreakTimeEntity -> new RegulatedBreakTimeInterval(
                         new TimeInterval(
-                                new StartTime(attendanceDate, regulatedBreakTimeEntity.getBreakTimeStart()),
-                                new EndTime(attendanceDate, regulatedBreakTimeEntity.getBreakTimeEnd())
+                                new StartTime(attendanceDate.toLocalDate(), regulatedBreakTimeEntity.getBreakTimeStart()),
+                                new EndTime(attendanceDate.toLocalDate(), regulatedBreakTimeEntity.getBreakTimeEnd())
                         )))
                 .collect(Collectors.toList());
 
@@ -56,8 +57,8 @@ public class RegulationRepositoryCsv implements RegulationRepository {
         // TODO: CSVから値を取得する
         return new RegulatedWorkingTimeInterval(
                 new TimeInterval(
-                        new StartTime(attendanceDate, "0900"),
-                        new EndTime(attendanceDate, "1800")
+                        new StartTime(attendanceDate.toLocalDate(), LocalTime.of(9, 0)),
+                        new EndTime(attendanceDate.toLocalDate(), LocalTime.of(18, 0))
                 ));
     }
 }

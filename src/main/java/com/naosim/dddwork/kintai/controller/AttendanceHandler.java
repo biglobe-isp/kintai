@@ -23,13 +23,13 @@ public class AttendanceHandler {
                 if (inputParams.length != 3) {
                     throw new IllegalArgumentException("引数不正です。 引数：" + inputParams.length);
                 }
-                attendanceController.record(inputParams);
+                attendanceController.record(inputParams[0], inputParams[1], inputParams[2]);
                 return;
             case "total":
                 if (inputParams.length != 1) {
                     throw new IllegalArgumentException("引数不正です。 引数：" + inputParams.length);
                 }
-                attendanceController.aggregateMonthly(inputParams);
+                attendanceController.aggregateMonthly(inputParams[0]);
                 return;
             default:
                 throw new IllegalArgumentException("第一引数が不正です。そのような機能はありません。");

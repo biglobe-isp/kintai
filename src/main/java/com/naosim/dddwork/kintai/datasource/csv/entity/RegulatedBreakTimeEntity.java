@@ -5,6 +5,7 @@ import com.opencsv.bean.CsvDate;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 public class RegulatedBreakTimeEntity {
@@ -16,9 +17,11 @@ public class RegulatedBreakTimeEntity {
     @CsvBindByName(column = "valid_end_date", required = true)
     private LocalDate validEndDate;
 
+    @CsvDate("HH:mm")
     @CsvBindByName(column = "break_time_start", required = true)
-    private String breakTimeStart;
+    private LocalTime breakTimeStart;
 
+    @CsvDate("HH:mm")
     @CsvBindByName(column = "break_time_end", required = true)
-    private String breakTimeEnd;
+    private LocalTime breakTimeEnd;
 }

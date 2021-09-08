@@ -8,65 +8,60 @@ import com.naosim.dddwork.kintai.domain.timerecord.TimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceRecord;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeInterval;
-import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeIntervalFactory;
+import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeIntervalDomainService;
 import com.naosim.dddwork.kintai.service.aggregation.AttendanceAggregationService;
 import com.naosim.dddwork.kintai.service.timerecord.AttendanceRecordingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 @RequiredArgsConstructor
 @Controller
 public class AttendanceController {
+    //TODO: 凝集度を上げる
     private final AttendanceRecordingService attendanceRecordingService;
     private final AttendanceAggregationService attendanceAggregationService;
-    private final AttendanceTimeIntervalFactory attendanceTimeIntervalFactory;
+    private final AttendanceTimeIntervalDomainService attendanceTimeIntervalDomainService;
+    private final AttendanceOutputFormatter attendanceOutputFormatter;
+    private final AttendanceMonthlySummaryOutputFormatter attendanceMonthlySummaryOutputFormatter;
 
-    public void record(String[] inputParams) {
+    public void record(String ymd, String startTime, String endTime) {
         try {
-            AttendanceDate attendanceDate = new AttendanceDate(inputParams[0]);
-            AttendanceTimeInterval attendanceTimeInterval = attendanceTimeIntervalFactory.create(
+            AttendanceInputParameter parameter = new AttendanceInputParameter(ymd, startTime, endTime);
+            AttendanceDate attendanceDate = new AttendanceDate(parameter.getYmd());
+            // 遅刻なら即クビ、それ以外は受け入れる
+            AttendanceTimeInterval attendanceTimeInterval = attendanceTimeIntervalDomainService.acceptOrFire(
                     attendanceDate,
                     new TimeInterval(
-                            new StartTime(attendanceDate, inputParams[1]),
-                            new EndTime(attendanceDate, inputParams[2])
+                            new StartTime(parameter.getYmd(), parameter.getStartTime()),
+                            new EndTime(parameter.getYmd(), parameter.getEndTime())
                     )
             );
             AttendanceRecord attendanceRecord = attendanceRecordingService.record(
                     attendanceDate,
                     attendanceTimeInterval
             );
-            outputAttendanceRecord(attendanceRecord);
+            System.out.println(attendanceOutputFormatter.toAllOutput(attendanceRecord));
         } catch (Exception e) {
             System.out.println("打刻に失敗しました。");
             e.printStackTrace();
         }
     }
 
-    public void aggregateMonthly(String[] inputParams) {
-        AggregationMonth aggregationMonth = new AggregationMonth(inputParams[0]);
+    public void aggregateMonthly(String yearMonth) {
+        AggregationMonthInputParameter parameter = new AggregationMonthInputParameter(yearMonth);
+        AggregationMonth aggregationMonth = new AggregationMonth(parameter.getYearMonth());
         try {
-            AttendanceMonthlySummary aggregationMonthly = attendanceAggregationService.aggregateMonthly(
+            AttendanceMonthlySummary attendanceMonthlySummary = attendanceAggregationService.aggregateMonthly(
                     aggregationMonth);
-            outputAggregationMonthly(aggregationMonth, aggregationMonthly);
+            System.out.println(attendanceMonthlySummaryOutputFormatter.toAllOutput(
+                    aggregationMonth,
+                    attendanceMonthlySummary
+            ));
         } catch (Exception e) {
             System.out.println("月次集計に失敗しました。");
             e.printStackTrace();
         }
-    }
-
-    private void outputAttendanceRecord(AttendanceRecord attendanceRecord) {
-        System.out.println(new AttendanceOutputItem(attendanceRecord).toAllOutput());
-    }
-
-    private void outputAggregationMonthly(
-            AggregationMonth aggregationMonth,
-            AttendanceMonthlySummary aggregationMonthlySummary) {
-
-        System.out.println(
-                new AttendanceMonthlySummaryOutputItem(
-                        aggregationMonth,
-                        aggregationMonthlySummary
-                ).toAllOutput()
-        );
     }
 }
