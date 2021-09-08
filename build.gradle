@@ -11,6 +11,7 @@ ext {
     spockVersion = '2.0-groovy-3.0'
     objenesisVersion = '3.0.1'
     cglibVersion = '3.2.10'
+    spockSubjectCollaboratorsVersion = '1.2.2'
 }
 group = 'src.main.java.com.naosim.dddwork'
 version = '0.0.1-SNAPSHOT'
@@ -35,6 +36,9 @@ dependencies {
     testImplementation "org.spockframework:spock-spring:${spockVersion}"
     testImplementation "org.objenesis:objenesis:${objenesisVersion}"
     testImplementation "cglib:cglib:${cglibVersion}"
+    // テスト用の軽量 DI
+    testImplementation "com.blogspot.toomuchcoding:spock-subjects-collaborators-extension:${spockSubjectCollaboratorsVersion}"
+
 }
 
 test {
