@@ -30,6 +30,7 @@ public class Main {
                 KintaiApi api = new KintaiApi();
                 api.Total(yearMonth);
 
+
             } else {
                 throw new RuntimeException("methodTypeが不正です");
             }

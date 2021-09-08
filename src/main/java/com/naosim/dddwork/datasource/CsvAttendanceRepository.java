@@ -1,30 +1,36 @@
 package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.Attendance;
+import com.naosim.dddwork.domain.IAttendanceRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AttendanceRecordRepository implements IAttendanceRecordRepository {
+public class CsvAttendanceRepository implements IAttendanceRepository {
+    private CsvDb db;
+
+    public CsvAttendanceRepository() {
+        this.db = new CsvDb("attendance");
+    }
+
     @Override
-    public void save(Attendance attendance) {
-        CsvDb db = new CsvDb();
+
+    public Attendance save(Attendance attendance) {
         List<String> lineValues = new ArrayList<>();
         lineValues.add(attendance.getYyyymmdd());
         lineValues.add(attendance.getStarthhmm());
         lineValues.add(attendance.getEndhhmm());
         lineValues.add(String.valueOf(attendance.getWorkMinutes()));
         lineValues.add(String.valueOf(attendance.getOrverWorkMinutes()));
-        lineValues.add(String.valueOf(attendance.getRule().getRuleId().getId()));
         db.add(lineValues);
+        return attendance;
     }
 
     @Override
     public List<Attendance> searchByYearMonth(String yearMonth) {
 
-        CsvDb db = new CsvDb();
         List<List<String>> allDatas = db.read();
         Map<String, Attendance> results = new HashMap<>();
 

@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class CsvDb {
     File file;
 
-    public CsvDb() {
-        this.file = new File("data.csv");
+    public CsvDb(String entityName) {
+        this.file = new File(String.format("data/%s.csv", entityName));
     }
 
     public void add(List<String> buf) {
