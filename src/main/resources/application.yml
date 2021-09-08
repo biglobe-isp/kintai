@@ -1,0 +1,8 @@
+app:
+  csv:
+    attendance_data_path: /Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/attendance_data.csv
+    break_time_shift_path: /Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/regulated_break_time_shift.csv
+    working_time_minutes_path: /Users/s-miyashita/Develop/git/kintai/src/main/resources/csv/regulated_working_time_minutes.csv
+spring:
+  main:
+    banner-mode: "off"
