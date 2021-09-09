@@ -1,19 +1,14 @@
 package com.naosim.dddwork.kintai.domain
 
+import com.naosim.dddwork.kintai.domain.attendance.FixtureAttendanceDate
 import com.naosim.dddwork.kintai.domain.timerecord.ZonedTimePoint
 import spock.lang.Specification
 
-import java.text.SimpleDateFormat
-import java.time.ZoneId
-import java.time.ZonedDateTime
-
 class ZonedTimePointSpec extends Specification {
-    def dateFormat = new SimpleDateFormat("yyyyMMdd")
-    def day = ZonedDateTime.ofInstant(dateFormat.parse("20210826").toInstant(), ZoneId.systemDefault())
 
     def "[正常系]インスタンス生成が成功するか"() {
         when:
-        def zonedTimePoint = new ZonedTimePoint(day, hhmm)
+        WrappedZonedTimePoint.get(hhmm)
 
         then:
         Throwable thrown = getSpecificationContext().getThrownException()
@@ -26,41 +21,22 @@ class ZonedTimePointSpec extends Specification {
         "2359" | _
     }
 
-    // TODO: 型指定
-//    def "[異常系]インスタンス生成失敗(日付不正)"() {
-//        when:
-//        new ZonedTimePoint(null, hhmm)
-//
-//        then:
-//        Throwable e = thrown()
-//        e.getMessage() == errorMessage
-//
-//        where:
-//        hhmm || errorMessage
-//        null || "日付か時刻が取得できませんでした。"
-//    }
-
-    def "[異常系]インスタンス生成失敗(時刻不正)"() {
+    def "[異常系]インスタンス生成失敗(日付不正)"() {
         when:
-        new ZonedTimePoint(day, hhmm)
+        new ZonedTimePoint(FixtureAttendanceDate.get().getZonedDateTime(), hhmm)
 
         then:
-        Throwable e = thrown()
+        IllegalArgumentException e = thrown()
         e.getMessage() == errorMessage
 
         where:
-        hhmm   || errorMessage
-//        null   || "日付か時刻が取得できませんでした。"
-        ""     || "不正な時刻です。"
-        "123"  || "不正な時刻です。"
-        "2400" || "不正な時刻です。"
-        "1560" || "不正な時刻です。"
-        "2398" || "不正な時刻です。"
+        hhmm || errorMessage
+        null || "日付か時刻が取得できませんでした。"
     }
 
     def "isBefore()の確認"() {
         expect:
-        new ZonedTimePoint(day, target).isBefore(new ZonedTimePoint(day, comparison)) == result
+        WrappedZonedTimePoint.get(target).isBefore(WrappedZonedTimePoint.get(comparison)) == result
 
         where:
         target | comparison || result
@@ -73,7 +49,7 @@ class ZonedTimePointSpec extends Specification {
 
     def "isEqualOrBefore()の確認"() {
         expect:
-        new ZonedTimePoint(day, target).isEqualOrBefore(new ZonedTimePoint(day, comparison)) == result
+        WrappedZonedTimePoint.get(target).isEqualOrBefore(WrappedZonedTimePoint.get(comparison)) == result
 
         where:
         target | comparison || result
@@ -86,7 +62,7 @@ class ZonedTimePointSpec extends Specification {
 
     def "isAfter()の確認"() {
         expect:
-        new ZonedTimePoint(day, target).isAfter(new ZonedTimePoint(day, comparison)) == result
+        WrappedZonedTimePoint.get(target).isAfter(WrappedZonedTimePoint.get(comparison)) == result
 
         where:
         target | comparison || result
@@ -99,7 +75,7 @@ class ZonedTimePointSpec extends Specification {
 
     def "isEqualOrAfter()の確認"() {
         expect:
-        new ZonedTimePoint(day, target).isEqualOrAfter(new ZonedTimePoint(day, comparison)) == result
+        WrappedZonedTimePoint.get(target).isEqualOrAfter(WrappedZonedTimePoint.get(comparison)) == result
 
         where:
         target | comparison || result
@@ -112,7 +88,7 @@ class ZonedTimePointSpec extends Specification {
 
     def "isEqual()の確認"() {
         expect:
-        new ZonedTimePoint(day, target).isEqual(new ZonedTimePoint(day, comparison)) == result
+        WrappedZonedTimePoint.get(target).isEqual(WrappedZonedTimePoint.get(comparison)) == result
 
         where:
         target | comparison || result

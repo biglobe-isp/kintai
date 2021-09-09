@@ -7,6 +7,8 @@ import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedBreakTime
 import com.naosim.dddwork.kintai.domain.timerecord.regulation.RegulatedWorkingTimeMinutes;
 import org.springframework.stereotype.Component;
 
+// VO -> 引数でパラメータをわたして、Constructorで受け取る、メンバー変数を使ってメソッドを呼ぶ　カプセル化の練習にも良い
+// DomainService -> 蘇結合になる、テストしやすい
 @Component
 public class AttendanceRecordDomainService {
     public AttendanceRecord createAttendanceRecord(

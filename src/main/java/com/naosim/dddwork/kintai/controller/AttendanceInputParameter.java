@@ -15,12 +15,12 @@ class AttendanceInputParameter {
     LocalTime endTime;
 
     AttendanceInputParameter(@NonNull String ymd, @NonNull String startTime, @NonNull String endTime) {
-        this.ymd = toZonedDateTime(ymd);
+        this.ymd = toLocalDate(ymd);
         this.startTime = toLocalTime(startTime);
         this.endTime = toLocalTime(endTime);
     }
 
-    private LocalDate toZonedDateTime(String ymd) {
+    private LocalDate toLocalDate(String ymd) {
         try {
             return LocalDate.parse(ymd, DateTimeFormatter.ofPattern("yyyyMMdd"));
         } catch (Exception e) {

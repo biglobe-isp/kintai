@@ -8,21 +8,19 @@ import com.naosim.dddwork.kintai.domain.timerecord.TimeInterval;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceRecord;
 import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeInterval;
-import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceTimeIntervalDomainService;
 import com.naosim.dddwork.kintai.service.aggregation.AttendanceAggregationService;
 import com.naosim.dddwork.kintai.service.timerecord.AttendanceRecordingService;
+import com.naosim.dddwork.kintai.service.timerecord.LatenessCheckingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
 @RequiredArgsConstructor
 @Controller
 public class AttendanceController {
     //TODO: 凝集度を上げる
     private final AttendanceRecordingService attendanceRecordingService;
     private final AttendanceAggregationService attendanceAggregationService;
-    private final AttendanceTimeIntervalDomainService attendanceTimeIntervalDomainService;
+    private final LatenessCheckingService latenessCheckingService;
     private final AttendanceOutputFormatter attendanceOutputFormatter;
     private final AttendanceMonthlySummaryOutputFormatter attendanceMonthlySummaryOutputFormatter;
 
@@ -31,7 +29,7 @@ public class AttendanceController {
             AttendanceInputParameter parameter = new AttendanceInputParameter(ymd, startTime, endTime);
             AttendanceDate attendanceDate = new AttendanceDate(parameter.getYmd());
             // 遅刻なら即クビ、それ以外は受け入れる
-            AttendanceTimeInterval attendanceTimeInterval = attendanceTimeIntervalDomainService.acceptOrFire(
+            AttendanceTimeInterval attendanceTimeInterval = latenessCheckingService.acceptOrFire(
                     attendanceDate,
                     new TimeInterval(
                             new StartTime(parameter.getYmd(), parameter.getStartTime()),

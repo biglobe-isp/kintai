@@ -27,6 +27,11 @@ public class AttendanceRecordingService {
                 attendanceDate);
 
         // 勤怠記録の作成
+
+        // MEMO：引数を複数個渡すのではなくて、一塊のデータをつくって、そこにロジックを持たせる方が良い
+        // 出勤情報オブジェクト、就業規則オブジェクトの2つを知っているオブジェクトが計算する方が良い
+        // ⇨ビジネスルールがクラス図に現れるのではないか？
+        // 複数方法を検討してメリット・デメリットを鑑みながらどちらかを採用する
         AttendanceRecord attendanceRecord = attendanceRecordDomainService.createAttendanceRecord(
                 attendanceDate,
                 attendanceTimeInterval,

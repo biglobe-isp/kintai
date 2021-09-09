@@ -1,16 +1,13 @@
 package com.naosim.dddwork.kintai.domain
 
-import com.naosim.dddwork.kintai.domain.timerecord.EndTime
-import com.naosim.dddwork.kintai.domain.timerecord.StartTime
+
 import com.naosim.dddwork.kintai.domain.timerecord.TimeInterval
 import com.naosim.dddwork.kintai.domain.timerecord.TimeIntervalComparedStatus
-import com.naosim.dddwork.kintai.domain.timerecord.attendance.AttendanceDate
 import spock.lang.Specification
 import spock.lang.Unroll
 // Unroll -> #を展開させるのに必要
 @Unroll
 class TimeIntervalSpec extends Specification {
-    def day = new AttendanceDate("20210826")
 
     def "[正常系]インスタンス生成が成功するか #label"() {
         when:
@@ -43,8 +40,8 @@ class TimeIntervalSpec extends Specification {
 
     def "getComparedStatus()の確認"() {
         when:
-        def target = new TimeInterval(new StartTime(day, targetST), new EndTime(day, targetET))
-        def comparison = new TimeInterval(new StartTime(day, comparisonST), new EndTime(day, comparisonET))
+        def target = new TimeInterval(WrappedStartTime.get(targetST), WrappedEndTime.get(targetET))
+        def comparison = new TimeInterval(WrappedStartTime.get(comparisonST), WrappedEndTime.get(comparisonET))
 
         then:
         target.getComparedStatus(comparison) == result

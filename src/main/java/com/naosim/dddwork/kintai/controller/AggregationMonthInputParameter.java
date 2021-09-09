@@ -13,8 +13,7 @@ class AggregationMonthInputParameter {
 
     public AggregationMonthInputParameter(@NonNull String yyyymm) {
         try {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMM");
-            this.yearMonth = YearMonth.parse(yyyymm, dtf);
+            this.yearMonth = YearMonth.parse(yyyymm, DateTimeFormatter.ofPattern("yyyyMM"));
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("不正な年月です。");
         }
