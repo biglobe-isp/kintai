@@ -1,13 +1,15 @@
 package domain;
 
-public class WorkStartTime {
-    public Integer startTime;
-    public Integer startH;
-    public Integer startM;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    public WorkStartTime(int i,int j ,int k){
-        this.startTime = i;
-        this.startH = j;
-        this.startM = k;
-    }
+@AllArgsConstructor
+public class WorkStartTime {
+    @Getter
+    private final Integer startTime;
+    @Getter
+    private final Integer startH;
+    @Getter
+    private final Integer startM;
+
 }

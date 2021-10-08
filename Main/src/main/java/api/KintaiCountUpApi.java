@@ -1,11 +1,14 @@
 package api;
 
+import domain.TotallyMonth;
+import org.springframework.beans.factory.annotation.Autowired;
 import service.KintaiCountUpService;
 
 public class KintaiCountUpApi {
-    public static void coutupApi(String[] args) {
-        KintaiCountUpRequest kintaiCountUpRequest = new KintaiCountUpRequest(args);
+    @Autowired
+    KintaiCountUpRequest kintaiCountUpRequest;
+    public static void coutupApi(TotallyMonth totallyMonth) {
         KintaiCountUpService kintaiService = new KintaiCountUpService();
-        kintaiService.kintaiCountUpService(kintaiCountUpRequest.getValueObject());
+        kintaiService.kintaiCountUpService(totallyMonth);
     }
 }

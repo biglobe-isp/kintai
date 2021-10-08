@@ -1,15 +1,18 @@
 package domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@AllArgsConstructor
 public class WorkTime {
-    private String value;
+    @Getter
+    private Integer value;
 
     public WorkTime calculate(WorkStartTime workStartTime, WorkEndTime workEndTime){
-        int startH = workStartTime.startH;
-        int startM = workStartTime.startM;
-        int endH = workEndTime.endH;
-        int endM = workEndTime.endM;
+        int startH = workStartTime.getStartH();
+        int startM = workStartTime.getStartM();
+        int endH = workEndTime.getEndH();
+        int endM = workEndTime.getEndM();
         Integer workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
         if (endH == 12) {
@@ -30,8 +33,8 @@ public class WorkTime {
             workMinutes -= 60;
         }
 
-        String hoge = workMinutes.toString();
-        return new WorkTime();
+        value = workMinutes;
+        return new WorkTime(value);
     }
 }
 

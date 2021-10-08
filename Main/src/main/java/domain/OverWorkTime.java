@@ -1,19 +1,22 @@
 package domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@AllArgsConstructor
 public class OverWorkTime {
-    private String value;
+    @Getter
+    private Integer value;
 
-    public OverWorkTime calculate(WorkStartTime workStartTime, WorkEndTime workEndTime){
-         Integer startH = workStartTime.startH;
-         Integer startM = workStartTime.startM;
-         Integer endH = workEndTime.endH;
-         Integer endM = workEndTime.endM;
+    public OverWorkTime calculate(WorkStartTime workStartTime, WorkEndTime workEndTime) {
+        Integer startH = workStartTime.getStartH();
+        Integer startM = workStartTime.getStartM();
+        Integer endH = workEndTime.getEndH();
+        Integer endM = workEndTime.getEndM();
         Integer workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
         Integer overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-        value = overWorkMinutes.toString();
-        return new OverWorkTime();
+        value = overWorkMinutes;
+        return new OverWorkTime(value);
     }
 }

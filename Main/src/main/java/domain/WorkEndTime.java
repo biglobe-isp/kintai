@@ -1,13 +1,15 @@
 package domain;
 
-public class WorkEndTime {
-    public Integer endTime;
-    public Integer endH;
-    public Integer endM;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    public WorkEndTime(int i,int j,int k){
-        this.endTime = i;
-        this.endH = j;
-        this.endM = k;
-    }
+@AllArgsConstructor
+public class WorkEndTime {
+    @Getter
+    private final Integer endTime;
+    @Getter
+    private final Integer endH;
+    @Getter
+    private final Integer endM;
+
 }

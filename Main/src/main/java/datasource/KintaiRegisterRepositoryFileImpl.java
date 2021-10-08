@@ -31,11 +31,11 @@ public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositor
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
-                    workDay.workDay,
-                    workStartTime.startTime,
-                    workEndTime.endTime,
-                    workTime.calculate(workStartTime, workEndTime),
-                    overWorkTime.calculate(workStartTime, workEndTime),
+                    workDay.getValue(),
+                    workStartTime.getStartTime(),
+                    workEndTime.getEndTime(),
+                    workTime.getValue(),
+                    overWorkTime.getValue(),
                     now
             ));
         } catch (Exception e) {

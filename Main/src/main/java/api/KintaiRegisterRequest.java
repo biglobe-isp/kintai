@@ -8,17 +8,18 @@ import domain.WorkDay;
 import domain.WorkEndTime;
 import domain.WorkStartTime;
 import jdk.nashorn.internal.objects.annotations.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@ToString(includeFieldNames = false)
+@EqualsAndHashCode
 public class KintaiRegisterRequest {
     private String date;
     private String start;
     private String end;
 
-    @NotNull
     private WorkDayForm workDayForm;
-    @NotNull
     private WorkStartTimeForm workStartTimeForm;
-    @NotNull
     private WorkEndTimeForm workEndTimeForm;
 
     public KintaiRegisterRequest(String[] args) {
@@ -29,17 +30,17 @@ public class KintaiRegisterRequest {
 
     @Getter
     public WorkDay getWorkDay() {
-        return workDayForm.check(date);
+        return workDayForm.getValueObject(date);
     }
 
     @Getter
     public WorkStartTime getWorkStartTime() {
-        return workStartTimeForm.check(start);
+        return workStartTimeForm.getValueObject(start);
     }
 
     @Getter
     public WorkEndTime getWorkEndTime() {
-        return workEndTimeForm.check(end);
+        return workEndTimeForm.getValueObject(end);
     }
 
 }

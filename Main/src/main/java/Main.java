@@ -1,13 +1,20 @@
 import api.KintaiCountUpApi;
+import api.KintaiRegisterRequest;
 import api.KintaiRegitsterApi;
+import domain.TotallyMonth;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
-@AllArgsConstructor
-//java Main input 20170101 0900 1800
 public class Main {
+    @Autowired
+    KintaiRegisterRequest kintaiRegisterRequest;
+
     public static void main(String[] args) {
+
         try {
             if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
@@ -18,13 +25,16 @@ public class Main {
                 if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
                 }
-                KintaiRegitsterApi.kintaRegisterApi(args);
+                KintaiRegisterRequest kintaiRegisterRequest = new KintaiRegisterRequest(args);
+                KintaiRegitsterApi.kintaRegisterApi(kintaiRegisterRequest);
 
             } else if ("total".equals(methodType)) {
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
-                KintaiCountUpApi.coutupApi(args);
+                String yearMonth = args[1];
+                //依存が逆転しているような
+                KintaiCountUpApi.coutupApi(new TotallyMonth(yearMonth));
 
             } else {
                 throw new RuntimeException("methodTypeが不正です");

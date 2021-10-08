@@ -1,10 +1,11 @@
 package domain;
 
-public class WorkDay {
-    public Integer workDay;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-    public WorkDay(int i){
-        this.workDay = i;
-    }
+@AllArgsConstructor
+public class WorkDay {
+    @Getter
+    private final Integer value;
 }
 

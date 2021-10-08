@@ -19,7 +19,12 @@ public class KintaiRegisterService {
     OverWorkTime overWorkTime;
 
     public void kintaiRegisterService(WorkDay workDay, WorkStartTime workStartTime, WorkEndTime workEndTime) {
-
-        kintaiRegisterRepositoryFile.regist(workDay, workStartTime, workEndTime, workTime, overWorkTime);
+        kintaiRegisterRepositoryFile.regist(
+                workDay,
+                workStartTime,
+                workEndTime,
+                workTime.calculate(workStartTime, workEndTime),
+                overWorkTime.calculate(workStartTime, workEndTime)
+        );
     }
 }

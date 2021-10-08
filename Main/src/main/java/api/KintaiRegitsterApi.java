@@ -4,13 +4,12 @@ import service.KintaiRegisterService;
 
 public class KintaiRegitsterApi {
 
-    public static void kintaRegisterApi(String[] args) {
-        KintaiRegisterRequest kintaiRegisterRequest = new KintaiRegisterRequest(args);
+    public static void kintaRegisterApi(KintaiRegisterRequest request) {
         KintaiRegisterService kintaiService = new KintaiRegisterService();
         kintaiService.kintaiRegisterService(
-                kintaiRegisterRequest.getWorkDay(),
-                kintaiRegisterRequest.getWorkStartTime(),
-                kintaiRegisterRequest.getWorkEndTime()
+                request.getWorkDay(),
+                request.getWorkStartTime(),
+                request.getWorkEndTime()
         );
     }
 }
