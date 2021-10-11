@@ -2,11 +2,8 @@ import api.KintaiCountUpApi;
 import api.KintaiRegisterRequest;
 import api.KintaiRegitsterApi;
 import domain.TotallyMonth;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
 
 @RestController
 public class Main {
