@@ -1,4 +1,6 @@
+import api.Form.TotallyMonthForm;
 import api.KintaiCountUpApi;
+import api.KintaiCountUpRequest;
 import api.KintaiRegisterRequest;
 import api.KintaiRegitsterApi;
 import domain.TotallyMonth;
@@ -29,9 +31,9 @@ public class Main {
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
-                String yearMonth = args[1];
+                KintaiCountUpRequest kintaiCountUpRequest = new KintaiCountUpRequest(args);
                 //依存が逆転しているような
-                KintaiCountUpApi.coutupApi(new TotallyMonth(yearMonth));
+                KintaiCountUpApi.coutupApi(kintaiCountUpRequest);
 
             } else {
                 throw new RuntimeException("methodTypeが不正です");

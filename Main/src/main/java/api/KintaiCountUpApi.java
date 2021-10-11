@@ -7,8 +7,8 @@ import service.KintaiCountUpService;
 public class KintaiCountUpApi {
     @Autowired
     KintaiCountUpRequest kintaiCountUpRequest;
-    public static void coutupApi(TotallyMonth totallyMonth) {
+    public static void coutupApi(KintaiCountUpRequest kintaiCountUpRequest) {
         KintaiCountUpService kintaiService = new KintaiCountUpService();
-        kintaiService.kintaiCountUpService(totallyMonth);
+        kintaiService.kintaiCountUpService(kintaiCountUpRequest.getValueObject());
     }
 }
