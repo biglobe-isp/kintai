@@ -27,20 +27,41 @@ package domain {
 
 package datasource {
     class AttendanceRepositoryCsv {
+        void persist(Attendance attendance)
+        List<Attendance> select(int yearMonth)
     }
 }
 
 package service {
     class AttendanceRepository<<(R,Cyan) Repository>> {
+      void persist(Attendance attendance)
+      List<Attendance> select(int yearMonth)
     }
 
     class AttendanceService {
+       void input(AttendancePersistRequest request)
+       AttendanceTotalResponse total(int yearMonth)
+    }
+
+    class AttendancePersistRequest<<(R,gray) Response>> {
+            WorkDuration totalWorkMinutes
+            OverWorkDuration totalOverWorkMinutes
+    }
+
+
+    class AttendanceTotalResponse<<(R,gray) Response>> {
+        WorkDuration totalWorkMinutes
+        OverWorkDuration totalOverWorkMinutes
     }
 }
 
 package api {
     class AttendanceApi {
+        void input(String date,String start,String end,String workDuration, String overWorkDuration
+                           String createdAt)
+        Attendance total(String yerMonth)
     }
+
 }
 
 class main {
