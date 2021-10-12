@@ -19,28 +19,39 @@ package domain {
              - Duration calculateDuration(WorkDuration workDuration)
      }
 
-     class AttendanceFactory<<(F,gray) Factory>> {
-        Attendance初期化するときの記述の可読性が
-        下がるような感じだったらFactoryで初期化するようにする
+     class AttendanceRepository<<(R,Cyan) Repository>> {
+           + void persist(Attendance attendance)
+           + List<Attendance> select(int yearMonth)
+      }
+
+     class AttendanceConst<<Const>> {
+        {static} final int regularStartTime
+        {static} final int regularEndTime
+        {static} final int lunchBreakStartTime
+        {static} final int lunchBreakEndTime
+        {static} final int nightBreakStartTime
+        {static} final int nightBreakEndTime
+        {static} final int midNightBreakStartTime
+        {static} final int midNightBreakEndTime
+        {static} final int regularFullTimeDuration
      }
 }
 
 package datasource {
-    class AttendanceRepositoryCsv {
+    class AttendanceRepositoryCsv<<(R,red) RepositoryImpl>> {
+        + void persist(Attendance attendance)
+        + List<Attendance> select(int yearMonth)
+    }
+    class AttendanceMapperCsv<<(M,green) Mapper>> {
         void persist(Attendance attendance)
         List<Attendance> select(int yearMonth)
     }
 }
 
 package service {
-    class AttendanceRepository<<(R,Cyan) Repository>> {
-      void persist(Attendance attendance)
-      List<Attendance> select(int yearMonth)
-    }
-
-    class AttendanceService {
-       void input(AttendancePersistRequest request)
-       AttendanceTotalResponse total(int yearMonth)
+    class AttendanceService<<(S,strategy) Service>> {
+       + void input(AttendancePersistRequest request)
+       + AttendanceTotalResponse total(int yearMonth)
     }
 
     class AttendancePersistRequest<<(R,gray) Response>> {
@@ -56,7 +67,7 @@ package service {
 }
 
 package api {
-    class AttendanceApi {
+    class AttendanceApi<<(A,yellow) Api>> {
         void input(String date,String start,String end,String workDuration, String overWorkDuration
                            String createdAt)
         Attendance total(String yerMonth)
@@ -67,10 +78,16 @@ package api {
 class main {
 }
 
-main --> api
-api --> service
-service --> domain
-AttendanceRepositoryCsv --|> AttendanceRepository
+main --> AttendanceApi
+AttendanceApi --> AttendanceService
+AttendanceService --> Attendance
+AttendanceRepositoryCsv -left-|> AttendanceRepository
 AttendanceService --> AttendanceRepository
+Attendance --> WorkDuration
+Attendance --> OverWorkDuration
+AttendanceRepositoryCsv --> AttendanceMapperCsv
+WorkDuration --> AttendanceConst
+OverWorkDuration --> AttendanceConst
+
 
 @enduml
