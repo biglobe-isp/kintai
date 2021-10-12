@@ -17,6 +17,7 @@ public class Main {
             }
             String methodType = args[0];
 
+            // 勤怠登録
             if ("input".equals(methodType)) {
                 if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
@@ -35,25 +36,32 @@ public class Main {
                 int workMinutes = endH * 60 + endM - (startH * 60 + startM);
 
                 if (endH == 12) {
+                    // 休み時間分の超過minutesは差し引く
                     workMinutes -= endM;
                 } else if (endH >= 13) {
+                    // 昼休み分を差し引く
                     workMinutes -= 60;
                 }
 
                 if (endH == 18) {
+                    // 休み時間分の超過minutesは差し引く
                     workMinutes -= endM;
                 } else if (endH >= 19) {
+                    // 終業後休み分を差し引く
                     workMinutes -= 60;
                 }
 
                 if (endH == 21) {
+                    // 休み時間分の超過minutesは差し引く
                     workMinutes -= endM;
                 } else if (endH >= 22) {
+                    // 深夜休み分を差し引く
                     workMinutes -= 60;
                 }
 
                 int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
                 File file = new File("data.csv");
+                // その日の勤怠情報をCSVに記録する
                 try (FileWriter filewriter = new FileWriter(file, true)) {
                     filewriter.write(String.format(
                             "%s,%s,%s,%s,%s,%s\n",
@@ -66,6 +74,7 @@ public class Main {
                     ));
                 }
             } else if ("total".equals(methodType)) {
+                // 勤怠集計
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
