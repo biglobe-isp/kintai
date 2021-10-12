@@ -1,0 +1,55 @@
+@startuml 勤怠管理クラス図
+package domain {
+    class Attendance<<(E,gray) Entity>> {
+        Date date
+        LocalDateTime start
+        LocalDateTime end
+        WorkDuration workDuration
+        OverWorkDuration overWorkDuration
+        Instant createdAt
+    }
+
+    class WorkDuration<<(V,gray) ValueObject>> {
+        Duration duration
+        - Duration calculateDuration(LocalDatetime start, LocalDateTime end)
+     }
+
+     class OverWorkDuration<<(V,gray) ValueObject>> {
+             Duration duration
+             - Duration calculateDuration(WorkDuration workDuration)
+     }
+
+     class AttendanceFactory<<(F,gray) Factory>> {
+        Attendance初期化するときの記述の可読性が
+        下がるような感じだったらFactoryで初期化するようにする
+     }
+}
+
+package datasource {
+    class AttendanceRepositoryCsv {
+    }
+}
+
+package service {
+    class AttendanceRepository<<(R,Cyan) Repository>> {
+    }
+
+    class AttendanceService {
+    }
+}
+
+package api {
+    class AttendanceApi {
+    }
+}
+
+class main {
+}
+
+main --> api
+api --> service
+service --> domain
+AttendanceRepositoryCsv --|> AttendanceRepository
+AttendanceService --> AttendanceRepository
+
+@enduml
