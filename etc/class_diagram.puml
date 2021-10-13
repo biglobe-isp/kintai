@@ -2,19 +2,32 @@
 package domain {
     class Attendance<<(E,gray) Entity>> {
         Date date
-        LocalDateTime start
-        LocalDateTime end
+        AttendanceTime attendanceTime
         WorkDuration workDuration
         OverWorkDuration overWorkDuration
         Instant createdAt
     }
 
+    class AttendanceTime<<(E,gray) Entity>> {
+            LocalDateTime start
+            LocalDateTime end
+    }
+
     class WorkDuration<<(V,gray) ValueObject>> {
+        - final int regularStartTime
+        - final int regularEndTime
+        - final int lunchBreakStartTime
+        - final int lunchBreakEndTime
+        - final int nightBreakStartTime
+        - final int nightBreakEndTime
+        - final int midNightBreakStartTime
+        - final int midNightBreakEndTime
         Duration duration
-        - Duration calculateDuration(LocalDatetime start, LocalDateTime end)
+        - Duration calculateDuration(AttendanceTime attendanceTime)
      }
 
      class OverWorkDuration<<(V,gray) ValueObject>> {
+             - final int regularFullTimeDuration
              Duration duration
              - Duration calculateDuration(WorkDuration workDuration)
      }
@@ -23,18 +36,6 @@ package domain {
            + void persist(Attendance attendance)
            + List<Attendance> select(int yearMonth)
       }
-
-     class AttendanceConst<<Const>> {
-        {static} final int regularStartTime
-        {static} final int regularEndTime
-        {static} final int lunchBreakStartTime
-        {static} final int lunchBreakEndTime
-        {static} final int nightBreakStartTime
-        {static} final int nightBreakEndTime
-        {static} final int midNightBreakStartTime
-        {static} final int midNightBreakEndTime
-        {static} final int regularFullTimeDuration
-     }
 }
 
 package datasource {
@@ -83,11 +84,10 @@ AttendanceApi --> AttendanceService
 AttendanceService --> Attendance
 AttendanceRepositoryCsv -left-|> AttendanceRepository
 AttendanceService --> AttendanceRepository
+Attendance --> AttendanceTime
 Attendance --> WorkDuration
 Attendance --> OverWorkDuration
 AttendanceRepositoryCsv --> AttendanceMapperCsv
-WorkDuration --> AttendanceConst
-OverWorkDuration --> AttendanceConst
 
 
 @enduml
