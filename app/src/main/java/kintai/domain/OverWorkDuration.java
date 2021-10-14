@@ -10,6 +10,7 @@ import java.time.Duration;
 @Value
 public class OverWorkDuration {
     int REGULAR_FULL_TIME_DURATION = 8;
+
     Duration duration;
 
     public OverWorkDuration(WorkDuration workDuration) {
