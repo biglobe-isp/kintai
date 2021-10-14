@@ -7,6 +7,10 @@
  */
 
 plugins {
+    id 'org.springframework.boot' version '2.5.5'
+
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
     // Apply the groovy plugin to also add support for Groovy (needed for Spock)
     id 'groovy'
 
@@ -20,6 +24,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+
     // Use the latest Groovy version for Spock testing
     testImplementation 'org.codehaus.groovy:groovy:3.0.8'
 

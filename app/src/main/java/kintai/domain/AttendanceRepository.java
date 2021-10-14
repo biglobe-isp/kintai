@@ -3,7 +3,7 @@ package kintai.domain;
 import java.util.List;
 
 /**
- * 勤怠リポジトリ.
+ * 勤怠リポジトリインターフェース.
  */
 public interface AttendanceRepository {
     /**

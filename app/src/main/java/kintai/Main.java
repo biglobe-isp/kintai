@@ -3,12 +3,42 @@
  */
 package kintai;
 
+import kintai.api.AttendanceApi;
+import kintai.datasource.AttendanceMapperCsv;
+import kintai.datasource.AttendanceMapperCsvImpl;
+import kintai.datasource.AttendanceRepositoryCsv;
+import kintai.domain.AttendanceRepository;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
 public class Main {
     public String getGreeting() {
         return "Hello World!";
     }
 
+    @Bean
+    public static AttendanceApi attendanceApi(AttendanceRepository attendanceRepository) {
+        return new AttendanceApi(attendanceRepository);
+    }
+
+    @Bean
+    public static AttendanceRepository attendanceRepository(AttendanceMapperCsv attendanceMapperCsv) {
+        return new AttendanceRepositoryCsv(attendanceMapperCsv);
+    }
+
+    @Bean
+    public static AttendanceMapperCsv attendanceMapperCsv() {
+        return new AttendanceMapperCsvImpl();
+    }
+
+
     public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
         System.out.println(new Main().getGreeting());
+        AttendanceApi api = new AttendanceApi(
+                attendanceRepository(attendanceMapperCsv()));
+        System.out.println(api.get());
     }
 }
