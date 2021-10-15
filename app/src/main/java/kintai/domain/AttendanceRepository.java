@@ -1,5 +1,6 @@
 package kintai.domain;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -12,6 +13,20 @@ public interface AttendanceRepository {
      * @param attendance 勤怠エンティティ
      */
     void persist(Attendance attendance);
+
+    /**
+     * 更新.
+     *
+     * @param attendance 勤怠エンティティ
+     */
+    void update(Attendance attendance);
+
+    /**
+     * 勤怠エンティティの存在確認.
+     *
+     * @param day 出勤日
+     */
+    void exists(LocalDate day);
 
     /**
      * 検索.
