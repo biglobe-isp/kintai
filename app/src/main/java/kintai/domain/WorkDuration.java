@@ -23,45 +23,16 @@ public class WorkDuration {
     Duration duration;
 
     /**
-     * コンストラクタ.
+     * 残業時間を計算する.
      *
-     * @param attendanceTime 勤怠時間
+     * @return 残業時間
      */
-    public WorkDuration(AttendanceTime attendanceTime) {
-        this.duration = calculateDuration(attendanceTime);
-    }
+    public OverWorkDuration calculateOverWorkDuration() {
+        int REGULAR_FULL_TIME_DURATION = 8;
 
-    /**
-     * 労働時間を算出.
-     *
-     * @param attendanceTime 勤怠時間
-     * @return 労働時間
-     */
-    private Duration calculateDuration(AttendanceTime attendanceTime) {
-        LocalDateTime end = attendanceTime.getEnd();
-        Duration duration = Duration.between(attendanceTime.getStart(), end);
-
-        if (end.getHour() == LUNCH_BREAK_START_TIME) {
-            duration = duration.minusMinutes(end.getMinute());
-            return duration;
-        } else if (end.getHour() >= LUNCH_BREAK_END_TIME) {
-            duration = duration.minusMinutes(BREAK_DURATION);
+        if (duration.compareTo(Duration.ofHours(REGULAR_FULL_TIME_DURATION)) < 0) {
+            return new OverWorkDuration(Duration.ofHours(0));
         }
-
-        if (end.getHour() == NIGHT_BREAK_START_TIME) {
-            duration = duration.minusMinutes(end.getMinute());
-            return duration;
-        } else if (end.getHour() >= NIGHT_BREAK_END_TIME) {
-            duration = duration.minusMinutes(BREAK_DURATION);
-        }
-
-        if (end.getHour() == MID_NIGHT_BREAK_START_TIME) {
-            duration = duration.minusMinutes(end.getMinute());
-            return duration;
-        } else if (end.getHour() >= MID_NIGHT_BREAK_END_TIME) {
-            duration = duration.minusMinutes(BREAK_DURATION);
-        }
-
-        return duration;
+        return new OverWorkDuration(duration.minusHours(REGULAR_FULL_TIME_DURATION));
     }
 }

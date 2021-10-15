@@ -5,80 +5,36 @@ import spock.lang.Specification
 import java.time.Duration
 
 class WorkDurationSpec extends Specification {
-    def "労働時間を生成する・昼休憩開始前に退勤"() {
+    def "労働時間から残業時間を算出する・通常勤務"() {
         setup:
-        def attendanceTime = FixtureAttendanceTime.getEndBeforeLunchBreak();
+        def workDuration = FixtureWorkDuration.getFullTime();
 
         when:
-        def workDuration = new WorkDuration(attendanceTime)
+        def overWorkDuration = workDuration.calculateOverWorkDuration()
 
         then:
-        workDuration.getDuration() == Duration.ofHours(2)
+        overWorkDuration.getDuration() == Duration.ofHours(0)
     }
 
-    def "労働時間を生成する・昼休憩の間に退勤"() {
+    def "労働時間から残業時間を算出する・残業あり"() {
         setup:
-        def attendanceTime = FixtureAttendanceTime.getEndBetweenLunchBreak()
+        def workDuration = FixtureWorkDuration.getOverTime();
 
         when:
-        def workDuration = new WorkDuration(attendanceTime)
+        def overWorkDuration = workDuration.calculateOverWorkDuration()
 
         then:
-        workDuration.getDuration() == Duration.ofHours(3)
+        overWorkDuration.getDuration() == Duration.ofHours(3)
     }
 
-    def "労働時間を生成する・夜休憩開始前に退勤"() {
+    def "労働時間から残業時間を算出する・時短勤務"() {
         setup:
-        def attendanceTime = FixtureAttendanceTime.getEndBeforeNightBreak();
+        def workDuration = FixtureWorkDuration.getShortTime();
 
         when:
-        def workDuration = new WorkDuration(attendanceTime)
+        def overWorkDuration = workDuration.calculateOverWorkDuration()
 
         then:
-        workDuration.getDuration() == Duration.ofHours(7)
-    }
-
-    def "労働時間を生成する・夜休憩の間に退勤"() {
-        setup:
-        def attendanceTime = FixtureAttendanceTime.getEndBetweenNightBreak();
-
-        when:
-        def workDuration = new WorkDuration(attendanceTime)
-
-        then:
-        workDuration.getDuration() == Duration.ofHours(8)
-    }
-
-    def "労働時間を生成する・深夜休憩開始前に退勤"() {
-        setup:
-        def attendanceTime = FixtureAttendanceTime.getEndBeforeMidNightBreak();
-
-        when:
-        def workDuration = new WorkDuration(attendanceTime)
-
-        then:
-        workDuration.getDuration() == Duration.ofHours(9)
-    }
-
-    def "労働時間を生成する・深夜休憩の間に退勤"() {
-        setup:
-        def attendanceTime = FixtureAttendanceTime.getEndBetweenMidNightBreak();
-
-        when:
-        def workDuration = new WorkDuration(attendanceTime)
-
-        then:
-        workDuration.getDuration() == Duration.ofHours(10)
-    }
-
-    def "労働時間を生成する・深夜休憩後に退勤"() {
-        setup:
-        def attendanceTime = FixtureAttendanceTime.getEndAfterMidNightBreak();
-
-        when:
-        def workDuration = new WorkDuration(attendanceTime)
-
-        then:
-        workDuration.getDuration() == Duration.ofHours(11)
+        overWorkDuration.getDuration() == Duration.ofHours(0)
     }
 }
