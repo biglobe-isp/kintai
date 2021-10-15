@@ -3,15 +3,12 @@ package kintai.domain;
 import lombok.Value;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * 労働時間.
  */
 @Value
 public class WorkDuration {
-    int START_TIME = 9;
-    int REGULAR_END_TIME = 18;
     int LUNCH_BREAK_START_TIME = 12;
     int LUNCH_BREAK_END_TIME = 13;
     int NIGHT_BREAK_START_TIME = 18;
