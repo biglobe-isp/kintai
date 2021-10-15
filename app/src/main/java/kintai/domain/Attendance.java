@@ -2,8 +2,7 @@ package kintai.domain;
 
 import lombok.Value;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * 勤怠エンティティ.
@@ -13,7 +12,7 @@ public class Attendance {
     /**
      * 出勤日
      */
-    Date date;
+    LocalDate date;
 
     /**
      * 勤怠時間
