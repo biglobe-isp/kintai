@@ -26,7 +26,7 @@ public interface AttendanceRepository {
      *
      * @param day 出勤日
      */
-    void exists(LocalDate day);
+    boolean exists(LocalDate day);
 
     /**
      * 検索.

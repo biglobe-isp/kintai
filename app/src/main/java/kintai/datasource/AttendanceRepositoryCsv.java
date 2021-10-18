@@ -28,13 +28,12 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
     }
 
     @Override
-    public void exists(LocalDate day) {
-        attendanceMapperCsv.findByDay(day);
+    public boolean exists(LocalDate day) {
+        return attendanceMapperCsv.findByDay(day).isPresent();
     }
 
     @Override
     public List<Attendance> select(int yearMonth) {
-        attendanceMapperCsv.findByYearMonth(yearMonth);
-        return null;
+        return attendanceMapperCsv.findByYearMonth(yearMonth);
     }
 }
