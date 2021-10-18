@@ -60,13 +60,13 @@ class AttendanceRepositoryCsvSpec extends Specification{
     def "勤怠情報をリストで取得する"() {
         setup:
         def attendance = FixtureAttendance.get()
-        attendanceMapperCsv.findByYearMonth(10) >> List.of(attendance,attendance,attendance)
+        attendanceMapperCsv.findByYearMonth(202110) >> List.of(attendance,attendance,attendance)
 
         when:
-        def result = repository.select(10)
+        def result = repository.select(202110)
 
         then:
-        1 * attendanceMapperCsv.findByYearMonth(10) >> List.of(attendance,attendance,attendance)
+        1 * attendanceMapperCsv.findByYearMonth(202110) >> List.of(attendance,attendance,attendance)
         result == List.of(attendance,attendance,attendance)
     }
 }
