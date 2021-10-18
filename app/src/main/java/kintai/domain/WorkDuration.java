@@ -9,14 +9,6 @@ import java.time.Duration;
  */
 @Value
 public class WorkDuration {
-    int LUNCH_BREAK_START_TIME = 12;
-    int LUNCH_BREAK_END_TIME = 13;
-    int NIGHT_BREAK_START_TIME = 18;
-    int NIGHT_BREAK_END_TIME = 19;
-    int MID_NIGHT_BREAK_START_TIME = 21;
-    int MID_NIGHT_BREAK_END_TIME = 22;
-    int BREAK_DURATION = 60;
-
     Duration duration;
 
     /**
