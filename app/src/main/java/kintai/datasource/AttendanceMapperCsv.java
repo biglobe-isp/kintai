@@ -9,9 +9,6 @@ import java.util.Optional;
 public interface AttendanceMapperCsv {
     void save(Attendance attendance);
 
-    void update(Attendance attendance);
-
     List<Attendance> findByYearMonth(LocalDate yearMonth);
 
-    Optional<Attendance> findByDay(LocalDate day);
 }
