@@ -1,7 +1,7 @@
 @startuml 勤怠管理クラス図
 package domain {
     class Attendance<<(E,gray) Entity>> {
-        Date date
+        LocalDate date
         AttendanceTime attendanceTime
         WorkDuration workDuration
         OverWorkDuration overWorkDuration
@@ -9,43 +9,41 @@ package domain {
     }
 
     class AttendanceTime<<(E,gray) Entity>> {
-            LocalDateTime start
-            LocalDateTime end
+        LocalDateTime start
+        LocalDateTime end
+        + WorkDuration calculateWorkDuration()
     }
 
     class WorkDuration<<(V,gray) ValueObject>> {
-        - final int regularStartTime
-        - final int regularEndTime
-        - final int lunchBreakStartTime
-        - final int lunchBreakEndTime
-        - final int nightBreakStartTime
-        - final int nightBreakEndTime
-        - final int midNightBreakStartTime
-        - final int midNightBreakEndTime
         Duration duration
-        - Duration calculateDuration(AttendanceTime attendanceTime)
+        + OverWorkDuration calculateOverWorkDuration()
      }
 
      class OverWorkDuration<<(V,gray) ValueObject>> {
-             - final int regularFullTimeDuration
-             Duration duration
-             - Duration calculateDuration(WorkDuration workDuration)
+        Duration duration
      }
 
      class AttendanceRepository<<(R,Cyan) Repository>> {
            + void persist(Attendance attendance)
+           + void update(Attendance attendance)
            + List<Attendance> select(int yearMonth)
+           + boolean exists(LocalDate day)
       }
 }
 
 package datasource {
     class AttendanceRepositoryCsv<<(R,red) RepositoryImpl>> {
         + void persist(Attendance attendance)
+        + void update(Attendance attendance)
         + List<Attendance> select(int yearMonth)
+        + boolean exists(LocalDate day)
     }
+
     class AttendanceMapperCsv<<(M,green) Mapper>> {
         void persist(Attendance attendance)
-        List<Attendance> select(int yearMonth)
+        void update(Attendance attendance)
+        List<Attendance> findByYearMonth(int yearMonth)
+        Optional<Attendance> findByDay(LocalDate day)
     }
 }
 
