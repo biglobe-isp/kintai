@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,11 +40,39 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
     @Override
     public void update(Attendance attendance) {
 
+
     }
 
     @Override
-    public List<Attendance> findByYearMonth(int yearMonth) {
-        return null;
+    public List<Attendance> findByYearMonth(LocalDate yearMonth) {
+        File file = new File("data.csv");
+        List<Attendance> attendanceList = new ArrayList<>();
+
+        try (
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr)
+        ) {
+            String line = br.readLine();
+            while (line != null) {
+                String[] columns = line.split(",");
+                if (columns[0].equals(yearMonth.toString())) {
+                    Attendance attendance = new Attendance(
+                            LocalDate.parse(columns[0]),
+                            new AttendanceTime(
+                                    LocalDateTime.parse(columns[1]),
+                                    LocalDateTime.parse(columns[2])
+                            ),
+                            new WorkDuration(Duration.ofSeconds(Long.parseLong(columns[3]))),
+                            new OverWorkDuration(Duration.ofSeconds(Long.parseLong(columns[4])))
+                    );
+                    attendanceList.add(attendance);
+                }
+                line = br.readLine();
+            }
+            return attendanceList;
+        } catch (IOException e) {
+            throw new RuntimeException("CSV読み込み失敗");
+        }
     }
 
     @Override
@@ -57,7 +86,7 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
             String line = br.readLine();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].equals(day.toString())) {
+                if (columns[0].equals(day.toString())) {
                     Attendance attendance = new Attendance(
                             LocalDate.parse(columns[0]),
                             new AttendanceTime(

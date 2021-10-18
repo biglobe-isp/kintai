@@ -22,18 +22,9 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         attendanceMapperCsv.save(attendance);
     }
 
-    @Override
-    public void update(Attendance attendance) {
-        attendanceMapperCsv.update(attendance);
-    }
 
     @Override
-    public boolean exists(LocalDate day) {
-        return attendanceMapperCsv.findByDay(day).isPresent();
-    }
-
-    @Override
-    public List<Attendance> select(int yearMonth) {
+    public List<Attendance> select(LocalDate yearMonth) {
         return attendanceMapperCsv.findByYearMonth(yearMonth);
     }
 }

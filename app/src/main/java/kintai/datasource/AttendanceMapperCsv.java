@@ -11,7 +11,7 @@ public interface AttendanceMapperCsv {
 
     void update(Attendance attendance);
 
-    List<Attendance> findByYearMonth(int yearMonth);
+    List<Attendance> findByYearMonth(LocalDate yearMonth);
 
     Optional<Attendance> findByDay(LocalDate day);
 }
