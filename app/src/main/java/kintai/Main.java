@@ -14,10 +14,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Main {
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     @Bean
     public static AttendanceApi attendanceApi(AttendanceRepository attendanceRepository) {
         return new AttendanceApi(attendanceRepository);
@@ -33,10 +29,8 @@ public class Main {
         return new AttendanceMapperCsvImpl();
     }
 
-
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-        System.out.println(new Main().getGreeting());
         AttendanceApi api = new AttendanceApi(
                 attendanceRepository(attendanceMapperCsv()));
         System.out.println(api.get());
