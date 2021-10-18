@@ -3,6 +3,7 @@ package kintai.datasource;
 import kintai.domain.Attendance;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public interface AttendanceMapperCsv {
@@ -10,7 +11,7 @@ public interface AttendanceMapperCsv {
 
     void update(Attendance attendance);
 
-    void findByYearMonth(int yearMonth);
+    List<Attendance> findByYearMonth(int yearMonth);
 
     Optional<Attendance> findByDay(LocalDate day);
 }
