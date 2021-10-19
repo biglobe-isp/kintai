@@ -1,0 +1,91 @@
+@startuml 勤怠管理クラス図
+package domain {
+    class Attendance<<(E,gray) Entity>> {
+        LocalDate date
+        AttendanceTime attendanceTime
+        WorkDuration workDuration
+        OverWorkDuration overWorkDuration
+        Instant createdAt
+    }
+
+    class AttendanceTime<<(E,gray) Entity>> {
+        LocalDateTime start
+        LocalDateTime end
+        + WorkDuration calculateWorkDuration()
+    }
+
+    class WorkDuration<<(V,gray) ValueObject>> {
+        Duration duration
+        + OverWorkDuration calculateOverWorkDuration()
+     }
+
+     class OverWorkDuration<<(V,gray) ValueObject>> {
+        Duration duration
+     }
+
+     class AttendanceRepository<<(R,Cyan) Repository>> {
+           + void persist(Attendance attendance)
+           + void update(Attendance attendance)
+           + List<Attendance> select(int yearMonth)
+           + boolean exists(LocalDate day)
+      }
+}
+
+package datasource {
+    class AttendanceRepositoryCsv<<(R,red) RepositoryImpl>> {
+        + void persist(Attendance attendance)
+        + void update(Attendance attendance)
+        + List<Attendance> select(int yearMonth)
+        + boolean exists(LocalDate day)
+    }
+
+    class AttendanceMapperCsv<<(M,green) Mapper>> {
+        void persist(Attendance attendance)
+        void update(Attendance attendance)
+        List<Attendance> findByYearMonth(int yearMonth)
+        Optional<Attendance> findByDay(LocalDate day)
+    }
+}
+
+package service {
+    class AttendanceService<<(S,strategy) Service>> {
+       + void input(AttendancePersistRequest request)
+       + AttendanceTotalResponse total(int yearMonth)
+    }
+
+    class AttendancePersistRequest<<(R,gray) Response>> {
+            WorkDuration totalWorkMinutes
+            OverWorkDuration totalOverWorkMinutes
+    }
+
+
+    class AttendanceTotalResponse<<(R,gray) Response>> {
+        WorkDuration totalWorkMinutes
+        OverWorkDuration totalOverWorkMinutes
+    }
+}
+
+package api {
+    class AttendanceApi<<(A,yellow) Api>> {
+        void input(String date,String start,String end,String workDuration, String overWorkDuration
+                           String createdAt)
+        Attendance total(String yerMonth)
+    }
+
+}
+
+class main {
+}
+
+main --> AttendanceApi
+AttendanceApi --> AttendanceService
+AttendanceService --> Attendance
+AttendanceRepositoryCsv -left-|> AttendanceRepository
+AttendanceService --> AttendanceRepository
+Attendance --> AttendanceTime
+Attendance --> WorkDuration
+Attendance --> OverWorkDuration
+AttendanceRepositoryCsv --> AttendanceMapperCsv
+
+
+@enduml
