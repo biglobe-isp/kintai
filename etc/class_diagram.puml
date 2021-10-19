@@ -25,25 +25,19 @@ package domain {
 
      class AttendanceRepository<<(R,Cyan) Repository>> {
            + void persist(Attendance attendance)
-           + void update(Attendance attendance)
            + List<Attendance> select(int yearMonth)
-           + boolean exists(LocalDate day)
       }
 }
 
 package datasource {
     class AttendanceRepositoryCsv<<(R,red) RepositoryImpl>> {
         + void persist(Attendance attendance)
-        + void update(Attendance attendance)
         + List<Attendance> select(int yearMonth)
-        + boolean exists(LocalDate day)
     }
 
     class AttendanceMapperCsv<<(M,green) Mapper>> {
         void persist(Attendance attendance)
-        void update(Attendance attendance)
         List<Attendance> findByYearMonth(int yearMonth)
-        Optional<Attendance> findByDay(LocalDate day)
     }
 }
 
@@ -53,22 +47,22 @@ package service {
        + AttendanceTotalResponse total(int yearMonth)
     }
 
-    class AttendancePersistRequest<<(R,gray) Response>> {
-            WorkDuration totalWorkMinutes
-            OverWorkDuration totalOverWorkMinutes
+    class AttendanceInputRequest<<(R,gray) Response>> {
+            String date
+            String start
+            String end
     }
 
 
     class AttendanceTotalResponse<<(R,gray) Response>> {
-        WorkDuration totalWorkMinutes
-        OverWorkDuration totalOverWorkMinutes
+        Long totalWorkMinutes
+        Long totalOverWorkMinutes
     }
 }
 
 package api {
     class AttendanceApi<<(A,yellow) Api>> {
-        void input(String date,String start,String end,String workDuration, String overWorkDuration
-                           String createdAt)
+        void input(String date,String start,String end)
         Attendance total(String yerMonth)
     }
 
