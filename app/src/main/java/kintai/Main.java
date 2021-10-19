@@ -7,8 +7,7 @@ import kintai.api.AttendanceApi;
 import kintai.datasource.AttendanceMapperCsv;
 import kintai.datasource.AttendanceMapperCsvImpl;
 import kintai.datasource.AttendanceRepositoryCsv;
-import kintai.datasource.util.FileCreator;
-import kintai.datasource.util.FileCreatorImpl;
+
 import kintai.domain.AttendanceRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,12 +27,7 @@ public class Main {
 
     @Bean
     public static AttendanceMapperCsv attendanceMapperCsv() {
-        return new AttendanceMapperCsvImpl(fileCreator());
-    }
-
-    @Bean
-    public static FileCreator fileCreator() {
-        return new FileCreatorImpl();
+        return new AttendanceMapperCsvImpl();
     }
 
     public static void main(String[] args) {
