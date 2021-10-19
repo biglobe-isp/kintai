@@ -7,6 +7,7 @@ import kintai.api.AttendanceApi;
 import kintai.datasource.AttendanceMapperCsv;
 import kintai.datasource.AttendanceMapperCsvImpl;
 import kintai.datasource.AttendanceRepositoryCsv;
+
 import kintai.domain.AttendanceRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

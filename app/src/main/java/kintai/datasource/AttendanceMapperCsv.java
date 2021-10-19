@@ -3,15 +3,11 @@ package kintai.datasource;
 import kintai.domain.Attendance;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
-import java.util.Optional;
 
 public interface AttendanceMapperCsv {
-    void save(Attendance attendance);
+    void save(String fileName,Attendance attendance);
 
-    void update(Attendance attendance);
-
-    List<Attendance> findByYearMonth(int yearMonth);
-
-    Optional<Attendance> findByDay(LocalDate day);
+    List<Attendance> findByYearMonth(String fileName, YearMonth yearMonth);
 }

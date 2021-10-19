@@ -3,6 +3,8 @@ package kintai.datasource
 import kintai.domain.FixtureAttendance
 import spock.lang.Specification
 
+import java.time.YearMonth
+
 class AttendanceRepositoryCsvSpec extends Specification{
 
     private AttendanceMapperCsv attendanceMapperCsv = Mock()
@@ -11,62 +13,26 @@ class AttendanceRepositoryCsvSpec extends Specification{
 
     def "勤怠情報を登録する"() {
         setup:
-        def attendance = FixtureAttendance.get()
+        def attendance = FixtureAttendance.getAttendance1()
 
         when:
         repository.persist(attendance)
 
         then:
-        1 * attendanceMapperCsv.save(attendance)
-    }
-
-    def "勤怠情報を更新する"() {
-        setup:
-        def attendance = FixtureAttendance.get()
-
-        when:
-        repository.update(attendance)
-
-        then:
-        1 * attendanceMapperCsv.update(attendance)
-    }
-
-    def "勤怠情報の存在確認をする"() {
-        setup:
-        def attendance = FixtureAttendance.get()
-        attendanceMapperCsv.findByDay(attendance.getDate()) >> Optional.of(attendance)
-
-        when:
-        def result = repository.exists(attendance.getDate())
-
-        then:
-        1 * attendanceMapperCsv.findByDay(attendance.getDate()) >> Optional.of(attendance)
-        result
-    }
-
-    def "勤怠情報の存在確認をする・勤怠情報が存在しない"() {
-        setup:
-        def attendance = FixtureAttendance.get()
-        attendanceMapperCsv.findByDay(attendance.getDate()) >> Optional.empty()
-
-        when:
-        def result = repository.exists(attendance.getDate())
-
-        then:
-        1 * attendanceMapperCsv.findByDay(attendance.getDate()) >> Optional.empty()
-        !result
+        1 * attendanceMapperCsv.save("data.csv",attendance)
     }
 
     def "勤怠情報をリストで取得する"() {
         setup:
-        def attendance = FixtureAttendance.get()
-        attendanceMapperCsv.findByYearMonth(202110) >> List.of(attendance,attendance,attendance)
+        def attendance = FixtureAttendance.getAttendance1()
+        def yearMonth = YearMonth.of(2021,10)
+        attendanceMapperCsv.findByYearMonth("data.csv",yearMonth) >> List.of(attendance,attendance,attendance)
 
         when:
-        def result = repository.select(202110)
+        def result = repository.select(yearMonth)
 
         then:
-        1 * attendanceMapperCsv.findByYearMonth(202110) >> List.of(attendance,attendance,attendance)
+        1 * attendanceMapperCsv.findByYearMonth("data.csv",yearMonth) >> List.of(attendance,attendance,attendance)
         result == List.of(attendance,attendance,attendance)
     }
 }

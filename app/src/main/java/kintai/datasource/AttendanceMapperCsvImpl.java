@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
-
     @Override
-    public void save(Attendance attendance) {
-        File file = new File("data.csv");
+    public void save(String fileName,Attendance attendance) {
+        File file = new File(fileName);
         try (FileWriter filewriter = new FileWriter(file, true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
@@ -37,18 +37,9 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
     }
 
     @Override
-    public void update(Attendance attendance) {
-
-    }
-
-    @Override
-    public List<Attendance> findByYearMonth(int yearMonth) {
-        return null;
-    }
-
-    @Override
-    public Optional<Attendance> findByDay(LocalDate day) {
-        File file = new File("data.csv");
+    public List<Attendance> findByYearMonth(String fileName,YearMonth yearMonth) {
+        File file = new File(fileName);
+        List<Attendance> attendanceList = new ArrayList<>();
 
         try (
                 FileReader fr = new FileReader(file);
@@ -57,7 +48,7 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
             String line = br.readLine();
             while (line != null) {
                 String[] columns = line.split(",");
-                if (!columns[0].equals(day.toString())) {
+                if (columns[0].substring(0,7).equals(yearMonth.toString())) {
                     Attendance attendance = new Attendance(
                             LocalDate.parse(columns[0]),
                             new AttendanceTime(
@@ -67,13 +58,13 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
                             new WorkDuration(Duration.ofSeconds(Long.parseLong(columns[3]))),
                             new OverWorkDuration(Duration.ofSeconds(Long.parseLong(columns[4])))
                     );
-                    return Optional.of(attendance);
+                    attendanceList.add(attendance);
                 }
                 line = br.readLine();
             }
+            return attendanceList;
         } catch (IOException e) {
             throw new RuntimeException("CSV読み込み失敗");
         }
-        return Optional.empty();
     }
 }

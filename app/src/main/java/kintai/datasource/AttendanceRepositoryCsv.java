@@ -3,7 +3,7 @@ package kintai.datasource;
 import kintai.domain.Attendance;
 import kintai.domain.AttendanceRepository;
 
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -19,21 +19,12 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     @Override
     public void persist(Attendance attendance) {
-        attendanceMapperCsv.save(attendance);
+        attendanceMapperCsv.save("data.csv", attendance);
     }
 
-    @Override
-    public void update(Attendance attendance) {
-        attendanceMapperCsv.update(attendance);
-    }
 
     @Override
-    public boolean exists(LocalDate day) {
-        return attendanceMapperCsv.findByDay(day).isPresent();
-    }
-
-    @Override
-    public List<Attendance> select(int yearMonth) {
-        return attendanceMapperCsv.findByYearMonth(yearMonth);
+    public List<Attendance> select(YearMonth yearMonth) {
+        return attendanceMapperCsv.findByYearMonth("data.csv", yearMonth);
     }
 }

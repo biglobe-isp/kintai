@@ -11,7 +11,6 @@ public class AttendanceApi {
     }
 
     public String get() {
-        attendanceRepository.select(1);
         return "apiが呼び出せた";
     }
 
