@@ -1,6 +1,6 @@
 package kintai.domain;
 
-import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -19,5 +19,5 @@ public interface AttendanceRepository {
      * @param yearMonth 対象月
      * @return 勤怠エンティティリスト
      */
-    List<Attendance> select(LocalDate yearMonth);
+    List<Attendance> select(YearMonth yearMonth);
 }
