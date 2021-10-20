@@ -1,17 +1,36 @@
 package kintai.api;
 
-import kintai.domain.AttendanceRepository;
+import kintai.service.AttendanceInputRequest;
+import kintai.service.AttendanceService;
+import kintai.service.AttendanceTotalResponse;
+
+import java.time.YearMonth;
 
 public class AttendanceApi {
 
-    private final AttendanceRepository attendanceRepository;
+    private final AttendanceService attendanceService;
 
-    public AttendanceApi(AttendanceRepository attendanceRepository) {
-        this.attendanceRepository = attendanceRepository;
+    public AttendanceApi(AttendanceService attendanceService) {
+        this.attendanceService = attendanceService;
     }
 
-    public String get() {
-        return "apiが呼び出せた";
+    /**
+     * 勤怠入力.
+     *
+     * @param request 勤怠入力リクエスト
+     */
+    public void input(AttendanceInputRequest request) {
+        attendanceService.input(request);
+    }
+
+    /**
+     * 勤怠集計.
+     *
+     * @param yearMonth 年月
+     * @return 勤怠集計レスポンス
+     */
+    public AttendanceTotalResponse total(YearMonth yearMonth) {
+        return attendanceService.total(yearMonth);
     }
 
 }
