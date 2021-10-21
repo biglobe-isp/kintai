@@ -4,6 +4,7 @@ import lombok.Value;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 勤怠時間.
@@ -19,6 +20,14 @@ public class AttendanceTime {
      * 退勤時間
      */
     LocalDateTime end;
+
+    public String formatStart() {
+        return start.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+    }
+
+    public String formatEnd() {
+        return end.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+    }
 
     /**
      * 労働時間を算出.
