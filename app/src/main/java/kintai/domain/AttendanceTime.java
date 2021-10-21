@@ -27,7 +27,7 @@ public class AttendanceTime {
      * @return 出社時間文字列
      */
     public String formatStart() {
-        return start.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+        return formatLocalDateTime(start);
     }
 
     /**
@@ -36,7 +36,7 @@ public class AttendanceTime {
      * @return 退勤時間文字列
      */
     public String formatEnd() {
-        return end.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
+        return formatLocalDateTime(end);
     }
 
     /**
@@ -72,5 +72,15 @@ public class AttendanceTime {
             duration = duration.minusMinutes(BREAK_DURATION);
         }
         return new WorkDuration(duration);
+    }
+
+    /**
+     * 整形したlocalDateTime文字列を出力する.
+     *
+     * @param localDateTime localDateTime
+     * @return 整形したlocalDateTime文字列
+     */
+    private String formatLocalDateTime(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
     }
 }
