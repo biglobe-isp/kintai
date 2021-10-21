@@ -21,10 +21,20 @@ public class AttendanceTime {
      */
     LocalDateTime end;
 
+    /**
+     * 成形した出社時間文字列を出力する.
+     * .
+     * @return 出社時間文字列
+     */
     public String formatStart() {
         return start.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
     }
 
+    /**
+     * 成形した退勤時間文字列を出力する.
+     *
+     * @return 退勤時間文字列
+     */
     public String formatEnd() {
         return end.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
     }

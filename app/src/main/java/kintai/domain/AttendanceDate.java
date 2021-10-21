@@ -15,6 +15,11 @@ public class AttendanceDate {
      */
     LocalDate date;
 
+    /**
+     * 成形した出勤日文字列を出力する,
+     *
+     * @return 成形した出勤日文字列
+     */
     public String format() {
         return date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }

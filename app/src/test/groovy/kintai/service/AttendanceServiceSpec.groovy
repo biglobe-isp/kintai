@@ -16,9 +16,9 @@ class AttendanceServiceSpec extends Specification {
         setup:
         def attendance = FixtureAttendance.getAttendance1()
         def request = new AttendanceInputRequest(
-                attendance.getDate().toString(),
-                attendance.getAttendanceTime().getStart().toString(),
-                attendance.getAttendanceTime().getEnd().toString())
+                attendance.getAttendanceDate().format(),
+                attendance.getAttendanceTime().formatStart().substring(8,12),
+                attendance.getAttendanceTime().formatEnd().substring(8,12))
         when:
         attendanceService.input(request)
 
@@ -39,7 +39,7 @@ class AttendanceServiceSpec extends Specification {
                 attendance1.getOverWorkDuration().getDuration().toMinutes() + attendance2.getOverWorkDuration().getDuration().toMinutes() + attendance3.getOverWorkDuration().getDuration().toMinutes()
 
         when:
-        def result = attendanceService.total(yearMonth)
+        def result = attendanceService.total("202110")
 
         then:
         1 * attendanceRepository.select(yearMonth)  >> List.of(attendance1,attendance2,attendance3)

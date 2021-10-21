@@ -17,9 +17,9 @@ class AttendanceApiSpec extends Specification {
         setup:
         def attendance = FixtureAttendance.getAttendance1()
         def request = new AttendanceInputRequest(
-                attendance.getDate().toString(),
-                attendance.getAttendanceTime().getStart().toString(),
-                attendance.getAttendanceTime().getEnd().toString())
+                attendance.getAttendanceDate().format(),
+                attendance.getAttendanceTime().formatStart().substring(8,12),
+                attendance.getAttendanceTime().formatEnd().substring(8,12))
 
         when:
         attendanceApi.input(request)
@@ -30,7 +30,7 @@ class AttendanceApiSpec extends Specification {
 
     def "勤怠集計"() {
         setup:
-        def yearMonth = YearMonth.of(2021,10)
+        def yearMonth = "202110"
         def expected = new AttendanceTotalResponse(2000,100)
         attendanceService.total(yearMonth) >> expected
 
