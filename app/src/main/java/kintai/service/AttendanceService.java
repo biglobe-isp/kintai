@@ -1,16 +1,14 @@
 package kintai.service;
 
 import kintai.domain.Attendance;
+import kintai.domain.AttendanceDate;
 import kintai.domain.AttendanceRepository;
 import kintai.domain.AttendanceTime;
 import kintai.domain.OverWorkDuration;
 import kintai.domain.WorkDuration;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class AttendanceService {
@@ -24,12 +22,11 @@ public class AttendanceService {
      */
     public void input(AttendanceInputRequest request) {
         AttendanceTime attendanceTime = new AttendanceTime(
-                LocalDateTime.parse(request.getStart()),
-                LocalDateTime.parse(request.getEnd()));
+                request.getStart(), request.getEnd());
         WorkDuration workDuration = attendanceTime.calculateWorkDuration();
         OverWorkDuration overWorkDuration = workDuration.calculateOverWorkDuration();
         Attendance attendance = new Attendance(
-                LocalDate.parse(request.getDate()),
+                new AttendanceDate(request.getDate()),
                 attendanceTime,workDuration,overWorkDuration);
 
         attendanceRepository.persist(attendance);
@@ -41,11 +38,14 @@ public class AttendanceService {
      * @param yearMonth 年月
      * @return 勤怠集計レスポンス
      */
-    public AttendanceTotalResponse total(YearMonth yearMonth) {
+    public AttendanceTotalResponse total(String yearMonth) {
         long totalWorkMinutes = 0L;
         long totalOverWorkMinutes = 0L;
 
-        for (Attendance attendance : attendanceRepository.select(yearMonth)) {
+        for (Attendance attendance :
+                attendanceRepository.select(
+                        YearMonth.of(Integer.parseInt(yearMonth.substring(0,4)),
+                                     Integer.parseInt(yearMonth.substring(4,6))))) {
             totalWorkMinutes += attendance.getWorkDuration().getDuration().toMinutes();
             totalOverWorkMinutes += attendance.getOverWorkDuration().getDuration().toMinutes();
         }
