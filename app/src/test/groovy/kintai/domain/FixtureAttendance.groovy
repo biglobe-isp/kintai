@@ -6,30 +6,27 @@ import java.time.LocalDateTime
 class FixtureAttendance {
 
     static Attendance getAttendance1() {
-        LocalDateTime start = FixtureAttendanceTime.getEndBetweenNightBreak().getStart()
 
         new Attendance(
-                LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()),
+                FixtureAttendanceDate.get(),
                 FixtureAttendanceTime.getEndBetweenNightBreak(),
                 FixtureWorkDuration.getFullTime(),
                 FixtureOverWorkDuration.get())
     }
 
     static Attendance getAttendance2() {
-        LocalDateTime start = FixtureAttendanceTime.getEndAfterMidNightBreak().getStart()
 
         new Attendance(
-                LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()),
+                FixtureAttendanceDate.get(),
                 FixtureAttendanceTime.getEndAfterMidNightBreak(),
                 FixtureWorkDuration.getOverTime(),
                 FixtureOverWorkDuration.get())
     }
 
     static Attendance getAttendance3() {
-        LocalDateTime start = FixtureAttendanceTime.getEndBeforeLunchBreak().getStart()
 
         new Attendance(
-                LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()),
+                FixtureAttendanceDate.get(),
                 FixtureAttendanceTime.getEndBeforeLunchBreak(),
                 FixtureWorkDuration.getShortTime(),
                 FixtureOverWorkDuration.get())
