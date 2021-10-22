@@ -17,8 +17,8 @@ class AttendanceServiceSpec extends Specification {
         def attendance = FixtureAttendance.getAttendance1()
         def request = new AttendanceInputRequest(
                 attendance.getAttendanceDate().format(),
-                attendance.getAttendanceTime().formatStart().substring(8,12),
-                attendance.getAttendanceTime().formatEnd().substring(8,12))
+                attendance.getAttendanceTime().formatFrom().substring(8,12),
+                attendance.getAttendanceTime().formatTo().substring(8,12))
         when:
         attendanceService.input(request)
 

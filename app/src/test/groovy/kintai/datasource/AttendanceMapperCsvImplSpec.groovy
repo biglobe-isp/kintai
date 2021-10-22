@@ -22,8 +22,8 @@ class AttendanceMapperCsvImplSpec extends Specification {
         then:
         def result = readTestCsvFile(file)
         result[0] == attendance.getAttendanceDate().format()
-        result[1] == attendance.getAttendanceTime().formatStart()
-        result[2] == attendance.getAttendanceTime().formatEnd()
+        result[1] == attendance.getAttendanceTime().formatFrom()
+        result[2] == attendance.getAttendanceTime().formatTo()
         result[3] == attendance.getWorkDuration().getDuration().getSeconds().toString()
         result[4] == attendance.getOverWorkDuration().getDuration().getSeconds().toString()
 
@@ -81,8 +81,8 @@ class AttendanceMapperCsvImplSpec extends Specification {
                 fileWriter.write(String.format(
                         "%s,%s,%s,%s,%s,%s\n",
                         attendance.getAttendanceDate().format(),
-                        attendance.getAttendanceTime().formatStart(),
-                        attendance.getAttendanceTime().formatEnd(),
+                        attendance.getAttendanceTime().formatFrom(),
+                        attendance.getAttendanceTime().formatTo(),
                         attendance.getWorkDuration().getDuration().getSeconds(),
                         attendance.getOverWorkDuration().getDuration().getSeconds(),
                         LocalDateTime.now()

@@ -27,8 +27,8 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     attendance.getAttendanceDate().format(),
-                    attendance.getAttendanceTime().formatStart(),
-                    attendance.getAttendanceTime().formatEnd(),
+                    attendance.getAttendanceTime().formatFrom(),
+                    attendance.getAttendanceTime().formatTo(),
                     attendance.getWorkDuration().getDuration().getSeconds(),
                     attendance.getOverWorkDuration().getDuration().getSeconds(),
                     LocalDateTime.now()

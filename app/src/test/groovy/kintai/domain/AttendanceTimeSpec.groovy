@@ -10,7 +10,7 @@ class AttendanceTimeSpec extends Specification {
         def attendanceTime = FixtureAttendanceTime.getEndBetweenNightBreak();
 
         when:
-        def start = attendanceTime.formatStart()
+        def start = attendanceTime.formatFrom()
 
         then:
         start == "202110010900"
@@ -21,7 +21,7 @@ class AttendanceTimeSpec extends Specification {
         def attendanceTime = FixtureAttendanceTime.getEndBetweenNightBreak();
 
         when:
-        def start = attendanceTime.formatEnd()
+        def start = attendanceTime.formatTo()
 
         then:
         start == "202110011830"
