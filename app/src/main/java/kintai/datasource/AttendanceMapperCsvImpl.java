@@ -50,8 +50,6 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
             String line = br.readLine();
             while (line != null) {
                 String[] columns = line.split(",");
-                System.out.println(columns[0].substring(0,8));
-                System.out.println(yearMonth.toString());
 
                 if (columns[0].substring(0,6).equals(yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM")))) {
                     Attendance attendance = new Attendance(
