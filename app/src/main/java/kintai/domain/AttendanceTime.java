@@ -39,6 +39,12 @@ public class AttendanceTime {
             } else if (from.toLocalTime().isBefore(breakRange.getTo())
                     && from.toLocalTime().isAfter(breakRange.getFrom())) {
                 workRange = workRange.minus(Duration.between(from.toLocalTime(), breakRange.getTo()));
+            } else if ((from.toLocalTime().isAfter(breakRange.getFrom())
+                    && to.toLocalTime().isBefore(breakRange.getTo()))
+                    || (from.toLocalTime().equals(breakRange.getFrom())
+                    && to.toLocalTime().equals(breakRange.getTo()))) {
+                workRange = Duration.ZERO;
+                break;
             }
         }
         return new WorkDuration(workRange);
