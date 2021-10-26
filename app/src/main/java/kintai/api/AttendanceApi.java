@@ -4,6 +4,8 @@ import kintai.service.AttendanceInputRequest;
 import kintai.service.AttendanceService;
 import kintai.service.AttendanceTotalResponse;
 
+import java.time.YearMonth;
+
 public class AttendanceApi {
 
     private final AttendanceService attendanceService;
@@ -28,7 +30,9 @@ public class AttendanceApi {
      * @return 勤怠集計レスポンス
      */
     public AttendanceTotalResponse total(String yearMonth) {
-        return attendanceService.total(yearMonth);
+        return attendanceService.total(
+                YearMonth.of(Integer.parseInt(yearMonth.substring(0,4)),
+                             Integer.parseInt(yearMonth.substring(4,6))));
     }
 
 }

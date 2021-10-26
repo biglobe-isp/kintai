@@ -39,7 +39,7 @@ class AttendanceServiceSpec extends Specification {
                 attendance1.getOverWorkDuration().getDuration().toMinutes() + attendance2.getOverWorkDuration().getDuration().toMinutes() + attendance3.getOverWorkDuration().getDuration().toMinutes()
 
         when:
-        def result = attendanceService.total("202110")
+        def result = attendanceService.total(yearMonth)
 
         then:
         1 * attendanceRepository.select(yearMonth)  >> List.of(attendance1,attendance2,attendance3)

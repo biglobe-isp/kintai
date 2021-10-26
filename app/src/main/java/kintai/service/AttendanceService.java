@@ -38,14 +38,12 @@ public class AttendanceService {
      * @param yearMonth 年月
      * @return 勤怠集計レスポンス
      */
-    public AttendanceTotalResponse total(String yearMonth) {
+    public AttendanceTotalResponse total(YearMonth yearMonth) {
         long totalWorkMinutes = 0L;
         long totalOverWorkMinutes = 0L;
 
         for (Attendance attendance :
-                attendanceRepository.select(
-                        YearMonth.of(Integer.parseInt(yearMonth.substring(0,4)),
-                                     Integer.parseInt(yearMonth.substring(4,6))))) {
+                attendanceRepository.select(yearMonth)) {
             totalWorkMinutes += attendance.getWorkDuration().getDuration().toMinutes();
             totalOverWorkMinutes += attendance.getOverWorkDuration().getDuration().toMinutes();
         }

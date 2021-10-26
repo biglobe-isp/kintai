@@ -6,6 +6,8 @@ import kintai.service.AttendanceService
 import kintai.service.AttendanceTotalResponse
 import spock.lang.Specification
 
+import java.time.YearMonth
+
 class AttendanceApiSpec extends Specification {
     private AttendanceService attendanceService = Mock()
 
@@ -30,13 +32,13 @@ class AttendanceApiSpec extends Specification {
         setup:
         def yearMonth = "202110"
         def expected = new AttendanceTotalResponse(2000,100)
-        attendanceService.total(yearMonth) >> expected
+        attendanceService.total(YearMonth.of(2021,10)) >> expected
 
         when:
         def result = attendanceApi.total(yearMonth)
 
         then:
-        1 * attendanceService.total(yearMonth) >> expected
+        1 * attendanceService.total(YearMonth.of(2021,10)) >> expected
         result == expected
     }
 }
