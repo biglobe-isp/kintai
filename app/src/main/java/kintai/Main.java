@@ -16,6 +16,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @SpringBootApplication
 public class Main {
     @Bean
@@ -30,7 +33,7 @@ public class Main {
 
     @Bean
     public static AttendanceRepository attendanceRepository() {
-        return new AttendanceRepositoryCsv(attendanceMapperCsv());
+        return new AttendanceRepositoryCsv(attendanceMapperCsv(), Paths.get("data.csv"));
     }
 
     @Bean

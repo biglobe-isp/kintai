@@ -3,8 +3,13 @@ package kintai.datasource
 import kintai.domain.FixtureAttendance
 import spock.lang.Specification
 
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.LocalDateTime
 import java.time.YearMonth
+
+import static java.nio.file.StandardOpenOption.CREATE
 
 class AttendanceMapperCsvImplSpec extends Specification {
     //テスト対象のMapper
@@ -12,12 +17,12 @@ class AttendanceMapperCsvImplSpec extends Specification {
 
     def "CSVに勤怠情報を登録"() {
         setup:
-        def fileName = "test.csv"
+        def path = Paths.get("test.csv")
         def attendance = FixtureAttendance.getAttendance1()
-        def file = new File(fileName)
+        def file = Files.createFile(path)
 
         when:
-        attendanceMapperCsv.save(fileName, attendance)
+        attendanceMapperCsv.save(path, attendance)
 
         then:
         def result = readTestCsvFile(file)
@@ -28,13 +33,15 @@ class AttendanceMapperCsvImplSpec extends Specification {
         result[4] == attendance.getOverWorkDuration().getDuration().getSeconds().toString()
 
         cleanup:
-        file.delete()
+        Files.delete(path)
     }
 
     def "年月で勤怠情報を検索"() {
         setup:
         def fileName = "test.csv"
-        def file = new File(fileName)
+        def path = Paths.get(fileName)
+        def file = Files.createFile(path)
+
         def expected = List.of(
                 FixtureAttendance.getAttendance1(),
                 FixtureAttendance.getAttendance2(),
@@ -43,13 +50,13 @@ class AttendanceMapperCsvImplSpec extends Specification {
 
         when:
         def result = attendanceMapperCsv.findByYearMonth(
-                fileName, YearMonth.of(2021,10))
+                Paths.get(fileName), YearMonth.of(2021,10))
 
         then:
         result == expected
 
         cleanup:
-        file.delete()
+        Files.delete(path)
     }
     /**
      * テストCSVファイル読み込み
@@ -57,10 +64,9 @@ class AttendanceMapperCsvImplSpec extends Specification {
      * @param file ファイル
      * @return 読み込んだファイルの内容
      */
-    private static String[] readTestCsvFile(File file) {
+    private static String[] readTestCsvFile(Path path) {
         try (
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr)
+                BufferedReader br = Files.newBufferedReader(path)
         ) {
             String line = br.readLine()
             return line.split(",")
@@ -72,25 +78,24 @@ class AttendanceMapperCsvImplSpec extends Specification {
     /**
      * テストCSVファイル書き込み
      *
-     * @param file ファイル
+     * @param path ファイル
      * @param attendanceList 勤怠情報リスト
      */
-    private static void writeTestCsvFile(file,attendanceList) {
-        attendanceList.forEach(attendance -> {
-            try (FileWriter fileWriter = new FileWriter(file, true)) {
-                fileWriter.write(String.format(
-                        "%s,%s,%s,%s,%s,%s\n",
-                        attendance.getAttendanceDate().format(),
-                        attendance.getAttendanceTime().formatFrom(),
-                        attendance.getAttendanceTime().formatTo(),
-                        attendance.getWorkDuration().getDuration().getSeconds(),
-                        attendance.getOverWorkDuration().getDuration().getSeconds(),
-                        LocalDateTime.now()
-                ))
+    private static void writeTestCsvFile(path,attendanceList) {
+            try (BufferedWriter fileWriter = Files.newBufferedWriter(path, CREATE)) {
+                attendanceList.forEach(attendance -> {
+                    fileWriter.write(String.format(
+                            "%s,%s,%s,%s,%s,%s\n",
+                            attendance.getAttendanceDate().format(),
+                            attendance.getAttendanceTime().formatFrom(),
+                            attendance.getAttendanceTime().formatTo(),
+                            attendance.getWorkDuration().getDuration().getSeconds(),
+                            attendance.getOverWorkDuration().getDuration().getSeconds(),
+                            LocalDateTime.now()
+                    ))
+                })
             } catch (IOException e) {
                 throw new RuntimeException("CSV書き込み失敗");
             }
-        })
     }
-
 }

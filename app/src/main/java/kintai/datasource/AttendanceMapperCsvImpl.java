@@ -7,10 +7,10 @@ import kintai.domain.OverWorkDuration;
 import kintai.domain.WorkDuration;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,12 +19,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.file.StandardOpenOption.CREATE;
+
 public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
     @Override
-    public void save(String fileName,Attendance attendance) {
-        File file = new File(fileName);
-        try (FileWriter filewriter = new FileWriter(file, true)) {
-            filewriter.write(String.format(
+    public void save(Path path, Attendance attendance) {
+        try (BufferedWriter fileWriter = Files.newBufferedWriter(path, CREATE)) {
+            fileWriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     attendance.getAttendanceDate().format(),
                     attendance.getAttendanceTime().formatFrom(),
@@ -39,13 +40,10 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
     }
 
     @Override
-    public List<Attendance> findByYearMonth(String fileName,YearMonth yearMonth) {
-        File file = new File(fileName);
+    public List<Attendance> findByYearMonth(Path path,YearMonth yearMonth) {
         List<Attendance> attendanceList = new ArrayList<>();
-
         try (
-                FileReader fr = new FileReader(file);
-                BufferedReader br = new BufferedReader(fr)
+                BufferedReader br = Files.newBufferedReader(path)
         ) {
             String line = br.readLine();
             while (line != null) {
