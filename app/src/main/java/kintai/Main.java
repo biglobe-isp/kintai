@@ -12,40 +12,28 @@ import kintai.domain.AttendanceRepository;
 import kintai.service.AttendanceInputRequest;
 import kintai.service.AttendanceService;
 import kintai.service.AttendanceTotalResponse;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@SpringBootApplication
 public class Main {
-    @Bean
-    public static AttendanceApi attendanceApi() {
-        return new AttendanceApi(attendanceService());
-    }
 
-    @Bean
     public static AttendanceService attendanceService() {
         return new AttendanceService(attendanceRepository());
     }
 
-    @Bean
     public static AttendanceRepository attendanceRepository() {
         return new AttendanceRepositoryCsv(attendanceMapperCsv(), Paths.get("data.csv"));
     }
 
-    @Bean
     public static AttendanceMapperCsv attendanceMapperCsv() {
         return new AttendanceMapperCsvImpl();
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
         if (args.length < 1) {
             throw new RuntimeException("引数が足りません");
         }
+        System.out.println("呼び出し");
 
         AttendanceApi api = new AttendanceApi(
                 attendanceService());
