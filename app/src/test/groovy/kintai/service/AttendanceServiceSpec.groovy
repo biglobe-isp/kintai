@@ -32,7 +32,9 @@ class AttendanceServiceSpec extends Specification {
         def attendance1 = FixtureAttendance.getAttendance1()
         def attendance2 = FixtureAttendance.getAttendance2()
         def attendance3 = FixtureAttendance.getAttendance3()
-        attendanceRepository.select(yearMonth) >> List.of(attendance1,attendance2,attendance3)
+        def attendance4 = FixtureAttendance.getAttendance4()
+
+        attendanceRepository.select(yearMonth) >> List.of(attendance1,attendance2,attendance3,attendance4)
         def expectedTotalWorkMinutes =
                 attendance1.getWorkDuration().getDuration().toMinutes() + attendance2.getWorkDuration().getDuration().toMinutes() + attendance3.getWorkDuration().getDuration().toMinutes()
         def expectedTotalOverWorkMinutes =
@@ -42,7 +44,7 @@ class AttendanceServiceSpec extends Specification {
         def result = attendanceService.total(yearMonth)
 
         then:
-        1 * attendanceRepository.select(yearMonth)  >> List.of(attendance1,attendance2,attendance3)
+        1 * attendanceRepository.select(yearMonth)  >> List.of(attendance1,attendance2,attendance3,attendance4)
         expectedTotalWorkMinutes == result.getTotalWorkMinutes()
         expectedTotalOverWorkMinutes == result.getTotalOverWorkMinutes()
     }

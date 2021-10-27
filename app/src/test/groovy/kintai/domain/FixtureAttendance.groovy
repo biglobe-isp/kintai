@@ -29,4 +29,13 @@ class FixtureAttendance {
                 FixtureOverWorkDuration.get())
     }
 
+    static Attendance getAttendance4() {
+
+        new Attendance(
+                FixtureAttendanceDate.getAttendanceDate1(),
+                FixtureAttendanceTime.getEndBetweenNightBreak(),
+                FixtureWorkDuration.getFullTime(),
+                FixtureOverWorkDuration.get())
+    }
+
 }
