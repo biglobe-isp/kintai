@@ -53,7 +53,7 @@ class AttendanceMapperCsvImplSpec extends Specification {
                 Paths.get(fileName), YearMonth.of(2021,10))
 
         then:
-        result == expected
+        result.containsAll(expected)
 
         cleanup:
         Files.delete(path)

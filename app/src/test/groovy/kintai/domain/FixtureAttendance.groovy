@@ -1,14 +1,11 @@
 package kintai.domain
 
-import java.time.LocalDate
-import java.time.LocalDateTime
-
 class FixtureAttendance {
 
     static Attendance getAttendance1() {
 
         new Attendance(
-                FixtureAttendanceDate.get(),
+                FixtureAttendanceDate.getAttendanceDate1(),
                 FixtureAttendanceTime.getEndBetweenNightBreak(),
                 FixtureWorkDuration.getFullTime(),
                 FixtureOverWorkDuration.get())
@@ -17,7 +14,7 @@ class FixtureAttendance {
     static Attendance getAttendance2() {
 
         new Attendance(
-                FixtureAttendanceDate.get(),
+                FixtureAttendanceDate.getAttendanceDate2(),
                 FixtureAttendanceTime.getEndAfterMidNightBreak(),
                 FixtureWorkDuration.getOverTime(),
                 FixtureOverWorkDuration.get())
@@ -26,7 +23,7 @@ class FixtureAttendance {
     static Attendance getAttendance3() {
 
         new Attendance(
-                FixtureAttendanceDate.get(),
+                FixtureAttendanceDate.getAttendanceDate3(),
                 FixtureAttendanceTime.getEndBeforeLunchBreak(),
                 FixtureWorkDuration.getShortTime(),
                 FixtureOverWorkDuration.get())
