@@ -9,6 +9,9 @@ import kintai.domain.WorkDuration;
 import lombok.RequiredArgsConstructor;
 
 import java.time.YearMonth;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class AttendanceService {
@@ -42,8 +45,13 @@ public class AttendanceService {
         long totalWorkMinutes = 0L;
         long totalOverWorkMinutes = 0L;
 
-        for (Attendance attendance :
-                attendanceRepository.select(yearMonth)) {
+        Map<AttendanceDate, Attendance> attendanceMap = new HashMap<>();
+        // 重複する日付の勤怠データのうち、最新のものに絞る
+        attendanceRepository.select(yearMonth).forEach(attendance -> {
+            attendanceMap.put(attendance.getAttendanceDate(),attendance);
+        });
+
+        for (Attendance attendance : attendanceMap.values()) {
             totalWorkMinutes += attendance.getWorkDuration().getDuration().toMinutes();
             totalOverWorkMinutes += attendance.getOverWorkDuration().getDuration().toMinutes();
         }

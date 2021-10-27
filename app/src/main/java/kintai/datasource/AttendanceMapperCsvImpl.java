@@ -16,10 +16,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 
@@ -43,11 +43,11 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
 
     @Override
     public List<Attendance> findByYearMonth(Path path,YearMonth yearMonth) {
+        List<Attendance> attendanceList = new ArrayList<>();
         try (
                 BufferedReader br = Files.newBufferedReader(path)
         ) {
             String line = br.readLine();
-            Map<String, Attendance> attendanceMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
 
@@ -71,11 +71,11 @@ public class AttendanceMapperCsvImpl implements AttendanceMapperCsv {
                             new WorkDuration(Duration.ofSeconds(Long.parseLong(columns[3]))),
                             new OverWorkDuration(Duration.ofSeconds(Long.parseLong(columns[4])))
                     );
-                    attendanceMap.put(columns[0], attendance);
+                    attendanceList.add(attendance);
                 }
                 line = br.readLine();
             }
-            return attendanceMap.values().stream().collect(Collectors.toList());
+            return attendanceList;
         } catch (IOException e) {
             throw new RuntimeException("CSV読み込み失敗");
         }
