@@ -5,6 +5,28 @@ import spock.lang.Specification
 import java.time.Duration
 
 class AttendanceTimeSpec extends Specification {
+    def "出社時間文字列を成形する"() {
+        setup:
+        def attendanceTime = FixtureAttendanceTime.getEndBetweenNightBreak();
+
+        when:
+        def start = attendanceTime.formatFrom()
+
+        then:
+        start == "202110010900"
+    }
+
+    def "退勤時間文字列を成形する"() {
+        setup:
+        def attendanceTime = FixtureAttendanceTime.getEndBetweenNightBreak();
+
+        when:
+        def start = attendanceTime.formatTo()
+
+        then:
+        start == "202110011830"
+    }
+
     def "労働時間を生成する・昼休憩開始前に退勤"() {
         setup:
         def attendanceTime = FixtureAttendanceTime.getEndBeforeLunchBreak();

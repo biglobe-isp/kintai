@@ -4,6 +4,7 @@ import lombok.Value;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 勤怠時間.
@@ -13,12 +14,12 @@ public class AttendanceTime {
     /**
      * 出社時間
      */
-    LocalDateTime start;
+    LocalDateTime from;
 
     /**
      * 退勤時間
      */
-    LocalDateTime end;
+    LocalDateTime to;
 
     /**
      * 労働時間を算出.
@@ -26,32 +27,54 @@ public class AttendanceTime {
      * @return 労働時間
      */
     public WorkDuration calculateWorkDuration() {
-        int LUNCH_BREAK_START_TIME = 12;
-        int LUNCH_BREAK_END_TIME = 13;
-        int NIGHT_BREAK_START_TIME = 18;
-        int NIGHT_BREAK_END_TIME = 19;
-        int MID_NIGHT_BREAK_START_TIME = 21;
-        int MID_NIGHT_BREAK_END_TIME = 22;
-        int BREAK_DURATION = 60;
-        Duration duration = Duration.between(start, end);
-
-        if (end.getHour() == LUNCH_BREAK_START_TIME) {
-            duration = duration.minusMinutes(end.getMinute());
-        } else if (end.getHour() >= LUNCH_BREAK_END_TIME) {
-            duration = duration.minusMinutes(BREAK_DURATION);
+        Duration workRange = Duration.between(from, to);
+        EmployeeRule employeeRule = new EmployeeRule();
+        for (BreakRange breakRange : employeeRule.getBreakRangeList()) {
+            if (from.toLocalTime().isBefore(breakRange.getFrom())
+                    && to.toLocalTime().isAfter(breakRange.getTo())) {
+                workRange = workRange.minus(Duration.between(breakRange.getFrom(),breakRange.getTo()));
+            } else if (to.toLocalTime().isAfter(breakRange.getFrom())
+                    && to.toLocalTime().isBefore(breakRange.getTo())) {
+                workRange = workRange.minus(Duration.between(breakRange.getFrom(), to.toLocalTime()));
+            } else if (from.toLocalTime().isBefore(breakRange.getTo())
+                    && from.toLocalTime().isAfter(breakRange.getFrom())) {
+                workRange = workRange.minus(Duration.between(from.toLocalTime(), breakRange.getTo()));
+            } else if ((from.toLocalTime().isAfter(breakRange.getFrom())
+                    && to.toLocalTime().isBefore(breakRange.getTo()))
+                    || (from.toLocalTime().equals(breakRange.getFrom())
+                    && to.toLocalTime().equals(breakRange.getTo()))) {
+                workRange = Duration.ZERO;
+                break;
+            }
         }
+        return new WorkDuration(workRange);
+     }
 
-        if (end.getHour() == NIGHT_BREAK_START_TIME) {
-            duration = duration.minusMinutes(end.getMinute());
-        } else if (end.getHour() >= NIGHT_BREAK_END_TIME) {
-            duration = duration.minusMinutes(BREAK_DURATION);
-        }
+    /**
+     * 成形した出社時間文字列を出力する.
+     * .
+     * @return 出社時間文字列
+     */
+    public String formatFrom() {
+        return formatLocalDateTime(from);
+    }
 
-        if (end.getHour() == MID_NIGHT_BREAK_START_TIME) {
-            duration = duration.minusMinutes(end.getMinute());
-        } else if (end.getHour() >= MID_NIGHT_BREAK_END_TIME) {
-            duration = duration.minusMinutes(BREAK_DURATION);
-        }
-        return new WorkDuration(duration);
+    /**
+     * 成形した退勤時間文字列を出力する.
+     *
+     * @return 退勤時間文字列
+     */
+    public String formatTo() {
+        return formatLocalDateTime(to);
+    }
+
+    /**
+     * 整形したlocalDateTime文字列を出力する.
+     *
+     * @param localDateTime localDateTime
+     * @return 整形したlocalDateTime文字列
+     */
+    private String formatLocalDateTime(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
     }
 }

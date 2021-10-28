@@ -7,32 +7,52 @@ import kintai.api.AttendanceApi;
 import kintai.datasource.AttendanceMapperCsv;
 import kintai.datasource.AttendanceMapperCsvImpl;
 import kintai.datasource.AttendanceRepositoryCsv;
+
 import kintai.domain.AttendanceRepository;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import kintai.service.AttendanceInputRequest;
+import kintai.service.AttendanceService;
+import kintai.service.AttendanceTotalResponse;
 
-@SpringBootApplication
+import java.nio.file.Paths;
+
 public class Main {
-    @Bean
-    public static AttendanceApi attendanceApi(AttendanceRepository attendanceRepository) {
-        return new AttendanceApi(attendanceRepository);
+
+    public static AttendanceService attendanceService() {
+        return new AttendanceService(attendanceRepository());
     }
 
-    @Bean
-    public static AttendanceRepository attendanceRepository(AttendanceMapperCsv attendanceMapperCsv) {
-        return new AttendanceRepositoryCsv(attendanceMapperCsv);
+    public static AttendanceRepository attendanceRepository() {
+        return new AttendanceRepositoryCsv(attendanceMapperCsv(), Paths.get("data.csv"));
     }
 
-    @Bean
     public static AttendanceMapperCsv attendanceMapperCsv() {
         return new AttendanceMapperCsvImpl();
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        if (args.length < 1) {
+            throw new RuntimeException("引数が足りません");
+        }
+        System.out.println("呼び出し");
+
         AttendanceApi api = new AttendanceApi(
-                attendanceRepository(attendanceMapperCsv()));
-        System.out.println(api.get());
+                attendanceService());
+
+        String methodType = args[0];
+
+        if ("input".equals(methodType)) {
+            if (args.length < 4) {
+                throw new RuntimeException("引数が足りません");
+            }
+            api.input(new AttendanceInputRequest(args[1],args[2],args[3]));
+        } else if ("total".equals(methodType)) {
+            if (args.length < 2) {
+                throw new RuntimeException("引数が足りません");
+            }
+            AttendanceTotalResponse totalResponse = api.total(args[1]);
+
+            System.out.println("勤務時間: " + totalResponse.getTotalWorkMinutes() / 60 + "時間" + totalResponse.getTotalWorkMinutes() % 60 + "分");
+            System.out.println("残業時間: " + totalResponse.getTotalOverWorkMinutes() / 60 + "時間" + totalResponse.getTotalOverWorkMinutes() % 60 + "分");
+        }
     }
 }
