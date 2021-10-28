@@ -1,11 +1,14 @@
 @startuml 勤怠管理クラス図
 package domain {
     class Attendance<<(E,gray) Entity>> {
-        LocalDate date
+        AttendanceDate attendanceDate
         AttendanceTime attendanceTime
         WorkDuration workDuration
         OverWorkDuration overWorkDuration
-        Instant createdAt
+    }
+
+    class AttendanceDate<<(V,gray) ValueObject>> {
+           LocalDate date
     }
 
     class AttendanceTime<<(E,gray) Entity>> {
@@ -44,13 +47,13 @@ package datasource {
 package service {
     class AttendanceService<<(S,strategy) Service>> {
        + void input(AttendancePersistRequest request)
-       + AttendanceTotalResponse total(int yearMonth)
+       + AttendanceTotalResponse total(YearMonth yearMonth)
     }
 
     class AttendanceInputRequest<<(R,gray) Response>> {
-            String date
-            String start
-            String end
+            LocalDate date
+            LocalDateTime start
+            LocalDateTime end
     }
 
 
@@ -79,6 +82,7 @@ AttendanceService --> AttendanceRepository
 Attendance --> AttendanceTime
 Attendance --> WorkDuration
 Attendance --> OverWorkDuration
+Attendance --> AttendanceDate
 AttendanceRepositoryCsv --> AttendanceMapperCsv
 
 
