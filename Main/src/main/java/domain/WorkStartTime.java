@@ -3,13 +3,11 @@ package domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 public class WorkStartTime {
     @Getter
-    private final Integer startTime;
-    @Getter
-    private final Integer startH;
-    @Getter
-    private final Integer startM;
+    Integer value;
 
+    public WorkStartTime(Integer value){
+        this.value = value;
+    }
 }

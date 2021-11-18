@@ -3,10 +3,11 @@ package api;
 import service.KintaiRegisterService;
 
 public class KintaiRegitsterApi {
+    private KintaiRegisterService kintaiRegisterService;
 
-    public static void kintaRegisterApi(KintaiRegisterRequest request) {
-        KintaiRegisterService kintaiService = new KintaiRegisterService();
-        kintaiService.kintaiRegisterService(
+    public void kintaRegisterApi(KintaiRegisterRequest request) {
+        kintaiRegisterService = new KintaiRegisterService();
+        kintaiRegisterService.kintaiRegisterService(
                 request.getWorkDay(),
                 request.getWorkStartTime(),
                 request.getWorkEndTime()

@@ -1,16 +1,9 @@
-import api.Form.TotallyMonthForm;
 import api.KintaiCountUpApi;
 import api.KintaiCountUpRequest;
 import api.KintaiRegisterRequest;
 import api.KintaiRegitsterApi;
-import domain.TotallyMonth;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 public class Main {
-    @Autowired
-    KintaiRegisterRequest kintaiRegisterRequest;
 
     public static void main(String[] args) {
 
@@ -25,15 +18,16 @@ public class Main {
                     throw new RuntimeException("引数が足りません");
                 }
                 KintaiRegisterRequest kintaiRegisterRequest = new KintaiRegisterRequest(args);
-                KintaiRegitsterApi.kintaRegisterApi(kintaiRegisterRequest);
+                KintaiRegitsterApi kintaiRegitsterApi = new KintaiRegitsterApi();
+                kintaiRegitsterApi.kintaRegisterApi(kintaiRegisterRequest);
 
             } else if ("total".equals(methodType)) {
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
                 KintaiCountUpRequest kintaiCountUpRequest = new KintaiCountUpRequest(args);
-                //依存が逆転しているような
-                KintaiCountUpApi.coutupApi(kintaiCountUpRequest);
+                KintaiCountUpApi kintaiCountUpApi = new KintaiCountUpApi();
+                kintaiCountUpApi.coutupApi(kintaiCountUpRequest);
 
             } else {
                 throw new RuntimeException("methodTypeが不正です");

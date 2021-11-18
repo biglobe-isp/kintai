@@ -3,44 +3,35 @@ package api;
 import api.Form.WorkDayForm;
 import api.Form.WorkEndTimeForm;
 import api.Form.WorkStartTimeForm;
-import com.sun.istack.internal.NotNull;
 import domain.WorkDay;
 import domain.WorkEndTime;
 import domain.WorkStartTime;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
-@ToString(includeFieldNames = false)
-@EqualsAndHashCode
 public class KintaiRegisterRequest {
-    private String date;
-    private String start;
-    private String end;
 
     private WorkDayForm workDayForm;
     private WorkStartTimeForm workStartTimeForm;
     private WorkEndTimeForm workEndTimeForm;
 
     public KintaiRegisterRequest(String[] args) {
-        String date = args[1];
-        String start = args[2];
-        String end = args[3];
+        this.workDayForm = new WorkDayForm(args[1]);
+        this.workStartTimeForm = new WorkStartTimeForm(args[2]);
+        this.workEndTimeForm = new WorkEndTimeForm(args[3]);
     }
 
-    @Getter
     public WorkDay getWorkDay() {
-        return workDayForm.getValueObject(date);
+        workDayForm.validationCheck();
+        return new WorkDay(Integer.valueOf(workDayForm.value));
     }
 
-    @Getter
     public WorkStartTime getWorkStartTime() {
-        return workStartTimeForm.getValueObject(start);
+        workStartTimeForm.validationCheck();
+        return new WorkStartTime(Integer.valueOf(workStartTimeForm.value));
     }
 
-    @Getter
     public WorkEndTime getWorkEndTime() {
-        return workEndTimeForm.getValueObject(end);
+        workEndTimeForm.validationCheck();
+        return new WorkEndTime(Integer.valueOf(workStartTimeForm.value));
     }
 
 }

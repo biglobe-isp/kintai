@@ -3,6 +3,7 @@ package datasource;
 
 import domain.KintaiRegisterRepositoryFile;
 import domain.OverWorkTime;
+import domain.TotallyMonth;
 import domain.WorkDay;
 import domain.WorkEndTime;
 import domain.WorkStartTime;
@@ -21,6 +22,7 @@ public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositor
 
     @Override
     public void regist(
+            //try-catchはここでやるべきなのか？
             WorkDay workDay,
             WorkStartTime workStartTime,
             WorkEndTime workEndTime,
@@ -32,8 +34,8 @@ public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositor
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     workDay.getValue(),
-                    workStartTime.getStartTime(),
-                    workEndTime.getEndTime(),
+                    workStartTime.getValue(),
+                    workEndTime.getValue(),
                     workTime.getValue(),
                     overWorkTime.getValue(),
                     now
@@ -45,8 +47,8 @@ public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositor
     }
 
     @Override
-    public void countUp(String value) {
-        String yearMonth = value;
+    public void countUp(TotallyMonth totallyMonth) {
+        String yearMonth = totallyMonth.getValue();
         int totalWorkMinutes = 0;
         int totalOverWorkMinutes = 0;
 
@@ -76,6 +78,7 @@ public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositor
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
+            //ここがDataSourceにあるのは変そう
             System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
             System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
         } catch (Exception e) {
