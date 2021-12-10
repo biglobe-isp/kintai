@@ -1,13 +1,12 @@
 package api.Form;
 
+import lombok.Getter;
+
 public class TotallyMonthForm {
-    public String value;
+    @Getter
+    private String value;
 
     public TotallyMonthForm(String value) {
         this.value = value;
-    }
-
-    public void validationCheck(){
-        //ここなにをチェックすればいいんだろう
     }
 }

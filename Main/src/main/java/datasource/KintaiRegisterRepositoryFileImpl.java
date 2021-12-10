@@ -21,7 +21,8 @@ import java.util.Set;
 public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositoryFile {
 
     @Override
-    public void regist(
+    //regist という名前はない
+    public void register(
             //try-catchはここでやるべきなのか？
             WorkDay workDay,
             WorkStartTime workStartTime,
@@ -78,7 +79,7 @@ public class KintaiRegisterRepositoryFileImpl implements KintaiRegisterRepositor
                 totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
             }
 
-            //ここがDataSourceにあるのは変そう
+            //ここがDataSourceにあるのは変そう->編ではなさそう
             System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
             System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
         } catch (Exception e) {

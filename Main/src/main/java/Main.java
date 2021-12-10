@@ -6,6 +6,7 @@ import api.KintaiRegitsterApi;
 public class Main {
 
     public static void main(String[] args) {
+        //メソッドタイプだけのif文にしたい
 
         try {
             if (args.length < 1) {

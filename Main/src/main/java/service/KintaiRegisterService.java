@@ -1,6 +1,5 @@
 package service;
 
-import datasource.KintaiRegisterRepositoryFileImpl;
 import domain.KintaiRegisterRepositoryFile;
 import domain.OverWorkTime;
 import domain.WorkDay;
@@ -9,13 +8,17 @@ import domain.WorkStartTime;
 import domain.WorkTime;
 
 public class KintaiRegisterService {
+    //フィールドにRepo持たせてほしい
+    //serviceにdatasourceがあらわれてるのはおかしい（import)
+    //calを使う場合どうやったら0を渡さずに作るか。もしできなさそうであればクラス図を変えて良い。ただクラスを増やしたり構成を変えたりせずに
+
+    private KintaiRegisterRepositoryFile kintaiRegisterRepositoryFile;
 
     public void kintaiRegisterService(WorkDay workDay, WorkStartTime workStartTime, WorkEndTime workEndTime) {
-        KintaiRegisterRepositoryFile kintaiRegisterRepositoryFile = new KintaiRegisterRepositoryFileImpl();
         WorkTime workTime = new WorkTime(0);
         OverWorkTime overWorkTime = new OverWorkTime(0);
 
-        kintaiRegisterRepositoryFile.regist(
+        kintaiRegisterRepositoryFile.register(
                 workDay,
                 workStartTime,
                 workEndTime,
