@@ -23,3 +23,15 @@ hs_err_pid*
 
 # IntelliJ
 .idea/
+
+# Compiled Code
+out
+
+# data
+data.csv
+
+# iml
+*.iml
+
+
+
