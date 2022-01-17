@@ -4,9 +4,17 @@ import datasource.CSVWorkRecordRepository;
 import service.TotalWorkMinutesModel;
 import service.WorkRecordApplicationService;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public final class Main {
     private static final WorkRecordApplicationService WORK_RECORD_APPLICATION_SERVICE
             = new WorkRecordApplicationService(new CSVWorkRecordRepository());
+
+    private static final Pattern DATE_PATTERN = Pattern.compile("(?<year>\\d{4})(?<month>\\d{2})(?<day>\\d{2})");
+    private static final Pattern START_TIME_PATTERN = Pattern.compile("(?<hours>\\d{2})(?<minutes>\\d{2})");
+    private static final Pattern END_TIME_PATTERN = Pattern.compile("(?<hours>\\d{2})(?<minutes>\\d{2})");
+    private static final Pattern YEAR_MONTH_PATTERN = Pattern.compile("(?<year>\\d{4})(?<month>\\d{2})");
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -41,32 +49,49 @@ public final class Main {
         int totalWorkMinutes = totalWorkMinutesModel.getTotalWorkMinutes();
         int totalOverWorkMinutes = totalWorkMinutesModel.getTotalOverWorkMinutes();
 
-        System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-        System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
+        int minuetsPerHour = 60;
+        System.out.println("勤務時間: " + totalWorkMinutes / minuetsPerHour + "時間" + totalWorkMinutes % minuetsPerHour + "分");
+        System.out.println("残業時間: " + totalOverWorkMinutes / minuetsPerHour + "時間" + totalOverWorkMinutes % minuetsPerHour + "分");
     }
 
     private static int[] parseDate(String dateAsText) {
-        int year = Integer.parseInt(dateAsText.substring(0, 4));
-        int month = Integer.parseInt(dateAsText.substring(4, 6));
-        int day = Integer.parseInt(dateAsText.substring(6, 8));
+        Matcher dateMatcher = DATE_PATTERN.matcher(dateAsText);
+        if (!dateMatcher.matches()) {
+            throw new IllegalArgumentException("年月日はYYYYMMDDの形式で入力してください。");
+        }
+        int year = Integer.parseInt(dateMatcher.group("year"));
+        int month = Integer.parseInt(dateMatcher.group("month"));
+        int day = Integer.parseInt(dateMatcher.group("day"));
         return new int[]{year, month, day};
     }
 
     private static int[] parseStartTime(String startTimeAsText) {
-        int startHour = Integer.parseInt(startTimeAsText.substring(0, 2));
-        int startMinutes = Integer.parseInt(startTimeAsText.substring(2, 4));
+        Matcher startTimeMatcher = START_TIME_PATTERN.matcher(startTimeAsText);
+        if (!startTimeMatcher.matches()) {
+            throw new IllegalArgumentException("勤務開始時刻はhhmmの形式で入力してください。");
+        }
+        int startHour = Integer.parseInt(startTimeMatcher.group("hours"));
+        int startMinutes = Integer.parseInt(startTimeMatcher.group("minutes"));
         return new int[]{startHour, startMinutes};
     }
 
     private static int[] parseEndTime(String endTimeAsText) {
-        int endHour = Integer.parseInt(endTimeAsText.substring(0, 2));
-        int endMinutes = Integer.parseInt(endTimeAsText.substring(2, 4));
+        Matcher endTimeMatcher = END_TIME_PATTERN.matcher(endTimeAsText);
+        if (!endTimeMatcher.matches()) {
+            throw new IllegalArgumentException("勤務終了時刻はhhmmの形式で入力してください。");
+        }
+        int endHour = Integer.parseInt(endTimeMatcher.group("hours"));
+        int endMinutes = Integer.parseInt(endTimeMatcher.group("minutes"));
         return new int[]{endHour, endMinutes};
     }
 
     private static int[] parseYearMonth(String yearMonthAsText) {
-        int year = Integer.parseInt(yearMonthAsText.substring(0, 4));
-        int month = Integer.parseInt(yearMonthAsText.substring(4, 6));
+        Matcher yearMonthMatcher = YEAR_MONTH_PATTERN.matcher(yearMonthAsText);
+        if (!yearMonthMatcher.matches()) {
+            throw new IllegalArgumentException("年月はYYYYMMの形式で入力してください。");
+        }
+        int year = Integer.parseInt(yearMonthMatcher.group("year"));
+        int month = Integer.parseInt(yearMonthMatcher.group("month"));
         return new int[]{year, month};
     }
 }
