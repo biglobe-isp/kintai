@@ -30,3 +30,6 @@ hs_err_pid*
 # output file
 build/
 out/
+
+# 勤怠記録用のcsvファイル
+data.csv
