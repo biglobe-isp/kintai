@@ -61,29 +61,31 @@ public class WorkTime {
     }
 
     private int computeWholeMinutes() {
-        return (endHour - startHour) * MINUTES_PER_HOUR + endMinutes - startMinutes;
+        return computeDifferenceBetween(startHour, startMinutes, endHour, endMinutes);
     }
 
     private int computeBreakTimeMinutes() {
         int breakTimeMinutes = 0;
-        if (endHour == 12) {
-            breakTimeMinutes += endMinutes;
-        } else if (endHour >= 13) {
-            breakTimeMinutes += MINUTES_PER_HOUR;
-        }
-
-        if (endHour == 18) {
-            breakTimeMinutes += endMinutes;
-        } else if (endHour >= 19) {
-            breakTimeMinutes += MINUTES_PER_HOUR;
-        }
-
-        if (endHour == 21) {
-            breakTimeMinutes += endMinutes;
-        } else if (endHour >= 22) {
-            breakTimeMinutes += MINUTES_PER_HOUR;
-        }
+        breakTimeMinutes += computeEachBreakTimeMinutes(12, 0, 13, 0);
+        breakTimeMinutes += computeEachBreakTimeMinutes(18, 0, 19, 0);
+        breakTimeMinutes += computeEachBreakTimeMinutes(21, 0, 22, 0);
         return breakTimeMinutes;
+    }
+
+    private int computeEachBreakTimeMinutes(
+            int breakTimeStartHour,
+            int breakTimeStartMinuets,
+            int breakTimeEndHour,
+            int breakTimeEndMinutes
+    ) {
+        return Math.min(
+                Math.max(computeDifferenceBetween(breakTimeStartHour, breakTimeStartMinuets, endHour, endMinutes), 0),
+                computeDifferenceBetween(breakTimeStartHour, breakTimeStartMinuets, breakTimeEndHour, breakTimeEndMinutes)
+        );
+    }
+
+    private int computeDifferenceBetween(int fromHour, int fromMinutes, int toHour, int toMinutes) {
+        return (toHour - fromHour) * MINUTES_PER_HOUR + toMinutes - fromMinutes;
     }
 
 }
