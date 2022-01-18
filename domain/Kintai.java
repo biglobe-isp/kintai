@@ -34,6 +34,16 @@ public class Kintai {
             workMinutes -= 60;
         }
 
+        int date = Integer.valueOf(kintaiDate.getValue());
+        int restIncreaseStartDay = 20220215;
+        if(date >= restIncreaseStartDay) {
+            if (endH == 15) {
+                workMinutes -= endM;
+            } else if (endH >= 16) {
+                workMinutes -= 60;
+            }
+        }
+
         if (endH == 18) {
             workMinutes -= endM;
         } else if (endH >= 19) {
