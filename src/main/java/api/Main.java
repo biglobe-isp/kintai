@@ -34,6 +34,9 @@ public final class Main {
     }
 
     private static void inputWorkRecord(String[] args) {
+        if (args.length != 4) {
+            throw new IllegalArgumentException("引数はちょうど４つ必要です。");
+        }
         int[] date = parseDate(args[1]);
         int[] start = parseStartTime(args[2]);
         int[] end = parseEndTime(args[3]);
@@ -43,6 +46,9 @@ public final class Main {
     }
 
     private static void showTotalWorkMinutes(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException("引数はちょうど２つ必要です。");
+        }
         int[] yearMonth = parseYearMonth(args[1]);
 
         TotalWorkMinutesModel totalWorkMinutesModel = WORK_RECORD_APPLICATION_SERVICE.computeTotalWorkMinutes(yearMonth[0], yearMonth[1]);
