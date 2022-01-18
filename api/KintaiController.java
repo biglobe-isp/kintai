@@ -5,6 +5,7 @@ import com.naosim.dddwork.domain.IKintaiRepository;
 import com.naosim.dddwork.domain.KintaiTotalModel;
 import com.naosim.dddwork.service.KintaiApplicationService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class KintaiController {
 
             String methodType = args[0];
             if ("input".equals(methodType)) {
-                if (args.length < 4) {
+                if (args.length < 3) {
                     throw new RuntimeException("引数が足りません");
                 }
                 Map<String, String> argsMap = this.getOptionArgs(args);
@@ -65,6 +66,15 @@ public class KintaiController {
 
         Map<String, String> argsMap = new HashMap<>();
 
+        if (Arrays.asList(args).contains("v")) {
+            argsMap.put("-start", "0900");
+            argsMap.put("-end", "1800");
+        } else if (Arrays.asList(args).contains("am")) {
+            argsMap.put("-start", "0900");
+        } else if (Arrays.asList(args).contains("pm")) {
+            argsMap.put("-end", "1800");
+        }
+
         for (String arg : args) {
             String[] param = arg.split(":");
             switch (param[0]) {
@@ -78,6 +88,9 @@ public class KintaiController {
                     argsMap.put("-end", param[1].replace("_", ""));
                     break;
                 case "input":
+                case "v":
+                case "am":
+                case "pm":
                     break;
                 default:
                     throw new RuntimeException("誤った引数が指定されています");
