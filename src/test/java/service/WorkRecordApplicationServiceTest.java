@@ -12,6 +12,29 @@ public class WorkRecordApplicationServiceTest {
 
     @Test
     public void computeTotalWorkMinutes() {
+        assertComputeTotalWorkMinutes(2021, 1, 0, 0);
+        assertComputeTotalWorkMinutes(2021, 2, 0, 0);
+        workRecordApplicationService.inputWorkRecord(2021, 1, 14, 9, 0, 18, 0);
+        assertComputeTotalWorkMinutes(2021, 1, 480, 0);
+        workRecordApplicationService.inputWorkRecord(2021, 1, 15, 9, 0, 21, 0);
+        assertComputeTotalWorkMinutes(2021, 1, 1080, 120);
+
+        assertComputeTotalWorkMinutes(2021, 2, 0, 0);
+        workRecordApplicationService.inputWorkRecord(2021, 2, 14, 9, 0, 18, 0);
+        assertComputeTotalWorkMinutes(2021, 2, 480, 0);
+        workRecordApplicationService.inputWorkRecord(2021, 2, 15, 9, 0, 21, 0);
+        assertComputeTotalWorkMinutes(2021, 2, 1080, 120);
+
+        assertComputeTotalWorkMinutes(2021, 1, 1080, 120);
+
+        assertComputeTotalWorkMinutes(2021, 3, 0, 0);
+        workRecordApplicationService.inputWorkRecord(2021, 3, 14, 5, 0, 20, 0);
+        assertComputeTotalWorkMinutes(2021, 3, 780, 300);
+        workRecordApplicationService.inputWorkRecord(2021, 3, 15, 5, 0, 23, 0);
+        assertComputeTotalWorkMinutes(2021, 3, 1680, 720);
+
+
+        
         assertComputeTotalWorkMinutes(2022, 1, 0, 0);
         assertComputeTotalWorkMinutes(2022, 2, 0, 0);
         workRecordApplicationService.inputWorkRecord(2022, 1, 14, 9, 0, 18, 0);
@@ -23,15 +46,15 @@ public class WorkRecordApplicationServiceTest {
         workRecordApplicationService.inputWorkRecord(2022, 2, 14, 9, 0, 18, 0);
         assertComputeTotalWorkMinutes(2022, 2, 480, 0);
         workRecordApplicationService.inputWorkRecord(2022, 2, 15, 9, 0, 21, 0);
-        assertComputeTotalWorkMinutes(2022, 2, 1080, 120);
+        assertComputeTotalWorkMinutes(2022, 2, 1020, 60);
 
         assertComputeTotalWorkMinutes(2022, 1, 1080, 120);
 
         assertComputeTotalWorkMinutes(2022, 3, 0, 0);
         workRecordApplicationService.inputWorkRecord(2022, 3, 14, 5, 0, 20, 0);
-        assertComputeTotalWorkMinutes(2022, 3, 780, 300);
+        assertComputeTotalWorkMinutes(2022, 3, 720, 240);
         workRecordApplicationService.inputWorkRecord(2022, 3, 15, 5, 0, 23, 0);
-        assertComputeTotalWorkMinutes(2022, 3, 1680, 720);
+        assertComputeTotalWorkMinutes(2022, 3, 1560, 600);
     }
 
     private void assertComputeTotalWorkMinutes(int year, int month, int expectedWorkMinutes, int expectedOverWorkMinutes) {

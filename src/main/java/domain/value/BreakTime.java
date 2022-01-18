@@ -38,11 +38,20 @@ public final class BreakTime {
         this.endMinutes = endMinutes;
     }
 
-    public static BreakTime[] getBreakTimes() {
-        return new BreakTime[]{
-                new BreakTime(12, 0, 13, 0),
-                new BreakTime(18, 0, 19, 0),
-                new BreakTime(21, 0, 22, 0)
-        };
+    public static BreakTime[] getBreakTimes(WorkDate workDate) {
+        if (workDate.isBefore(new WorkDate(2022, 2, 15))) {
+            return new BreakTime[]{
+                    new BreakTime(12, 0, 13, 0),
+                    new BreakTime(18, 0, 19, 0),
+                    new BreakTime(21, 0, 22, 0)
+            };
+        } else {
+            return new BreakTime[]{
+                    new BreakTime(12, 0, 13, 0),
+                    new BreakTime(15, 0, 16, 0),
+                    new BreakTime(18, 0, 19, 0),
+                    new BreakTime(21, 0, 22, 0)
+            };
+        }
     }
 }

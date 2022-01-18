@@ -39,7 +39,7 @@ public final class WorkRecord {
 
     private int computeWorkMinutesInternally() {
         int workMinutes = this.workTime.getWholeMinutes();
-        for (BreakTime breakTime: BreakTime.getBreakTimes()) {
+        for (BreakTime breakTime: BreakTime.getBreakTimes(this.workDate)) {
             workMinutes -= this.workTime.computeEachBreakMinutes(breakTime);
         }
         return workMinutes;

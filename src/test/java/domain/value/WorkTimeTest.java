@@ -32,7 +32,7 @@ public class WorkTimeTest {
 
     @Test
     public void computeEachBreakMinutes() {
-        BreakTime[] breakTimes = BreakTime.getBreakTimes();
+        BreakTime[] breakTimes = BreakTime.getBreakTimes(new WorkDate(2022, 1, 18));
         BreakTime from12To13 = breakTimes[0];
         BreakTime from18To19 = breakTimes[1];
         BreakTime from21To22 = breakTimes[2];

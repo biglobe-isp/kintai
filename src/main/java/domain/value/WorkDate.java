@@ -24,4 +24,8 @@ public final class WorkDate {
     public boolean belongs(WorkYearMonth workYearMonth) {
         return this.workDate.getYear() == workYearMonth.getYear() && this.workDate.getMonthValue() == workYearMonth.getMonth();
     }
+
+    boolean isBefore(WorkDate workDate) {
+        return this.workDate.isBefore(workDate.workDate);
+    }
  }
