@@ -14,10 +14,34 @@ public final class WorkRecordApplicationService {
         this.workRecordRepository = workRecordRepository;
     }
 
-    public void inputWorkRecord(int year, int month, int day, int startHour, int startMinutes, int endHour, int endMinutes) {
+    public void inputAllDayWorkRecord(int year, int month, int day, int startHour, int startMinutes, int endHour, int endMinutes) {
         WorkRecord workRecord = new WorkRecord(
                 new WorkDate(year, month, day),
                 new WorkTime(startHour, startMinutes, endHour, endMinutes)
+        );
+        this.workRecordRepository.save(workRecord);
+    }
+
+    public void inputMorningOffWorkRecord(int year, int month, int day, int endHour, int endMinutes) {
+        WorkRecord workRecord = new WorkRecord(
+                new WorkDate(year, month, day),
+                WorkTime.createMorningOffWorkTime(endHour, endMinutes)
+        );
+        this.workRecordRepository.save(workRecord);
+    }
+
+    public void inputAfternoonOffWorkRecord(int year, int month, int day, int startHour, int startMinutes) {
+        WorkRecord workRecord = new WorkRecord(
+                new WorkDate(year, month, day),
+                WorkTime.createAfternoonOffWorkTime(startHour, startMinutes)
+        );
+        this.workRecordRepository.save(workRecord);
+    }
+
+    public void inputDayOffWorkRecord(int year, int month, int day) {
+        WorkRecord workRecord = new WorkRecord(
+                new WorkDate(year, month, day),
+                WorkTime.createDayOffWorkTime()
         );
         this.workRecordRepository.save(workRecord);
     }

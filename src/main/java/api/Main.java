@@ -16,6 +16,10 @@ public final class Main {
     private static final Pattern END_TIME_PATTERN = Pattern.compile("-end:(?<hours>\\d{2})_(?<minutes>\\d{2})");
     private static final Pattern YEAR_MONTH_PATTERN = Pattern.compile("(?<year>\\d{4})(?<month>\\d{2})");
 
+    private static final Pattern DAY_OFF_PATTERN = Pattern.compile("v");
+    private static final Pattern MORNING_OFF_PATTERN = Pattern.compile("am");
+    private static final Pattern AFTERNOON_OFF_PATTERN = Pattern.compile("pm");
+
     public static void main(String[] args) {
         if (args.length < 1) {
             throw new IllegalArgumentException("引数の数が足りません。");
@@ -34,14 +38,67 @@ public final class Main {
     }
 
     private static void inputWorkRecord(String[] args) {
-        if (args.length != 4) {
-            throw new IllegalArgumentException("引数はちょうど４つ必要です。");
+        switch (args.length) {
+            case 3:
+                inputDayOffWorkRecord(args);
+                break;
+            case 4:
+                classifyArgs(args);
+                break;
+            default:
+                throw new IllegalArgumentException("引数は３つまたは４つ必要です。");
         }
+    }
+
+    private static void inputDayOffWorkRecord(String[] args) {
+        if (!DAY_OFF_PATTERN.matcher(args[2]).matches()) {
+            throw new IllegalArgumentException("休暇はvで入力してください。");
+        }
+        int[] date = parseDate(args[1]);
+        WORK_RECORD_APPLICATION_SERVICE.inputDayOffWorkRecord(date[0], date[1], date[2]);
+        System.out.println("勤怠情報を記録しました。");
+    }
+
+    private static void classifyArgs(String[] args) {
+        boolean isMorningOff = MORNING_OFF_PATTERN.matcher(args[2]).matches();
+        boolean isAfternoonOff = AFTERNOON_OFF_PATTERN.matcher(args[3]).matches();
+        if (isMorningOff) {
+            if (isAfternoonOff) {
+                throw new IllegalArgumentException("午前休と午後休を同時に取らずに休暇を取ってください。");
+            } else {
+                inputMorningOffWorkRecord(args);
+            }
+        } else {
+            if (isAfternoonOff) {
+                inputAfternoonOffWorkRecord(args);
+            } else {
+                inputAllDayWorkRecord(args);
+            }
+        }
+    }
+
+    private static void inputAllDayWorkRecord(String[] args) {
         int[] date = parseDate(args[1]);
         int[] start = parseStartTime(args[2]);
         int[] end = parseEndTime(args[3]);
 
-        WORK_RECORD_APPLICATION_SERVICE.inputWorkRecord(date[0], date[1], date[2], start[0], start[1], end[0], end[1]);
+        WORK_RECORD_APPLICATION_SERVICE.inputAllDayWorkRecord(date[0], date[1], date[2], start[0], start[1], end[0], end[1]);
+        System.out.println("勤怠情報を記録しました。");
+    }
+
+    private static void inputMorningOffWorkRecord(String[] args) {
+        int[] date = parseDate(args[1]);
+        int[] end = parseEndTime(args[3]);
+
+        WORK_RECORD_APPLICATION_SERVICE.inputMorningOffWorkRecord(date[0], date[1], date[2], end[0], end[1]);
+        System.out.println("勤怠情報を記録しました。");
+    }
+
+    private static void inputAfternoonOffWorkRecord(String[] args) {
+        int[] date = parseDate(args[1]);
+        int[] start = parseStartTime(args[2]);
+
+        WORK_RECORD_APPLICATION_SERVICE.inputAfternoonOffWorkRecord(date[0], date[1], date[2], start[0], start[1]);
         System.out.println("勤怠情報を記録しました。");
     }
 

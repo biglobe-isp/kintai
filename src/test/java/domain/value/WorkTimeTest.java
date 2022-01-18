@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class WorkTimeTest {
 
@@ -70,5 +70,20 @@ public class WorkTimeTest {
 
     private void assertComputeEachBreakMinutes(int endHour, int endMinutes, BreakTime breakTime, int expected) {
         assertThat(new WorkTime(0, 0, endHour, endMinutes).computeEachBreakMinutes(breakTime), is(equalTo(expected)));
+    }
+
+    @Test
+    public void createDayOffWorkTime() {
+        assertThat(WorkTime.createDayOffWorkTime(), is(equalTo(new WorkTime(9, 0, 18, 0))));
+    }
+
+    @Test
+    public void createMorningOffWorkTime() {
+        assertThat(WorkTime.createMorningOffWorkTime(21, 0), is(equalTo(new WorkTime(9, 0, 21, 0))));
+    }
+
+    @Test
+    public void createAfternoonOffWorkTime() {
+        assertThat(WorkTime.createAfternoonOffWorkTime(7, 0), is(equalTo(new WorkTime(7, 0, 18, 0))));
     }
 }

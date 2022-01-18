@@ -50,6 +50,21 @@ public class WorkTime {
         return computeDifferenceBetween(startHour, startMinutes, endHour, endMinutes);
     }
 
+    public static WorkTime createDayOffWorkTime() {
+        return new WorkTime(9, 0, 18, 0);
+    }
+
+    public static WorkTime createMorningOffWorkTime(int endHour, int endMinutes) {
+        if (endHour < 12) {
+            throw new IllegalArgumentException("午前休をとる場合勤務終了は１２時以降である必要があります。");
+        }
+        return new WorkTime(9, 0, endHour, endMinutes);
+    }
+
+    public static WorkTime createAfternoonOffWorkTime(int startHour, int startMinutes) {
+        return new WorkTime(startHour, startMinutes, 18, 0);
+    }
+
     public int computeEachBreakMinutes(BreakTime breakTime) {
         final int breakTimeStartHour = breakTime.getStartHour();
         final int breakTimeStartMinutes = breakTime.getStartMinutes();
