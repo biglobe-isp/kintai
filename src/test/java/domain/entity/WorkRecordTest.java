@@ -1,6 +1,8 @@
 package domain.entity;
 
+import domain.value.OverWorkMinutes;
 import domain.value.WorkDate;
+import domain.value.WorkMinutes;
 import domain.value.WorkTime;
 import org.junit.Test;
 
@@ -9,7 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class WorkRecordTest {
-    private WorkDate WORK_DATA = new WorkDate(2022, 1, 13);
+    private WorkDate WORK_DATE = new WorkDate(2022, 1, 13);
 
     @Test
     public void getWorkDateString() {
@@ -35,72 +37,72 @@ public class WorkRecordTest {
 
     @Test
     public void computeComputeWorkMinutes() {
-        assertComputeWorkMinutes(0, 0, 18, 0, 1020);
-        assertComputeWorkMinutes(0, 1, 18, 0, 1019);
-        assertComputeWorkMinutes(8, 59, 18, 0, 481);
-        assertComputeWorkMinutes(9, 0, 18, 0, 480);
+        assertComputeWorkMinutes(0, 0, 18, 0, new WorkMinutes(1020));
+        assertComputeWorkMinutes(0, 1, 18, 0, new WorkMinutes(1019));
+        assertComputeWorkMinutes(8, 59, 18, 0, new WorkMinutes(481));
+        assertComputeWorkMinutes(9, 0, 18, 0, new WorkMinutes(480));
 
-        assertComputeWorkMinutes(9, 0, 11, 59, 179);
-        assertComputeWorkMinutes(9, 0, 12, 0, 180);
-        assertComputeWorkMinutes(9, 0, 12, 1, 180);
-        assertComputeWorkMinutes(9, 0, 12, 59, 180);
-        assertComputeWorkMinutes(9, 0, 13, 0, 180);
-        assertComputeWorkMinutes(9, 0, 13, 1, 181);
-        assertComputeWorkMinutes(9, 0, 17, 59, 479);
-        assertComputeWorkMinutes(9, 0, 18, 0, 480);
-        assertComputeWorkMinutes(9, 0, 18, 1, 480);
-        assertComputeWorkMinutes(9, 0, 18, 59, 480);
-        assertComputeWorkMinutes(9, 0, 19, 0, 480);
-        assertComputeWorkMinutes(9, 0, 19, 1, 481);
-        assertComputeWorkMinutes(9, 0, 20, 59, 599);
-        assertComputeWorkMinutes(9, 0, 21, 0, 600);
-        assertComputeWorkMinutes(9, 0, 21, 1, 600);
-        assertComputeWorkMinutes(9, 0, 21, 59, 600);
-        assertComputeWorkMinutes(9, 0, 22, 0, 600);
-        assertComputeWorkMinutes(9, 0, 22, 1, 601);
-        assertComputeWorkMinutes(9, 0, 23, 59, 719);
-        assertComputeWorkMinutes(9, 0, 24, 0, 720);
+        assertComputeWorkMinutes(9, 0, 11, 59, new WorkMinutes(179));
+        assertComputeWorkMinutes(9, 0, 12, 0, new WorkMinutes(180));
+        assertComputeWorkMinutes(9, 0, 12, 1, new WorkMinutes(180));
+        assertComputeWorkMinutes(9, 0, 12, 59, new WorkMinutes(180));
+        assertComputeWorkMinutes(9, 0, 13, 0, new WorkMinutes(180));
+        assertComputeWorkMinutes(9, 0, 13, 1, new WorkMinutes(181));
+        assertComputeWorkMinutes(9, 0, 17, 59, new WorkMinutes(479));
+        assertComputeWorkMinutes(9, 0, 18, 0, new WorkMinutes(480));
+        assertComputeWorkMinutes(9, 0, 18, 1, new WorkMinutes(480));
+        assertComputeWorkMinutes(9, 0, 18, 59, new WorkMinutes(480));
+        assertComputeWorkMinutes(9, 0, 19, 0, new WorkMinutes(480));
+        assertComputeWorkMinutes(9, 0, 19, 1, new WorkMinutes(481));
+        assertComputeWorkMinutes(9, 0, 20, 59, new WorkMinutes(599));
+        assertComputeWorkMinutes(9, 0, 21, 0, new WorkMinutes(600));
+        assertComputeWorkMinutes(9, 0, 21, 1, new WorkMinutes(600));
+        assertComputeWorkMinutes(9, 0, 21, 59, new WorkMinutes(600));
+        assertComputeWorkMinutes(9, 0, 22, 0, new WorkMinutes(600));
+        assertComputeWorkMinutes(9, 0, 22, 1, new WorkMinutes(601));
+        assertComputeWorkMinutes(9, 0, 23, 59, new WorkMinutes(719));
+        assertComputeWorkMinutes(9, 0, 24, 0, new WorkMinutes(720));
     }
 
     @Test
     public void computeComputeOverWorkMinutes() {
-        assertComputeOverWorkMinutes(0, 0, 18, 0, 540);
-        assertComputeOverWorkMinutes(0, 1, 18, 0, 539);
-        assertComputeOverWorkMinutes(8, 59, 18, 0, 1);
-        assertComputeOverWorkMinutes(9, 0, 18, 0, 0);
+        assertComputeOverWorkMinutes(0, 0, 18, 0, new OverWorkMinutes(540));
+        assertComputeOverWorkMinutes(0, 1, 18, 0, new OverWorkMinutes(539));
+        assertComputeOverWorkMinutes(8, 59, 18, 0, new OverWorkMinutes(1));
+        assertComputeOverWorkMinutes(9, 0, 18, 0, new OverWorkMinutes(0));
 
-        assertComputeOverWorkMinutes(9, 0, 11, 59, 0);
-        assertComputeOverWorkMinutes(9, 0, 12, 0, 0);
-        assertComputeOverWorkMinutes(9, 0, 12, 1, 0);
-        assertComputeOverWorkMinutes(9, 0, 12, 59, 0);
-        assertComputeOverWorkMinutes(9, 0, 13, 0, 0);
-        assertComputeOverWorkMinutes(9, 0, 13, 1, 0);
-        assertComputeOverWorkMinutes(9, 0, 17, 59, 0);
-        assertComputeOverWorkMinutes(9, 0, 18, 0, 0);
-        assertComputeOverWorkMinutes(9, 0, 18, 1, 0);
-        assertComputeOverWorkMinutes(9, 0, 18, 59, 0);
-        assertComputeOverWorkMinutes(9, 0, 19, 0, 0);
-        assertComputeOverWorkMinutes(9, 0, 19, 1, 1);
-        assertComputeOverWorkMinutes(9, 0, 20, 59, 119);
-        assertComputeOverWorkMinutes(9, 0, 21, 0, 120);
-        assertComputeOverWorkMinutes(9, 0, 21, 1, 120);
-        assertComputeOverWorkMinutes(9, 0, 21, 59, 120);
-        assertComputeOverWorkMinutes(9, 0, 22, 0, 120);
-        assertComputeOverWorkMinutes(9, 0, 22, 1, 121);
-        assertComputeOverWorkMinutes(9, 0, 23, 59, 239);
-        assertComputeOverWorkMinutes(9, 0, 24, 0, 240);
+        assertComputeOverWorkMinutes(9, 0, 11, 59, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 12, 0, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 12, 1, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 12, 59, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 13, 0, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 13, 1, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 17, 59, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 18, 0, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 18, 1, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 18, 59, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 19, 0, new OverWorkMinutes(0));
+        assertComputeOverWorkMinutes(9, 0, 19, 1, new OverWorkMinutes(1));
+        assertComputeOverWorkMinutes(9, 0, 20, 59, new OverWorkMinutes(119));
+        assertComputeOverWorkMinutes(9, 0, 21, 0, new OverWorkMinutes(120));
+        assertComputeOverWorkMinutes(9, 0, 21, 1, new OverWorkMinutes(120));
+        assertComputeOverWorkMinutes(9, 0, 21, 59, new OverWorkMinutes(120));
+        assertComputeOverWorkMinutes(9, 0, 22, 0, new OverWorkMinutes(120));
+        assertComputeOverWorkMinutes(9, 0, 22, 1, new OverWorkMinutes(121));
+        assertComputeOverWorkMinutes(9, 0, 23, 59, new OverWorkMinutes(239));
+        assertComputeOverWorkMinutes(9, 0, 24, 0, new OverWorkMinutes(240));
     }
 
-    private void assertComputeWorkMinutes(int startHour, int startMinutes, int endHour, int endMinutes, int expected) {
+    private void assertComputeWorkMinutes(int startHour, int startMinutes, int endHour, int endMinutes, WorkMinutes expected) {
         assertThat(
-                new WorkRecord(WORK_DATA, new WorkTime(startHour, startMinutes, endHour, endMinutes)).computeWorkMinutes().getValue(),
+                new WorkRecord(WORK_DATE, new WorkTime(startHour, startMinutes, endHour, endMinutes)).computeWorkMinutes(),
                 is(equalTo(expected))
         );
     }
 
-    private void assertComputeOverWorkMinutes(int startHour, int startMinutes, int endHour, int endMinutes, int expected) {
+    private void assertComputeOverWorkMinutes(int startHour, int startMinutes, int endHour, int endMinutes, OverWorkMinutes expected) {
         assertThat(
-                new WorkRecord(WORK_DATA, new WorkTime(startHour, startMinutes, endHour, endMinutes)).computeOverWorkMinutes().getValue(),
+                new WorkRecord(WORK_DATE, new WorkTime(startHour, startMinutes, endHour, endMinutes)).computeOverWorkMinutes(),
                 is(equalTo(expected))
         );
     }
