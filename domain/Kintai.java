@@ -7,9 +7,9 @@ public class Kintai {
     private KintaiDate kintaiDate;
     private KintaiStart kintaiStart;
     private KintaiEnd kintaiEnd;
-    public KintaiRegisterTime kintaiRegisterTime;
-    public KintaiWorkMinutes workMinutes;
-    public KintaiOverWorkMinutes overOverWorkMinutes;
+    private KintaiRegisterTime kintaiRegisterTime;
+    private KintaiWorkMinutes workMinutes;
+    private KintaiOverWorkMinutes overOverWorkMinutes;
 
     public Kintai(KintaiDate kintaiDate, KintaiStart kintaiStart, KintaiEnd kintaiEnd) {
         this.kintaiDate = kintaiDate;
