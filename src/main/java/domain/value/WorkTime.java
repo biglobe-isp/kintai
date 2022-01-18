@@ -46,46 +46,20 @@ public class WorkTime {
         return String.format("%02d%02d", endHour, endMinutes);
     }
 
-    public WorkMinutes computeWorkMinutes() {
-        return new WorkMinutes(computeWorkMinutesInternally());
-    }
-
-    public OverWorkMinutes computeOverWorkMinutes() {
-        int normalWorkHour = 8;
-        int normalWorkMinutes = normalWorkHour * MINUTES_PER_HOUR;
-        return new OverWorkMinutes(Math.max(this.computeWorkMinutesInternally() - normalWorkMinutes, 0));
-    }
-
-    private int computeWorkMinutesInternally() {
-        return computeWholeMinutes() - computeBreakTimeMinutes();
-    }
-
-    private int computeWholeMinutes() {
+    public int getWholeMinutes() {
         return computeDifferenceBetween(startHour, startMinutes, endHour, endMinutes);
     }
 
-    private int computeBreakTimeMinutes() {
-        int breakTimeMinutes = 0;
-        breakTimeMinutes += computeEachBreakTimeMinutes(12, 0, 13, 0);
-        breakTimeMinutes += computeEachBreakTimeMinutes(18, 0, 19, 0);
-        breakTimeMinutes += computeEachBreakTimeMinutes(21, 0, 22, 0);
-        return breakTimeMinutes;
-    }
-
-    private int computeEachBreakTimeMinutes(
-            int breakTimeStartHour,
-            int breakTimeStartMinuets,
-            int breakTimeEndHour,
-            int breakTimeEndMinutes
-    ) {
+    public int computeEachBreakMinutes(BreakTime breakTime) {
+        final int breakTimeStartHour = breakTime.getStartHour();
+        final int breakTimeStartMinutes = breakTime.getStartMinutes();
         return Math.min(
-                Math.max(computeDifferenceBetween(breakTimeStartHour, breakTimeStartMinuets, endHour, endMinutes), 0),
-                computeDifferenceBetween(breakTimeStartHour, breakTimeStartMinuets, breakTimeEndHour, breakTimeEndMinutes)
+                Math.max(computeDifferenceBetween(breakTimeStartHour, breakTimeStartMinutes, endHour, endMinutes), 0),
+                computeDifferenceBetween(breakTimeStartHour, breakTimeStartMinutes, breakTime.getEndHour(), breakTime.getEndMinutes())
         );
     }
 
     private int computeDifferenceBetween(int fromHour, int fromMinutes, int toHour, int toMinutes) {
         return (toHour - fromHour) * MINUTES_PER_HOUR + toMinutes - fromMinutes;
     }
-
 }

@@ -30,10 +30,18 @@ public final class WorkRecord {
     }
 
     public WorkMinutes computeWorkMinutes() {
-        return this.workTime.computeWorkMinutes();
+        return new WorkMinutes(computeWorkMinutesInternally());
     }
 
     public OverWorkMinutes computeOverWorkMinutes() {
-        return this.workTime.computeOverWorkMinutes();
+        return new OverWorkMinutes(Math.max(computeWorkMinutesInternally() - 480, 0));
+    }
+
+    private int computeWorkMinutesInternally() {
+        int workMinutes = this.workTime.getWholeMinutes();
+        for (BreakTime breakTime: BreakTime.getBreakTimes()) {
+            workMinutes -= this.workTime.computeEachBreakMinutes(breakTime);
+        }
+        return workMinutes;
     }
 }

@@ -23,61 +23,37 @@ public class WorkTimeTest {
     }
 
     @Test
-    public void computeWorkMinutes() {
-        assertComputeWorkMinutes(0, 0, 18, 0, new WorkMinutes(1020));
-        assertComputeWorkMinutes(0, 1, 18, 0, new WorkMinutes(1019));
-        assertComputeWorkMinutes(8, 59, 18, 0, new WorkMinutes(481));
-        assertComputeWorkMinutes(9, 0, 18, 0, new WorkMinutes(480));
-
-        assertComputeWorkMinutes(9, 0, 11, 59, new WorkMinutes(179));
-        assertComputeWorkMinutes(9, 0, 12, 0, new WorkMinutes(180));
-        assertComputeWorkMinutes(9, 0, 12, 1, new WorkMinutes(180));
-        assertComputeWorkMinutes(9, 0, 12, 59, new WorkMinutes(180));
-        assertComputeWorkMinutes(9, 0, 13, 0, new WorkMinutes(180));
-        assertComputeWorkMinutes(9, 0, 13, 1, new WorkMinutes(181));
-        assertComputeWorkMinutes(9, 0, 17, 59, new WorkMinutes(479));
-        assertComputeWorkMinutes(9, 0, 18, 0, new WorkMinutes(480));
-        assertComputeWorkMinutes(9, 0, 18, 1, new WorkMinutes(480));
-        assertComputeWorkMinutes(9, 0, 18, 59, new WorkMinutes(480));
-        assertComputeWorkMinutes(9, 0, 19, 0, new WorkMinutes(480));
-        assertComputeWorkMinutes(9, 0, 19, 1, new WorkMinutes(481));
-        assertComputeWorkMinutes(9, 0, 20, 59, new WorkMinutes(599));
-        assertComputeWorkMinutes(9, 0, 21, 0, new WorkMinutes(600));
-        assertComputeWorkMinutes(9, 0, 21, 1, new WorkMinutes(600));
-        assertComputeWorkMinutes(9, 0, 21, 59, new WorkMinutes(600));
-        assertComputeWorkMinutes(9, 0, 22, 0, new WorkMinutes(600));
-        assertComputeWorkMinutes(9, 0, 22, 1, new WorkMinutes(601));
-        assertComputeWorkMinutes(9, 0, 23, 59, new WorkMinutes(719));
-        assertComputeWorkMinutes(9, 0, 24, 0, new WorkMinutes(720));
+    public void getWholeMinutes() {
+        assertGetWholeMinutes(7, 0, 7, 0, 0);
+        assertGetWholeMinutes(7, 0, 18, 45, 705);
+        assertGetWholeMinutes(7, 45, 19, 0, 675);
+        assertGetWholeMinutes(7, 45, 19, 55, 730);
     }
 
     @Test
-    public void computeOverWorkMinutes() {
-        assertComputeOverWorkMinutes(0, 0, 18, 0, new OverWorkMinutes(540));
-        assertComputeOverWorkMinutes(0, 1, 18, 0, new OverWorkMinutes(539));
-        assertComputeOverWorkMinutes(8, 59, 18, 0, new OverWorkMinutes(1));
-        assertComputeOverWorkMinutes(9, 0, 18, 0, new OverWorkMinutes(0));
-
-        assertComputeOverWorkMinutes(9, 0, 11, 59, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 12, 0, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 12, 1, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 12, 59, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 13, 0, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 13, 1, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 17, 59, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 18, 0, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 18, 1, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 18, 59, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 19, 0, new OverWorkMinutes(0));
-        assertComputeOverWorkMinutes(9, 0, 19, 1, new OverWorkMinutes(1));
-        assertComputeOverWorkMinutes(9, 0, 20, 59, new OverWorkMinutes(119));
-        assertComputeOverWorkMinutes(9, 0, 21, 0, new OverWorkMinutes(120));
-        assertComputeOverWorkMinutes(9, 0, 21, 1, new OverWorkMinutes(120));
-        assertComputeOverWorkMinutes(9, 0, 21, 59, new OverWorkMinutes(120));
-        assertComputeOverWorkMinutes(9, 0, 22, 0, new OverWorkMinutes(120));
-        assertComputeOverWorkMinutes(9, 0, 22, 1, new OverWorkMinutes(121));
-        assertComputeOverWorkMinutes(9, 0, 23, 59, new OverWorkMinutes(239));
-        assertComputeOverWorkMinutes(9, 0, 24, 0, new OverWorkMinutes(240));
+    public void computeEachBreakMinutes() {
+        BreakTime[] breakTimes = BreakTime.getBreakTimes();
+        BreakTime from12To13 = breakTimes[0];
+        BreakTime from18To19 = breakTimes[1];
+        BreakTime from21To22 = breakTimes[2];
+        assertComputeEachBreakMinutes(11, 59, from12To13, 0);
+        assertComputeEachBreakMinutes(12, 0, from12To13, 0);
+        assertComputeEachBreakMinutes(12, 1, from12To13, 1);
+        assertComputeEachBreakMinutes(12, 59, from12To13, 59);
+        assertComputeEachBreakMinutes(13, 0, from12To13, 60);
+        assertComputeEachBreakMinutes(13, 1, from12To13, 60);
+        assertComputeEachBreakMinutes(17, 59, from18To19, 0);
+        assertComputeEachBreakMinutes(18, 0, from18To19, 0);
+        assertComputeEachBreakMinutes(18, 1, from18To19, 1);
+        assertComputeEachBreakMinutes(18, 59, from18To19, 59);
+        assertComputeEachBreakMinutes(19, 0, from18To19, 60);
+        assertComputeEachBreakMinutes(19, 1, from18To19, 60);
+        assertComputeEachBreakMinutes(20, 59, from21To22, 0);
+        assertComputeEachBreakMinutes(21, 0, from21To22, 0);
+        assertComputeEachBreakMinutes(21, 1, from21To22, 1);
+        assertComputeEachBreakMinutes(21, 59, from21To22, 59);
+        assertComputeEachBreakMinutes(22, 0, from21To22, 60);
+        assertComputeEachBreakMinutes(22, 1, from21To22, 60);
     }
 
     private void assertGetStartTimeString(int startHour, int startMinutes, String expected) {
@@ -88,11 +64,11 @@ public class WorkTimeTest {
         assertThat(new WorkTime(0, 0, ensHour, ensMinutes).getEndTimeString(), is(equalTo(expected)));
     }
 
-    private void assertComputeWorkMinutes(int startHour, int startMinutes, int endHour, int endMinutes, WorkMinutes expected) {
-        assertThat(new WorkTime(startHour, startMinutes, endHour, endMinutes).computeWorkMinutes(), is(equalTo(expected)));
+    private void assertGetWholeMinutes(int startHour, int startMinutes, int endHour, int endMinutes, int expected) {
+        assertThat(new WorkTime(startHour, startMinutes, endHour, endMinutes).getWholeMinutes(), is(equalTo(expected)));
     }
 
-    private void assertComputeOverWorkMinutes(int startHour, int startMinutes, int endHour, int endMinutes, OverWorkMinutes expected) {
-        assertThat(new WorkTime(startHour, startMinutes, endHour, endMinutes).computeOverWorkMinutes(), is(equalTo(expected)));
+    private void assertComputeEachBreakMinutes(int endHour, int endMinutes, BreakTime breakTime, int expected) {
+        assertThat(new WorkTime(0, 0, endHour, endMinutes).computeEachBreakMinutes(breakTime), is(equalTo(expected)));
     }
 }
