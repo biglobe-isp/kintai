@@ -5,6 +5,9 @@ import com.naosim.dddwork.domain.IKintaiRepository;
 import com.naosim.dddwork.domain.KintaiTotalModel;
 import com.naosim.dddwork.service.KintaiApplicationService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class KintaiController {
     private KintaiApplicationService kintaiService;
 
@@ -24,7 +27,9 @@ public class KintaiController {
                 if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
                 }
-                this.register(args[1], args[2], args[3]);
+                Map<String, String> argsMap = this.getOptionArgs(args);
+
+                this.register(argsMap.get("-date"), argsMap.get("-start"), argsMap.get("-end"));
             } else if ("total".equals(methodType)) {
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
@@ -55,5 +60,31 @@ public class KintaiController {
         System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
     }
 
+
+    private Map<String, String> getOptionArgs(String[] args) {
+
+        Map<String, String> argsMap = new HashMap<>();
+
+        for (String arg : args) {
+            String[] param = arg.split(":");
+            switch (param[0]) {
+                case "-date":
+                    argsMap.put("-date", param[1]);
+                    break;
+                case "-start":
+                    argsMap.put("-start", param[1].replace("_", ""));
+                    break;
+                case "-end":
+                    argsMap.put("-end", param[1].replace("_", ""));
+                    break;
+                case "input":
+                    break;
+                default:
+                    throw new RuntimeException("誤った引数が指定されています");
+            }
+        }
+
+        return argsMap;
+    }
 
 }
