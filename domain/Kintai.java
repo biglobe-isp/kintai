@@ -16,50 +16,8 @@ public class Kintai {
         this.kintaiStart = kintaiStart;
         this.kintaiEnd = kintaiEnd;
         this.kintaiRegisterTime = new KintaiRegisterTime(LocalDateTime.now().toString());
-
-        String start = kintaiStart.getValue();
-        String end = kintaiEnd.getValue();
-
-        int startH = Integer.valueOf(start.substring(0, 2));
-        int startM = Integer.valueOf(start.substring(2, 4));
-
-        int endH = Integer.valueOf(end.substring(0, 2));
-        int endM = Integer.valueOf(end.substring(2, 4));
-
-        int workMinutes = endH * 60 + endM - (startH * 60 + startM);
-
-        if (endH == 12) {
-            workMinutes -= endM;
-        } else if (endH >= 13) {
-            workMinutes -= 60;
-        }
-
-        int date = Integer.valueOf(kintaiDate.getValue());
-        int restIncreaseStartDay = 20220215;
-        if(date >= restIncreaseStartDay) {
-            if (endH == 15) {
-                workMinutes -= endM;
-            } else if (endH >= 16) {
-                workMinutes -= 60;
-            }
-        }
-
-        if (endH == 18) {
-            workMinutes -= endM;
-        } else if (endH >= 19) {
-            workMinutes -= 60;
-        }
-
-        if (endH == 21) {
-            workMinutes -= endM;
-        } else if (endH >= 22) {
-            workMinutes -= 60;
-        }
-        int overWorkMinutes = Math.max(workMinutes - 8 * 60, 0);
-
-        this.workMinutes = new KintaiWorkMinutes(workMinutes);
-        this.overOverWorkMinutes = new KintaiOverWorkMinutes(overWorkMinutes);
-
+        this.workMinutes = new KintaiWorkMinutes(kintaiDate, kintaiStart, kintaiEnd);
+        this.overOverWorkMinutes = new KintaiOverWorkMinutes(this.workMinutes);
     }
 
     public KintaiDate getKintaiDate() {

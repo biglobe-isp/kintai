@@ -27,12 +27,6 @@ public class KintaiApplicationService {
                 new KintaiEnd(end)
         );
         kintaiRepository.save(kintai);
-//        //重複チェックする場合
-//        if(kintaiService.IsDuplicated(kintai)){
-//            throw new Exception("重複しています");
-//        }else{
-//            kintaiRepository.Save(kintai);
-//        }
     }
 
     public KintaiTotalModel getTotalWorkTime(String yearMonth) {
