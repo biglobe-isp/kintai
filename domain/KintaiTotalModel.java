@@ -2,7 +2,8 @@ package com.naosim.dddwork.domain;
 
 //DTO
 public class KintaiTotalModel {
-    private int totalWorkMinutes, totalOverWorkMinutes;
+    private int totalWorkMinutes;
+    private int totalOverWorkMinutes;
 
     public KintaiTotalModel(int totalWorkMinutes, int totalOverWorkMinutes) {
         this.totalWorkMinutes = totalWorkMinutes;

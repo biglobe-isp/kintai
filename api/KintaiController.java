@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KintaiController {
-    private KintaiApplicationService kintaiService;
+    private KintaiApplicationService kintaiApplicationService;
 
-    public KintaiController(KintaiApplicationService kintaiService) {
-        this.kintaiService = kintaiService;
+    public KintaiController(KintaiApplicationService kintaiApplicationService) {
+        this.kintaiApplicationService = kintaiApplicationService;
     }
 
     public void api(String[] args) {
@@ -53,7 +53,7 @@ public class KintaiController {
     }
 
     public void printTotal(String yearMonth) {
-        KintaiTotalModel kintaiTotalModel = kintaiService.getTotalWorkTime(yearMonth);
+        KintaiTotalModel kintaiTotalModel = kintaiApplicationService.getTotalWorkTime(yearMonth);
         int totalWorkMinutes = kintaiTotalModel.getTotalWorkMinutes();
         int totalOverWorkMinutes = kintaiTotalModel.getTotalOverWorkMinutes();
 

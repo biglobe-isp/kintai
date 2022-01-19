@@ -36,10 +36,10 @@ public class KintaiApplicationService {
     }
 
     public KintaiTotalModel getTotalWorkTime(String yearMonth) {
-        KintaiMapModel kintaiTotalModel = kintaiRepository.getTotalWorkTimeMapsOf(yearMonth);//リポジトリでデータを取ってくる
-        KintaiTotalModel totalWorkTime = kintaiService.sumWorkTime(kintaiTotalModel.getTotalWorkMinutesMap(), kintaiTotalModel.getTotalOverWorkMinutesMap());//加算したデータをとってくる。データを横断的に扱うので加算はドメインサービスにした（このクラスでやるべきか迷ったがアプリケーションサービスではデータの加工などはやっていなさそうだった。 ）
+        KintaiMapModel kintaiMapModel = kintaiRepository.getTotalWorkTimeMapsOf(yearMonth);//リポジトリでデータを取ってくる
+        KintaiTotalModel kintaiTotalModel = kintaiService.sumWorkTime(kintaiMapModel.getTotalWorkMinutesMap(), kintaiMapModel.getTotalOverWorkMinutesMap());//加算したデータをとってくる。データを横断的に扱うので加算はドメインサービスにした（このクラスでやるべきか迷ったがアプリケーションサービスではデータの加工などはやっていなさそうだった。 ）
 
-        return totalWorkTime;
+        return kintaiTotalModel;
     }
 
 }
