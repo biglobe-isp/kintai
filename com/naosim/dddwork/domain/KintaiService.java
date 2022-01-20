@@ -11,18 +11,26 @@ public class KintaiService {
         this.kintaiRepository = kintaiRepository;
     }
 
-    public KintaiTotalModel sumWorkTime(Map<String, Integer> totalWorkMinutesMap, Map<String, Integer> totalOverWorkMinutesMap) {
-
+    public int sumKintaiWorkMinutes(Map<KintaiDate, KintaiWorkMinutes> kintaiWorkMinutesMap) {
         int totalWorkMinutes = 0;
-        int totalOverWorkMinutes = 0;
 
-        Set<String> keySet = totalWorkMinutesMap.keySet();
-        for (String key : keySet) {
-            totalWorkMinutes += totalWorkMinutesMap.get(key);
-            totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
+        Set<KintaiDate> keySet = kintaiWorkMinutesMap.keySet();
+        for (KintaiDate key : keySet) {
+            totalWorkMinutes += kintaiWorkMinutesMap.get(key).getValue();
         }
 
-        return new KintaiTotalModel(totalWorkMinutes, totalOverWorkMinutes);
+        return totalWorkMinutes;
+    }
+
+    public int sumKintaiOverWorkMinutes(Map<KintaiDate, KintaiOverWorkMinutes> kintaiOverWorkMinutesMap) {
+        int totalOverWorkMinutes = 0;
+
+        Set<KintaiDate> keySet = kintaiOverWorkMinutesMap.keySet();
+        for (KintaiDate key : keySet) {
+            totalOverWorkMinutes += kintaiOverWorkMinutesMap.get(key).getValue();
+        }
+
+        return totalOverWorkMinutes;
     }
 }
 

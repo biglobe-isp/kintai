@@ -11,6 +11,10 @@ public class KintaiOverWorkMinutes {
         this.value = Math.max(kintaiWorkMinutes.getValue() - DEFAULT_WORK_MINUTES, 0);
     }
 
+    public KintaiOverWorkMinutes(int value) {
+        this.value = value;
+    }
+
     public int getValue() {
         return this.value;
     }

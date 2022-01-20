@@ -2,7 +2,9 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.Kintai;
 import com.naosim.dddwork.domain.IKintaiRepository;
-import com.naosim.dddwork.domain.KintaiMapModel;
+import com.naosim.dddwork.domain.KintaiDate;
+import com.naosim.dddwork.domain.KintaiOverWorkMinutes;
+import com.naosim.dddwork.domain.KintaiWorkMinutes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,9 +32,8 @@ public class KintaiRepository implements IKintaiRepository {
         }
     }
 
-    public KintaiMapModel getTotalWorkTimeMapsOf(String yearMonth) {
-        Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-        Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
+    public Map<KintaiDate, KintaiWorkMinutes> getTotalWorkMinutesMapOf(String yearMonth) {
+        Map<KintaiDate, KintaiWorkMinutes> totalWorkMinutesMap = new HashMap<>();
 
         File file = new File("data.csv");
 
@@ -47,8 +48,7 @@ public class KintaiRepository implements IKintaiRepository {
                     line = br.readLine();
                     continue;
                 }
-                totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-                totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
+                totalWorkMinutesMap.put(new KintaiDate(columns[0]), new KintaiWorkMinutes(Integer.valueOf(columns[3])));
 
                 line = br.readLine();
             }
@@ -57,7 +57,36 @@ public class KintaiRepository implements IKintaiRepository {
             e.printStackTrace();
         }
 
-        return new KintaiMapModel(totalWorkMinutesMap, totalOverWorkMinutesMap);
+        return totalWorkMinutesMap;
+    }
+
+
+    public Map<KintaiDate, KintaiOverWorkMinutes> getTotalOverWorkMinutesMapOf(String yearMonth) {
+        Map<KintaiDate, KintaiOverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
+
+        File file = new File("data.csv");
+
+        try (
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr)
+        ) {
+            String line = br.readLine();
+            while (line != null) {
+                String[] columns = line.split(",");
+                if (!columns[0].startsWith(yearMonth)) {
+                    line = br.readLine();
+                    continue;
+                }
+                totalOverWorkMinutesMap.put(new KintaiDate(columns[0]), new KintaiOverWorkMinutes(Integer.valueOf(columns[4])));
+
+                line = br.readLine();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return totalOverWorkMinutesMap;
     }
 
 }

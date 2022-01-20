@@ -48,6 +48,10 @@ public class KintaiWorkMinutes {
         this.value = workMinutes;
     }
 
+    public KintaiWorkMinutes(int value) {
+        this.value = value;
+    }
+
     public int getValue() {
         return this.value;
     }
