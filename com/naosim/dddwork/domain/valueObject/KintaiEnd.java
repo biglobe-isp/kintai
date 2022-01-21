@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.valueObject;
 
 //値オブジェクト
 public class KintaiEnd {

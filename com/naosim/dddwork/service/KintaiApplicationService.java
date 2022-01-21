@@ -1,14 +1,14 @@
 package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.domain.IKintaiRepository;
-import com.naosim.dddwork.domain.Kintai;
-import com.naosim.dddwork.domain.KintaiDate;
-import com.naosim.dddwork.domain.KintaiEnd;
-import com.naosim.dddwork.domain.KintaiOverWorkMinutes;
+import com.naosim.dddwork.domain.entity.Kintai;
+import com.naosim.dddwork.domain.valueObject.KintaiDate;
+import com.naosim.dddwork.domain.valueObject.KintaiEnd;
+import com.naosim.dddwork.domain.valueObject.KintaiOverWorkMinutes;
 import com.naosim.dddwork.domain.KintaiService;
-import com.naosim.dddwork.domain.KintaiStart;
+import com.naosim.dddwork.domain.valueObject.KintaiStart;
 import com.naosim.dddwork.domain.KintaiTotalModel;
-import com.naosim.dddwork.domain.KintaiWorkMinutes;
+import com.naosim.dddwork.domain.valueObject.KintaiWorkMinutes;
 
 import java.util.Map;
 

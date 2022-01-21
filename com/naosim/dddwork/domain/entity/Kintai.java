@@ -1,4 +1,11 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.entity;
+
+import com.naosim.dddwork.domain.valueObject.KintaiDate;
+import com.naosim.dddwork.domain.valueObject.KintaiEnd;
+import com.naosim.dddwork.domain.valueObject.KintaiOverWorkMinutes;
+import com.naosim.dddwork.domain.valueObject.KintaiRegisterTime;
+import com.naosim.dddwork.domain.valueObject.KintaiStart;
+import com.naosim.dddwork.domain.valueObject.KintaiWorkMinutes;
 
 import java.time.LocalDateTime;
 

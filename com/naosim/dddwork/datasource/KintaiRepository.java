@@ -1,10 +1,10 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.Kintai;
+import com.naosim.dddwork.domain.entity.Kintai;
 import com.naosim.dddwork.domain.IKintaiRepository;
-import com.naosim.dddwork.domain.KintaiDate;
-import com.naosim.dddwork.domain.KintaiOverWorkMinutes;
-import com.naosim.dddwork.domain.KintaiWorkMinutes;
+import com.naosim.dddwork.domain.valueObject.KintaiDate;
+import com.naosim.dddwork.domain.valueObject.KintaiOverWorkMinutes;
+import com.naosim.dddwork.domain.valueObject.KintaiWorkMinutes;
 
 import java.io.BufferedReader;
 import java.io.File;

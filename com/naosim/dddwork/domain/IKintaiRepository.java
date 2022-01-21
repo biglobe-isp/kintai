@@ -1,5 +1,10 @@
 package com.naosim.dddwork.domain;
 
+import com.naosim.dddwork.domain.entity.Kintai;
+import com.naosim.dddwork.domain.valueObject.KintaiDate;
+import com.naosim.dddwork.domain.valueObject.KintaiOverWorkMinutes;
+import com.naosim.dddwork.domain.valueObject.KintaiWorkMinutes;
+
 import java.util.Map;
 
 public interface IKintaiRepository {
