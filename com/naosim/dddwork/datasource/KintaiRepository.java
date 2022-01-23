@@ -15,9 +15,10 @@ import java.util.Map;
 
 public class KintaiRepository implements IKintaiRepository {
 
+    private static final File FILE = new File("data.csv");
+
     public void save(Kintai kintai) {
-        File file = new File("data.csv");
-        try (FileWriter filewriter = new FileWriter(file, true)) {
+        try (FileWriter filewriter = new FileWriter(FILE, true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     kintai.getKintaiDate().getValue(),
@@ -35,10 +36,8 @@ public class KintaiRepository implements IKintaiRepository {
     public Map<KintaiDate, KintaiWorkMinutes> getTotalWorkMinutesMapOf(String yearMonth) {
         Map<KintaiDate, KintaiWorkMinutes> totalWorkMinutesMap = new HashMap<>();
 
-        File file = new File("data.csv");
-
         try (
-                FileReader fr = new FileReader(file);
+                FileReader fr = new FileReader(FILE);
                 BufferedReader br = new BufferedReader(fr)
         ) {
             String line = br.readLine();
@@ -64,10 +63,8 @@ public class KintaiRepository implements IKintaiRepository {
     public Map<KintaiDate, KintaiOverWorkMinutes> getTotalOverWorkMinutesMapOf(String yearMonth) {
         Map<KintaiDate, KintaiOverWorkMinutes> totalOverWorkMinutesMap = new HashMap<>();
 
-        File file = new File("data.csv");
-
         try (
-                FileReader fr = new FileReader(file);
+                FileReader fr = new FileReader(FILE);
                 BufferedReader br = new BufferedReader(fr)
         ) {
             String line = br.readLine();
