@@ -1,68 +1,28 @@
 package src.com.naosim.dddwork.domain;
 
 public class Regulation {
-    private String dateTime;
-    private int startMinute = 0;
-    private int startHour = 0;
-    private int endMinute = 0;
-    private int endHour = 0;
-    private int workMinutes = 0;
-    private int overWorkMinutes = 0;
+    private WorkingDate workingDate;
+    private StartTime startTime ;
+    private EndTime endTime;
+    private WorkTime workTime;
+    private OrverTime orverTime;
 
-    public Regulation(String dateT, int startH, int startM, int endH, int endM) {
-        this.dateTime = dateT;
-        this.startHour = startH;
-        this.startMinute = startM;
-        this.endHour = endH;
-        this.endMinute = endM;
+    public Regulation(WorkingDate date, StartTime start, EndTime end, WorkTime work, OrverTime orver) {
+        this.workingDate = date;
+        this.startTime = start;
+        this.endTime = end;
+        this.workTime = work;
+        this.orverTime = orver;
     }
 
-    public void workTime() {
-        int workMinutes = this.endHour * 60 + this.endMinute - (this.startHour * 60 + this.startMinute);
+    public WorkingDate getWorkingDate() {return this.workingDate;}
 
-        if (this.endHour == 12) {
-            workMinutes -= this.endMinute;
-        } else if (endHour >= 13) {
-            workMinutes -= 60;
-        }
+    public StartTime getStart() {return this.startTime;}
 
-        if (endHour == 18) {
-            workMinutes -= this.endMinute;
-        } else if (endHour >= 19) {
-            workMinutes -= 60;
-        }
+    public EndTime getEnd() {return this.endTime;}
 
-        if (endHour == 21) {
-            workMinutes -= this.endMinute;
-        } else if (endHour >= 22) {
-            workMinutes -= 60;
-        }
+    public WorkTime getWorkTime() {return this.workTime;}
 
-        this.workMinutes = workMinutes;
-    }
-
-    public void overTime() {
-        this.overWorkMinutes = Math.max(this.workMinutes - 8 * 60, 0);
-    }
-
-    public String getDate() {
-        return this.dateTime;
-    }
-
-    public String getStart() {
-        return String.format("%02d", this.startHour) + "" +  String.format("%02d", this.startMinute) ;
-    }
-
-    public String getEnd() {
-        return String.format("%02d", this.endHour) + "" + String.format("%02d", this.endMinute);
-    }
-
-    public int getWorkMinutes() {
-        return this.workMinutes;
-    }
-
-    public int getOverWorkMinutes() {
-        return this.overWorkMinutes;
-    }
+    public OrverTime getOrverTime() {return this.orverTime;}
 
 }

@@ -16,7 +16,7 @@ public class KintaiManage {
 
         // サービス起動
         RegistService regSvc = new RegistService();
-        regSvc.regist(params[0], params[1], params[3]);
+        regSvc.regist(params[0], params[1], params[2]);
     }
 
     public void Total(String yearMonth) {

@@ -15,17 +15,17 @@ public class CsvOperat implements KintaiRepository{
 
     private static final String FILE_NAME = "data.csv";
 
-    public void write(String date ,String start, String end ,int workTime, int overWorkTime) {
+    public void write(Regulation kintai) {
 
         try (FileWriter filewriter = new FileWriter(new File(FILE_NAME), true)) {
             filewriter.write(
                     String.format("%s,%s,%s,%s,%s,%s\n",
-                    date,
-                    start,
-                    end,
-                    workTime,
-                    overWorkTime,
-                    LocalDateTime.now().toString()));
+                            kintai.getWorkingDate().toDateStr(),
+                            kintai.getStart().toStartTimeFormat(),
+                            kintai.getEnd().toEndTimeFormat(),
+                            kintai.getWorkTime().calcWorkTime(),
+                            kintai.getOrverTime().calcOverTime(),
+                            LocalDateTime.now().toString()));
         } catch (IOException e) {
             System.out.println("write処理にてIOExceptionが発生");
         }
