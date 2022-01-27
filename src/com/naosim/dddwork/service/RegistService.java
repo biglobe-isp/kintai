@@ -4,19 +4,16 @@ import src.com.naosim.dddwork.domain.*;
 import src.com.naosim.dddwork.datasource.*;
 
 public class RegistService {
-    KintaiRepository repository;
 
-    public void regist(String date, String start, String end) {
-        System.out.println(String.format("service/regist params: date=%s start=%s end=%s", date, start, end));
-
+    public void regist(String date, int startHour, int startMinute, int endHour, int endMinute) {
         WorkingDate workingDate = new WorkingDate(date);
-        StartTime startTime = new StartTime(Integer.valueOf(start.substring(0, 2)),Integer.valueOf(start.substring(2, 4)));
-        EndTime endTime = new EndTime(Integer.valueOf(end.substring(0, 2)),Integer.valueOf(end.substring(2, 4)));
+        StartTime startTime = new StartTime(startHour,startMinute);
+        EndTime endTime = new EndTime(endHour,endMinute);
         WorkTime workTime = new WorkTime(startTime,endTime);
-        OrverTime orverTime = new OrverTime(workTime);
+        OverTime orverTime = new OverTime(workTime);
 
         Regulation kintai = new Regulation(
-                workingDate,
+            workingDate,
             startTime,
             endTime,
             workTime,

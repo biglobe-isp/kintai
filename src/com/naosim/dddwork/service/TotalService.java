@@ -6,32 +6,17 @@ import src.com.naosim.dddwork.datasource.CsvOperat;
 import src.com.naosim.dddwork.domain.*;
 
 public class TotalService {
-    KintaiRepository repository;
 
-    public void total(String yearMonth) {
-        int totalWorkMinutes = 0;
-        int totalOverWorkMinutes = 0;
-        Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-        Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
+    public ResultTotal total(String yearMonth) {
 
         KintaiRepository repository = new CsvOperat();
-        List<String[]> readData = repository.read();
+        Map<WorkingDate, WorkTime> kintaiWorkMinutesMap = repository.getTotalWorkMinutesMapOf(yearMonth);
+        Map<WorkingDate, OverTime> kintaiOverWorkMinutesMap = repository.getTotalOverWorkMinutesMapOf(yearMonth);
+        SubTotal subTotal = new SubTotal();
+        int totalWorkMinutes = subTotal.sumKintaiWorkMinutes(kintaiWorkMinutesMap);
+        int totalOverWorkMinutes = subTotal.sumKintaiOverWorkMinutes(kintaiOverWorkMinutesMap);
 
-        for(String[] columns : readData){
-            if(!columns[0].startsWith(yearMonth)) {
-                continue;
-            }
-            totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-            totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
-        }
+        return new ResultTotal(totalWorkMinutes, totalOverWorkMinutes);
 
-        Set<String> keySet = totalWorkMinutesMap.keySet();
-        for(String key : keySet) {
-            totalWorkMinutes += totalWorkMinutesMap.get(key);
-            totalOverWorkMinutes += totalOverWorkMinutesMap.get(key);
-        }
-
-        System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
-        System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
     }
 }

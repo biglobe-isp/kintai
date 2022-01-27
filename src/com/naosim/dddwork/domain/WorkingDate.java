@@ -6,7 +6,7 @@ public class WorkingDate {
     public WorkingDate(String dateT) {
         this.dateStr = dateT;
     }
-    public String toDateStr() {
+    public String getDateStr() {
         return this.dateStr;
     }
 

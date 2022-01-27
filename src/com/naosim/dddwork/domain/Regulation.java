@@ -5,16 +5,15 @@ public class Regulation {
     private StartTime startTime ;
     private EndTime endTime;
     private WorkTime workTime;
-    private OrverTime orverTime;
+    private OverTime overTime;
 
-    public Regulation(WorkingDate date, StartTime start, EndTime end, WorkTime work, OrverTime orver) {
+    public Regulation(WorkingDate date, StartTime start, EndTime end, WorkTime work, OverTime orver) {
         this.workingDate = date;
         this.startTime = start;
         this.endTime = end;
         this.workTime = work;
-        this.orverTime = orver;
+        this.overTime = orver;
     }
-
     public WorkingDate getWorkingDate() {return this.workingDate;}
 
     public StartTime getStart() {return this.startTime;}
@@ -23,6 +22,6 @@ public class Regulation {
 
     public WorkTime getWorkTime() {return this.workTime;}
 
-    public OrverTime getOrverTime() {return this.orverTime;}
+    public OverTime getOrverTime() {return this.overTime;}
 
 }

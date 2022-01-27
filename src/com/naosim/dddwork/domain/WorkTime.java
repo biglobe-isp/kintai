@@ -1,13 +1,14 @@
 package src.com.naosim.dddwork.domain;
 
 public class WorkTime {
-    private final StartTime startTime;
-    private final EndTime endtime;
+    private int workTime;
+    private StartTime startTime;
+    private EndTime endtime;
 
-    private final int endHour;
-    private final int endMinute;
-    private final int startHour;
-    private final int startMinute;
+    private int endHour;
+    private int endMinute;
+    private int startHour;
+    private int startMinute;
 
     public WorkTime(StartTime start, EndTime end) {
         this.startTime = start;
@@ -41,6 +42,14 @@ public class WorkTime {
         }
 
         return workMinutes ;
+    }
+
+    public WorkTime(int value) {
+        this.workTime = value;
+    }
+
+    public int getValue() {
+        return this.workTime;
     }
 
 }
