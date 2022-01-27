@@ -1,13 +1,12 @@
 package src.com.naosim.dddwork.api;
 
-import src.com.naosim.dddwork.service.RegistService;
+import src.com.naosim.dddwork.service.RegisterService;
 import src.com.naosim.dddwork.service.TotalService;
 import src.com.naosim.dddwork.domain.ResultTotal;
-import java.util.Arrays;
 
 public class KintaiManage {
 
-    RegistService regSvc;
+    RegisterService regSvc;
     TotalService ttlSvc;
 
     public KintaiManage() {
@@ -21,8 +20,8 @@ public class KintaiManage {
         int endHour = Integer.valueOf(params[2].substring(0, 2));
         int endMinute = Integer.valueOf(params[2].substring(2, 4));
 
-        RegistService regSvc = new RegistService();
-        regSvc.regist(date, startHour, startMinute, endHour, endMinute);
+        RegisterService regSvc = new RegisterService();
+        regSvc.register(date, startHour, startMinute, endHour, endMinute);
     }
 
     public void Total(String yearMonth) {

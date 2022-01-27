@@ -3,9 +3,9 @@ package src.com.naosim.dddwork.service;
 import src.com.naosim.dddwork.domain.*;
 import src.com.naosim.dddwork.datasource.*;
 
-public class RegistService {
+public class RegisterService {
 
-    public void regist(String date, int startHour, int startMinute, int endHour, int endMinute) {
+    public void register(String date, int startHour, int startMinute, int endHour, int endMinute) {
         WorkingDate workingDate = new WorkingDate(date);
         StartTime startTime = new StartTime(startHour,startMinute);
         EndTime endTime = new EndTime(endHour,endMinute);
