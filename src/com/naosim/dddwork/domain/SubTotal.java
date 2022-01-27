@@ -5,7 +5,6 @@ import src.com.naosim.dddwork.domain.*;
 import java.util.Map;
 import java.util.Set;
 
-//ドメインサービス
 public class SubTotal {
     private KintaiRepository kintaiRepository;
 

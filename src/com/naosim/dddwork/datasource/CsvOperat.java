@@ -24,9 +24,9 @@ public class CsvOperat implements KintaiRepository{
             filewriter.write(
                     String.format("%s,%s,%s,%s,%s,%s\n",
                             kintai.getWorkingDate().getDateStr(),
-                            kintai.getStart().toStartTimeFormat(),
-                            kintai.getEnd().toEndTimeFormat(),
-                            kintai.getWorkTime().calcWorkTime(),
+                            kintai.getStart().toString(),
+                            kintai.getEnd().toString(),
+                            kintai.getWorkTime().getValue(),
                             kintai.getOrverTime().getValue(),
                             LocalDateTime.now().toString()));
         } catch (IOException e) {

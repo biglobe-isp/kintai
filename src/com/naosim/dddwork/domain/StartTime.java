@@ -15,7 +15,7 @@ public class StartTime {
     public int getStartM() {
         return this.startMinute ;
     }
-    public String toStartTimeFormat() {
-        return String.format("%02d", this.startHour) + "" +  String.format("%02d", this.startMinute) ;
+    public String toString() {
+        return String.format("%02d%02d", this.startHour,this.startMinute) ;
     }
 }

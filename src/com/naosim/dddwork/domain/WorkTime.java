@@ -1,7 +1,7 @@
 package src.com.naosim.dddwork.domain;
 
 public class WorkTime {
-    private int workTime;
+    private final int workTime;
     private StartTime startTime;
     private EndTime endtime;
 
@@ -17,9 +17,6 @@ public class WorkTime {
         this.endMinute = endtime.getEndM();
         this.startHour = startTime.getStartH();
         this.startMinute = startTime.getStartM();
-    }
-
-    public int calcWorkTime() {
 
         int workMinutes = this.endHour * 60 + this.endMinute - (this.startHour * 60 + this.startMinute);
 
@@ -41,7 +38,7 @@ public class WorkTime {
             workMinutes -= 60;
         }
 
-        return workMinutes ;
+        this.workTime = workMinutes ;
     }
 
     public WorkTime(int value) {

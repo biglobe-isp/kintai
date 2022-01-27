@@ -8,5 +8,4 @@ public interface KintaiRepository {
     Map<WorkingDate, WorkTime> getTotalWorkMinutesMapOf(String yearMonth);
     Map<WorkingDate, OverTime> getTotalOverWorkMinutesMapOf(String yearMonth);
 
-    //List<String[]> read();
 }

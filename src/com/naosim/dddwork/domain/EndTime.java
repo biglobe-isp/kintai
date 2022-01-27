@@ -15,8 +15,8 @@ public class EndTime {
     public int getEndM() {
         return this.endMinute ;
     }
-    public String toEndTimeFormat() {
-        return String.format("%02d", this.endHour) + "" + String.format("%02d", this.endMinute);
+    public String toString() {
+        return String.format("%02d%02d", this.endHour,this.endMinute);
     }
 
 }

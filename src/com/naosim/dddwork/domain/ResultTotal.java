@@ -7,6 +7,7 @@ public class ResultTotal {
     public ResultTotal(int totalWorkMinutes, int totalOverWorkMinutes) {
         this.totalWorkMinutes = totalWorkMinutes;
         this.totalOverWorkMinutes = totalOverWorkMinutes;
+
     }
     public int getTotalWork() {
         return this.totalWorkMinutes;
