@@ -22,10 +22,12 @@ public class CsvOperat implements KintaiRepository{
 
         try (FileWriter filewriter = new FileWriter(new File(FILE_NAME), true)) {
             filewriter.write(
-                    String.format("%s,%s,%s,%s,%s,%s\n",
+                    String.format("%s,%s,%s,%s,%s,%s,%s,%s\n",
                             kintai.getWorkingDate().getDateStr(),
-                            kintai.getStart().toString(),
-                            kintai.getEnd().toString(),
+                            kintai.getStart().getHour(),
+                            kintai.getStart().getMinute(),
+                            kintai.getEnd().getHour(),
+                            kintai.getEnd().getMinute(),
                             kintai.getWorkTime().getValue(),
                             kintai.getOrverTime().getValue(),
                             LocalDateTime.now().toString()));
@@ -49,7 +51,7 @@ public class CsvOperat implements KintaiRepository{
                     line = br.readLine();
                     continue;
                 }
-                totalWorkMinutesMap.put(new WorkingDate(columns[0]), new WorkTime(Integer.valueOf(columns[3])));
+                totalWorkMinutesMap.put(new WorkingDate(columns[0]), new WorkTime(Integer.valueOf(columns[5])));
                 line = br.readLine();
             }
 
@@ -73,7 +75,7 @@ public class CsvOperat implements KintaiRepository{
                     line = br.readLine();
                     continue;
                 }
-                totalOverWorkMinutesMap.put(new WorkingDate(columns[0]), new OverTime(Integer.valueOf(columns[4])));
+                totalOverWorkMinutesMap.put(new WorkingDate(columns[0]), new OverTime(Integer.valueOf(columns[6])));
                 line = br.readLine();
             }
 

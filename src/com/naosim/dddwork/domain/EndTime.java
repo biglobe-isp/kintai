@@ -9,14 +9,9 @@ public class EndTime {
         this.endMinute = endM;
     }
 
-    public int getEndH() {
-        return this.endHour ;
-    }
-    public int getEndM() {
+    public int getHour() { return this.endHour ; }
+    public int getMinute() {
         return this.endMinute ;
-    }
-    public String toString() {
-        return String.format("%02d%02d", this.endHour,this.endMinute);
     }
 
 }

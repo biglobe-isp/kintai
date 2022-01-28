@@ -9,13 +9,10 @@ public class StartTime {
         this.startMinute = startM;
     }
 
-    public int getStartH() {
+    public int getHour() {
         return this.startHour ;
     }
-    public int getStartM() {
+    public int getMinute() {
         return this.startMinute ;
-    }
-    public String toString() {
-        return String.format("%02d%02d", this.startHour,this.startMinute) ;
     }
 }

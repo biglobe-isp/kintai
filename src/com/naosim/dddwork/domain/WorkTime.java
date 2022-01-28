@@ -13,10 +13,10 @@ public class WorkTime {
     public WorkTime(StartTime start, EndTime end) {
         this.startTime = start;
         this.endtime = end;
-        this.endHour = endtime.getEndH();
-        this.endMinute = endtime.getEndM();
-        this.startHour = startTime.getStartH();
-        this.startMinute = startTime.getStartM();
+        this.endHour = endtime.getHour();
+        this.endMinute = endtime.getMinute();
+        this.startHour = startTime.getHour();
+        this.startMinute = startTime.getMinute();
 
         int workMinutes = this.endHour * 60 + this.endMinute - (this.startHour * 60 + this.startMinute);
 
