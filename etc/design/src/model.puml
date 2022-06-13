@@ -1,0 +1,99 @@
+@startuml 勤怠管理
+
+package kintai {
+
+    package datasource {
+        class 勤怠管理リポジトリCSV << datasource >>
+    }
+
+    package domain {
+
+        entity 月次勤怠 {
+            勤怠年月 年月
+            当月の日次勤怠 当月の日次勤怠
+            勤務時間 勤務時間合計()
+            勤務時間 残業時間合計()
+        }
+
+        class 勤怠年月 {
+            YearMonth value        
+        }
+        class 当月の日次勤怠 {
+            List<日次勤怠> value
+        }
+
+        entity 日次勤怠 {
+            勤務日付:勤務日付
+            勤務時刻 始業時刻
+            勤務時刻 終業時刻
+            勤務時間 勤務時間合計()
+            勤務時間 残業時間合計()
+        }
+
+        class 勤務日付 {
+            LocalDate value        
+        }
+        class 勤務時刻 {
+            LocalTime value        
+        }
+
+
+        class 勤務時間 {
+            int value
+        }
+        note bottom of  勤務時間
+            勤務時間を集計する単位：分
+            集計結果は整数値（秒単位の入力がないため）
+        end note 
+
+
+        enum 休憩時間 {
+            昼休み
+            夕方休憩
+            深夜            
+        }
+
+        月次勤怠  -->  当月の日次勤怠
+        当月の日次勤怠  "1" o-- "0..31" 日次勤怠
+
+        月次勤怠-->勤怠年月 
+        月次勤怠-->勤務時間
+
+        日次勤怠-->勤務日付
+        日次勤怠-->勤務時刻
+        日次勤怠-->勤務時間
+        日次勤怠-right->休憩時間
+    }
+
+    package service {
+
+        class 勤怠管理サービス << service >> {
+            void 登録()
+            void 月次集計()
+        }
+
+        interface 勤怠管理リポジトリ << repository >> {
+            void persist(日次勤怠)
+            Option<月次勤怠> findMonthlyAttendance()
+        }
+
+
+        勤怠管理サービス-->勤怠管理リポジトリ
+        勤怠管理リポジトリ->月次勤怠
+        勤怠管理リポジトリ->日次勤怠
+
+        勤怠管理リポジトリ<|...勤怠管理リポジトリCSV
+    }
+
+    package api {
+
+        class 勤怠管理メイン {
+            void main(String[] args)
+        }
+
+        勤怠管理メイン--->勤怠管理サービス
+
+    }
+}
+
+@enduml
