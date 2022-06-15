@@ -3,16 +3,19 @@
 package kintai {
 
     package datasource {
-        class 勤怠管理リポジトリCSV << datasource >>
+        class 勤怠リポジトリCSV << datasource >>
     }
 
     package domain {
+
+        class 就業規則
+        class 月次勤怠集計
 
         entity 月次勤怠 {
             勤怠年月 年月
             当月の日次勤怠 当月の日次勤怠
             勤務時間 勤務時間合計()
-            勤務時間 残業時間合計()
+            残業時間 残業時間合計()
         }
 
         class 勤怠年月 {
@@ -23,72 +26,95 @@ package kintai {
         }
 
         entity 日次勤怠 {
-            勤務日付:勤務日付
-            勤務時刻 始業時刻
-            勤務時刻 終業時刻
-            勤務時間 勤務時間合計()
-            勤務時間 残業時間合計()
+            勤怠日付 勤怠日付
+            勤務時刻 開始時刻
+            勤務時刻 終了時刻
+            勤務時間 勤務時間()
+            勤務時間 残業時間()
         }
 
-        class 勤務日付 {
+        class 勤怠日付 {
             LocalDate value        
         }
         class 勤務時刻 {
             LocalTime value        
         }
 
-
         class 勤務時間 {
             int value
         }
+
+        class 残業時間 {
+            int value
+        }
+
         note bottom of  勤務時間
             勤務時間を集計する単位：分
             集計結果は整数値（秒単位の入力がないため）
         end note 
 
+        enum 就業時間 {
+            始業
+            終業
+            勤務時刻 時刻()
+        }
 
         enum 休憩時間 {
             昼休み
             夕方休憩
-            深夜            
+            深夜休憩
+
+            勤務時刻 開始時刻()
+            勤務時刻 終了時刻()
         }
 
         月次勤怠  -->  当月の日次勤怠
         当月の日次勤怠  "1" o-- "0..31" 日次勤怠
 
-        月次勤怠-->勤怠年月 
+        月次勤怠-->勤怠年月
         月次勤怠-->勤務時間
 
-        日次勤怠-->勤務日付
+        日次勤怠-->勤怠日付
         日次勤怠-->勤務時刻
         日次勤怠-->勤務時間
+        日次勤怠-->残業時間
         日次勤怠-right->休憩時間
     }
 
     package service {
 
         class 勤怠管理サービス << service >> {
-            void 登録()
-            void 月次集計()
+            void 勤怠入力()
+            void 集計()
         }
 
-        interface 勤怠管理リポジトリ << repository >> {
+        interface 勤怠リポジトリ << repository >> {
             void persist(日次勤怠)
             Option<月次勤怠> findMonthlyAttendance()
         }
 
+        勤怠管理サービス-->勤怠リポジトリ
+        勤怠リポジトリ->月次勤怠
+        勤怠リポジトリ->日次勤怠
 
-        勤怠管理サービス-->勤怠管理リポジトリ
-        勤怠管理リポジトリ->月次勤怠
-        勤怠管理リポジトリ->日次勤怠
-
-        勤怠管理リポジトリ<|...勤怠管理リポジトリCSV
+        勤怠リポジトリ<|...勤怠リポジトリCSV
     }
 
     package api {
 
         class 勤怠管理メイン {
             void main(String[] args)
+        }
+
+        class 勤怠入力 {
+            日付
+            開始時刻
+            終了時刻
+        }
+
+        class 集計結果 {
+            勤務時間
+            残業時間
         }
 
         勤怠管理メイン--->勤怠管理サービス
