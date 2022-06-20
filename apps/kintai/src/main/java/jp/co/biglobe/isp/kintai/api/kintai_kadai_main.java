@@ -1,4 +1,4 @@
-package com.naosim.dddwork;
+package apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.api;
 
 import java.io.BufferedReader;
 import java.io.File;
