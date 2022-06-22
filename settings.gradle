@@ -1,0 +1,5 @@
+// プロジェクト名
+rootProject.name = "kintai"
+include "apps:kintai"
+
+
