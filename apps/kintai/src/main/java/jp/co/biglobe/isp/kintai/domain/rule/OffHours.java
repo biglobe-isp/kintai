@@ -1,28 +1,29 @@
-package apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.rule;
+package jp.co.biglobe.isp.kintai.domain.rule;
 
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.AttendanceTime;
+import jp.co.biglobe.isp.kintai.domain.AttendanceEndTime;
+import jp.co.biglobe.isp.kintai.domain.AttendanceStartTime;
 
 public enum OffHours {
     /** 昼休み */ 
-    LUNCHTIME(AttendanceTime.of("1200"), AttendanceTime.of("1300")),
+    LUNCHTIME(AttendanceStartTime.of("1200"), AttendanceEndTime.of("1300")),
     /** 夕方休憩 */
-    EVENING(AttendanceTime.of("1800"), AttendanceTime.of("1900")),
+    EVENING(AttendanceStartTime.of("1800"), AttendanceEndTime.of("1900")),
     /** 深夜休憩 */
-    MIDNIGHT(AttendanceTime.of("2100"), AttendanceTime.of("2200")),
+    MIDNIGHT(AttendanceStartTime.of("2100"), AttendanceEndTime.of("2200")),
     ;
-    final AttendanceTime startTime;
-    final AttendanceTime endTime;
+    final AttendanceStartTime startTime;
+    final AttendanceEndTime endTime;
 
-    OffHours(AttendanceTime startTime, AttendanceTime endTime) {
+    OffHours(AttendanceStartTime startTime, AttendanceEndTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public AttendanceTime getStartTime() {
+    public AttendanceStartTime getStartTime() {
         return startTime;
     }
 
-    public AttendanceTime getEndTime() {
+    public AttendanceEndTime getEndTime() {
         return endTime;
     }
 }

@@ -1,9 +1,10 @@
-package apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.service;
+package jp.co.biglobe.isp.kintai.service;
 
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.AttendanceYearMonth;
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.entity.DailyAttendance;
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.entity.MonthlyAttendance;
+import jp.co.biglobe.isp.kintai.domain.AttendanceYearMonth;
+import jp.co.biglobe.isp.kintai.domain.entity.DailyAttendance;
+import jp.co.biglobe.isp.kintai.domain.entity.MonthlyAttendance;
 
+import java.io.IOException;
 import java.util.Optional;
 
 public interface AttendanceRepository {

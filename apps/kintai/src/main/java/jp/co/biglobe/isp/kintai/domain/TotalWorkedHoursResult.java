@@ -1,4 +1,4 @@
-package apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain;
+package jp.co.biglobe.isp.kintai.domain;
 
-public record TotalWorkedHoursResult(WorktimeHours worktimeHours, OvertimeHours overtimeHours) {
+public record TotalWorkedHoursResult(WorkTimeMinutes workTimeHours, OvertimeMinutes overtimeHours) {
 }

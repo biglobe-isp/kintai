@@ -1,4 +1,4 @@
-package apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.api;
+package jp.co.biglobe.isp.kintai.api;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Main {
+public class OldMain {
     public static void main(String[] args) {
         try {
             if (args.length < 1) {

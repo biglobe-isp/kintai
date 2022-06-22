@@ -1,16 +1,15 @@
-package apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.entity;
+package jp.co.biglobe.isp.kintai.domain.entity;
 
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.AttendanceDate;
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.AttendanceTime;
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.OvertimeHours;
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.WorktimeHours;
+import jp.co.biglobe.isp.kintai.domain.AttendanceDate;
+import jp.co.biglobe.isp.kintai.domain.AttendanceEndTime;
+import jp.co.biglobe.isp.kintai.domain.AttendanceStartTime;
+import jp.co.biglobe.isp.kintai.domain.OvertimeMinutes;
+import jp.co.biglobe.isp.kintai.domain.WorkTimeMinutes;
 
-public record DailyAttendance(AttendanceDate attendanceDate, AttendanceTime startTime, AttendanceTime endTime) {
-    public WorktimeHours calcWorkedTimeHours() {
-        return new WorktimeHours(this);
-    }
-
-    public OvertimeHours calcOverTimeHours() {
-        return new OvertimeHours(this);
-    }
+public record DailyAttendance(
+        AttendanceDate attendanceDate,
+        AttendanceStartTime startTime,
+        AttendanceEndTime endTime,
+        WorkTimeMinutes workTimeMinites,
+        OvertimeMinutes overtimeMinites) {
 }
