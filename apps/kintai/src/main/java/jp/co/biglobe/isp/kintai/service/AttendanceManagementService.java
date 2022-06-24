@@ -14,7 +14,7 @@ public class AttendanceManagementService {
         this.attendanceRepository = attendanceRepository;
     }
 
-    void inputAttendance(DailyAttendance dailyAttendance) {
+    public void inputAttendance(DailyAttendance dailyAttendance) {
         attendanceRepository.persist(dailyAttendance);
     }
 

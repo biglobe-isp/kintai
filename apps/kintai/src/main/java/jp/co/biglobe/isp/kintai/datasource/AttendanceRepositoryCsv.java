@@ -20,14 +20,17 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     @Override
     public void persist(DailyAttendance dailyAttendance) throws RuntimeException {
+        // FIXME
+        System.out.println("ファイルパス確認");
+        System.out.println(file.toAbsolutePath());
         try (FileWriter filewriter = new FileWriter(file.toFile(), true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
-                    dailyAttendance.attendanceDate().toString(),
-                    dailyAttendance.startTime().toString(),
-                    dailyAttendance.endTime().toString(),
-                    dailyAttendance.workTimeMinites(),
-                    dailyAttendance.overtimeMinites(),
+                    dailyAttendance.attendanceDate().value().toString(),
+                    dailyAttendance.startTime().value().toString(),
+                    dailyAttendance.endTime().value().toString(),
+                    dailyAttendance.workTimeMinites().value(),
+                    dailyAttendance.overtimeMinites().value(),
                     LocalDateTime.now().toString()
             ));
         } catch (IOException ex) {
