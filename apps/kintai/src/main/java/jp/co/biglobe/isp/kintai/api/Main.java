@@ -1,6 +1,5 @@
 package jp.co.biglobe.isp.kintai.api;
 
-import apps.kintai.src.main.java.jp.co.biglobe.isp.kintai.domain.rule.AttendanceRule;
 import jp.co.biglobe.isp.kintai.datasource.AttendanceRepositoryCsv;
 import jp.co.biglobe.isp.kintai.domain.DailyAttendanceFactory;
 import jp.co.biglobe.isp.kintai.service.AttendanceManagementService;
@@ -10,12 +9,11 @@ import java.nio.file.Path;
 import java.time.Clock;
 
 public class Main {
-    final Clock clock = Clock.systemDefaultZone();
+    private static final  Clock clock = Clock.systemDefaultZone();
     private static final Path csvFilePath = Path.of("./output/data.csv");
-    private static final AttendanceRepository repository = new AttendanceRepositoryCsv(csvFilePath);
+    private static final AttendanceRepository repository = new AttendanceRepositoryCsv(csvFilePath, clock);
     private static final AttendanceManagementService service = new AttendanceManagementService(repository);
-    private static final AttendanceRule rule = new AttendanceRule();
-    private static final DailyAttendanceFactory dailyAttendanceFactory = new DailyAttendanceFactory(rule);
+    private static final DailyAttendanceFactory dailyAttendanceFactory = new DailyAttendanceFactory();
 
     public static void main(String[] args) {
         try {

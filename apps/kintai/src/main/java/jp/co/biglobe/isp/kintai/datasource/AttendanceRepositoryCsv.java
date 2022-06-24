@@ -8,21 +8,20 @@ import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class AttendanceRepositoryCsv implements AttendanceRepository {
     private final Path file;
-
-    public AttendanceRepositoryCsv(Path file) {
+    private final Clock clock;
+    public AttendanceRepositoryCsv(Path file, Clock clock) {
         this.file = file;
+        this.clock = clock;
     }
 
     @Override
     public void persist(DailyAttendance dailyAttendance) throws RuntimeException {
-        // FIXME
-        System.out.println("ファイルパス確認");
-        System.out.println(file.toAbsolutePath());
         try (FileWriter filewriter = new FileWriter(file.toFile(), true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
@@ -31,7 +30,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                     dailyAttendance.endTime().value().toString(),
                     dailyAttendance.workTimeMinites().value(),
                     dailyAttendance.overtimeMinites().value(),
-                    LocalDateTime.now().toString()
+                    LocalDateTime.now(clock).toString()
             ));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
