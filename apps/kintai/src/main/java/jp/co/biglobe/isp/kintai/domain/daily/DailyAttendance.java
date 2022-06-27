@@ -4,6 +4,6 @@ public record DailyAttendance(
         AttendanceDate attendanceDate,
         AttendanceStartTime startTime,
         AttendanceEndTime endTime,
-        WorkTimeMinutes workTimeMinites,
-        OvertimeMinutes overtimeMinites) {
+        WorkTimeMinutes workTimeMinutes,
+        OvertimeMinutes overtimeMinutes) {
 }

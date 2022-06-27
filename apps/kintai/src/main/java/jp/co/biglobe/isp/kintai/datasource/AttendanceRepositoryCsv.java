@@ -28,8 +28,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                     dailyAttendance.attendanceDate().value().toString(),
                     dailyAttendance.startTime().value().toString(),
                     dailyAttendance.endTime().value().toString(),
-                    dailyAttendance.workTimeMinites().value(),
-                    dailyAttendance.overtimeMinites().value(),
+                    dailyAttendance.workTimeMinutes().value(),
+                    dailyAttendance.overtimeMinutes().value(),
                     LocalDateTime.now(clock).toString()
             ));
         } catch (IOException ex) {
