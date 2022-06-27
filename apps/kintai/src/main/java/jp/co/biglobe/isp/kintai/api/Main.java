@@ -1,7 +1,7 @@
 package jp.co.biglobe.isp.kintai.api;
 
 import jp.co.biglobe.isp.kintai.datasource.AttendanceRepositoryCsv;
-import jp.co.biglobe.isp.kintai.domain.DailyAttendanceFactory;
+import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendanceFactory;
 import jp.co.biglobe.isp.kintai.service.AttendanceManagementService;
 import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
 

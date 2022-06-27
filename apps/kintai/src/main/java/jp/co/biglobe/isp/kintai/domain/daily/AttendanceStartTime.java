@@ -1,6 +1,5 @@
-package jp.co.biglobe.isp.kintai.domain;
+package jp.co.biglobe.isp.kintai.domain.daily;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 

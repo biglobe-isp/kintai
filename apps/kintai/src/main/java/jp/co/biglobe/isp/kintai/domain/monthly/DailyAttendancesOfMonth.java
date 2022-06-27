@@ -1,6 +1,6 @@
-package jp.co.biglobe.isp.kintai.domain;
+package jp.co.biglobe.isp.kintai.domain.monthly;
 
-import jp.co.biglobe.isp.kintai.domain.entity.DailyAttendance;
+import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
 
 import java.util.List;
 

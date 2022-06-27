@@ -1,9 +1,9 @@
 package jp.co.biglobe.isp.kintai.service;
 
-import jp.co.biglobe.isp.kintai.domain.AttendanceYearMonth;
-import jp.co.biglobe.isp.kintai.domain.TotalWorkedHoursResult;
-import jp.co.biglobe.isp.kintai.domain.entity.DailyAttendance;
-import jp.co.biglobe.isp.kintai.domain.entity.MonthlyAttendance;
+import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
+import jp.co.biglobe.isp.kintai.domain.monthly.TotalWorkedHoursResult;
+import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
+import jp.co.biglobe.isp.kintai.domain.monthly.MonthlyAttendance;
 
 import java.util.Optional;
 

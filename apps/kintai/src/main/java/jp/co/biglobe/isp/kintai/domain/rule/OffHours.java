@@ -1,8 +1,8 @@
 package jp.co.biglobe.isp.kintai.domain.rule;
 
 import com.google.common.collect.Comparators;
-import jp.co.biglobe.isp.kintai.domain.AttendanceEndTime;
-import jp.co.biglobe.isp.kintai.domain.AttendanceStartTime;
+import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
+import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;

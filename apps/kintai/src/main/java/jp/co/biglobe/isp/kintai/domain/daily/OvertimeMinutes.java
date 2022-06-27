@@ -1,4 +1,4 @@
-package jp.co.biglobe.isp.kintai.domain;
+package jp.co.biglobe.isp.kintai.domain.daily;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;

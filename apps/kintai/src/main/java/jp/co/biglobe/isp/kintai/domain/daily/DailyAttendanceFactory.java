@@ -1,7 +1,6 @@
-package jp.co.biglobe.isp.kintai.domain;
+package jp.co.biglobe.isp.kintai.domain.daily;
 
 import jp.co.biglobe.isp.kintai.api.InputArgs;
-import jp.co.biglobe.isp.kintai.domain.entity.DailyAttendance;
 
 public class DailyAttendanceFactory {
     public DailyAttendance create(InputArgs inputArgs) {
