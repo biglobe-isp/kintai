@@ -1,7 +1,7 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
-import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
+import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
 import jp.co.biglobe.isp.kintai.domain.monthly.MonthlyAttendance;
 import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
 
@@ -15,6 +15,7 @@ import java.util.Optional;
 public class AttendanceRepositoryCsv implements AttendanceRepository {
     private final Path file;
     private final Clock clock;
+
     public AttendanceRepositoryCsv(Path file, Clock clock) {
         this.file = file;
         this.clock = clock;
@@ -30,7 +31,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                     dailyAttendance.endTime().value().toString(),
                     dailyAttendance.workTimeMinutes().value(),
                     dailyAttendance.overtimeMinutes().value(),
-                    LocalDateTime.now(clock).toString()
+                    LocalDateTime.now(clock)
             ));
         } catch (IOException ex) {
             throw new RuntimeException(ex);

@@ -1,11 +1,12 @@
 package jp.co.biglobe.isp.kintai.domain.daily;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public record AttendanceStartTime(LocalTime value) {
-    private static final DateTimeFormatter FORMAT_ATTENDANCE_TIME = DateTimeFormatter.ofPattern("HHmm");
-    private static final LocalTime LATEST_ATTENDANCE_TIME = LocalTime.parse("0900", FORMAT_ATTENDANCE_TIME);
+    /**
+     * 勤務時間開始時刻
+     */
+    private static final LocalTime LATEST_ATTENDANCE_TIME = LocalTime.of(9, 00);
 
     public AttendanceStartTime(LocalTime value) {
         System.out.println(value);
@@ -13,9 +14,5 @@ public record AttendanceStartTime(LocalTime value) {
             throw new RuntimeException("遅刻は認められていません");
         }
         this.value = value;
-    }
-
-    public static AttendanceStartTime of(String time) {
-        return new AttendanceStartTime(LocalTime.parse(time, FORMAT_ATTENDANCE_TIME));
     }
 }

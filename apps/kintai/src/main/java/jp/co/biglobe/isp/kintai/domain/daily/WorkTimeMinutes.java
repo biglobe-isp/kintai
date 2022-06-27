@@ -11,7 +11,7 @@ public record WorkTimeMinutes(int value) {
                 attendanceStartTime.value(),
                 attendanceEndTime.value()
         );
-        final int actualTotalBreakMinutes = OffHours.calcActualTotalBreak(
+        final int actualTotalBreakMinutes = OffHours.calcActualTotalBreakTime(
                 attendanceStartTime,
                 attendanceEndTime,
                 ChronoUnit.MINUTES

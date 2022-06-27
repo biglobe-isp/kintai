@@ -30,7 +30,7 @@ public enum OffHours {
         this.endTime = endTime;
     }
 
-    public static int calcActualTotalBreak(
+    public static int calcActualTotalBreakTime(
             AttendanceStartTime attendanceStartTime,
             AttendanceEndTime attendanceEndTime,
             ChronoUnit chronoUnit) {
