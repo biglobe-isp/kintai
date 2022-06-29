@@ -71,6 +71,5 @@ public class Main {
 
         TotalWorkedHoursResult totalWorkedHoursResult = service.totalWorkingHours(attendanceYearMonth);
 
-        System.out.println(totalWorkedHoursResult);
     }
 }
