@@ -51,9 +51,9 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
         try (FileWriter filewriter = new FileWriter(file.toFile(), true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
-                    dailyAttendance.attendanceDate().value().toString(),
-                    dailyAttendance.startTime().value().toString(),
-                    dailyAttendance.endTime().value().toString(),
+                    attendanceDateFormatter.format(dailyAttendance.attendanceDate().value()),
+                    attendanceTimeFormatter.format(dailyAttendance.startTime().value()),
+                    attendanceTimeFormatter.format(dailyAttendance.endTime().value()),
                     dailyAttendance.workTimeMinutes().value(),
                     dailyAttendance.overtimeMinutes().value(),
                     LocalDateTime.now(clock)
@@ -80,7 +80,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             throw new RuntimeException(ex);
         }
 
-        List<DailyAttendance> result =
+        final List<DailyAttendance> result =
                 dailyAttendanceCsvMap.values().stream()
                         .map(Optional::get)
                         .map(dailyCsv ->
@@ -104,7 +104,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                                              new OvertimeMinutes(Integer.valueOf(dailyCsv.overTimeMinutes()))
                                      )
                         )
-                        .collect(Collectors.toList());
+                        .collect(Collectors.toUnmodifiableList());
 
         return result;
     }
