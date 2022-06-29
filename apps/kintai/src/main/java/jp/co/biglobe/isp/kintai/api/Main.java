@@ -46,10 +46,12 @@ public class Main {
             throw new RuntimeException("引数が不足しています。");
         }
 
+        final InputArgs inputArgs = new InputArgs(args[1],args[2],args[3]);
+
         service.inputAttendance(
-                new AttendanceDate(LocalDate.parse(args[1], FORMATTER_ATTENDANCE_DATE)),
-                new AttendanceStartTime(LocalTime.parse(args[2], FORMATTER_ATTENDANCE_TIME)),
-                new AttendanceEndTime(LocalTime.parse(args[3], FORMATTER_ATTENDANCE_TIME))
+                new AttendanceDate(LocalDate.parse(inputArgs.attendanceDate(), FORMATTER_ATTENDANCE_DATE)),
+                new AttendanceStartTime(LocalTime.parse(inputArgs.attendanceStartTime(), FORMATTER_ATTENDANCE_TIME)),
+                new AttendanceEndTime(LocalTime.parse(inputArgs.attendanceEndTime(), FORMATTER_ATTENDANCE_TIME))
         );
     }
 }
