@@ -7,6 +7,8 @@ import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
 import jp.co.biglobe.isp.kintai.domain.daily.OvertimeMinutes;
 import jp.co.biglobe.isp.kintai.domain.daily.WorkTimeMinutes;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
+import jp.co.biglobe.isp.kintai.domain.monthly.DailyAttendancesOfMonth;
+import jp.co.biglobe.isp.kintai.domain.monthly.MonthlyAttendance;
 import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
 import jp.co.biglobe.isp.kintai.service.DailyAttendanceFactory;
 
@@ -24,6 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,7 +51,7 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
 
     @Override
     public void persist(DailyAttendance dailyAttendance) throws RuntimeException {
-        try (FileWriter filewriter = new FileWriter(file.toFile(), true)) {
+        try (final FileWriter filewriter = new FileWriter(file.toFile(), true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     attendanceDateFormatter.format(dailyAttendance.attendanceDate().value()),
@@ -64,48 +67,31 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
     }
 
     @Override
-    public List<DailyAttendance> findMonthlyAttendance(AttendanceYearMonth attendanceYearMonth) {
+    public MonthlyAttendance findMonthlyAttendance(AttendanceYearMonth attendanceYearMonth) {
 
-        final Map<String, Optional<DailyAttendanceCsv>> dailyAttendanceCsvMap;
-        try (Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8);) {
-            dailyAttendanceCsvMap = lines.filter(
-                            line -> line.startsWith(attendanceYearMonth.value().format(attendanceYearMonthFormatter)))
+        final List<DailyAttendance> dailyAttendanceList;
+        try (final Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8);) {
+            final Map<String, Optional<DailyAttendanceCsv>> dailyAttendanceMap = lines
+                    .filter(line -> line.startsWith(attendanceYearMonth.value().format(attendanceYearMonthFormatter)))
                     .map(line -> line.split(","))
                     .map(arr -> new DailyAttendanceCsv(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]))
                     .collect(Collectors.groupingBy(
                             DailyAttendanceCsv::attendanceDate,
                             Collectors.maxBy(Comparator.comparing(DailyAttendanceCsv::updatedAt))
                     ));
+            dailyAttendanceList = dailyAttendanceMap.values().stream()
+                    .map(Optional::get)
+                    .map(dailyAttendanceCsv -> dailyAttendanceCsv.toDomain(attendanceDateFormatter,
+                                                                           attendanceTimeFormatter))
+                    .collect(Collectors.toUnmodifiableList());            ;
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
 
-        final List<DailyAttendance> result =
-                dailyAttendanceCsvMap.values().stream()
-                        .map(Optional::get)
-                        .map(dailyCsv ->
-                                     new DailyAttendance(
-                                             new AttendanceDate(LocalDate.parse(
-                                                     dailyCsv.attendanceDate(),
-                                                     attendanceDateFormatter
-                                             )),
-                                             new AttendanceStartTime(LocalTime.parse(
-                                                     dailyCsv.attendanceStartTime(),
-                                                     attendanceTimeFormatter
-                                             )),
-                                             new AttendanceEndTime(
-                                                     LocalTime.parse(
-                                                             dailyCsv.attendanceEndTime(),
-                                                             attendanceTimeFormatter
-                                                     )),
-                                             new WorkTimeMinutes(
-                                                     Integer.valueOf(dailyCsv.workTimeMinutes())
-                                             ),
-                                             new OvertimeMinutes(Integer.valueOf(dailyCsv.overTimeMinutes()))
-                                     )
-                        )
-                        .collect(Collectors.toUnmodifiableList());
+        final DailyAttendancesOfMonth dailyAttendancesOfMonth = new DailyAttendancesOfMonth(dailyAttendanceList);
 
-        return result;
+        final MonthlyAttendance monthlyAttendance = new MonthlyAttendance(attendanceYearMonth, dailyAttendancesOfMonth);
+
+        return monthlyAttendance;
     }
 }

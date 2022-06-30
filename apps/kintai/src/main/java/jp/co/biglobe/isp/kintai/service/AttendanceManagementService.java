@@ -5,6 +5,7 @@ import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
+import jp.co.biglobe.isp.kintai.domain.monthly.DailyAttendancesOfMonth;
 import jp.co.biglobe.isp.kintai.domain.monthly.TotalWorkedHoursResult;
 import jp.co.biglobe.isp.kintai.domain.monthly.MonthlyAttendance;
 
@@ -26,7 +27,6 @@ public class AttendanceManagementService {
             AttendanceDate attendanceDate,
             AttendanceStartTime attendanceStartTime,
             AttendanceEndTime attendanceEndTime) {
-
         attendanceRepository.persist(
                 dailyAttendanceFactory.create(
                         attendanceDate,
@@ -36,10 +36,11 @@ public class AttendanceManagementService {
     }
 
     public TotalWorkedHoursResult totalWorkingHours(AttendanceYearMonth attendanceYearMonth) {
-        List<DailyAttendance> dailyAttendanceList = attendanceRepository.findMonthlyAttendance(
+        final MonthlyAttendance monthlyAttendance = attendanceRepository.findMonthlyAttendance(
                 attendanceYearMonth);
 
-        // TODO 集計結果を返す
-        return null;
+        final TotalWorkedHoursResult totalWorkedHoursResult = monthlyAttendance.totalWorkingHours();
+
+        return totalWorkedHoursResult;
     }
 }

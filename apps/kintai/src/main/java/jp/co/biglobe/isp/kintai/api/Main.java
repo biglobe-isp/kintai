@@ -11,6 +11,7 @@ import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
 import jp.co.biglobe.isp.kintai.service.DailyAttendanceFactory;
 
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,6 +36,7 @@ public class Main {
             attendanceRepository,
             dailyAttendanceFactory
     );
+    private static final DateTimeFormatter FORMATTER_STDOUT_YEARMONTH = DateTimeFormatter.ofPattern("yyyy年MM月");
 
     public static void main(String[] args) {
         try {
@@ -69,7 +71,17 @@ public class Main {
 
         final AttendanceYearMonth attendanceYearMonth = new AttendanceYearMonth(YearMonth.now(clock));
 
-        TotalWorkedHoursResult totalWorkedHoursResult = service.totalWorkingHours(attendanceYearMonth);
+        final TotalWorkedHoursResult totalWorkedHoursResult = service.totalWorkingHours(attendanceYearMonth);
 
+        System.out.println(MessageFormat.format(
+                """
+                        {0}の勤怠集計結果：                                                                        
+                        勤務時間合計：{1}分
+                        残業時間合計：{2}分
+                        """,
+                FORMATTER_STDOUT_YEARMONTH.format(attendanceYearMonth.value()),
+                String.valueOf(totalWorkedHoursResult.totalWorkTimeMinutes().value()),
+                String.valueOf(totalWorkedHoursResult.totalOvertimeMinutes().value())
+        ));
     }
 }
