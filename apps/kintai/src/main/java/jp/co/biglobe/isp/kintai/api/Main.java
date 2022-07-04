@@ -24,7 +24,7 @@ public class Main {
     private static final Path csvFilePath = Path.of("./output/data.csv");
     private static final DateTimeFormatter FORMATTER_ATTENDANCE_YEARMONTH = DateTimeFormatter.ofPattern("yyyyMM");
     private static final DateTimeFormatter FORMATTER_ATTENDANCE_DATE = DateTimeFormatter.BASIC_ISO_DATE;
-    private static final DateTimeFormatter FORMATTER_ATTENDANCE_TIME = DateTimeFormatter.ofPattern("HHmm");
+    private static final DateTimeFormatter FORMATTER_ATTENDANCE_TIME = DateTimeFormatter.ofPattern("HH_mm");
     private static final AttendanceRepository attendanceRepository = new AttendanceRepositoryCsv(
             csvFilePath,
             clock,
@@ -60,14 +60,30 @@ public class Main {
 
     private static void input(String[] args) {
         validateArgsLength(args, 3);
+        validateInputArgsPrefix(args);
 
-        final InputArgs inputArgs = new InputArgs(args[0], args[1], args[2]);
+        final InputArgs inputArgs = new InputArgs(
+                args[0].replace(InputArgsPrefix.DATE.getValue(),""),
+                args[1].replace(InputArgsPrefix.START.getValue(),""),
+                args[2].replace(InputArgsPrefix.END.getValue(),""));
 
         service.inputAttendance(
                 new AttendanceDate(LocalDate.parse(inputArgs.attendanceDate(), FORMATTER_ATTENDANCE_DATE)),
                 new AttendanceStartTime(LocalTime.parse(inputArgs.attendanceStartTime(), FORMATTER_ATTENDANCE_TIME)),
                 new AttendanceEndTime(LocalTime.parse(inputArgs.attendanceEndTime(), FORMATTER_ATTENDANCE_TIME))
         );
+    }
+
+    private static void validateInputArgsPrefix(String[] args) {
+        if (!InputArgsPrefix.DATE.containsPrefix(args[0])) {
+            throw new RuntimeException("勤怠日付を入力してください。");
+        }
+        if (!InputArgsPrefix.START.containsPrefix(args[1])) {
+            throw new RuntimeException("勤怠開始時刻を入力してください。");
+        }
+        if (!InputArgsPrefix.END.containsPrefix(args[2])) {
+            throw new RuntimeException("勤怠終了時刻を入力してください。");
+        }
     }
 
     private static void total() {
