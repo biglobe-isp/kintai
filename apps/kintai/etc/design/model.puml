@@ -3,14 +3,13 @@
 package datasource {
     class 勤怠リポジトリCSV << datasource >> {
         +void persist(日次勤怠)
-        +月次勤怠 findMonthlyAttendance()
+        +月次勤怠 findMonthlyAttendance(勤怠年月)
     }
 }
 
 package domain {
     package rule {
-        class 就業規則 {
-           
+        class 就業規則 {           
         }
 
         enum 休憩時間 {
@@ -37,7 +36,8 @@ package domain {
         }
 
         class 勤務時間集計結果 {
-            YearMonth value        
+            勤務時間集計
+            残業時間集計
         }
 
         class 勤務時間集計 {
@@ -85,7 +85,8 @@ package domain {
     
     月次勤怠-->勤怠年月
     月次勤怠-->当月の日次勤怠
-    当月の日次勤怠  "1" o-- "0..31" 日次勤怠
+
+    当月の日次勤怠  "1" o-> "0..31" 日次勤怠
     日次勤怠-->勤怠日付
     日次勤怠-->勤怠開始時刻
     日次勤怠-->勤怠終了時刻
@@ -104,13 +105,17 @@ package service {
     }
     interface 勤怠リポジトリ << repository >> {
         +void persist(日次勤怠)
-        +Option<月次勤怠> findMonthlyAttendance()
+        +月次勤怠 findMonthlyAttendance(勤怠年月)
     }
-    勤怠管理サービス-->日次勤怠ファクトリ
+    勤怠管理サービス--->日次勤怠ファクトリ
+    日次勤怠ファクトリ-->日次勤怠
     勤怠管理サービス-->勤怠リポジトリ
-    勤怠リポジトリ-->月次勤怠
-    勤怠リポジトリ-->日次勤怠
-    勤怠リポジトリ<|.. 勤怠リポジトリCSV
+    勤怠リポジトリ<|."0..31" 勤怠リポジトリCSV
+
+
+    勤怠リポジトリ--->月次勤怠
+    勤怠リポジトリ--->日次勤怠
+
 }
 
 package api {
@@ -120,12 +125,21 @@ package api {
         void total()
     }
 
+    class メソッドタイプ {
+        INPUT
+        TOTAL
+        NONE
+        +メソッドタイプ of(String str)
+    }
+    
     class 勤怠入力引数 {
         String 勤怠日時
         String 勤怠開始時間
         String 勤怠終了時間
     }
 
-    勤怠管理メイン-->勤怠管理サービス
+    勤怠管理メイン--->勤怠管理サービス
+    勤怠管理メイン-->メソッドタイプ
+    勤怠管理メイン-->勤怠入力引数
 }
 @enduml
