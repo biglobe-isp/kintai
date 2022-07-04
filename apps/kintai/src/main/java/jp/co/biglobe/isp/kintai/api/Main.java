@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class Main {
     private static final Clock clock = Clock.systemDefaultZone();
@@ -40,11 +41,9 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            if (args.length < 1) {
-                throw new RuntimeException("引数が不足しています。");
-            }
+            validateArgsLength(args, 1);
             switch (MethodType.of(args[0])) {
-                case INPUT -> input(args);
+                case INPUT -> input(Arrays.copyOfRange(args, 1, args.length));
                 case TOTAL -> total();
                 default -> throw new RuntimeException("引数のメソッドタイプは定義されていません。");
             }
@@ -53,12 +52,16 @@ public class Main {
         }
     }
 
-    private static void input(String[] args) {
-        if (args.length < 4) {
+    private static void validateArgsLength(String[] args, int x) {
+        if (args.length < x) {
             throw new RuntimeException("引数が不足しています。");
         }
+    }
 
-        final InputArgs inputArgs = new InputArgs(args[1], args[2], args[3]);
+    private static void input(String[] args) {
+        validateArgsLength(args, 3);
+
+        final InputArgs inputArgs = new InputArgs(args[0], args[1], args[2]);
 
         service.inputAttendance(
                 new AttendanceDate(LocalDate.parse(inputArgs.attendanceDate(), FORMATTER_ATTENDANCE_DATE)),
