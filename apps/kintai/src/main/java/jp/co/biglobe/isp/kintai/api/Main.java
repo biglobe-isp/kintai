@@ -2,6 +2,7 @@ package jp.co.biglobe.isp.kintai.api;
 
 import jp.co.biglobe.isp.kintai.datasource.AttendanceRepositoryCsv;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDate;
+import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDuration;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
@@ -63,14 +64,20 @@ public class Main {
         validateInputArgsPrefix(args);
 
         final InputArgs inputArgs = new InputArgs(
-                args[0].replace(InputArgsPrefix.DATE.getValue(),""),
-                args[1].replace(InputArgsPrefix.START.getValue(),""),
-                args[2].replace(InputArgsPrefix.END.getValue(),""));
+                args[0].replace(InputArgsPrefix.DATE.getValue(), ""),
+                args[1].replace(InputArgsPrefix.START.getValue(), ""),
+                args[2].replace(InputArgsPrefix.END.getValue(), "")
+        );
 
         service.inputAttendance(
                 new AttendanceDate(LocalDate.parse(inputArgs.attendanceDate(), FORMATTER_ATTENDANCE_DATE)),
-                new AttendanceStartTime(LocalTime.parse(inputArgs.attendanceStartTime(), FORMATTER_ATTENDANCE_TIME)),
-                new AttendanceEndTime(LocalTime.parse(inputArgs.attendanceEndTime(), FORMATTER_ATTENDANCE_TIME))
+                new AttendanceDuration(
+                        new AttendanceStartTime(LocalTime.parse(
+                                inputArgs.attendanceStartTime(),
+                                FORMATTER_ATTENDANCE_TIME
+                        )),
+                        new AttendanceEndTime(LocalTime.parse(inputArgs.attendanceEndTime(), FORMATTER_ATTENDANCE_TIME))
+                )
         );
     }
 
@@ -94,7 +101,7 @@ public class Main {
 
         System.out.println(MessageFormat.format(
                 """
-                        {0}の勤怠集計結果：                                                                        
+                        {0}の勤怠集計結果：
                         勤務時間合計：{1}分
                         残業時間合計：{2}分
                         """,

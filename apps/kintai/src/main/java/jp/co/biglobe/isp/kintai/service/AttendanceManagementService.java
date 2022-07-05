@@ -1,6 +1,7 @@
 package jp.co.biglobe.isp.kintai.service;
 
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDate;
+import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDuration;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
@@ -25,13 +26,11 @@ public class AttendanceManagementService {
 
     public void inputAttendance(
             AttendanceDate attendanceDate,
-            AttendanceStartTime attendanceStartTime,
-            AttendanceEndTime attendanceEndTime) {
+            AttendanceDuration attendanceDuration) {
         attendanceRepository.persist(
                 dailyAttendanceFactory.create(
                         attendanceDate,
-                        attendanceStartTime,
-                        attendanceEndTime
+                        attendanceDuration
                 ));
     }
 

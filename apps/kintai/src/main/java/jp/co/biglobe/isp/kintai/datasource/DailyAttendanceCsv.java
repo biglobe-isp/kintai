@@ -1,6 +1,7 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDate;
+import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDuration;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
@@ -23,10 +24,12 @@ record DailyAttendanceCsv(
             DateTimeFormatter attendanceTimeFormatter) {
         return new DailyAttendance(
                 new AttendanceDate(LocalDate.parse(attendanceDate, attendanceDateFormatter)),
-                new AttendanceStartTime(LocalTime.parse(attendanceStartTime, attendanceTimeFormatter)),
-                new AttendanceEndTime(LocalTime.parse(attendanceEndTime, attendanceTimeFormatter)),
-                new WorkTimeMinutes(Integer.valueOf(workTimeMinutes)),
-                new OvertimeMinutes(Integer.valueOf(overTimeMinutes))
+                new AttendanceDuration(
+                        new AttendanceStartTime(LocalTime.parse(attendanceStartTime, attendanceTimeFormatter)),
+                        new AttendanceEndTime(LocalTime.parse(attendanceEndTime, attendanceTimeFormatter))
+                ),
+                new WorkTimeMinutes(Integer.parseInt(workTimeMinutes)),
+                new OvertimeMinutes(Integer.parseInt(overTimeMinutes))
         );
     }
 }

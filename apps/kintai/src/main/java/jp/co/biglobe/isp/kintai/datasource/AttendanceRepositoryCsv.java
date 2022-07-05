@@ -55,8 +55,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     attendanceDateFormatter.format(dailyAttendance.attendanceDate().value()),
-                    attendanceTimeFormatter.format(dailyAttendance.startTime().value()),
-                    attendanceTimeFormatter.format(dailyAttendance.endTime().value()),
+                    attendanceTimeFormatter.format(dailyAttendance.attendanceDuration().attendanceStartTime().value()),
+                    attendanceTimeFormatter.format(dailyAttendance.attendanceDuration().attendanceEndTime().value()),
                     dailyAttendance.workTimeMinutes().value(),
                     dailyAttendance.overtimeMinutes().value(),
                     LocalDateTime.now(clock)
@@ -88,10 +88,6 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
             throw new RuntimeException(ex);
         }
 
-        final DailyAttendancesOfMonth dailyAttendancesOfMonth = new DailyAttendancesOfMonth(dailyAttendanceList);
-
-        final MonthlyAttendance monthlyAttendance = new MonthlyAttendance(attendanceYearMonth, dailyAttendancesOfMonth);
-
-        return monthlyAttendance;
+        return new MonthlyAttendance(attendanceYearMonth, new DailyAttendancesOfMonth(dailyAttendanceList));
     }
 }

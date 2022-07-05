@@ -9,7 +9,7 @@ public record OvertimeMinutes(int value) {
      */
     private static final Duration OVERTIME_BORDER = Duration.of(8, ChronoUnit.HOURS);
 
-    public static OvertimeMinutes create(WorkTimeMinutes workTimeMinutes) {
+    public static OvertimeMinutes calculate(WorkTimeMinutes workTimeMinutes) {
         return new OvertimeMinutes(
                 workTimeMinutes.value() < OVERTIME_BORDER.toMinutes()
                         ? 0
