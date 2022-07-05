@@ -2,8 +2,6 @@ package jp.co.biglobe.isp.kintai.service;
 
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDate;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDuration;
-import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
-import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
 import jp.co.biglobe.isp.kintai.domain.monthly.DailyAttendancesOfMonth;
@@ -11,14 +9,13 @@ import jp.co.biglobe.isp.kintai.domain.monthly.TotalWorkedHoursResult;
 import jp.co.biglobe.isp.kintai.domain.monthly.MonthlyAttendance;
 
 import java.util.List;
-import java.util.Optional;
 
 public class AttendanceManagementService {
-    private final AttendanceRepository attendanceRepository;
+    private final DailyAttendanceRepository attendanceRepository;
     private final DailyAttendanceFactory dailyAttendanceFactory;
 
     public AttendanceManagementService(
-            AttendanceRepository attendanceRepository,
+            DailyAttendanceRepository attendanceRepository,
             DailyAttendanceFactory dailyAttendanceFactory) {
         this.attendanceRepository = attendanceRepository;
         this.dailyAttendanceFactory = dailyAttendanceFactory;
@@ -35,11 +32,15 @@ public class AttendanceManagementService {
     }
 
     public TotalWorkedHoursResult totalWorkingHours(AttendanceYearMonth attendanceYearMonth) {
-        final MonthlyAttendance monthlyAttendance = attendanceRepository.findMonthlyAttendance(
+        final List<DailyAttendance> dailyAttendanceList = attendanceRepository.findByAttendanceYearMonth(
                 attendanceYearMonth);
 
-        final TotalWorkedHoursResult totalWorkedHoursResult = monthlyAttendance.totalWorkingHours();
+        final MonthlyAttendance monthlyAttendance =
+                new MonthlyAttendance(
+                        attendanceYearMonth,
+                        new DailyAttendancesOfMonth(dailyAttendanceList)
+                );
 
-        return totalWorkedHoursResult;
+        return monthlyAttendance.totalWorkingHours();
     }
 }

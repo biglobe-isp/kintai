@@ -1,16 +1,8 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
-import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDate;
-import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
-import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
-import jp.co.biglobe.isp.kintai.domain.daily.OvertimeMinutes;
-import jp.co.biglobe.isp.kintai.domain.daily.WorkTimeMinutes;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
-import jp.co.biglobe.isp.kintai.domain.monthly.DailyAttendancesOfMonth;
-import jp.co.biglobe.isp.kintai.domain.monthly.MonthlyAttendance;
-import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
-import jp.co.biglobe.isp.kintai.service.DailyAttendanceFactory;
+import jp.co.biglobe.isp.kintai.service.DailyAttendanceRepository;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,26 +10,23 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Clock;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class AttendanceRepositoryCsv implements AttendanceRepository {
+public class DailyAttendanceRepositoryCsv implements DailyAttendanceRepository {
     private final Path file;
     private final Clock clock;
     private final DateTimeFormatter attendanceYearMonthFormatter;
     private final DateTimeFormatter attendanceDateFormatter;
     private final DateTimeFormatter attendanceTimeFormatter;
 
-    public AttendanceRepositoryCsv(
+    public DailyAttendanceRepositoryCsv(
             Path file, Clock clock,
             DateTimeFormatter attendanceYearMonthFormatter,
             DateTimeFormatter attendanceDateFormatter,
@@ -67,9 +56,8 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
     }
 
     @Override
-    public MonthlyAttendance findMonthlyAttendance(AttendanceYearMonth attendanceYearMonth) {
+    public List<DailyAttendance> findByAttendanceYearMonth(AttendanceYearMonth attendanceYearMonth) {
 
-        final List<DailyAttendance> dailyAttendanceList;
         try (final Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8);) {
             final Map<String, Optional<DailyAttendanceCsv>> dailyAttendanceMap = lines
                     .filter(line -> line.startsWith(attendanceYearMonth.value().format(attendanceYearMonthFormatter)))
@@ -79,15 +67,16 @@ public class AttendanceRepositoryCsv implements AttendanceRepository {
                             DailyAttendanceCsv::attendanceDate,
                             Collectors.maxBy(Comparator.comparing(DailyAttendanceCsv::updatedAt))
                     ));
-            dailyAttendanceList = dailyAttendanceMap.values().stream()
+
+            return dailyAttendanceMap.values().stream()
                     .map(Optional::get)
-                    .map(dailyAttendanceCsv -> dailyAttendanceCsv.toDomain(attendanceDateFormatter,
-                                                                           attendanceTimeFormatter))
-                    .collect(Collectors.toUnmodifiableList());            ;
+                    .map(dailyAttendanceCsv -> dailyAttendanceCsv.toDomain(
+                            attendanceDateFormatter,
+                            attendanceTimeFormatter
+                    ))
+                    .collect(Collectors.toUnmodifiableList());
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
-        return new MonthlyAttendance(attendanceYearMonth, new DailyAttendancesOfMonth(dailyAttendanceList));
     }
 }

@@ -1,6 +1,6 @@
 package jp.co.biglobe.isp.kintai.api;
 
-import jp.co.biglobe.isp.kintai.datasource.AttendanceRepositoryCsv;
+import jp.co.biglobe.isp.kintai.datasource.DailyAttendanceRepositoryCsv;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDate;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDuration;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
@@ -8,7 +8,7 @@ import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
 import jp.co.biglobe.isp.kintai.domain.monthly.TotalWorkedHoursResult;
 import jp.co.biglobe.isp.kintai.service.AttendanceManagementService;
-import jp.co.biglobe.isp.kintai.service.AttendanceRepository;
+import jp.co.biglobe.isp.kintai.service.DailyAttendanceRepository;
 import jp.co.biglobe.isp.kintai.service.DailyAttendanceFactory;
 
 import java.nio.file.Path;
@@ -26,7 +26,7 @@ public class Main {
     private static final DateTimeFormatter FORMATTER_ATTENDANCE_YEARMONTH = DateTimeFormatter.ofPattern("yyyyMM");
     private static final DateTimeFormatter FORMATTER_ATTENDANCE_DATE = DateTimeFormatter.BASIC_ISO_DATE;
     private static final DateTimeFormatter FORMATTER_ATTENDANCE_TIME = DateTimeFormatter.ofPattern("HH_mm");
-    private static final AttendanceRepository attendanceRepository = new AttendanceRepositoryCsv(
+    private static final DailyAttendanceRepository attendanceRepository = new DailyAttendanceRepositoryCsv(
             csvFilePath,
             clock,
             FORMATTER_ATTENDANCE_YEARMONTH,
