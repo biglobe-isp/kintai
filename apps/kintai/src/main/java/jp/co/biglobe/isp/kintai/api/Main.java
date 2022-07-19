@@ -118,8 +118,8 @@ public class Main {
                         残業時間合計：{2}分
                         """,
                 FORMATTER_STDOUT_YEARMONTH.format(attendanceYearMonth.value()),
-                String.valueOf(totalWorkedHoursResult.totalWorkTimeMinutes().value()),
-                String.valueOf(totalWorkedHoursResult.totalOvertimeMinutes().value())
+                String.valueOf(totalWorkedHoursResult.totalWorkTimeMinutes()),
+                String.valueOf(totalWorkedHoursResult.totalOvertimeMinutes())
         ));
     }
 }

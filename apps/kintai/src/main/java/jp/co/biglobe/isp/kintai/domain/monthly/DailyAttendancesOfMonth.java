@@ -18,8 +18,8 @@ public record DailyAttendancesOfMonth(List<DailyAttendance> attendances) {
                 .sum();
 
         return new TotalWorkedHoursResult(
-                new TotalWorkTimeMinutes(totalWorkTimeMinutes),
-                new TotalOvertimeMinutes(totalOvertimeMinutes)
+                totalWorkTimeMinutes,
+                totalOvertimeMinutes
         );
     }
 }
