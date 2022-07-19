@@ -7,9 +7,10 @@ import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 import jp.co.biglobe.isp.kintai.domain.monthly.AttendanceYearMonth;
 import jp.co.biglobe.isp.kintai.domain.monthly.TotalWorkedHoursResult;
-import jp.co.biglobe.isp.kintai.service.AttendanceManagementService;
+import jp.co.biglobe.isp.kintai.service.TotalWorkedHoursService;
 import jp.co.biglobe.isp.kintai.service.DailyAttendanceRepository;
-import jp.co.biglobe.isp.kintai.service.DailyAttendanceFactory;
+import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendanceFactory;
+import jp.co.biglobe.isp.kintai.service.InputAttendanceService;
 
 import java.nio.file.Path;
 import java.text.MessageFormat;
@@ -34,10 +35,14 @@ public class Main {
             FORMATTER_ATTENDANCE_TIME
     );
     private static final DailyAttendanceFactory dailyAttendanceFactory = new DailyAttendanceFactory();
-    private static final AttendanceManagementService service = new AttendanceManagementService(
+    private static final InputAttendanceService inputAttendanceService = new InputAttendanceService(
             attendanceRepository,
             dailyAttendanceFactory
     );
+    private static final TotalWorkedHoursService totalWorkedHoursService = new TotalWorkedHoursService(
+            attendanceRepository
+    );
+    private static final DateTimeFormatter FORMATTER_STDOUT_DATE = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
     private static final DateTimeFormatter FORMATTER_STDOUT_YEARMONTH = DateTimeFormatter.ofPattern("yyyy年MM月");
 
     public static void main(String[] args) {
@@ -69,16 +74,22 @@ public class Main {
                 args[2].replace(InputArgsPrefix.END.getValue(), "")
         );
 
-        service.inputAttendance(
-                new AttendanceDate(LocalDate.parse(inputArgs.attendanceDate(), FORMATTER_ATTENDANCE_DATE)),
-                new AttendanceDuration(
-                        new AttendanceStartTime(LocalTime.parse(
-                                inputArgs.attendanceStartTime(),
-                                FORMATTER_ATTENDANCE_TIME
-                        )),
-                        new AttendanceEndTime(LocalTime.parse(inputArgs.attendanceEndTime(), FORMATTER_ATTENDANCE_TIME))
-                )
+        final AttendanceDate attendanceDate =
+                new AttendanceDate(LocalDate.parse(inputArgs.attendanceDate(), FORMATTER_ATTENDANCE_DATE));
+        final AttendanceDuration attendanceDuration = new AttendanceDuration(
+                new AttendanceStartTime(LocalTime.parse(
+                        inputArgs.attendanceStartTime(),
+                        FORMATTER_ATTENDANCE_TIME
+                )),
+                new AttendanceEndTime(LocalTime.parse(inputArgs.attendanceEndTime(), FORMATTER_ATTENDANCE_TIME))
         );
+
+        inputAttendanceService.inputAttendance(attendanceDate, attendanceDuration);
+
+        System.out.println(MessageFormat.format(
+                "{0}の勤怠を登録しました。",
+                FORMATTER_STDOUT_DATE.format(attendanceDate.value())
+        ));
     }
 
     private static void validateInputArgsPrefix(String[] args) {
@@ -97,7 +108,8 @@ public class Main {
 
         final AttendanceYearMonth attendanceYearMonth = new AttendanceYearMonth(YearMonth.now(clock));
 
-        final TotalWorkedHoursResult totalWorkedHoursResult = service.totalWorkingHours(attendanceYearMonth);
+        final TotalWorkedHoursResult totalWorkedHoursResult = totalWorkedHoursService.totalWorkingHours(
+                attendanceYearMonth);
 
         System.out.println(MessageFormat.format(
                 """

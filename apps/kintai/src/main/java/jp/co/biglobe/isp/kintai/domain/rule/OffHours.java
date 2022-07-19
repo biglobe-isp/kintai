@@ -1,6 +1,6 @@
 package jp.co.biglobe.isp.kintai.domain.rule;
 
-import com.google.common.collect.Comparators;
+import jp.co.biglobe.isp.kintai.domain.daily.AttendanceDuration;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceEndTime;
 import jp.co.biglobe.isp.kintai.domain.daily.AttendanceStartTime;
 
@@ -30,29 +30,25 @@ public enum OffHours {
         this.endTime = endTime;
     }
 
-    public static int calcActualTotalBreakTime(
-            AttendanceStartTime attendanceStartTime,
-            AttendanceEndTime attendanceEndTime,
-            ChronoUnit chronoUnit) {
+    public static int calculateActualTotalBreakTime(AttendanceDuration duration) {
         return Arrays.stream(values())
-                .mapToInt(offHour -> offHour.calcBreakTime(attendanceStartTime, attendanceEndTime, chronoUnit))
+                .mapToInt(offHour -> offHour.calcBreakTime(duration))
                 .sum();
     }
 
     public int calcBreakTime(
-            AttendanceStartTime attendanceStartTime,
-            AttendanceEndTime attendanceEndTime,
-            ChronoUnit chronoUnit) {
-        return containsBreak(attendanceStartTime, attendanceEndTime)
-                ? (int) chronoUnit.between(
-                Comparators.max(attendanceStartTime.value(), startTime),
-                Comparators.min(attendanceEndTime.value(), endTime)
-        )
-                : 0;
+            AttendanceDuration duration) {
+
+        if (!containsBreak(duration)) return 0;
+
+        return (int) ChronoUnit.MINUTES.between(
+                duration.attendanceStartTime().max(startTime),
+                duration.attendanceEndTime().min(endTime)
+        );
     }
 
-    public boolean containsBreak(AttendanceStartTime attendanceStartTime, AttendanceEndTime attendanceEndTime) {
-        return !(attendanceStartTime.value().isAfter(endTime)
-                || attendanceEndTime.value().isBefore(startTime));
+    public boolean containsBreak(AttendanceDuration duration) {
+        return !(duration.attendanceStartTime().isAfter(endTime)
+                || duration.attendanceEndTime().isBefore(startTime));
     }
 }

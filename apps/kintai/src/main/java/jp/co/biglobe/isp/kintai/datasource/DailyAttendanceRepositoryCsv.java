@@ -15,7 +15,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,18 +59,18 @@ public class DailyAttendanceRepositoryCsv implements DailyAttendanceRepository {
     @Override
     public List<DailyAttendance> findByAttendanceYearMonth(AttendanceYearMonth attendanceYearMonth) {
 
-        try (final Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8);) {
-            final Map<String, Optional<DailyAttendanceCsv>> dailyAttendanceMap = lines
-                    .filter(line -> line.startsWith(attendanceYearMonth.value().format(attendanceYearMonthFormatter)))
+        try (final Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8)) {
+            final Map<String, DailyAttendanceCsv> dailyAttendanceMap = lines
+                    .filter(line -> line.startsWith(attendanceYearMonth.format(attendanceYearMonthFormatter)))
                     .map(line -> line.split(","))
                     .map(arr -> new DailyAttendanceCsv(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]))
-                    .collect(Collectors.groupingBy(
+                    .collect(Collectors.toMap(
                             DailyAttendanceCsv::attendanceDate,
-                            Collectors.maxBy(Comparator.comparing(DailyAttendanceCsv::updatedAt))
+                            Function.identity(),
+                            BinaryOperator.maxBy(Comparator.comparing(DailyAttendanceCsv::updatedAt))
                     ));
 
             return dailyAttendanceMap.values().stream()
-                    .map(Optional::get)
                     .map(dailyAttendanceCsv -> dailyAttendanceCsv.toDomain(
                             attendanceDateFormatter,
                             attendanceTimeFormatter

@@ -8,14 +8,18 @@ import java.util.List;
 
 public record DailyAttendancesOfMonth(List<DailyAttendance> attendances) {
     public TotalWorkedHoursResult totalWorkedHours() {
-        final int totalWorkTimeMinutes = attendances.stream().map(DailyAttendance::workTimeMinutes).mapToInt(
-                WorkTimeMinutes::value).sum();
-        final int totalOvertimeMinutes = attendances.stream().map(DailyAttendance::overtimeMinutes)
-                .mapToInt(OvertimeMinutes::value).sum();
-        final TotalWorkedHoursResult result = new TotalWorkedHoursResult(
+        final int totalWorkTimeMinutes = attendances.stream()
+                .map(DailyAttendance::workTimeMinutes)
+                .mapToInt(WorkTimeMinutes::value)
+                .sum();
+        final int totalOvertimeMinutes = attendances.stream()
+                .map(DailyAttendance::overtimeMinutes)
+                .mapToInt(OvertimeMinutes::value)
+                .sum();
+
+        return new TotalWorkedHoursResult(
                 new TotalWorkTimeMinutes(totalWorkTimeMinutes),
                 new TotalOvertimeMinutes(totalOvertimeMinutes)
         );
-        return result;
     }
 }
