@@ -1,11 +1,7 @@
 package jp.co.biglobe.isp.kintai.domain.daily;
 
-import jp.co.biglobe.isp.kintai.domain.rule.OffHours;
-
 import java.time.temporal.ChronoUnit;
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 
 public record AttendanceDuration(AttendanceStartTime attendanceStartTime, AttendanceEndTime attendanceEndTime) {
     public AttendanceDuration {
@@ -19,6 +15,7 @@ public record AttendanceDuration(AttendanceStartTime attendanceStartTime, Attend
                 attendanceEndTime.value()
         );
         final int actualTotalBreakMinutes = breakTimeCalculator.apply(this);
+
         return new WorkTimeMinutes(attendanceTimeMinutes - actualTotalBreakMinutes);
     }
 }

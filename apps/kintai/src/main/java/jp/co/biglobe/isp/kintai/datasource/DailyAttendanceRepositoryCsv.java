@@ -74,8 +74,7 @@ public class DailyAttendanceRepositoryCsv implements DailyAttendanceRepository {
                     .map(dailyAttendanceCsv -> dailyAttendanceCsv.toDomain(
                             attendanceDateFormatter,
                             attendanceTimeFormatter
-                    ))
-                    .collect(Collectors.toUnmodifiableList());
+                    )).toList();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

@@ -1,25 +1,40 @@
 package jp.co.biglobe.isp.kintai.domain.monthly;
 
 import jp.co.biglobe.isp.kintai.domain.daily.DailyAttendance;
-import jp.co.biglobe.isp.kintai.domain.daily.OvertimeMinutes;
-import jp.co.biglobe.isp.kintai.domain.daily.WorkTimeMinutes;
 
 import java.util.List;
 
 public record DailyAttendancesOfMonth(List<DailyAttendance> attendances) {
     public TotalWorkedHoursResult totalWorkedHours() {
-        final int totalWorkTimeMinutes = attendances.stream()
-                .map(DailyAttendance::workTimeMinutes)
-                .mapToInt(WorkTimeMinutes::value)
-                .sum();
-        final int totalOvertimeMinutes = attendances.stream()
-                .map(DailyAttendance::overtimeMinutes)
-                .mapToInt(OvertimeMinutes::value)
-                .sum();
+        return attendances.stream()
+                .collect(
+                        TotalWorkedHoursAccumulator::new,
+                        TotalWorkedHoursAccumulator::add,
+                        TotalWorkedHoursAccumulator::merge
+                ).result();
+    }
 
-        return new TotalWorkedHoursResult(
-                totalWorkTimeMinutes,
-                totalOvertimeMinutes
-        );
+    private static class TotalWorkedHoursAccumulator {
+        private int totalWorkTimeMinutes;
+        private int totalOvertimeMinutes;
+
+        public void add(DailyAttendance daily) {
+            totalWorkTimeMinutes += daily.workTimeMinutes().value();
+            totalOvertimeMinutes += daily.overtimeMinutes().value();
+        }
+
+        public TotalWorkedHoursResult result() {
+            return new TotalWorkedHoursResult(
+                    totalWorkTimeMinutes,
+                    totalOvertimeMinutes
+            );
+        }
+
+        void merge(TotalWorkedHoursAccumulator other) {
+            totalWorkTimeMinutes += other.totalWorkTimeMinutes;
+            totalOvertimeMinutes += other.totalOvertimeMinutes;
+        }
     }
 }
+
+
