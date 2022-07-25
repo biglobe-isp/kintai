@@ -1,9 +1,9 @@
 @startuml 勤怠管理
 
 package datasource {
-    class 勤怠リポジトリCSV << datasource >> {
+    class 日次勤怠リポジトリCSV << datasource >> {
         +void persist(日次勤怠)
-        +月次勤怠 findMonthlyAttendance(勤怠年月)
+        +List<日次勤怠> findMonthlyAttendance(勤怠年月)
     }
 }
 
@@ -54,6 +54,10 @@ package domain {
     }
 
     package daily {
+        class 日次勤怠ファクトリ {
+            +日次勤怠 create(勤怠日付,勤怠開始時刻,勤怠終了時刻)
+        }
+        
         entity 日次勤怠 {
             勤怠日付
             勤怠開始時刻
@@ -82,11 +86,14 @@ package domain {
             int value
         }
     }
-    
+    日次勤怠ファクトリ-->日次勤怠
+    日次勤怠ファクトリ-->休憩時間
+
     月次勤怠-->勤怠年月
     月次勤怠-->当月の日次勤怠
 
     当月の日次勤怠  "1" o-> "0..31" 日次勤怠
+
     日次勤怠-->勤怠日付
     日次勤怠-->勤怠開始時刻
     日次勤怠-->勤怠終了時刻
@@ -100,21 +107,18 @@ package service {
         +void inputAttendance(日次勤怠)
         +月次勤怠 totalWorkingHours(勤怠年月)
     }
-    class 日次勤怠ファクトリ {
-        +日次勤怠 create(勤怠日付,勤怠開始時刻,勤怠終了時刻)
-    }
-    interface 勤怠リポジトリ << repository >> {
+
+    interface 日次勤怠リポジトリ << repository >> {
         +void persist(日次勤怠)
         +月次勤怠 findMonthlyAttendance(勤怠年月)
     }
     勤怠管理サービス--->日次勤怠ファクトリ
-    日次勤怠ファクトリ-->日次勤怠
     勤怠管理サービス-->勤怠リポジトリ
-    勤怠リポジトリ<|."0..31" 勤怠リポジトリCSV
+    日次勤怠リポジトリ<|."0..31" 日次勤怠リポジトリCSV
 
 
-    勤怠リポジトリ--->月次勤怠
-    勤怠リポジトリ--->日次勤怠
+    日次勤怠リポジトリ--->月次勤怠
+    日次勤怠リポジトリ--->日次勤怠
 
 }
 
@@ -125,7 +129,7 @@ package api {
         void total()
     }
 
-    class メソッドタイプ {
+    enum メソッドタイプ {
         INPUT
         TOTAL
         NONE
