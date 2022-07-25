@@ -1,28 +1,68 @@
 plugins {
     id 'java'
+    id 'groovy'
 }
 
 group 'org.example'
 version 'unspecified'
 
+// Javaコードの中にGroovyのコードが混じるので、それに対応させる
+sourceSets {
+    main {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/main/java']
+    }
+
+    test {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/test/java']
+    }
+
+    gradle {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/gradle/groovy']
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// gradlew test コマンド実行時の処理の設定
+test {
+    systemProperties 'dbunittester.assert_columns': System.properties['dbunittester.assert_columns']
+
+    // テスト失敗時の情報を標準より多く出力する設定
+    testLogging.exceptionFormat = 'full'
+
+    // GradleでEnclosedテストが2回実行されることの対策（そのうちGradle側で対応してくれるようになるかも）
+    exclude '**/*$*'
+
+    exclude '**/component_test/**'
+}
+
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation 'com.google.guava:guava:31.1-jre'
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
-ext {
-    javaMainClass = "jp.co.biglobe.isp.kintai.api.Main"
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.4'
+    testImplementation 'org.spockframework:spock-core:2.2-M3-groovy-4.0'
+    implementation 'com.google.guava:guava:31.1-jre'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
+
 
 apply plugin: 'application'
 
 application {
-    mainClassName = javaMainClass
+    mainClass = 'jp.co.biglobe.isp.kintai.api.Main'
 }
 
 test {
