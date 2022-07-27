@@ -5,6 +5,7 @@ apps/kintai/.gradle/
 apps/kintai/bin/
 apps/kintai/build/
 apps/kintai/output/data.csv
+etc/
 
 # Compiled class file
 *.class
