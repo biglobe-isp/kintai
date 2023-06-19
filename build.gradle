@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.6'
+    id 'groovy'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'jp.co.biglobe.isp'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+    /* == 外部ライブラリ == */
+    lombokVersion = '1.18.20'
+    groovyVersion = '2.4.21'
+    vavrVersion = '0.10.3'
+    spockVersion = '1.3-groovy-2.4'
+    spockSubjectCollaboratorsVersion = '1.2.2'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // lombok
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    // vavr
+    implementation "io.vavr:vavr:${vavrVersion}"
+    implementation "io.vavr:vavr-jackson:${vavrVersion}"
+
+    // テストスイートライブラリ
+    implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testImplementation "org.spockframework:spock-core:${spockVersion}"
+
+    // Springのコントローラテストで必要
+    testImplementation "org.spockframework:spock-spring:${spockVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+    // テスト用の軽量 DI
+    testImplementation "com.blogspot.toomuchcoding:spock-subjects-collaborators-extension:${spockSubjectCollaboratorsVersion}"
+}
+
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}
+
+// Javaのコンパイル＆テストの設定
+apply from: file('etc/gradle/java.gradle')

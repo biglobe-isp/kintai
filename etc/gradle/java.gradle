@@ -1,0 +1,56 @@
+/**
+ * Javaのコンパイル＆テストの設定
+ */
+// 文字コードの設定
+ext {
+    defaultEncoding = 'UTF-8'
+}
+
+// 環境ごとにデフォルト文字コードが違うので、コンパイル時の文字コードを指定する
+compileJava.options.encoding = defaultEncoding
+compileGroovy.options.encoding = defaultEncoding
+compileTestJava.options.encoding = defaultEncoding
+compileTestGroovy.options.encoding = defaultEncoding
+
+// Javaコードの中にGroovyのコードが混じるので、それに対応させる
+sourceSets {
+    main {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/main/java']
+        resources {
+            srcDir 'src/main/java'
+        }
+    }
+
+    test {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/test/groovy', 'src/test/java']
+    }
+
+    gradle {
+        java.srcDirs = []
+        groovy.srcDirs = ['src/gradle/groovy']
+    }
+}
+
+// コンパイル時に非推奨クラスの警告を表示する
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked" << "-implicit:class"
+}
+tasks.withType(GroovyCompile) {
+    options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked" << "-implicit:class"
+}
+
+// gradlew bootRun コマンド実行時の処理の設定
+bootRun {
+    systemProperties 'spring.profiles.active': System.properties['spring.profiles.active']
+}
+
+// gradlew test コマンド実行時の処理の設定
+test {
+    // テスト失敗時の情報を標準より多く出力する設定
+    testLogging.exceptionFormat = 'full'
+
+    // GradleでEnclosedテストが2回実行されることの対策（そのうちGradle側で対応してくれるようになるかも）
+    exclude '**/*$*'
+}
