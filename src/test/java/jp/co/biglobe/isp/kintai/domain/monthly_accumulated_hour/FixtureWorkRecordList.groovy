@@ -6,11 +6,13 @@ import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecord
 import java.time.format.DateTimeFormatter
 
 class FixtureWorkRecordList {
-    static Map<String, WorkRecord> get() {
-        Map<String, WorkRecord> workRecordHashMap = new HashMap<String, WorkRecord>()
-        String yearMonth = FixtureWorkRecord.getJustTime().workDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")).substring(0,6)
-        workRecordHashMap.put(yearMonth, FixtureWorkRecord.getJustTime())
+    static List<WorkRecord> get() {
+        List<WorkRecord> workRecordList = new ArrayList<>()
 
-        return workRecordHashMap
+        workRecordList.add(FixtureWorkRecord.getJustTime())
+        workRecordList.add(FixtureWorkRecord.getEarlyOpeningTime())
+        workRecordList.add(FixtureWorkRecord.getLateClosingTimeAt1830())
+
+        return workRecordList
     }
 }

@@ -12,4 +12,20 @@ class FixtureWorkRecord {
                 FixtureOverTimeMinutes.JustTime()
        )
     }
+
+    static WorkRecord getEarlyOpeningTime() {
+        new WorkRecord(LocalDate.parse("20230102", DateTimeFormatter.ofPattern("yyyyMMdd")),
+                FixtureWorkTime.EarlyOpeningTime(),
+                FixtureWorkRecordMinutes.EarlyOpeningTime(),
+                FixtureOverTimeMinutes.EarlyOpeningTime()
+        )
+    }
+
+    static WorkRecord getLateClosingTimeAt1830() {
+        new WorkRecord(LocalDate.parse("20230103", DateTimeFormatter.ofPattern("yyyyMMdd")),
+                FixtureWorkTime.LateClosingTimeAt1830(),
+                FixtureWorkRecordMinutes.LateClosingTimeAt1830(),
+                FixtureOverTimeMinutes.LateClosingTimeAt1830()
+        )
+    }
 }

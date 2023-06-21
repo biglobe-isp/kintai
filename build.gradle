@@ -46,6 +46,9 @@ dependencies {
 
     // テスト用の軽量 DI
     testImplementation "com.blogspot.toomuchcoding:spock-subjects-collaborators-extension:${spockSubjectCollaboratorsVersion}"
+
+    // Data Annotation使うときの警告を削除するときに必要
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 //tasks.named('test') {

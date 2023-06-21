@@ -8,7 +8,7 @@ import spock.lang.Unroll
 
 @Unroll
 class MonthlyAccumulatedHourReferenceServiceSpec extends Specification{
-    private MonthlyWorkRecordRepository monthlyWorkRecordRepository = Mock();
+    private MonthlyWorkRecordRepository monthlyWorkRecordRepository = Mock()
     @Subject
     private MonthlyAccumulatedHourReferenceService service;
 

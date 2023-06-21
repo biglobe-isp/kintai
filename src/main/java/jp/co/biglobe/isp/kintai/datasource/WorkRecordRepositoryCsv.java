@@ -1,5 +1,6 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
+import jp.co.biglobe.isp.kintai.config.AppProperties;
 import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,11 @@ import java.time.format.DateTimeFormatter;
 @Component
 @RequiredArgsConstructor
 public class WorkRecordRepositoryCsv implements WorkRecordRepository {
+    private final AppProperties appProperties;
     @Override
     public void persist(WorkRecord workRecord) {
-        File file = new File("data.csv");
-        try (FileWriter filewriter = new FileWriter(file, true)) {
+//        File file = new File("data.csv");
+        try (FileWriter filewriter = new FileWriter(appProperties.getWorkRecordCsv(), true)) {
             filewriter.write(String.format(
                     "%s,%s,%s,%s,%s,%s\n",
                     workRecord.getWorkDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")),

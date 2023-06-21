@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "app.csv",
+      "type": "jp.co.biglobe.isp.kintai.config.AppProperties",
+      "sourceType": "jp.co.biglobe.isp.kintai.config.AppProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.csv.work-record-csv",
+      "type": "java.lang.String",
+      "sourceType": "jp.co.biglobe.isp.kintai.config.AppProperties"
+    }
+  ],
+  "hints": []
+}

@@ -1,5 +1,6 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
+import jp.co.biglobe.isp.kintai.config.AppProperties;
 import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecord;
 import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkTime;
 import jp.co.biglobe.isp.kintai.domain.monthly_accumulated_hour.MonthlyWorkRecord;
@@ -13,20 +14,20 @@ import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class MonthlyWorkRecordRepositoryCsv implements MonthlyWorkRecordRepository {
+    private final AppProperties appProperties;
     @Override
     public MonthlyWorkRecord refer(String yearMonth) {
-//        List<WorkRecord> workRecordList = new ArrayList<>();
-        Map<String, WorkRecord> workRecordMap = new HashMap<>();
-        File file = new File("data.csv");
+        List<WorkRecord> workRecordList = new ArrayList<>();
+//        File file = new File("data.csv");
 
         try (
-                FileReader fr = new FileReader(file);
+                FileReader fr = new FileReader(appProperties.getWorkRecordCsv());
                 BufferedReader br = new BufferedReader(fr)
         ) {
             String line = br.readLine();
@@ -39,8 +40,7 @@ public class MonthlyWorkRecordRepositoryCsv implements MonthlyWorkRecordReposito
                                      Integer.parseInt(columns[3]),
                                      Integer.parseInt(columns[4])
                     );
-//                    workRecordList.add(workRecord);
-                    workRecordMap.put(columns[0], workRecord);
+                    workRecordList.add(workRecord);
                 }
                 line = br.readLine();
             }
@@ -48,7 +48,6 @@ public class MonthlyWorkRecordRepositoryCsv implements MonthlyWorkRecordReposito
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        return new MonthlyWorkRecord(workRecordList);
-        return new MonthlyWorkRecord(workRecordMap);
+        return new MonthlyWorkRecord(workRecordList);
     }
 }

@@ -1,0 +1,3 @@
+app:
+  csv:
+    work_record_csv: data.csv
