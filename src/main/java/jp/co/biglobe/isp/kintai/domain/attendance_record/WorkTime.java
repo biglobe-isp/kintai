@@ -13,7 +13,7 @@ public class WorkTime {
     LocalTime closingTime;
 
     public WorkTime(LocalTime openingTime, LocalTime closingTime){
-        validate(openingTime);
+        validate(openingTime, closingTime);
         this.openingTime = openingTime;
         this.closingTime = closingTime;
     }
@@ -24,7 +24,10 @@ public class WorkTime {
         return closingHours - openingHours;
     }
 
-    private void validate(LocalTime openingTime) {
+    private void validate(LocalTime openingTime, LocalTime closingTime) {
+        if(openingTime.isAfter(closingTime)) {
+            throw new IllegalArgumentException("勤務開始時刻は勤務終了時刻より早い時間に設定してください.");
+        }
         if(openingTime.isAfter(LocalTime.of(9,0))) {
             throw new IllegalArgumentException("勤務開始時刻は9:00より前に設定してください. でないとクビです.");
         }

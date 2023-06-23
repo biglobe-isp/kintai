@@ -26,30 +26,12 @@ public class KintaiApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Method method = Method.findByType(args[0]);
         var argsValidator = new ArgsValidator();
-        switch (method) {
-            case INPUT:
-                argsValidator.isValidInputArgs(args);
-                inputController.run(args);
-                break;
-
-            case TOTAL:
-                processTotal(args);
-                break;
-
-            default:
-                throw new RuntimeException("引数のMethodが存在しません");
+        switch (argsValidator.valid(args)) {
+            case INPUT -> inputController.run(args);
+            case TOTAL -> System.out.println(totalController.run(args));
+            default -> {}
+//                throw new RuntimeException("引数のMethodが存在しません");
         }
-    }
-
-    private void processTotal(String... args) {
-        var argsValidator = new ArgsValidator();
-
-        argsValidator.isValidTotalArgs(args);
-        var monthlyAccumulatedWorkMinutes = totalController.run(args);
-
-        System.out.println(OutputMonthlyAccumulatedWorkMinutes.toStringMonthlyAccumulatedWorkRecordMinutes(monthlyAccumulatedWorkMinutes));
-        System.out.println(OutputMonthlyAccumulatedWorkMinutes.toStringMonthlyAccumulatedOverTimeMinutes(monthlyAccumulatedWorkMinutes));
     }
 }

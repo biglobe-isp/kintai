@@ -10,13 +10,13 @@ import org.springframework.stereotype.Controller;
 public class TotalController {
     private final MonthlyAccumulatedHourReferenceService monthlyAccumulatedHourReferenceService;
 
-    public MonthlyAccumulatedWorkMinutes run(String[] args) {
+    public MonthlyAccumulatedWorkMinutesOutput run(String[] args) {
         String yearMonth = args[1];
 
         YearMonthValidator.isValid(args[1]);
 
         var monthlyAccumulatedWorkMinutes = monthlyAccumulatedHourReferenceService.refer(yearMonth);
 
-        return monthlyAccumulatedWorkMinutes;
+        return new MonthlyAccumulatedWorkMinutesOutput(monthlyAccumulatedWorkMinutes);
     }
 }
