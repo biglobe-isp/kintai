@@ -1,20 +1,17 @@
 package jp.co.biglobe.isp.kintai.domain.monthly_accumulated_hour;
 
-import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecord;
+import io.vavr.collection.List;
+import jp.co.biglobe.isp.kintai.domain.work_record.WorkRecord;
 import lombok.Value;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Value
 public class MonthlyAccumulatedWorkMinutes {
-    private int accumulatedWorkRecordMinutes;
-    private int accumulatedOverTImeMinutes;
+    int accumulatedWorkRecordMinutes;
+    int accumulatedOverTImeMinutes;
 
-    public static MonthlyAccumulatedWorkMinutes from(MonthlyWorkRecord monthlyWorkRecord) {
-        var workRecordList = monthlyWorkRecord.getWorkRecordList();
-        var accumulatedWorkRecordMinutes = workRecordList.stream().mapToInt(WorkRecord::getWorkRecordMinutes).sum();
-        var accumulatedOverTimeMinutes = workRecordList.stream().mapToInt(WorkRecord::getOverTimeMinutes).sum();
-        return new MonthlyAccumulatedWorkMinutes(accumulatedWorkRecordMinutes, accumulatedOverTimeMinutes);
+    public static MonthlyAccumulatedWorkMinutes from(List<WorkRecord> monthlyWorkRecordList) {
+        var accumulatedWorkRecordMinutes = monthlyWorkRecordList.map(WorkRecord::getWorkRecordMinutes).sum();
+        var accumulatedOverTimeMinutes = monthlyWorkRecordList.map(WorkRecord::getOverTimeMinutes).sum();
+        return new MonthlyAccumulatedWorkMinutes(accumulatedWorkRecordMinutes.intValue(), accumulatedOverTimeMinutes.intValue());
     }
 }

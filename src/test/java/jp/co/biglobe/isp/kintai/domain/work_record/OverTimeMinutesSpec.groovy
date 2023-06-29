@@ -1,20 +1,18 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
+package jp.co.biglobe.isp.kintai.domain.work_record
 
 import jp.co.biglobe.isp.kintai.domain.work_regulation.FixtureRegulatedWorkTimeMinutes
 import jp.co.biglobe.isp.kintai.domain.work_regulation.FixtureWorkRegulation
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.LocalTime
-
 @Unroll
 class OverTimeMinutesSpec extends Specification {
     def "overTimeMinutes: #label " () {
         setup:
-        def workRecordHours = WorkRecordMinutes.from(workTime, FixtureWorkRegulation.get())
+        def workRecordMinutes = new WorkRecordMinutes(workTime, FixtureWorkRegulation.get().breakTimeList).value
 
         when:
-        def actual = OverTimeMinutes.from(workRecordHours, FixtureRegulatedWorkTimeMinutes.get())
+        def actual = new OverTimeMinutes(workRecordMinutes, FixtureRegulatedWorkTimeMinutes.get()).value
 
         then:
         actual == expected

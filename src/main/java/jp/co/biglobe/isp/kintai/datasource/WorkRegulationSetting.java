@@ -8,8 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+
+import io.vavr.collection.List;
 
 @Component
 @RequiredArgsConstructor
@@ -17,13 +17,11 @@ public class WorkRegulationSetting implements WorkRegulationRepository {
     @Override
     public WorkRegulation refer(){
         RegulatedWorkTime regulatedWorkTime = new RegulatedWorkTime(LocalTime.of(9,0), LocalTime.of(18, 0));
-        List<BreakTime> breakTimeList = new ArrayList<>() {
-            {
-                add(new BreakTime(LocalTime.of(12, 0), LocalTime.of(13, 0)));
-                add(new BreakTime(LocalTime.of(18, 0), LocalTime.of(19, 0)));
-                add(new BreakTime(LocalTime.of(21, 0), LocalTime.of(22, 0)));
-            }
-        };
+        List<BreakTime> breakTimeList = List.of(
+                new BreakTime(LocalTime.of(12, 0), LocalTime.of(13, 0)),
+                new BreakTime(LocalTime.of(18, 0), LocalTime.of(19, 0)),
+                new BreakTime(LocalTime.of(21, 0), LocalTime.of(22, 0))
+        );
         return new WorkRegulation(regulatedWorkTime, breakTimeList);
     }
 }

@@ -1,59 +1,56 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
+package jp.co.biglobe.isp.kintai.domain.work_record
 
-class FixtureWorkRecordMinutes {
+class FixtureOverTimeMinutes {
     static JustTime() {
-        480
+        0
     }
 
     static EarlyOpeningTime() {
-        540
+        60
     }
 
     static EarlyClosingTimeAt1200() {
-        180
+        0
     }
 
     static EarlyClosingTimeAt1230() {
-        180
+        0
     }
 
     static EarlyClosingTimeAt1300() {
-        180
+        0
     }
 
     static EarlyClosingTimeAt1330() {
-        210
+        0
     }
 
     static LateClosingTimeAt1830() {
-        480
+        0
     }
 
     static LateClosingTimeAt1900() {
-        480
+        0
     }
 
     static LateClosingTimeAt1930() {
-        510
+        30
     }
 
     static LateClosingTimeAt2100() {
-        600
+        120
     }
 
     static LateClosingTimeAt2130() {
-        600
+        120
     }
 
     static LateClosingTimeAt2200() {
-        600
+        120
     }
 
     static LateClosingTimeAt2230() {
-        630
+        150
     }
 
-    static LateClosingTimeAt2300() {
-        660
-    }
 }

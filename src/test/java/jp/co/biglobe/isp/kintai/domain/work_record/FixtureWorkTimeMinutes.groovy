@@ -1,6 +1,4 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
-
-import java.time.LocalTime
+package jp.co.biglobe.isp.kintai.domain.work_record
 
 class FixtureWorkTimeMinutes {
     static regulatedJustTime() {

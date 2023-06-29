@@ -1,12 +1,11 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
 import jp.co.biglobe.isp.kintai.config.AppProperties;
-import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecord;
+import jp.co.biglobe.isp.kintai.domain.work_record.WorkRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import jp.co.biglobe.isp.kintai.service.workrecord_registration.WorkRecordRepository;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;

@@ -1,4 +1,4 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record;
+package jp.co.biglobe.isp.kintai.domain.work_record;
 
 import lombok.Value;
 

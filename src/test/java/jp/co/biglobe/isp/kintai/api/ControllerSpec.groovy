@@ -1,6 +1,8 @@
 package jp.co.biglobe.isp.kintai.api
 
 import com.blogspot.toomuchcoding.spock.subjcollabs.Subject
+import jp.co.biglobe.isp.kintai.api.controller.InputController
+import jp.co.biglobe.isp.kintai.api.controller.TotalController
 import jp.co.biglobe.isp.kintai.domain.monthly_accumulated_hour.FixtureMonthlyAccumulatedWorkMinutes
 import jp.co.biglobe.isp.kintai.service.monthly_accumulated_hour.MonthlyAccumulatedHourReferenceService
 import jp.co.biglobe.isp.kintai.service.workrecord_registration.WorkRecordRegistrationService

@@ -3,8 +3,6 @@ package jp.co.biglobe.isp.kintai
 import org.springframework.boot.SpringApplication
 import spock.lang.Specification
 import spock.lang.Unroll
-import jp.co.biglobe.isp.kintai.domain.attendance_record.FixtureWorkTime
-import jp.co.biglobe.isp.kintai.domain.attendance_record.FixtureWorkTimeMinutes
 
 @Unroll
 class KintaiApplicationSpec extends Specification{

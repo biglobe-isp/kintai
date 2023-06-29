@@ -1,7 +1,6 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
+package jp.co.biglobe.isp.kintai.domain.work_record
 
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class FixtureWorkRecord {

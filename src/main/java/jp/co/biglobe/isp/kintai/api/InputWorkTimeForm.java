@@ -1,6 +1,6 @@
 package jp.co.biglobe.isp.kintai.api;
 
-import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkTime;
+import jp.co.biglobe.isp.kintai.domain.work_record.WorkTime;
 import jp.co.biglobe.isp.kintai.domain.input_worktime.InputWorkTime;
 import lombok.Value;
 

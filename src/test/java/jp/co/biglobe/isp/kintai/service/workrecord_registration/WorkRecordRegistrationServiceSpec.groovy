@@ -1,8 +1,8 @@
 package jp.co.biglobe.isp.kintai.service.workrecord_registration
 
 import com.blogspot.toomuchcoding.spock.subjcollabs.Subject
-import jp.co.biglobe.isp.kintai.domain.attendance_record.FixtureWorkRecord
-import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecordFactory
+import jp.co.biglobe.isp.kintai.domain.work_record.FixtureWorkRecord
+import jp.co.biglobe.isp.kintai.domain.work_record.WorkRecordFactory
 import jp.co.biglobe.isp.kintai.domain.input_worktime.FixtureInputWorkTime
 import jp.co.biglobe.isp.kintai.domain.work_regulation.FixtureWorkRegulation
 import jp.co.biglobe.isp.kintai.service.work_regulation.WorkRegulationRepository

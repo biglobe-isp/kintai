@@ -11,6 +11,6 @@ public class MonthlyAccumulatedHourReferenceService {
     private final MonthlyWorkRecordRepository monthlyWorkRecordRepository;
     public MonthlyAccumulatedWorkMinutes refer(String yearMonth) {
         var monthlyWorkRecord = monthlyWorkRecordRepository.refer(yearMonth);
-        return MonthlyAccumulatedWorkMinutes.from(monthlyWorkRecord);
+        return MonthlyAccumulatedWorkMinutes.from(monthlyWorkRecord.getWorkRecordList());
     }
 }

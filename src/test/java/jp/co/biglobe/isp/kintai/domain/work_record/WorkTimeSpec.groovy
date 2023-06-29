@@ -1,4 +1,4 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
+package jp.co.biglobe.isp.kintai.domain.work_record
 
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -9,7 +9,7 @@ import java.time.LocalTime;
 class WorkTimeSpec extends Specification {
     def "getWorkTimeMinutes: #label "() {
         when:
-        def actual = sut.getWorkTimeMinutes()
+        def actual = sut.getTimeSpanMinutes().value
 
         then:
         actual == expected

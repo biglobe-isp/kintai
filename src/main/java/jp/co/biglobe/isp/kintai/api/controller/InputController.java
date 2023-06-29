@@ -1,5 +1,6 @@
-package jp.co.biglobe.isp.kintai.api;
+package jp.co.biglobe.isp.kintai.api.controller;
 
+import jp.co.biglobe.isp.kintai.api.InputWorkTimeForm;
 import jp.co.biglobe.isp.kintai.service.workrecord_registration.WorkRecordRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

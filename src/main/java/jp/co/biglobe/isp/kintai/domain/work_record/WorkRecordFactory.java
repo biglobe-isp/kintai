@@ -1,4 +1,4 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record;
+package jp.co.biglobe.isp.kintai.domain.work_record;
 
 import org.springframework.stereotype.Component;
 
@@ -9,8 +9,8 @@ public class WorkRecordFactory {
     public WorkRecord create(InputWorkTime inputWorkTime, WorkRegulation workRegulation) {
         var workDate = inputWorkTime.getWorkDate();
         var workTime = inputWorkTime.getWorkTime();
-        var workRecordMinutes = WorkRecordMinutes.from(workTime, workRegulation);
-        var overTimeHours  = OverTimeMinutes.from(workRecordMinutes, workRegulation.getRegulatedWorkMinutes());
-        return new WorkRecord(workDate, workTime, workRecordMinutes, overTimeHours);
+        var workRecordMinutes = new WorkRecordMinutes(workTime, workRegulation.getBreakTimeList());
+        var overTimeHours  = new OverTimeMinutes(workRecordMinutes.getValue(), workRegulation.getRegulatedWorkMinutes());
+        return new WorkRecord(workDate, workTime, workRecordMinutes.getValue(), overTimeHours.getValue());
     }
 }

@@ -1,6 +1,5 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
+package jp.co.biglobe.isp.kintai.domain.work_record
 
-import org.springframework.cglib.core.Local
 
 import java.time.LocalTime
 

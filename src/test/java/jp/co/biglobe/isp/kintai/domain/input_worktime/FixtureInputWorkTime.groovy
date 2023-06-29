@@ -1,6 +1,6 @@
 package jp.co.biglobe.isp.kintai.domain.input_worktime
 
-import jp.co.biglobe.isp.kintai.domain.attendance_record.FixtureWorkTime
+import jp.co.biglobe.isp.kintai.domain.work_record.FixtureWorkTime
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

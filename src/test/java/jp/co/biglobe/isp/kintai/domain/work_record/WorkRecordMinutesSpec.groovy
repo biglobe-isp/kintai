@@ -1,4 +1,4 @@
-package jp.co.biglobe.isp.kintai.domain.attendance_record
+package jp.co.biglobe.isp.kintai.domain.work_record
 
 import jp.co.biglobe.isp.kintai.domain.work_regulation.FixtureWorkRegulation
 import spock.lang.Specification
@@ -10,7 +10,7 @@ class WorkRecordMinutesSpec extends Specification {
 
     def "workRecordMinutes: #label " () {
         when:
-        def actual = WorkRecordMinutes.from(workTime, FixtureWorkRegulation.get())
+        def actual = new WorkRecordMinutes(workTime, FixtureWorkRegulation.get().breakTimeList).value
 
         then:
         actual == expected

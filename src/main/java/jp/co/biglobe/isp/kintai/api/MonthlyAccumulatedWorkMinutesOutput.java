@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 public class MonthlyAccumulatedWorkMinutesOutput {
-    private final MonthlyAccumulatedWorkMinutes monthlyAccumulatedWorkMinutes;
+    MonthlyAccumulatedWorkMinutes monthlyAccumulatedWorkMinutes;
     @Override
     public String toString() {
         return "勤務時間: " + monthlyAccumulatedWorkMinutes.getAccumulatedWorkRecordMinutes() / 60 + "時間" + monthlyAccumulatedWorkMinutes.getAccumulatedWorkRecordMinutes() % 60 + "分" + "\n" +

@@ -7,7 +7,7 @@ import spock.lang.Unroll
 class MonthlyAccumulatedWorkMinutesSpec extends Specification{
     def "Return correct AccumulatedWorkRecordMinutes from test csv"() {
         setup:
-        def monthlyAccumulatedWorkMinutes = MonthlyAccumulatedWorkMinutes.from(FixtureMonthlyWorkRecord.get())
+        def monthlyAccumulatedWorkMinutes = FixtureMonthlyAccumulatedWorkMinutes.get()
 
         when:
         def actual = monthlyAccumulatedWorkMinutes.getAccumulatedWorkRecordMinutes()
@@ -18,7 +18,7 @@ class MonthlyAccumulatedWorkMinutesSpec extends Specification{
     }
     def "Return correct AccumulatedOverTimeMinutes from test csv"() {
         setup:
-        def monthlyAccumulatedWorkMinutes = MonthlyAccumulatedWorkMinutes.from(FixtureMonthlyWorkRecord.get())
+        def monthlyAccumulatedWorkMinutes = FixtureMonthlyAccumulatedWorkMinutes.get()
 
         when:
         def actual = monthlyAccumulatedWorkMinutes.getAccumulatedOverTImeMinutes()

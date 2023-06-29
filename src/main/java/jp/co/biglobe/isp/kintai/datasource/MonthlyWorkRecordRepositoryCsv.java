@@ -1,21 +1,19 @@
 package jp.co.biglobe.isp.kintai.datasource;
 
+import io.vavr.collection.List;
 import jp.co.biglobe.isp.kintai.config.AppProperties;
-import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkRecord;
-import jp.co.biglobe.isp.kintai.domain.attendance_record.WorkTime;
+import jp.co.biglobe.isp.kintai.domain.work_record.WorkRecord;
+import jp.co.biglobe.isp.kintai.domain.work_record.WorkTime;
 import jp.co.biglobe.isp.kintai.domain.monthly_accumulated_hour.MonthlyWorkRecord;
 import jp.co.biglobe.isp.kintai.service.monthly_accumulated_hour.MonthlyWorkRecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class MonthlyWorkRecordRepositoryCsv implements MonthlyWorkRecordReposito
     private final AppProperties appProperties;
     @Override
     public MonthlyWorkRecord refer(String yearMonth) {
-        List<WorkRecord> workRecordList = new ArrayList<>();
+        List<WorkRecord> workRecordList = List.empty();
 //        File file = new File("data.csv");
 
         try (
@@ -40,7 +38,7 @@ public class MonthlyWorkRecordRepositoryCsv implements MonthlyWorkRecordReposito
                                      Integer.parseInt(columns[3]),
                                      Integer.parseInt(columns[4])
                     );
-                    workRecordList.add(workRecord);
+                    workRecordList.append(workRecord);
                 }
                 line = br.readLine();
             }

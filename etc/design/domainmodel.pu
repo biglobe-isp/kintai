@@ -33,7 +33,8 @@ package サービス層 {
 }
 
 package ドメイン層 {
-  package 勤怠情報 {
+  ' package 勤怠情報 {
+  package 勤務記録 {
 
     class 勤務時刻 {
       始業時刻
@@ -83,6 +84,10 @@ package ドメイン層 {
     }
   }
 
+  package 時間範囲 {
+    interface 時間範囲 {}
+    class 時間間隔 {} 
+  }
   ' package 累計勤務時間{
 
   '   class 累計勤務時間 {
