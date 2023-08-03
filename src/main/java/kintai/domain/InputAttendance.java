@@ -5,12 +5,12 @@ import lombok.Value;
 @Value
 public class InputAttendance {
      WorkDay   workDay;
-     StartWork startWork;
-     EndWork   endWork;
-    public InputAttendance(WorkDay workDay,StartWork startWork,EndWork endWork){
+     WorkStart workStart;
+     WorkEnd workEnd;
+    public InputAttendance(WorkDay workDay, WorkStart workStart, WorkEnd workEnd){
         this.workDay   = workDay;
-        this.startWork = startWork;
-        this.endWork   = endWork;
+        this.workStart = workStart;
+        this.workEnd = workEnd;
     }
 
 }

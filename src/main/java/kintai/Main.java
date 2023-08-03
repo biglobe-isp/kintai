@@ -1,20 +1,24 @@
 package kintai;
 
-import kintai.domain.EndWork;
+import kintai.domain.WorkEnd;
 import kintai.domain.InputAttendance;
-import kintai.domain.StartWork;
+import kintai.domain.WorkStart;
 import kintai.domain.WorkDay;
 
 public class Main {
     public static void main(String[] args){
 
+        /*
         WorkDay     workDay = new WorkDay(args[1]);
-        StartWork startWork = new StartWork(args[2]);
-        EndWork   endWork   = new EndWork((args[3]));
-        InputAttendance Attendance = new InputAttendance(workDay,startWork,endWork);
+        WorkStart workStart = new WorkStart(args[2]);
+        WorkEnd workEnd = new WorkEnd((args[3]));
+
+        InputAttendance Attendance = new InputAttendance(workDay, workStart, workEnd);
 
         System.out.println(Attendance.getWorkDay());
-        System.out.println(Attendance.getStartWork());
-        System.out.println(Attendance.getEndWork());
+        System.out.println(Attendance.getWorkStart());
+        System.out.println(Attendance.getWorkEnd());
+         */
+
          }
 }
