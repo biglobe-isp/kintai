@@ -11,7 +11,7 @@ public class MonthTotalWorkingTime {
 
 
 
-    public static MonthTotalWorkingTime totalTime(List<WorkingDateTotalRecord> workingDateTotalRecords){
+    public static MonthTotalWorkingTime totalTime(List<WorkingDateTotalRecord> workingDateTotalRecordList){
 
         return new MonthTotalWorkingTime(new MonthTotalWorkMinutes(0),new MonthTotalOverWorkMinutes(0));
     }
