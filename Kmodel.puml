@@ -1,4 +1,4 @@
-@startuml kintaiD
+@startuml kintaiDomain
 package ドメインモデル{
     package 就業日勤務実績{
         class 勤務実績{
