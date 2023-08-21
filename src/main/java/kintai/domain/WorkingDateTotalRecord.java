@@ -18,8 +18,8 @@ public class WorkingDateTotalRecord {
         int endM   = attendance.getWorkEnd().getLocalTime().getMinute();
 
         int restTimeMinutes = laborRegulations.calcRestTimeMinutes(startH,startM,endH,endM);
-        int workMinutes = endH * 60 + endM  -(startH * 60 + startM) - restTimeMinutes;
-        int overWorkMinutes = workMinutes - 8* 60;
+        int workMinutes = WorkMinutes.calcWorkMinutes(startH,startM,endH,endM,restTimeMinutes);
+        int overWorkMinutes = OverWorkMinutes.calcOverWorkMinutes(workMinutes);
 
         return new WorkingDateTotalRecord(
                 attendance.getWorkDay(),
