@@ -10,7 +10,7 @@ public class Main {
 
         /*
         WorkDay     workDay = new WorkDay(args[1]);
-        WorkStart workStart = new WorkStart(args[2]);
+        WorkStart workStart = WorkStart.parse(args[2]);
         WorkEnd workEnd = new WorkEnd((args[3]));
 
         InputAttendance Attendance = new InputAttendance(workDay, workStart, workEnd);

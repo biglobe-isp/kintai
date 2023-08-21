@@ -5,14 +5,16 @@ import kintai.domain.LaborRegulations;
 import kintai.domain.WorkingDateTotalRecord;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 public class InputAttendanceService {
     private final WorkingDateTotalRecordRepository workingDateTotalRecordRepository;
-    public void input(InputAttendance inputAttendance){
+    public void input(InputAttendance inputAttendance,LocalDateTime now){
         // inputAttendanceからworkingDateTotalRecordを算出する
         WorkingDateTotalRecord workingDateTotalRecord = WorkingDateTotalRecord.fromInputAttendance(inputAttendance, LaborRegulations.DEFAULT);
         // 算出したworkingDateTotalRecordを保存する kesu
-        workingDateTotalRecordRepository.save(workingDateTotalRecord);
+        workingDateTotalRecordRepository.save(workingDateTotalRecord, now);
     }
 
 }
