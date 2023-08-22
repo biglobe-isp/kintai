@@ -3,6 +3,7 @@ package kintai.domain;
 
 import lombok.Value;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class MonthTotalWorkingTime {
 //            }
 //        }
         int groupSize = workingDateTotalRecordList.stream()
-                .collect(Collectors.groupingBy(r -> r.getWorkDay().getValue().substring(0,7))).keySet().size();
+                .collect(Collectors.groupingBy(r -> r.getWorkDay().getLocalDate().format(DateTimeFormatter.ofPattern("yyyy-MM")))).size();
         if(groupSize > 1 ){
             throw new IllegalArgumentException("一か月の合計を参照します");
         }

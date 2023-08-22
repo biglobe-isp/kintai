@@ -2,13 +2,21 @@ package kintai.domain;
 
 import lombok.Value;
 
+import java.time.Duration;
+
 @Value
 public class WorkMinutes {
-    int WorkMinutes;
+    int workMinutes;
 
-    public static int calcWorkMinutes(int startH, int startM, int endH, int endM, int restTimeMinutes) {
-        int workM = endH * 60 + endM  -(startH * 60 + startM) - restTimeMinutes;
-        return workM;
+    public WorkMinutes(int workMinutes){
+        if(workMinutes < 0){
+            throw  new IllegalArgumentException("workMinutesは０以上");
+        }
+        this.workMinutes = workMinutes;
+    }
+    public static WorkMinutes calcWorkMinutes(WorkStart workStart,WorkEnd workEnd,int restTimeMinutes){
+        var workM = Duration.between(workStart.getLocalTime(),workEnd.getLocalTime()).toMinutes() - restTimeMinutes;
+        return new WorkMinutes((int) workM);
     }
 
 

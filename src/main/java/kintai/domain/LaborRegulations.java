@@ -11,14 +11,15 @@ public class LaborRegulations {
     String closingTheTime;
     List<RestTime> restTimes;
 
-    public int calcRestTimeMinutes(int startH,int startM, int endH,int endM){
+    public int calcRestTimeMinutes(WorkStart workStart,WorkEnd workEnd){
         int restTimeMinutes = 0;
         for(RestTime restTime : getRestTimes()){
             int restStartH = Integer.parseInt(restTime.getStart().substring(0,2));
             int restEndH   = Integer.parseInt(restTime.getEnd().substring(0,2));
-            if(endH == restStartH){
-                restTimeMinutes += endM;
-            }else if(endH >= restEndH){
+
+            if(workEnd.getLocalTime().getHour() == restStartH){
+                restTimeMinutes += workEnd.getLocalTime().getMinute();
+            }else if(workEnd.getLocalTime().getHour() >= restEndH){
                 restTimeMinutes += 60;
             }
         }
