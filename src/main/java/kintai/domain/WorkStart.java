@@ -17,6 +17,9 @@ public class WorkStart {
     public String formatHHmm(){
         return value.format(DateTimeFormatter.ofPattern("HHmm"));
     }
+    public static WorkStart parseHHmm(String s){
+        return new WorkStart(LocalTime.parse(s,DateTimeFormatter.ofPattern("HHmm")));
+    }
     public LocalTime getLocalTime(){
         return this.value;
     }

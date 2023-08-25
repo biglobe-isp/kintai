@@ -29,7 +29,7 @@ public class MonthTotalWorkingTime {
             throw new IllegalArgumentException("一か月の合計を参照します");
         }
 
-        int totalWorkMinutes = workingDateTotalRecordList.stream()
+        int totalWorkMinutes     = workingDateTotalRecordList.stream()
                 .mapToInt(total -> total.getWorkMinutes().getWorkMinutes()).sum();
         int totalOverWorkMinutes = workingDateTotalRecordList.stream()
                 .mapToInt(total -> total.getOverWorkMinutes().getOverWorkMinutes()).sum();

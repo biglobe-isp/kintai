@@ -13,9 +13,9 @@ public class OverWorkMinutes {
         this.overWorkMinutes = overWorkMinutes;
     }
 
-    public static OverWorkMinutes calcOverWorkMinutes(WorkMinutes workMinutes) {
+    public static OverWorkMinutes calcOverWorkMinutes(int workMinutes) {
 
-        int overWorkM = workMinutes.getWorkMinutes() - 8 * 60;
+        int overWorkM = workMinutes - 8 * 60;
         if(overWorkM < 0){
             overWorkM =0;
         }

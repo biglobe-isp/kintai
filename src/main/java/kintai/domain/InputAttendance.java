@@ -10,7 +10,8 @@ public class InputAttendance {
     public InputAttendance(WorkDay workDay, WorkStart workStart, WorkEnd workEnd){
         this.workDay   = workDay;
         this.workStart = workStart;
-        this.workEnd = workEnd;
+        this.workEnd   = workEnd;
     }
+
 
 }
