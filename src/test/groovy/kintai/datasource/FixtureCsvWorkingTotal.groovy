@@ -10,9 +10,9 @@ import kintai.domain.WorkingDateTotalRecord
 class FixtureCsvWorkingTotal {
     static List<WorkingDateTotalRecord> get(){
         List.of(
-                (new WorkingDateTotalRecord(new WorkDay("2023-08-17"),WorkStart.parse("9:00:00"),new WorkEnd("20:00:00"),new OverWorkMinutes(60),new WorkMinutes(540))),
-                (new WorkingDateTotalRecord(new WorkDay("2023-08-18"),WorkStart.parse("9:00:00"),new WorkEnd("20:00:00"),new OverWorkMinutes(60),new WorkMinutes(540))),
-                (new WorkingDateTotalRecord(new WorkDay("2023-08-19"),WorkStart.parse("9:00:00"),new WorkEnd("20:00:00"),new OverWorkMinutes(60),new WorkMinutes(540)))
+                (new WorkingDateTotalRecord(WorkDay.parse("2023-08-16"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(540),new OverWorkMinutes(60))),
+                (new WorkingDateTotalRecord(WorkDay.parse("2023-08-17"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(540),new OverWorkMinutes(60))),
+                (new WorkingDateTotalRecord(WorkDay.parse("2023-08-19"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(540),new OverWorkMinutes(60)))
         )
     }
 

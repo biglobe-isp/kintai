@@ -21,9 +21,9 @@ class InputAttendanceServiceTest extends Specification {
         def mockRepository = Mock(WorkingDateTotalRecordRepository)
         def sut = new InputAttendanceService(mockRepository)
 
-        def input = new InputAttendance(new WorkDay("2023-07-31"),WorkStart.parse("09:00:00"),new WorkEnd("20:00:00"))
-        // 残業１時間　就業9時間の期待値にする。
-        def expected = new WorkingDateTotalRecord(new WorkDay("2023-07-31"),WorkStart.parse("09:00:00"),new WorkEnd("20:00:00"),new OverWorkMinutes(60),new WorkMinutes(540))
+        def input = new InputAttendance(WorkDay.parse("2023-07-31"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"))
+        // 残業１時間　就業9時間の期待値にする。//540
+        def expected = new WorkingDateTotalRecord(WorkDay.parse("2023-07-31"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),1),new OverWorkMinutes(60))
 
         when:
         sut.input(input,now)

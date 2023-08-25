@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FixtureWorkingDateTotalRecord {
     static WorkingDateTotalRecord get(){
-        new WorkingDateTotalRecord(new WorkDay("2023-08-16"),WorkStart.parse("09:00:00"),new WorkEnd("20:00:00"),new OverWorkMinutes(60),new WorkMinutes(540))
+        new WorkingDateTotalRecord(WorkDay.parse("2023-08-16"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(540),new OverWorkMinutes(60),)
 
     }
 }

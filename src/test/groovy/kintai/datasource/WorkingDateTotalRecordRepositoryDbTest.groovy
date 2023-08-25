@@ -15,7 +15,7 @@ class WorkingDateTotalRecordRepositoryDbTest extends Specification {
 
     def "就業日合計記録をCSVへ保存する"(){
         setup:
-        def tmpCsvFile = Files.createTempFile("tmp","data.csv")
+        def tmpCsvFile = Files.createTempFile("tmp","data1.csv")
         def sut  = new WorkingDateTotalRecordRepositoryDb(tmpCsvFile)
         def input = FixtureWorkingDateTotalRecord.get()
         def now = LocalDateTime.parse("2023-08-18T15:45:33")
