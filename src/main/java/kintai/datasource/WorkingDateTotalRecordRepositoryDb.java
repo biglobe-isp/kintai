@@ -43,7 +43,6 @@ public class WorkingDateTotalRecordRepositoryDb implements WorkingDateTotalRecor
 
     @Override
     public List<WorkingDateTotalRecord> findByMonth(YearMonth yearMonth) {
-        // String firstMonthValue = workingDateTotalRecordList.get(0).getWorkDay().getValue().substring(0,7);
         //String cavPath = "KintaiData.csv";
         String formatYearMonth = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
         List<WorkingDateTotalRecord> workingDateTotalRecords = new ArrayList<>();
