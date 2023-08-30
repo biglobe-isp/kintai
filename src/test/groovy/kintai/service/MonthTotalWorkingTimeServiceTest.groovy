@@ -1,15 +1,15 @@
 package kintai.service
 
 import kintai.domain.FixtureWorkingDateTotalRecordList
-import kintai.domain.MonthTotalOverWorkMinutes
-import kintai.domain.MonthTotalWorkMinutes
-import kintai.domain.MonthTotalWorkingTime
-import kintai.domain.OverWorkMinutes
-import kintai.domain.WorkDay
-import kintai.domain.WorkEnd
-import kintai.domain.WorkMinutes
-import kintai.domain.WorkStart
-import kintai.domain.WorkingDateTotalRecord
+import kintai.domain.TotalMonthlyHoursWorked.MonthTotalOverWorkMinutes
+import kintai.domain.TotalMonthlyHoursWorked.MonthTotalWorkMinutes
+import kintai.domain.TotalMonthlyHoursWorked.MonthTotalWorkingTime
+import kintai.domain.WorkingDateTotalRecord.OverWorkMinutes
+import kintai.domain.InputAttendance.WorkDay
+import kintai.domain.InputAttendance.WorkEnd
+import kintai.domain.WorkingDateTotalRecord.WorkMinutes
+import kintai.domain.InputAttendance.WorkStart
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord
 import spock.lang.Specification
 
 import java.time.YearMonth

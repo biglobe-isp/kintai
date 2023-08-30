@@ -1,12 +1,12 @@
 package kintai.service
 
-import kintai.domain.WorkEnd
-import kintai.domain.InputAttendance
-import kintai.domain.OverWorkMinutes
-import kintai.domain.WorkStart
-import kintai.domain.WorkDay
-import kintai.domain.WorkMinutes
-import kintai.domain.WorkingDateTotalRecord
+import kintai.domain.InputAttendance.WorkEnd
+import kintai.domain.InputAttendance.InputAttendance
+import kintai.domain.WorkingDateTotalRecord.OverWorkMinutes
+import kintai.domain.InputAttendance.WorkStart
+import kintai.domain.InputAttendance.WorkDay
+import kintai.domain.WorkingDateTotalRecord.WorkMinutes
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -23,7 +23,7 @@ class InputAttendanceServiceTest extends Specification {
 
         def input = new InputAttendance(WorkDay.parse("2023-07-31"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"))
         // 残業１時間　就業9時間の期待値にする。//540
-        def expected = new WorkingDateTotalRecord(WorkDay.parse("2023-07-31"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),1),new OverWorkMinutes(60))
+        def expected = new WorkingDateTotalRecord(WorkDay.parse("2023-07-31"),WorkStart.parse("09:00:00"),WorkEnd.parse("20:00:00"),new WorkMinutes(540),new OverWorkMinutes(60))
 
         when:
         sut.input(input,now)

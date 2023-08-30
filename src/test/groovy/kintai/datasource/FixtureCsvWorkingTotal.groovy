@@ -1,11 +1,11 @@
 package kintai.datasource
 
-import kintai.domain.OverWorkMinutes
-import kintai.domain.WorkDay
-import kintai.domain.WorkEnd
-import kintai.domain.WorkMinutes
-import kintai.domain.WorkStart
-import kintai.domain.WorkingDateTotalRecord
+import kintai.domain.WorkingDateTotalRecord.OverWorkMinutes
+import kintai.domain.InputAttendance.WorkDay
+import kintai.domain.InputAttendance.WorkEnd
+import kintai.domain.WorkingDateTotalRecord.WorkMinutes
+import kintai.domain.InputAttendance.WorkStart
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord
 
 class FixtureCsvWorkingTotal {
     static List<WorkingDateTotalRecord> get(){
