@@ -1,6 +1,12 @@
 package kintai.datasource;
 
-import kintai.domain.*;
+import kintai.domain.InputAttendance.WorkDay;
+import kintai.domain.InputAttendance.WorkEnd;
+import kintai.domain.InputAttendance.WorkStart;
+import kintai.domain.LaborRegulations.LaborRegulations;
+import kintai.domain.WorkingDateTotalRecord.OverWorkMinutes;
+import kintai.domain.WorkingDateTotalRecord.WorkMinutes;
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord;
 import kintai.service.WorkingDateTotalRecordRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -8,22 +14,16 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class WorkingDateTotalRecordRepositoryDb implements WorkingDateTotalRecordRepository {
     private final Path csvPath;
     @Override
-    public void save(WorkingDateTotalRecord workingDateTotalRecord,LocalDateTime now) {
+    public void save(WorkingDateTotalRecord workingDateTotalRecord, LocalDateTime now) {
         File file = new File("data.csv");
         //csvPathでファイル指定、StandardOption.APPENDで既存ファイル（作成したファイルに追加)
         try (BufferedWriter bw = Files.newBufferedWriter(csvPath, StandardOpenOption.APPEND)) {
@@ -46,8 +46,8 @@ public class WorkingDateTotalRecordRepositoryDb implements WorkingDateTotalRecor
         //String cavPath = "KintaiData.csv";
         String formatYearMonth = yearMonth.format(DateTimeFormatter.ofPattern("yyyyMM"));
         List<WorkingDateTotalRecord> workingDateTotalRecords = new ArrayList<>();
-        LaborRegulations laborRegulations = LaborRegulations.DEFAULT;
 
+        Map<String, WorkingDateTotalRecord> workingDateTotalMap = new HashMap<>();
         try (
                 BufferedReader br =Files.newBufferedReader(csvPath)
         ) {
@@ -59,19 +59,24 @@ public class WorkingDateTotalRecordRepositoryDb implements WorkingDateTotalRecor
                     continue;
                 }
 
+
                 //Stringで渡されたcsvの内容をLocalTimeで解析したのちformat
-                workingDateTotalRecords.add(new WorkingDateTotalRecord(
+                workingDateTotalMap.put(columns[0],
+                        new WorkingDateTotalRecord(
                         WorkDay.parseyyyyMMdd(columns[0]),
                         WorkStart.parseHHmm(columns[1]),
                         WorkEnd.parseHHmm(columns[2]),
                         new WorkMinutes(Integer.parseInt(columns[3])),
-                        new OverWorkMinutes(Integer.parseInt(columns[4]))
-                ));
+                        new OverWorkMinutes(Integer.parseInt(columns[4]))));
                 line = br.readLine();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        Set<String> keySet = workingDateTotalMap.keySet();
+        for(String key : keySet){
+            workingDateTotalRecords.add(workingDateTotalMap.get(key));
         }
         return workingDateTotalRecords;
     }

@@ -1,18 +1,19 @@
 package kintai;
 
 import kintai.datasource.WorkingDateTotalRecordRepositoryDb;
-import kintai.domain.*;
+import kintai.domain.InputAttendance.InputAttendance;
+import kintai.domain.InputAttendance.WorkDay;
+import kintai.domain.InputAttendance.WorkEnd;
+import kintai.domain.InputAttendance.WorkStart;
+import kintai.domain.TotalMonthlyHoursWorked.MonthTotalWorkingTime;
 import kintai.service.InputAttendanceService;
 import kintai.service.MonthTotalWorkingTimeService;
-import kintai.service.WorkingDateTotalRecordRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class Main {
@@ -52,8 +53,8 @@ public class Main {
                 if (args.length < 2) {
                     throw new RuntimeException("引数が足りません");
                 }
-                YearMonth month = YearMonth.parse(args[1], DateTimeFormatter.ofPattern("yyyyMM"));
                 //args[1] ＝　201708想定
+                YearMonth month = YearMonth.parse(args[1], DateTimeFormatter.ofPattern("yyyyMM"));
                 MonthTotalWorkingTimeService monthTotalWorkingTimeService = new MonthTotalWorkingTimeService(workingDateTotalRecordRepositoryDb);
                 //月間累計の勤務時間と残業時間の取得
                 MonthTotalWorkingTime monthTotalWorkingTime = monthTotalWorkingTimeService.total(month);
