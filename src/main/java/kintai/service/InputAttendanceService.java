@@ -1,8 +1,8 @@
 package kintai.service;
 
-import kintai.domain.InputAttendance;
-import kintai.domain.LaborRegulations;
-import kintai.domain.WorkingDateTotalRecord;
+import kintai.domain.InputAttendance.InputAttendance;
+import kintai.domain.LaborRegulations.LaborRegulations;
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;

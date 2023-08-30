@@ -1,6 +1,6 @@
 package kintai.service;
 
-import kintai.domain.WorkingDateTotalRecord;
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;

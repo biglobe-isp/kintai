@@ -1,4 +1,4 @@
-package kintai.domain;
+package kintai.domain.TotalMonthlyHoursWorked;
 
 import lombok.Value;
 

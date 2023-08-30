@@ -1,10 +1,15 @@
-package kintai.domain;
+package kintai.domain.WorkingDateTotalRecord;
 
+import kintai.domain.InputAttendance.InputAttendance;
+import kintai.domain.InputAttendance.WorkDay;
+import kintai.domain.InputAttendance.WorkEnd;
+import kintai.domain.InputAttendance.WorkStart;
+import kintai.domain.LaborRegulations.LaborRegulations;
 import lombok.Value;
 
 @Value
 public class WorkingDateTotalRecord {
-    WorkDay   workDay;
+    WorkDay workDay;
     WorkStart workStart;
     WorkEnd workEnd;
     WorkMinutes workMinutes;

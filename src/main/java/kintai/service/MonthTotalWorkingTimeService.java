@@ -1,7 +1,7 @@
 package kintai.service;
 
-import kintai.domain.MonthTotalWorkingTime;
-import kintai.domain.WorkingDateTotalRecord;
+import kintai.domain.TotalMonthlyHoursWorked.MonthTotalWorkingTime;
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord;
 import lombok.RequiredArgsConstructor;
 
 import java.time.YearMonth;

@@ -1,6 +1,7 @@
-package kintai.domain;
+package kintai.domain.TotalMonthlyHoursWorked;
 
 
+import kintai.domain.WorkingDateTotalRecord.WorkingDateTotalRecord;
 import lombok.Value;
 
 import java.time.format.DateTimeFormatter;
@@ -34,10 +35,7 @@ public class MonthTotalWorkingTime {
         int totalOverWorkMinutes = workingDateTotalRecordList.stream()
                 .mapToInt(total -> total.getOverWorkMinutes().getOverWorkMinutes()).sum();
 
-        /*for(WorkingDateTotalRecord total : workingDateTotalRecordList){
-            totalWorkMinutes     += total.getWorkMinutes().getWorkMinutes();
-            totalOverWorkMinutes += total.getOverWorkMinutes().getOverWorkMinutes();
-        }*/
+
         return new MonthTotalWorkingTime(new MonthTotalWorkMinutes(totalWorkMinutes),new MonthTotalOverWorkMinutes(totalOverWorkMinutes));
     }
 

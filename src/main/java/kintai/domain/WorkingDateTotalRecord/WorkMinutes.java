@@ -1,5 +1,7 @@
-package kintai.domain;
+package kintai.domain.WorkingDateTotalRecord;
 
+import kintai.domain.InputAttendance.WorkEnd;
+import kintai.domain.InputAttendance.WorkStart;
 import lombok.Value;
 
 import java.time.Duration;
@@ -14,7 +16,7 @@ public class WorkMinutes {
         }
         this.workMinutes = workMinutes;
     }
-    public static WorkMinutes calcWorkMinutes(WorkStart workStart,WorkEnd workEnd,int restTimeMinutes){
+    public static WorkMinutes calcWorkMinutes(WorkStart workStart, WorkEnd workEnd, int restTimeMinutes){
         var workM = Duration.between(workStart.getLocalTime(),workEnd.getLocalTime()).toMinutes() - restTimeMinutes;
         return new WorkMinutes((int) workM);
     }

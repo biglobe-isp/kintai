@@ -1,4 +1,4 @@
-package kintai.domain;
+package kintai.domain.InputAttendance;
 
 import lombok.Value;
 

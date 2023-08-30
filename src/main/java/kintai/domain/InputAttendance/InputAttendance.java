@@ -1,10 +1,10 @@
-package kintai.domain;
+package kintai.domain.InputAttendance;
 
 import lombok.Value;
 
 @Value
 public class InputAttendance {
-     WorkDay   workDay;
+     WorkDay workDay;
      WorkStart workStart;
      WorkEnd workEnd;
     public InputAttendance(WorkDay workDay, WorkStart workStart, WorkEnd workEnd){

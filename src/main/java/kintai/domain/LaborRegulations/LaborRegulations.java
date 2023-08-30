@@ -1,6 +1,8 @@
-package kintai.domain;
+package kintai.domain.LaborRegulations;
 
 
+import kintai.domain.InputAttendance.WorkEnd;
+import kintai.domain.InputAttendance.WorkStart;
 import lombok.Value;
 
 import java.util.List;
