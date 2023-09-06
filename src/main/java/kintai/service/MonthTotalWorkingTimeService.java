@@ -15,7 +15,6 @@ public class MonthTotalWorkingTimeService {
         //(今回モック化する内容はおそらく、参照月を渡したらその月のworkingTotalRecordが帰ってくるList）
         //このリストを使って、どうするか。→合計を出す。
         return MonthTotalWorkingTime.totalTime(workingDateTotalRecordList);
-
     }
 
 

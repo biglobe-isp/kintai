@@ -16,8 +16,8 @@ public class WorkMinutes {
         }
         this.workMinutes = workMinutes;
     }
-    public static WorkMinutes calcWorkMinutes(WorkStart workStart, WorkEnd workEnd, int restTimeMinutes){
-        var workM = Duration.between(workStart.getLocalTime(),workEnd.getLocalTime()).toMinutes() - restTimeMinutes;
+    public static WorkMinutes calcWorkMinutes(WorkStart workStart, WorkEnd workEnd, int restTimeDuration){
+        var workM = Duration.between(workStart.getLocalTime(),workEnd.getLocalTime()).toMinutes() - restTimeDuration;
         return new WorkMinutes((int) workM);
     }
 

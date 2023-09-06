@@ -6,17 +6,17 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 @Value
-public class RestTime {
+public class RestTimeRange {
     LocalTime start;
     LocalTime end;
 
 
-    public  RestTime (String s, String e){
+    public RestTimeRange(String s, String e){
         this.start = LocalTime.parse(s);
         this.end   = LocalTime.parse(e);
     }
-    public RestTime parse(String s, String e){
-        return new RestTime(s,e);
+    public RestTimeRange parse(String s, String e){
+        return new RestTimeRange(s,e);
     }
     public String getStart(){
         return this.start.format(DateTimeFormatter.ISO_TIME);

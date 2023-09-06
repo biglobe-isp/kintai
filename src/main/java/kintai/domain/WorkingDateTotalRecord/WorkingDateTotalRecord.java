@@ -18,8 +18,8 @@ public class WorkingDateTotalRecord {
 
     public static WorkingDateTotalRecord fromInputAttendance(InputAttendance attendance, LaborRegulations laborRegulations){
 
-        int restTimeMinutes = laborRegulations.calcRestTimeMinutes(attendance.getWorkStart(),attendance.getWorkEnd());
-        var workMinutes  = WorkMinutes.calcWorkMinutes(attendance.getWorkStart(),attendance.getWorkEnd(),restTimeMinutes);
+        int restTimeDuration = laborRegulations.calcrestTimeDuration(attendance.getWorkStart(),attendance.getWorkEnd());
+        var workMinutes  = WorkMinutes.calcWorkMinutes(attendance.getWorkStart(),attendance.getWorkEnd(),restTimeDuration);
         var overWorkMinutes = OverWorkMinutes.calcOverWorkMinutes(workMinutes.getWorkMinutes());
 
         return new WorkingDateTotalRecord(
