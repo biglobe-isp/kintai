@@ -63,6 +63,8 @@ public class Main {
 
                 System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
                 System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");
+            }else{
+                throw new RuntimeException("inputもしくはtotalから入力してください");
             }
         }catch (Exception e){
             e.printStackTrace();

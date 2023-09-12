@@ -74,11 +74,14 @@ public class WorkingDateTotalRecordRepositoryDb implements WorkingDateTotalRecor
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Set<String> keySet = workingDateTotalMap.keySet();
         for(String key : keySet){
             workingDateTotalRecords.add(workingDateTotalMap.get(key));
         }
-        return workingDateTotalRecords;
+        return workingDateTotalRecords.stream()
+                .sorted(Comparator.comparing(l -> l.getWorkDay().getLocalDate()))
+                .toList();
     }
 
 }

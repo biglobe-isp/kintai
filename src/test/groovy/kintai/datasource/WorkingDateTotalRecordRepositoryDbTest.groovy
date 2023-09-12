@@ -32,7 +32,7 @@ class WorkingDateTotalRecordRepositoryDbTest extends Specification {
     }
     def "CSVに保存された勤務実績一覧から指定された月の分の勤務実績をリストで取り出す"(){
         setup:
-        def sut = new WorkingDateTotalRecordRepositoryDb(Path.of("data.csv"))
+        def sut = new WorkingDateTotalRecordRepositoryDb(Path.of("dataTest.csv"))
         def input = YearMonth.of(2023, 8)
 
         when:
