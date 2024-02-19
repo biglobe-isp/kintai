@@ -14,6 +14,7 @@ public class WorkDateExtend extends WorkDate {
      */
     public WorkDateExtend(String workDate) throws ValidatorException {
         super(workDate);
+        this.workDate = parseWorkDate(workDate);
     }
 
     protected String parseWorkDate(String workDate) {

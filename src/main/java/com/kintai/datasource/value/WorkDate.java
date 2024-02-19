@@ -23,7 +23,6 @@ public class WorkDate {
      */
     public WorkDate(String workDate) throws ValidatorException {
         validate(workDate);
-        isDate(workDate);
         this.workDate = workDate;
     }
 
@@ -36,6 +35,7 @@ public class WorkDate {
         if (!StringUtils.hasText(workDate)) {
             throw new ValidatorException("勤務日は必須です。");
         }
+        isDate(workDate);
     }
 
     /**

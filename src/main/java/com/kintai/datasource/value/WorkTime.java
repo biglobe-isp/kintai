@@ -15,19 +15,6 @@ public class WorkTime {
     @Getter
     private EndTime endTime;
 
-    /**
-     * コンストラクタ
-     * @param startTimeToString 開始時刻
-     * @param endTimeToString 終業時刻
-     */
-    public WorkTime(String startTimeToString, String endTimeToString) throws ValidatorException {
-        StartTime startTime = new StartTime(startTimeToString);
-        EndTime endTime = new EndTime(endTimeToString);
-        validate(startTime, endTime);
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
     public WorkTime(StartTime startTime, EndTime endTime) throws ValidatorException {
         validate(startTime, endTime);
         this.startTime = startTime;

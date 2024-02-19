@@ -13,7 +13,7 @@ public class CsvAttendanceFactory implements IAttendanceFactory {
     public Attendance makeAttendance(AttendanceFactoryDto attendanceFactoryDto) throws ValidatorException {
         TotalMonth totalMonth = new TotalMonth(attendanceFactoryDto.getTotalMonth());
         WorkDate workDate = new WorkDate(attendanceFactoryDto.getWorkDate());
-        WorkTime workTime = new WorkTime(attendanceFactoryDto.getStartTime(), attendanceFactoryDto.getEndTime());
+        WorkTime workTime = new WorkTime(new StartTime(attendanceFactoryDto.getStartTime()), new EndTime(attendanceFactoryDto.getEndTime()));
         WorkMinutes workMinutes = new WorkMinutes(Integer.parseInt(attendanceFactoryDto.getWorkMinutes()));
         OverWorkMinutes overWorkMinutes = new OverWorkMinutes(Integer.parseInt(attendanceFactoryDto.getOverWorkMinute()));
         LocalDateTime localDateTime = LocalDateTime.parse(attendanceFactoryDto.getLocalDateTime(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
