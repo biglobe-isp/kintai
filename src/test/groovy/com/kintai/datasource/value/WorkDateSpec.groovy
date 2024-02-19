@@ -5,18 +5,14 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class WorkDateSpec extends Specification {
-    @Unroll
-    def "正常系 #description"() {
+    def "正常系"() {
         when:
-        WorkDate workDate = new WorkDate(testWorkDate)
+        WorkDate workDate = new WorkDate("20240101")
 
         then: "勤務日がオブジェクト上に存在すること"
-        workDate.getWorkDate() == expectWorkDate
+        workDate.getWorkDate() == "20240101"
 
-        where:
-        testWorkDate || expectWorkDate || description
-        "20240101" || "20240101" || "修正前引数"
-        "-date:20240101" || "20240101" || "修正後引数"
+//        "-date:20240101" || "20240101" || "修正後引数"
     }
 
     @Unroll

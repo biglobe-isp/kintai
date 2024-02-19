@@ -4,6 +4,13 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class OverWorkMinutesSpec extends Specification {
+    def "正常系 デフォルトコンストラクタ"() {
+        when:
+        OverWorkMinutes actualOverWorkMinutes = new OverWorkMinutes(120)
+
+        then:
+        120 == actualOverWorkMinutes.getOverWorkMinutes()
+    }
     @Unroll
     def "createOverWorkMinutes正常系(#description)"() {
         setup:

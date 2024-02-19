@@ -4,10 +4,18 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class WorkMinutesSpec extends Specification {
+    def "正常系(デフォルトコンストラクタ)"() {
+        when:
+        WorkMinutes actualWorkMinutes = new WorkMinutes(480)
+
+        then:
+        actualWorkMinutes.getWorkMinutes() == 480
+    }
+
     @Unroll
-    def "createWorkMinutes正常系(#description)"() {
+    def "正常系(#description)"() {
         setup:
-        WorkTime actualWorkTime = new WorkTime(startTime, endTime)
+        WorkTime actualWorkTime = new WorkTime(new StartTime(startTime), new EndTime(endTime))
         WorkMinutes actualWorkMinutes = new WorkMinutes(actualWorkTime)
 
         expect:
@@ -29,7 +37,7 @@ class WorkMinutesSpec extends Specification {
         "0900" | "1945" | 525 || "残業45分"
     }
 
-    def "totalWorkMinutes正常系"() {
+    def "正常系(労働時間集計)"() {
         when:
         WorkMinutes workMinutes1 = new WorkMinutes(480)
         WorkMinutes workMinutes2 = new WorkMinutes(540)
