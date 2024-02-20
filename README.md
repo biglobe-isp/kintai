@@ -75,3 +75,22 @@ BUILD SUCCESSFUL in 2m 37s
 ### plantuml
 - プラグインPlantUML Integrationを追加
 - `brew install graphviz`を追加 クラス図が描ける
+
+### kintai_kadai_main.java 実行
+`kintai_kadai_main.java`を`app/src/main/java/Main.java`に追加
+
+```shell
+% pwd
+~/IdeaProjects/kintai/app/src/main/java
+% javac org/example/Main.java 
+%
+% java org.example.Main input 20240213 0900 2400
+% java org.example.Main input 20240214 0900 1800
+% java org.example.Main input 20240214 0900 2300
+% java org.example.Main input 20240215 0900 1800
+%
+% java org.example.Main total 202402
+勤務時間: 31時間0分
+残業時間: 7時間0分
+%
+```
