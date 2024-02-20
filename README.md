@@ -12,6 +12,8 @@
 
 
 ## memo
+
+### gradle init
 ```shell
 % gradle --version
 
@@ -69,3 +71,7 @@ To learn more about Gradle by exploring our Samples at https://docs.gradle.org/8
 BUILD SUCCESSFUL in 2m 37s
 1 actionable task: 1 executed
 ```
+
+### plantuml
+- プラグインPlantUML Integrationを追加
+- `brew install graphviz`を追加 クラス図が描ける

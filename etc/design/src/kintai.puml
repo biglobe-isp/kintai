@@ -1,0 +1,39 @@
+@startuml
+
+title: 勤怠管理
+
+package api {
+}
+
+package service {
+}
+
+package datasource {
+}
+
+package domain {
+'  class 社員 {
+'    - 社員番号
+'    - 名前
+'  }
+'
+'  class 勤怠 {
+'    - 日付
+'    - 開始時間
+'    - 終了時間
+'  }
+'  class 集計 {
+'    - 勤務時間
+'    - 残業時間
+'  }
+'
+'  class 就業規則 {
+'    - 始業時間
+'    - 終業時間
+'    - 休憩時間
+'  }
+}
+
+'社員 <-- 勤怠
+
+@enduml
