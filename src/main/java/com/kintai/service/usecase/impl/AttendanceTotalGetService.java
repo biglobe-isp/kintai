@@ -1,7 +1,7 @@
 package com.kintai.service.usecase.impl;
 
 import com.kintai.datasource.entity.Attendance;
-import com.kintai.datasource.entity.Total;
+import com.kintai.datasource.entity.WorkTotal;
 import com.kintai.datasource.value.expansion.password.CsvPassword;
 import com.kintai.domain.repository.IAttendanceGetRepository;
 import com.kintai.domain.service.ITotalDomainService;
@@ -38,8 +38,8 @@ public class AttendanceTotalGetService implements IAttendanceTotalGetService {
             log.error(e.getStackTrace().toString());
         }
 
-        List<Total> totalList = summaryMonthlyTotal(attendanceList);
-        return makeResponseAttendanceTotalGetDto(totalList, resultMessage);
+        List<WorkTotal> workTotalList = summaryMonthlyTotal(attendanceList);
+        return makeResponseAttendanceTotalGetDto(workTotalList, resultMessage);
     }
 
     @Override
@@ -59,14 +59,14 @@ public class AttendanceTotalGetService implements IAttendanceTotalGetService {
         return iAttendanceGetRepository.get();
     }
 
-    protected List<Total> summaryMonthlyTotal(List<Attendance> attendanceList) {
+    protected List<WorkTotal> summaryMonthlyTotal(List<Attendance> attendanceList) {
         if (CollectionUtils.isEmpty(attendanceList)) {
             return new ArrayList<>();
         }
         return iTotalDomainService.getMonthlyTotalList(attendanceList);
     }
 
-    protected ResponseAttendanceTotalGetDto makeResponseAttendanceTotalGetDto(List<Total> totalList, String resultMessage) {
-        return new ResponseAttendanceTotalGetDto(totalList, resultMessage);
+    protected ResponseAttendanceTotalGetDto makeResponseAttendanceTotalGetDto(List<WorkTotal> workTotalList, String resultMessage) {
+        return new ResponseAttendanceTotalGetDto(workTotalList, resultMessage);
     }
 }

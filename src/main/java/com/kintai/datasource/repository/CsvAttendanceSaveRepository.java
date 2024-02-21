@@ -26,7 +26,7 @@ public class CsvAttendanceSaveRepository implements IAttendanceSaveRepository {
                 attendance.getWorkTime().getEndTime().getEndTime(),
                 attendance.getWorkMinutes().getWorkMinutes(),
                 attendance.getOverWorkMinutes().getOverWorkMinutes(),
-                attendance.getLocalDateTime()
+                attendance.getCreateLocalDate()
         ));
         filewriter.close();
     }

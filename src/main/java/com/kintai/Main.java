@@ -2,7 +2,6 @@ package com.kintai;
 
 import com.kintai.api.AttendanceRegisterApi;
 import com.kintai.api.AttendanceTotalGetApi;
-import com.kintai.service.dto.request.RequestAttendanceGetDto;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -15,7 +14,7 @@ public class Main {
      * 引数に入力された値で各APIを呼び出す。
      * @param args アプリ実行時に入力された引数。呼び出すAPIによって引数が変わる。
      *             各APIの引数は以下の通り
-     *             ・勤怠入力API
+     *             ・勤怠登録API
      *              args[0]：APIタイトル(固定値：input)
      *              args[1]：勤怠日(yyyyMMdd)
      *              args[2]：始業時刻(HHmm)

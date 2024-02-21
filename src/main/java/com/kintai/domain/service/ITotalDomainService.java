@@ -1,10 +1,10 @@
 package com.kintai.domain.service;
 
 import com.kintai.datasource.entity.Attendance;
-import com.kintai.datasource.entity.Total;
+import com.kintai.datasource.entity.WorkTotal;
 
 import java.util.List;
 
 public interface ITotalDomainService {
-    List<Total> getMonthlyTotalList(List<Attendance> attendanceList);
+    List<WorkTotal> getMonthlyTotalList(List<Attendance> attendanceList);
 }
