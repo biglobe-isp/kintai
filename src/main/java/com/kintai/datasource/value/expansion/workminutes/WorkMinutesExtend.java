@@ -3,16 +3,14 @@ package com.kintai.datasource.value.expansion.workminutes;
 import com.kintai.datasource.value.WorkDate;
 import com.kintai.datasource.value.WorkMinutes;
 import com.kintai.datasource.value.WorkTime;
-import com.kintai.datasource.value.expansion.workdate.WorkDateExtend;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class WorkMinutesExtend extends WorkMinutes {
+    private final String dateFormatPattern = "yyyyMMdd";
 
-    public WorkMinutesExtend(int workMinutes) {
-        super(workMinutes);
-    }
+    private final String compareDate = "20240315";
 
     public WorkMinutesExtend(WorkTime workTime, WorkDate workDate) throws ParseException {
         super(workTime);
@@ -22,8 +20,8 @@ public class WorkMinutesExtend extends WorkMinutes {
     }
 
     protected boolean isCompareDate(WorkDate workDate) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        return dateFormat.parse(workDate.getWorkDate()).compareTo(dateFormat.parse("20240315")) != -1;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatPattern);
+        return dateFormat.parse(workDate.getWorkDate()).compareTo(dateFormat.parse(compareDate)) != -1;
     }
 
     protected int calculateAddRest(String endTime) {

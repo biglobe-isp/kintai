@@ -22,8 +22,8 @@ public class CsvAttendanceSaveRepository implements IAttendanceSaveRepository {
                 "%s,%s,%s,%s,%s,%s,%s\n",
                 attendance.getTotalMonth().getTotalMonth(),
                 attendance.getWorkDate().getWorkDate(),
-                attendance.getWorkTime().getStartTime(),
-                attendance.getWorkTime().getEndTime(),
+                attendance.getWorkTime().getStartTime().getStartTime(),
+                attendance.getWorkTime().getEndTime().getEndTime(),
                 attendance.getWorkMinutes().getWorkMinutes(),
                 attendance.getOverWorkMinutes().getOverWorkMinutes(),
                 attendance.getLocalDateTime()

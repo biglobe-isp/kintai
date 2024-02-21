@@ -40,7 +40,6 @@ public class WorkDate {
 
     /**
      * 日付形式チェック
-     * @return 形式チェック結果
      * @throws ValidatorException 存在しない日付または指定した形式(uuuuMMdd)以外の場合にスローされる
      */
     protected void isDate(String workDate) throws ValidatorException {

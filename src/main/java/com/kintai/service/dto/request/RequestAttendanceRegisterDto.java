@@ -18,10 +18,19 @@ public class RequestAttendanceRegisterDto {
     @Getter
     private final String endTime;
 
+    /* パスワード */
+    @Getter
+    private String password;
+
     public RequestAttendanceRegisterDto(String workDate, String startTime, String endTime) {
         this.workDate = workDate;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public RequestAttendanceRegisterDto(String workDate, String startTime, String endTime, String password) {
+        this(workDate,startTime,endTime);
+        this.password = password;
     }
 
     @Override

@@ -2,17 +2,21 @@ package com.kintai.domain.service
 
 import com.kintai.datasource.entity.Attendance
 import com.kintai.datasource.entity.Total
+import com.kintai.datasource.value.EndTime
 import com.kintai.datasource.value.OverWorkMinutes
+import com.kintai.datasource.value.StartTime
 import com.kintai.datasource.value.TotalMonth
 import com.kintai.datasource.value.WorkDate
 import com.kintai.datasource.value.WorkMinutes
 import com.kintai.datasource.value.WorkTime
 import com.kintai.domain.service.impl.TotalDomainService
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.time.LocalDateTime
 
 class TotalDomainServiceSpec extends Specification {
+    @Unroll
     def "正常系"() {
         setup:
         List<Attendance> testAttendance = new ArrayList<>()
@@ -20,7 +24,7 @@ class TotalDomainServiceSpec extends Specification {
             String[] arrayTestData = parseStringArray(whereData)
             TotalMonth totalMonth = new TotalMonth(arrayTestData[0])
             WorkDate workDate = new WorkDate(arrayTestData[1])
-            WorkTime workTime = new WorkTime(arrayTestData[2], arrayTestData[3])
+            WorkTime workTime = new WorkTime(new StartTime(arrayTestData[2]), new EndTime(arrayTestData[3]))
             WorkMinutes workMinutes = new WorkMinutes(workTime)
             OverWorkMinutes overWorkMinutes = new OverWorkMinutes(workMinutes)
             testAttendance.add(new Attendance(totalMonth,workDate,workTime, workMinutes, overWorkMinutes, LocalDateTime.now()))

@@ -10,7 +10,6 @@ import com.kintai.domain.dto.AttendanceFactoryDto;
 import com.kintai.domain.factory.IAttendanceFactory;
 import com.kintai.exception.ValidatorException;
 
-import javax.xml.bind.ValidationException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 

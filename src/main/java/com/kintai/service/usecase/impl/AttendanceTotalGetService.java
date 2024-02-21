@@ -2,8 +2,11 @@ package com.kintai.service.usecase.impl;
 
 import com.kintai.datasource.entity.Attendance;
 import com.kintai.datasource.entity.Total;
+import com.kintai.datasource.value.expansion.password.CsvPassword;
 import com.kintai.domain.repository.IAttendanceGetRepository;
 import com.kintai.domain.service.ITotalDomainService;
+import com.kintai.exception.ValidatorException;
+import com.kintai.service.dto.request.RequestAttendanceGetDto;
 import com.kintai.service.usecase.IAttendanceTotalGetService;
 import com.kintai.service.dto.response.ResponseAttendanceTotalGetDto;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,8 @@ public class AttendanceTotalGetService implements IAttendanceTotalGetService {
 
     private final ITotalDomainService iTotalDomainService;
 
+    private String resultMessage = "正常に勤怠データを取得されました。";
+
     public AttendanceTotalGetService(IAttendanceGetRepository iAttendanceGetRepository, ITotalDomainService iTotalDomainService) {
         this.iAttendanceGetRepository = iAttendanceGetRepository;
         this.iTotalDomainService = iTotalDomainService;
@@ -25,18 +30,43 @@ public class AttendanceTotalGetService implements IAttendanceTotalGetService {
 
     @Override
     public ResponseAttendanceTotalGetDto get() {
-        String resultMessage = "正常に勤怠データを取得されました。";
         List<Attendance> attendanceList = null;
         try {
-            attendanceList = iAttendanceGetRepository.get();
+            attendanceList = getAttendanceList();
         } catch (Exception e) {
             resultMessage = e.getMessage();
             log.error(e.getStackTrace().toString());
         }
 
-        List<Total> totalList = CollectionUtils.isEmpty(attendanceList) ? new ArrayList<>() : iTotalDomainService.getMonthlyTotalList(attendanceList);
+        List<Total> totalList = summaryMonthlyTotal(attendanceList);
+        return makeResponseAttendanceTotalGetDto(totalList, resultMessage);
+    }
 
-        ResponseAttendanceTotalGetDto responseAttendanceTotalGetDto = new ResponseAttendanceTotalGetDto(totalList, resultMessage);
+    @Override
+    public ResponseAttendanceTotalGetDto get(RequestAttendanceGetDto requestAttendanceGetDto) {
+        ResponseAttendanceTotalGetDto responseAttendanceTotalGetDto = null;
+        try {
+            new CsvPassword(requestAttendanceGetDto.getPassword());
+            responseAttendanceTotalGetDto = get();
+        } catch (ValidatorException e) {
+            resultMessage = e.getMessage();
+            responseAttendanceTotalGetDto = makeResponseAttendanceTotalGetDto(summaryMonthlyTotal(null), resultMessage);
+        }
         return responseAttendanceTotalGetDto;
+    }
+
+    protected List<Attendance> getAttendanceList() throws Exception {
+        return iAttendanceGetRepository.get();
+    }
+
+    protected List<Total> summaryMonthlyTotal(List<Attendance> attendanceList) {
+        if (CollectionUtils.isEmpty(attendanceList)) {
+            return new ArrayList<>();
+        }
+        return iTotalDomainService.getMonthlyTotalList(attendanceList);
+    }
+
+    protected ResponseAttendanceTotalGetDto makeResponseAttendanceTotalGetDto(List<Total> totalList, String resultMessage) {
+        return new ResponseAttendanceTotalGetDto(totalList, resultMessage);
     }
 }
