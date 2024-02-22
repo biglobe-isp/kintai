@@ -1,6 +1,7 @@
 package com.kintai.service.dto.response;
 
 import com.kintai.datasource.entity.WorkTotal;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -10,9 +11,11 @@ import java.util.List;
  */
 public class ResponseAttendanceTotalGetDto {
     // 労働集計データリスト
+    @Getter
     private final List<WorkTotal> workTotalList;
 
     // 処理結果メッセージ
+    @Getter
     private final String resultMessage;
 
     /**
