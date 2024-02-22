@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 /**
  * 勤怠エンティティ
+ * 勤怠に関係のある値を管理します。
  */
 public class Attendance {
     // 集計月
@@ -29,10 +30,21 @@ public class Attendance {
     @Getter
     private final OverWorkMinutes overWorkMinutes;
 
-    // 登録日付
+    /*
+    勤怠データを登録したシステム日時を管理するオブジェクトです。
+     */
     @Getter
     private final LocalDateTime createLocalDate;
 
+    /**
+     * 勤怠データを格納するコンストラクタ
+     * @param totalMonth 集計月
+     * @param workDate 勤怠日
+     * @param workTime 勤怠時刻
+     * @param workMinutes 労働時間
+     * @param overWorkMinutes 残業時間
+     * @param createLocalDate 登録日時
+     */
     public Attendance(TotalMonth totalMonth, WorkDate workDate, WorkTime workTime, WorkMinutes workMinutes, OverWorkMinutes overWorkMinutes, LocalDateTime createLocalDate) {
         this.totalMonth = totalMonth;
         this.workDate = workDate;

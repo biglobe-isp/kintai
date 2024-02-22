@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 勤怠登録API
+ * 勤務日や始業時刻、終業時刻などを本APIに連携することで、勤怠データを登録することができます。
  */
 @Slf4j
 public class AttendanceRegisterApi {
@@ -18,13 +19,17 @@ public class AttendanceRegisterApi {
 
     /**
      * コンストラクタ
+     * 勤怠登録を実施するユースケースインターフェース{@link IAttendanceRegisterService}をDIします。
+     * DIの際は勤怠データを登録するリポジトリクラス{@link CsvAttendanceSaveRepository}、勤怠エンティティ生成するファクトリークラス{@link AttendanceFactory}を引数として連携します。
+     *
      */
     public AttendanceRegisterApi() {
         this.iAttendanceRegisterService = new AttendanceRegisterServiceV1(new CsvAttendanceSaveRepository(), new AttendanceFactory());
     }
 
     /**
-     * 勤怠登録メソッド
+     * 勤怠を登録するメソッド
+     * １日分の勤怠データを登録します。
      * @param args 入力値　各値は以下の通り
      *             args[0]：勤怠日(yyyyMMdd)
      *             args[1]：始業時刻(HHmm)
@@ -46,7 +51,7 @@ public class AttendanceRegisterApi {
     }
 
     /**
-     * ユースケースに連携するリクエストDTOの生成
+     * ユースケースに連携するリクエストDTOの生成します。
      * @param args 入力値
      * @return リクエストDTO
      */

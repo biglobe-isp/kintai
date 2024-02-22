@@ -7,6 +7,7 @@ import lombok.Getter;
 
 /**
  * 労働集計エンティティ
+ * 勤怠データを集計した結果を管理するエンティティクラスです。
  */
 public class WorkTotal {
     // 集計月

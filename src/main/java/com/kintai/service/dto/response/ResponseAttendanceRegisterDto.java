@@ -1,28 +1,22 @@
 package com.kintai.service.dto.response;
 
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * 勤怠登録レスポンスDTO
+ * 勤怠データの登録後に必要データを格納するDTO
+ * ユースケースからAPI宛にデータを連携する際に使用します。
  */
 public class ResponseAttendanceRegisterDto {
-    /* 勤怠日 */
-    @Getter
+    // 勤怠日
     private final String workDate;
 
-    /* 開始時刻 */
-    @Getter
+    // 開始時刻
     private final String startTime;
 
-    /* 終業時刻 */
-    @Getter
+    // 終業時刻
     private final String endTime;
 
-    /* 処理結果メッセージ */
-    @Getter
-    private String resultMessage;
+    // 処理結果メッセージ
+    private final String resultMessage;
 
     /**
      * コンストラクタ
@@ -40,7 +34,7 @@ public class ResponseAttendanceRegisterDto {
 
     /**
      * String変換メソッド
-     * @return DTOに入力された値を一つの文字列として返却
+     * @return DTOに入力された値を一つの文字列として返却します。
      */
     @Override
     public String toString() {

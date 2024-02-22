@@ -3,22 +3,24 @@ package com.kintai.datasource.value;
 import lombok.Getter;
 
 /**
- * 集計月のvalueオブジェクト
+ * 勤怠管理として集計月を管理するValue Object
  */
 public class TotalMonth {
-    /* 集計月 */
+    // 集計月の値
     @Getter
-    private String totalMonth;
+    protected String totalMonth;
 
+    /**
+     * デフォルトコンストラクタ
+     * @param totalMonth 集計月
+     */
     public TotalMonth(String totalMonth) {
         this.totalMonth = totalMonth;
     }
 
     /**
-     * 勤務月の年月部分のみを切り取り
-     *
-     * @param workDate
-     * @return
+     * 勤務日から年月部分のみを切り取るコンストラクタ
+     * @param workDate 勤務日
      */
     public TotalMonth(WorkDate workDate) {
         /* 本アプリでは、勤務月は勤務日オブジェクトから切り取りする。

@@ -4,18 +4,33 @@ import com.kintai.datasource.entity.WorkTotal;
 
 import java.util.List;
 
+/**
+ * 勤怠データの取得後に必要データを格納するDTO
+ * ユースケースからAPI宛にデータを連携する際に使用します。
+ */
 public class ResponseAttendanceTotalGetDto {
-    /* 集計済み勤怠表 */
+    // 労働集計データリスト
     private final List<WorkTotal> workTotalList;
 
-    /* 処理結果メッセージ */
+    // 処理結果メッセージ
     private final String resultMessage;
 
+    /**
+     * コンストラクタ
+     * @param workTotalList 労働集計データリスト
+     * @param resultMessage 処理結果メッセージ
+     */
     public ResponseAttendanceTotalGetDto(List<WorkTotal> workTotalList, String resultMessage) {
         this.workTotalList = workTotalList;
         this.resultMessage = resultMessage;
     }
 
+    /**
+     * String変換メソッド
+     * 労働集計データリストにデータがある場合はカンマ区切りで労働集計データを文字列化します。
+     * 複数県ある場合は末尾改行を入れます。
+     * @return DTOに入力された値を一つの文字列として返却します。
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

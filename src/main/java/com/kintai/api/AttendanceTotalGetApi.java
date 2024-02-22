@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * 勤怠集計API
+ * 今まで登録されている勤怠データを集計し、ログ上に出力します。
  */
 @Slf4j
 public class AttendanceTotalGetApi {
@@ -19,13 +20,17 @@ public class AttendanceTotalGetApi {
 
     /**
      * コンストラクタ
+     * 勤怠を集計するユースケースインターフェース{@link IAttendanceTotalGetService}をDIします。
+     * DIの際は勤怠データを取得するリポジトリクラス{@link CsvAttendanceGetRepository}、
+     * 勤怠エンティティを生成するファクトリークラス{@link CsvAttendanceFactory}、
+     * 勤怠データを集計するドメインサービスクラス{@link TotalDomainService}を引数として連携します。
      */
     public AttendanceTotalGetApi() {
         this.iAttendanceTotalGetService = new AttendanceTotalGetService(new CsvAttendanceGetRepository(new CsvAttendanceFactory()), new TotalDomainService());
     }
 
     /**
-     * 勤怠集計データを取得するメソッド
+     * 集計された勤怠データを取得するメソッド
      * @param args 入力値　各値は以下の通り
      *             args[0]：DB登録パスワード(アプリ実行時の曜日※を入力)
      */
@@ -42,7 +47,7 @@ public class AttendanceTotalGetApi {
     }
 
     /**
-     * ユースケースに連携するリクエストDTOを生成する
+     * ユースケースに連携するリクエストDTOを生成します。
      * @param args 入力値
      * @return リクエストDTO
      */

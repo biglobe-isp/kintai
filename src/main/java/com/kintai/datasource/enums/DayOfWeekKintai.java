@@ -1,7 +1,7 @@
 package com.kintai.datasource.enums;
 
 /**
- * 曜日列挙
+ * 曜日列挙クラス
  */
 public enum DayOfWeekKintai {
     MONDAY(0, "Monday"),

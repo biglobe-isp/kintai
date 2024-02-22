@@ -4,13 +4,13 @@ import com.kintai.service.dto.request.RequestAttendanceRegisterDto;
 import com.kintai.service.dto.response.ResponseAttendanceRegisterDto;
 
 /**
- * 勤怠登録ユースケースサービスのインターフェース
+ * 勤怠データを登録するユースケースサービスインターフェース
  */
 public interface IAttendanceRegisterService {
     /**
-     * 勤怠登録メソッド
-     * @param requestAttendanceRegisterDto 勤怠登録リクエストDTO
-     * @return 勤怠登録レスポンスDTO
+     * 勤怠データを登録します。
+     * @param requestAttendanceRegisterDto 勤怠データの登録に必要データを格納しているDTO
+     * @return 勤怠を登録した結果を格納するDTO
      */
     ResponseAttendanceRegisterDto register(RequestAttendanceRegisterDto requestAttendanceRegisterDto);
 }

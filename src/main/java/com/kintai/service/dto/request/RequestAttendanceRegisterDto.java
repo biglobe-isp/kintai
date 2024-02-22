@@ -3,22 +3,23 @@ package com.kintai.service.dto.request;
 import lombok.Getter;
 
 /**
- * 勤怠登録リクエストDTO
+ * 勤怠データを登録する際に必要なデータを格納するDTO
+ * APIからユースケース宛にデータを連携する際に使用します。
  */
 public class RequestAttendanceRegisterDto {
-    /* 勤怠日 */
+    // 勤怠日
     @Getter
     private final String workDate;
 
-    /* 始業時刻 */
+    // 始業時刻
     @Getter
     private final String startTime;
 
-    /* 終業時刻 */
+    // 終業時刻
     @Getter
     private final String endTime;
 
-    /* パスワード */
+    // パスワード
     @Getter
     private String password;
 
@@ -35,7 +36,7 @@ public class RequestAttendanceRegisterDto {
     }
 
     /**
-     * コンストラクタ
+     * パスワードも追加設定するコンストラクタ
      * @param workDate 勤怠日
      * @param startTime 始業時刻
      * @param endTime　終業時刻
@@ -48,7 +49,7 @@ public class RequestAttendanceRegisterDto {
 
     /**
      * String変換メソッド
-     * @return DTOに入力された値を一つの文字列として返却　※パスワードはセキュリティ上出力しないものとする
+     * @return DTOに入力された値を一つの文字列として返却します。　※パスワードはセキュリティ上出力しないものとする
      */
     @Override
     public String toString() {

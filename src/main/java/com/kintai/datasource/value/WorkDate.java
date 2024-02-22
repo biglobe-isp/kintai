@@ -10,16 +10,18 @@ import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 
 /**
- * 勤務日のvalueオブジェクト
+ * 勤怠管理として勤務日を管理するValue Object
  */
 public class WorkDate {
-    /* 勤務日 */
+    // 終業時刻の値
     @Getter
     protected String workDate;
 
     /**
      * コンストラクタ
+     * 引数の勤務日のバリデーションチェックを実施し、異常を検知した場合は{@link ValidatorException}をスローします。
      * @param workDate 勤務日
+     * @throws ValidatorException 異常を検知した場合にスロー
      */
     public WorkDate(String workDate) throws ValidatorException {
         validate(workDate);
@@ -27,20 +29,31 @@ public class WorkDate {
     }
 
     /**
-     * バリデーションチェック
-     * 必須チェック、日付形式チェック
-     * @throws ValidatorException
+     * 勤務日のバリデーションチェックを実施します。チェックで異常を検知した場合は{@link ValidatorException}をスローします。
+     * @param workDate 勤務日
+     * @throws ValidatorException バリデーションチェックで異常を検知した場合にスロー
      */
     protected void validate(String workDate) throws ValidatorException {
-        if (!StringUtils.hasText(workDate)) {
-            throw new ValidatorException("勤務日は必須です。");
-        }
+        isRequired(workDate);
         isDate(workDate);
     }
 
     /**
-     * 日付形式チェック
-     * @throws ValidatorException 存在しない日付または指定した形式(uuuuMMdd)以外の場合にスローされる
+     * 勤務日の必須チェックをします。
+     * @param workDate 勤務日
+     * @throws ValidatorException 勤務日がnullや空文字。スペースのみ(半角、全角両方)の場合、{@link ValidatorException}をスローします。
+     */
+    protected void isRequired(String workDate) throws ValidatorException {
+        if(!StringUtils.hasText(workDate)) {
+            throw new ValidatorException("勤務日は必須です。");
+        }
+    }
+
+    /**
+     * 日付の形式チェックをします。
+     * 日付の形式が「uuuuMMdd」であるかチェックします。
+     * @param workDate 勤務日
+     * @throws ValidatorException 指定した日付の形式ではない場合、{@link ValidatorException}をスローします。
      */
     protected void isDate(String workDate) throws ValidatorException {
         try {
