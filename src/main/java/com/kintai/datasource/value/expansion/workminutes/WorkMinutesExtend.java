@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
- * 休憩時間が変更となったこと労働時間{@link WorkMinutes}を拡張したValue Object
+ * 休憩時間が変更となったことで労働時間{@link WorkMinutes}を拡張したValue Object
  * 2024/3/15から15:00-16:00が休憩時間となったことで、１日の労働時間が変更になったため、その処理を実施します。
  */
 public class WorkMinutesExtend extends WorkMinutes {

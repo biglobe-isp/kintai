@@ -18,11 +18,15 @@ public class OverWorkMinutes {
     protected int overWorkMinutes;
 
     // 1日の労働基準時間(分)
-    @Setter
     protected int baseWorkMinutes = 480;
 
     /**
      * デフォルトコンストラクタ
+     */
+    public OverWorkMinutes(){}
+
+    /**
+     * コンストラクタ
      * @param overWorkMinutes 残業時間
      */
     public OverWorkMinutes(int overWorkMinutes) {

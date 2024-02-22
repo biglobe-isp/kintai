@@ -3,6 +3,7 @@ package com.kintai.domain.factory.impl;
 import com.kintai.datasource.entity.Attendance;
 import com.kintai.datasource.value.*;
 import com.kintai.datasource.value.expansion.endtime.EndTimeExtend;
+import com.kintai.datasource.value.expansion.overworkminutes.OverWorkMinutesExtend;
 import com.kintai.datasource.value.expansion.starttime.StartTimeExtend;
 import com.kintai.datasource.value.expansion.workdate.WorkDateExtend;
 import com.kintai.datasource.value.expansion.workminutes.WorkMinutesExtend;
@@ -33,7 +34,7 @@ public class AttendanceFactory implements IAttendanceFactory {
         EndTime endTime = new EndTimeExtend(attendanceFactoryDto.getEndTime());
         WorkTime workTime = new WorkTime(startTime, endTime);
         WorkMinutes workMinutes = new WorkMinutesExtend(workTime, workDate);
-        OverWorkMinutes overWorkMinutes = new OverWorkMinutes(workMinutes);
+        OverWorkMinutes overWorkMinutes = new OverWorkMinutesExtend(workMinutes, workDate);
         return new Attendance(totalMonth, workDate, workTime, workMinutes, overWorkMinutes, LocalDateTime.now());
     }
 }
