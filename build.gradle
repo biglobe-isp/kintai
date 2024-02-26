@@ -7,8 +7,9 @@
  */
 
 plugins {
-    // Apply the java plugin to add support for Java
+    // Javaアプリとしてプログラムを同期
     id 'java'
+    // testはspockを使用するため、spockが使えるgroovyを同期
     id 'groovy'
 }
 
@@ -33,10 +34,16 @@ dependencies {
     testCompile "org.spockframework:spock-core:1.3-groovy-2.5"
 }
 
+/**
+ * プログラム内で外部ライブラリを用いるため、外部ライブラリを取り込んだjarファイルを使ってアプリを実行する。
+ * パッケージ構成をリファクタリングするため、javaのmainメソッドがあるクラスがjavaパッケージ配下から移動させる。
+ * そのため、mainメソッドがある場所を指定。
+ * gradleのバージョンが低いためか、外部ライブラリを取り込んだjarファイルを作れない？っぽいので、dependencies内に記載した「compile」類を作成するjar内に取り込むように実装
+ */
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Mychael Style Tools', 'Implementation-Version': 1.0
         attributes 'Main-Class': 'com.kintai.Main'
+        attributes 'Implementation-Title': 'Mychael Style Tools', 'Implementation-Version': 1.0
     }
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 }
