@@ -8,6 +8,10 @@ import spock.lang.Unroll
 import java.time.DayOfWeek
 import java.time.LocalDate
 
+/**
+ * 拡張した終業時刻のテストクラス。
+ * 入力変更後の終業時刻の正常系と異常系のテストを実施します。
+ */
 class CsvPasswordSpec extends Specification {
     Map<Integer, DayOfWeek> map = new HashMap<>();
 

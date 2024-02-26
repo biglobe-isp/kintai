@@ -15,16 +15,16 @@ public class OverWorkMinutesExtend extends OverWorkMinutes {
     /**
      * コンストラクタ
      * まず、1日の労働時間が新休憩時間によって変更となったため、親クラスに設定されている1日の労働基準時間{@link OverWorkMinutes#baseWorkMinutes}を変更します。
-     * 勤務日{@link WorkDate}を確認し、2024/3/15以降であれば、新休憩時間(15:00-16:00)を考慮した残業時間を再算出します。
+     * 勤務日{@link WorkDate}を確認し、2024/3/15以降であれば、1日の基準労働時間を変更し、残業時間を算出します。
      * @param workMinutes 残業時間を計算するために使用する労働時間
      * @param workDate 新残業時間を算出を確認するために使用する勤務日
      * @throws ParseException 詳細は各メソッド参照
      */
     public OverWorkMinutesExtend(WorkMinutes workMinutes, WorkDate workDate) throws ParseException {
-        changeBaseWorkMinutes();
         if(isCompareDate(workDate)) {
-            this.overWorkMinutes = calculateOverWorkMinutes(workMinutes.getWorkMinutes());
+            changeBaseWorkMinutes();
         }
+        this.overWorkMinutes = calculateOverWorkMinutes(workMinutes.getWorkMinutes());
     }
 
     /**

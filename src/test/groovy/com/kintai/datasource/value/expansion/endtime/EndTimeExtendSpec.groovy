@@ -4,7 +4,16 @@ import com.kintai.exception.ValidatorException
 import spock.lang.Specification
 import spock.lang.Unroll
 
+/**
+ * 拡張した終業時刻のテストクラス。
+ * 入力変更後の終業時刻の正常系と異常系のテストを実施します。
+ */
 class EndTimeExtendSpec extends Specification {
+    /**
+     * 入力方法が変更したケースと変更前のケースの両方でテスト実施。
+     * 「-end:」と「_」の値がパースされた値がクラス内に格納されていることを確認します。
+     */
+    @Unroll
     def "正常系(#descriptions)"() {
         when:
         EndTimeExtend actualEndTimeExtend = new EndTimeExtend(testEndTime)
@@ -20,6 +29,10 @@ class EndTimeExtendSpec extends Specification {
         "18_00" || "1800" || "引数名なし"
     }
 
+    /**
+     * 必須チェックと形式チェックを行います。
+     * 形式チェックは入力方法変更後の形式でチェック時に異常を検知することを確認します。
+     */
     @Unroll
     def "異常系(#description)"() {
         when:
