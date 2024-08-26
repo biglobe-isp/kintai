@@ -17,10 +17,19 @@ import java.util.Set;
  4. 15:00-16:00も休憩時間として除外するよう変更
  5. 有給休暇、午前休、午後休設定機能追加（この休みは労働時間として計算）
     入力例
-    有給休暇：java Main input 20170101 v→9:00-18:00労働扱い
-    午前休　：java Main input 20170101 am -end:1800→9:00-12:00労働扱い
-    午後休　：java Main input 20170101 -start:0900 pm→12:00-18:00労働扱い（昼休憩の扱いはどうなる？）
+    有給休暇：java Main input 20170101 v              →9:00-18:00労働扱い
+    午前休　：java Main input 20170101 am -end:1800   →9:00-12:00労働扱い
+    午後休　：java Main input 20170101 -start:0900 pm →12:00-18:00労働扱い（昼休憩の扱いはどうなる？）
  6. 朝フレックス設定機能追加 etc.
+
+ 素のビルド方法
+ java -cp app/build/classes/java/main com.naosim.dddwork.Main (以降入力コマンド一緒)
+ →課題のコマンド実行
+
+ 今後の方針
+ 1. ボトムアップDDD前後編読む
+ 2. 良いコード/悪いコード読む
+ 3. 勤怠チュートリアルリファクタ=↑の課題1（2-3同時並行でも）
  */
 
 public class Main {
