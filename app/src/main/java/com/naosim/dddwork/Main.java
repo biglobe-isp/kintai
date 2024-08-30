@@ -25,6 +25,8 @@ import java.util.Set;
  素のビルド方法
  java -cp app/build/classes/java/main com.naosim.dddwork.Main (以降入力コマンド一緒)
  →課題のコマンド実行
+ gradle4.9以降のビルド方法
+ gradle run --args="(input/total以降のコマンド)"
 
  今後の方針
  1. ボトムアップDDD前後編読む
