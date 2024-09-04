@@ -1,0 +1,83 @@
+@startuml
+class com.naosim.dddwork.Main {
++ {static} void main(String[])
+}
+
+class com.naosim.dddwork.domain.MinutesDifference {
+- long timeDifference
+~ <<Create>> MinutesDifference(TimeMoment,TimeMoment)
+~ <<Create>> MinutesDifference(MinutesDifference)
+~ boolean ValidateMinutesDifference()
+~ void SubtractMinutesDifference(long)
+~ long GetMinutesDifference()
+}
+
+
+class com.naosim.dddwork.domain.DailyWorkData {
+}
+class com.naosim.dddwork.domain.PrescribedWorkHours {
+- TimeMoment PRESCRIBE_START_WORK_TIME
+- TimeMoment PRESCRIBE_END_WORK_TIME
+- MinutesDifference timeDifference
+~ <<Create>> PrescribedWorkHours()
+~ TimeMoment GetPrescribeStartWorkTime()
+}
+
+
+class com.naosim.dddwork.domain.YearMonth {
+~ LocalDate yearMonth
+~ <<Create>> YearMonth(int,int)
+}
+
+
+class com.naosim.dddwork.domain.BreakTimeMoments {
+- TimeMoment startBreakTime
+- TimeMoment endBreakTime
+~ <<Create>> BreakTimeMoments(int,int,int,int)
+~ <<Create>> BreakTimeMoments(BreakTimeMoments)
+~ TimeMoment getStartBreakTime()
+~ TimeMoment getEndBreakTime()
+~ MinutesDifference getBreakTimeDifference()
+}
+
+
+class com.naosim.dddwork.domain.TimeMoment {
+~ LocalTime moment
+~ <<Create>> TimeMoment(int,int)
+~ <<Create>> TimeMoment(TimeMoment)
+}
+
+
+class com.naosim.dddwork.domain.HoursDifference {
+- long hourDifference
+~ <<Create>> HoursDifference(TimeMoment,TimeMoment)
++ boolean CheckHourDifference()
+}
+
+
+class com.naosim.dddwork.domain.Total1DayWorkTimes {
+- MinutesDifference total1DayWorkTimes
+- BreakTimeMomentsList BREAK_TIME_MOMENTS_LIST
+- long ONE_HOUR_MINUTES
+~ <<Create>> Total1DayWorkTimes(WorkTimeMoments)
+}
+
+
+class com.naosim.dddwork.domain.BreakTimeMomentsList {
+- List<BreakTimeMoments> breakTimeMomentsList
+~ <<Create>> BreakTimeMomentsList()
+~ List<BreakTimeMoments> getBreakTimeMomentsList()
+}
+
+
+class com.naosim.dddwork.domain.WorkTimeMoments {
+- TimeMoment startWorkTime
+- TimeMoment endWorkTime
+- PrescribedWorkHours prescribedWorkHours
+~ <<Create>> WorkTimeMoments(int,int,int,int)
+~ TimeMoment getStartWorkTime()
+~ TimeMoment getEndWorkTime()
+}
+
+
+@enduml
