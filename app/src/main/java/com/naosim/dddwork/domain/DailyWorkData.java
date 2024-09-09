@@ -1,10 +1,15 @@
 package com.naosim.dddwork.domain;
 
-public class DailyWorkData {
-    WorkDate workDate;
-    Total1DayWorkTimes totalWorkTimes;
+class DailyWorkData {
+    private final WorkDate workDate;
+    private final Total1DayWorkTimes totalWorkTimes;
 
     DailyWorkData(WorkDate workDate, TimeMoment startTime, TimeMoment endTime) {
+        this.workDate = new WorkDate(workDate);
+        totalWorkTimes = new Total1DayWorkTimes(new WorkTimeMoments(startTime, endTime));
+    }
 
+    WorkDate getWorkDate() {
+        return new WorkDate(workDate);
     }
 }

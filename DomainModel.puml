@@ -1,4 +1,45 @@
 @startuml
+class com.naosim.dddwork.domain.DailyWorkData {
+- WorkDate workDate
+- Total1DayWorkTimes totalWorkTimes
+~ <<Create>> DailyWorkData(WorkDate,TimeMoment,TimeMoment)
+~ WorkDate getWorkDate()
+}
+
+
+class com.naosim.dddwork.domain.WorkTimeMoments {
+- TimeMoment startWorkTime
+- TimeMoment endWorkTime
+- PrescribedWorkHours prescribedWorkHours
+~ <<Create>> WorkTimeMoments(TimeMoment,TimeMoment)
+~ TimeMoment getStartWorkTime()
+~ TimeMoment getEndWorkTime()
+}
+
+
+class com.naosim.dddwork.domain.DailyWorkDataList {
+- List<DailyWorkData> workDataList
+- int workingDays
+~ <<Create>> DailyWorkDataList()
+~ void UpdateWorkingDays()
+~ boolean ValidateWorkingDays()
+}
+
+
+class com.naosim.dddwork.domain.WorkDate {
+- LocalDate yearMonth
+~ <<Create>> WorkDate(int,int,int)
+~ <<Create>> WorkDate(WorkDate)
+~ LocalDate getYearMonth()
+}
+
+
+class com.naosim.dddwork.domain.Total1MonthTimeMoments {
+- long total1MonthTimeMoments
+~ <<Create>> Total1MonthTimeMoments()
+}
+
+
 class com.naosim.dddwork.Main {
 + {static} void main(String[])
 }
@@ -13,8 +54,6 @@ class com.naosim.dddwork.domain.MinutesDifference {
 }
 
 
-class com.naosim.dddwork.domain.DailyWorkData {
-}
 class com.naosim.dddwork.domain.PrescribedWorkHours {
 - TimeMoment PRESCRIBE_START_WORK_TIME
 - TimeMoment PRESCRIBE_END_WORK_TIME
@@ -24,16 +63,10 @@ class com.naosim.dddwork.domain.PrescribedWorkHours {
 }
 
 
-class com.naosim.dddwork.domain.YearMonth {
-~ LocalDate yearMonth
-~ <<Create>> YearMonth(int,int)
-}
-
-
 class com.naosim.dddwork.domain.BreakTimeMoments {
 - TimeMoment startBreakTime
 - TimeMoment endBreakTime
-~ <<Create>> BreakTimeMoments(int,int,int,int)
+~ <<Create>> BreakTimeMoments(TimeMoment,TimeMoment)
 ~ <<Create>> BreakTimeMoments(BreakTimeMoments)
 ~ TimeMoment getStartBreakTime()
 ~ TimeMoment getEndBreakTime()
@@ -58,7 +91,6 @@ class com.naosim.dddwork.domain.HoursDifference {
 class com.naosim.dddwork.domain.Total1DayWorkTimes {
 - MinutesDifference total1DayWorkTimes
 - BreakTimeMomentsList BREAK_TIME_MOMENTS_LIST
-- long ONE_HOUR_MINUTES
 ~ <<Create>> Total1DayWorkTimes(WorkTimeMoments)
 }
 
@@ -67,16 +99,6 @@ class com.naosim.dddwork.domain.BreakTimeMomentsList {
 - List<BreakTimeMoments> breakTimeMomentsList
 ~ <<Create>> BreakTimeMomentsList()
 ~ List<BreakTimeMoments> getBreakTimeMomentsList()
-}
-
-
-class com.naosim.dddwork.domain.WorkTimeMoments {
-- TimeMoment startWorkTime
-- TimeMoment endWorkTime
-- PrescribedWorkHours prescribedWorkHours
-~ <<Create>> WorkTimeMoments(int,int,int,int)
-~ TimeMoment getStartWorkTime()
-~ TimeMoment getEndWorkTime()
 }
 
 

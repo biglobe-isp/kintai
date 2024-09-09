@@ -5,11 +5,11 @@ class WorkTimeMoments {
     private final TimeMoment endWorkTime;
     private final PrescribedWorkHours prescribedWorkHours = new PrescribedWorkHours();
 
-    WorkTimeMoments(int startHour, int startMinute, int endHour, int endMinute) {
-        startWorkTime = new TimeMoment(startHour, startMinute);
-        if(ValidateStartWorkTime()) System.err.println("勤務開始時間が不正な値です。");
+    WorkTimeMoments(TimeMoment startWorkTime, TimeMoment endWorkTime) {
+        this.startWorkTime = new TimeMoment(startWorkTime);
+        // if(ValidateStartWorkTime()) System.err.println("勤務開始時間が不正な値です。");
 
-        endWorkTime = new TimeMoment(endHour, endMinute);
+        this.endWorkTime = new TimeMoment(endWorkTime);
         if(ValidateEndWorkTime()) System.err.println("勤務終了時間が不正な値です。");
     }
 

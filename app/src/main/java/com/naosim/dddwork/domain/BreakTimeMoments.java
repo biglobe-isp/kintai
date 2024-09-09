@@ -4,10 +4,10 @@ class BreakTimeMoments {
     private final TimeMoment startBreakTime;
     private final TimeMoment endBreakTime;
 
-    BreakTimeMoments(int startHour, int startMinute, int endHour, int endMinute) {
-        startBreakTime = new TimeMoment(startHour, startMinute);
+    BreakTimeMoments(TimeMoment startBreakTime, TimeMoment endBreakTime) {
+        this.startBreakTime = new TimeMoment(startBreakTime);
 
-        endBreakTime = new TimeMoment(endHour, endMinute);
+        this.endBreakTime = new TimeMoment(endBreakTime);
         if(ValidateEndBreakTime()) System.err.println("休憩終了時間が不正な値です。");
     }
 
