@@ -1,8 +1,8 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.daily_work;
 
 import java.time.LocalTime;
 
-class TimeMoment {
+public class TimeMoment {
     LocalTime moment;
 
     TimeMoment(int hour, int minute){

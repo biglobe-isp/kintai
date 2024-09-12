@@ -1,8 +1,8 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.daily_work;
 
 import java.time.LocalDate;
 
-class WorkDate {
+public class WorkDate {
     private final LocalDate yearMonth;
 
     WorkDate(int year, int month, int day) {
@@ -13,7 +13,7 @@ class WorkDate {
         this.yearMonth = workDate.yearMonth;
     }
 
-    LocalDate getYearMonth() {
+    public LocalDate getYearMonth() {
         return yearMonth;
     }
 }

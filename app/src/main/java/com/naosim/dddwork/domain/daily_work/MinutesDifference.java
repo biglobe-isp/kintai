@@ -1,8 +1,8 @@
-package com.naosim.dddwork.domain;
+package com.naosim.dddwork.domain.daily_work;
 
 import java.time.temporal.ChronoUnit;
 
-class MinutesDifference {
+public class MinutesDifference {
     private long timeDifference;
 
     MinutesDifference(TimeMoment startTime, TimeMoment endTime) {
@@ -13,15 +13,15 @@ class MinutesDifference {
         this.timeDifference = difference.timeDifference;
     }
 
-    boolean ValidateMinutesDifference() {
+    boolean validateMinutesDifference() {
         return timeDifference <= 0L;
     }
 
-    void SubtractMinutesDifference(long minutes) {
+    void subtractMinutesDifference(long minutes) {
         timeDifference -= minutes;
     }
 
-    long GetMinutesDifference() {
+    public long getMinutesDifference() {
         return timeDifference;
     }
 }
