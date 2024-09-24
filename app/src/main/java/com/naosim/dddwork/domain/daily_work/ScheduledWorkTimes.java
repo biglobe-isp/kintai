@@ -1,15 +1,18 @@
 package com.naosim.dddwork.domain.daily_work;
 
+/**
+ * 所定労働時間
+ */
 public class ScheduledWorkTimes {
     private final TimeMoment SCHEDULED_START_TIME = new TimeMoment(9, 0);
     private final TimeMoment SCHEDULED_END_TIME = new TimeMoment(18, 0);
-    private final MinutesDifference scheduledWorkTimes = new MinutesDifference(SCHEDULED_START_TIME, SCHEDULED_END_TIME);
+    private final TimeMomentsDifference scheduledWorkTimes = new TimeMomentsDifference(SCHEDULED_START_TIME, SCHEDULED_END_TIME);
 
     public ScheduledWorkTimes() {
     }
 
-    public MinutesDifference getScheduledWorkTimes() {
-        return new MinutesDifference(scheduledWorkTimes);
+    public TimeMomentsDifference getScheduledWorkTimes() {
+        return new TimeMomentsDifference(scheduledWorkTimes);
     }
 
     TimeMoment getScheduledStartTime() {

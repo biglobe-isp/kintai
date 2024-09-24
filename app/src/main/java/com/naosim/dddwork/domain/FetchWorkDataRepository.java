@@ -1,5 +1,10 @@
 package com.naosim.dddwork.domain;
 
-public interface FetchWorkDataRepository {
-    DailyWorkDataList fetchDailyWorkData(DataPath filePath);
+/**
+ * 勤務記録取得Repository
+ */
+interface FetchWorkDataRepository {
+    public DailyWorkDataList workDataList = new DailyWorkDataList();
+
+    DailyWorkDataList fetchDailyWorkData();
 }

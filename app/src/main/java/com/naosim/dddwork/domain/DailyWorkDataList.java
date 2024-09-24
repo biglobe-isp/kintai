@@ -6,6 +6,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 勤務記録の一覧
+ */
 public class DailyWorkDataList {
     private final List<DailyWorkData> workDataList = new ArrayList<>();
     private int workingDays;
@@ -23,7 +26,7 @@ public class DailyWorkDataList {
         if (workDataList.isEmpty()) return false;
 
         // 月末日=対象月の日数を超えていないかバリデーション
-        return workingDays > workDataList.get(0).getWorkDate().getYearMonth()
+        return workingDays > workDataList.get(0).getWorkDate().getDateMoments().getDate()
                 .with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
     }
 

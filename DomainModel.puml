@@ -10,7 +10,7 @@ class com.naosim.dddwork.domain.daily_work.BreakTimeMoments {
 - TimeMoment endBreakTime
 ~ TimeMoment getStartBreakTime()
 ~ TimeMoment getEndBreakTime()
-~ MinutesDifference getBreakTimeDifference()
+~ TimeMomentsDifference getBreakTimeDifference()
 }
 
 
@@ -25,18 +25,6 @@ class com.naosim.dddwork.domain.Total1MonthWorkTimes {
 ~ Total1MonthTimeMoments getTotal1MonthWorkTimes()
 }
 
-
-class com.naosim.dddwork.domain.daily_work.MinutesDifference {
-- long timeDifference
-~ boolean validateMinutesDifference()
-~ void subtractMinutesDifference(long)
-+ long getMinutesDifference()
-}
-
-
-class com.naosim.dddwork.domain.DataPath {
-~ String dataPath
-}
 
 class com.naosim.dddwork.domain.daily_work.DailyWorkData {
 - WorkDate workDate
@@ -57,12 +45,20 @@ class com.naosim.dddwork.domain.DailyWorkDataList {
 
 
 interface com.naosim.dddwork.domain.InputWorkDataRepository {
-~ void writeDailyWorkData(DataPath)
++ {static} DailyWorkDataList workDataList
+~ void writeDailyWorkData()
 }
+
 
 class com.naosim.dddwork.domain.daily_work.HoursDifference {
 - long hourDifference
 + boolean checkHourDifference()
+}
+
+
+class com.naosim.dddwork.domain.daily_work.DateMoments {
+- LocalDate date
++ LocalDate getDate()
 }
 
 
@@ -84,8 +80,8 @@ class com.naosim.dddwork.domain.Total1MonthNormalWorkTimes {
 class com.naosim.dddwork.domain.daily_work.ScheduledWorkTimes {
 - TimeMoment SCHEDULED_START_TIME
 - TimeMoment SCHEDULED_END_TIME
-- MinutesDifference scheduledWorkTimes
-+ MinutesDifference getScheduledWorkTimes()
+- TimeMomentsDifference scheduledWorkTimes
++ TimeMomentsDifference getScheduledWorkTimes()
 ~ TimeMoment getScheduledStartTime()
 }
 
@@ -104,19 +100,29 @@ class com.naosim.dddwork.domain.daily_work.WorkTimeMoments {
 
 
 class com.naosim.dddwork.domain.daily_work.Total1DayWorkTimes {
-- MinutesDifference total1DayWorkTimes
+- TimeMomentsDifference total1DayWorkTimes
 - BreakTimeMomentsList BREAK_TIME_MOMENTS_LIST
-+ MinutesDifference getTotal1DayWorkTimes()
++ TimeMomentsDifference getTotal1DayWorkTimes()
+}
+
+
+class com.naosim.dddwork.domain.daily_work.TimeMomentsDifference {
+- Duration timeDifference
+~ boolean validateTimeMomentsDifference()
+~ void subtractTimeMomentsDifference(long)
++ Duration getTimeMomentsDifference()
 }
 
 
 interface com.naosim.dddwork.domain.FetchWorkDataRepository {
-~ DailyWorkDataList fetchDailyWorkData(DataPath)
++ {static} DailyWorkDataList workDataList
+~ DailyWorkDataList fetchDailyWorkData()
 }
 
+
 class com.naosim.dddwork.domain.daily_work.WorkDate {
-- LocalDate yearMonth
-+ LocalDate getYearMonth()
+- DateMoments workDate
++ DateMoments getDateMoments()
 }
 
 

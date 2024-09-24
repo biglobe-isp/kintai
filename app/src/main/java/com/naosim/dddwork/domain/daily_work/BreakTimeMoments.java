@@ -1,5 +1,8 @@
 package com.naosim.dddwork.domain.daily_work;
 
+/**
+ * 休憩時刻
+ */
 class BreakTimeMoments {
     private final TimeMoment startBreakTime;
     private final TimeMoment endBreakTime;
@@ -17,7 +20,7 @@ class BreakTimeMoments {
     }
 
     private boolean validateEndBreakTime() {
-        return new MinutesDifference(startBreakTime, endBreakTime).validateMinutesDifference();
+        return new TimeMomentsDifference(startBreakTime, endBreakTime).validateTimeMomentsDifference();
     }
 
     TimeMoment getStartBreakTime() {
@@ -28,7 +31,7 @@ class BreakTimeMoments {
         return new TimeMoment(endBreakTime);
     }
 
-    MinutesDifference getBreakTimeDifference() {
-        return new MinutesDifference(startBreakTime, endBreakTime);
+    TimeMomentsDifference getBreakTimeDifference() {
+        return new TimeMomentsDifference(startBreakTime, endBreakTime);
     }
 }

@@ -1,5 +1,8 @@
 package com.naosim.dddwork.domain.daily_work;
 
+/**
+ * 勤務時刻
+ */
 public class WorkTimeMoments {
     private final TimeMoment startWorkTime;
     private final TimeMoment endWorkTime;
@@ -14,11 +17,11 @@ public class WorkTimeMoments {
     }
 
     private boolean validateStartWorkTime() {
-        return new MinutesDifference(startWorkTime, scheduledWorkHours.getScheduledStartTime()).validateMinutesDifference();
+        return new TimeMomentsDifference(startWorkTime, scheduledWorkHours.getScheduledStartTime()).validateTimeMomentsDifference();
     }
 
     private boolean validateEndWorkTime() {
-        return new MinutesDifference(endWorkTime, endWorkTime).validateMinutesDifference();
+        return new TimeMomentsDifference(endWorkTime, endWorkTime).validateTimeMomentsDifference();
     }
 
     TimeMoment getStartWorkTime() {

@@ -2,6 +2,9 @@ package com.naosim.dddwork.domain.daily_work;
 
 import java.time.LocalTime;
 
+/**
+ * 時刻
+ */
 public class TimeMoment {
     LocalTime moment;
 

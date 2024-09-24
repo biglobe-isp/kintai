@@ -2,6 +2,9 @@ package com.naosim.dddwork.domain;
 
 import com.naosim.dddwork.domain.daily_work.DailyWorkData;
 
+/**
+ * 総実働時間
+ */
 class Total1MonthWorkTimes {
     private final Total1MonthTimeMoments total1MonthWorkTimes;
 
@@ -13,7 +16,7 @@ class Total1MonthWorkTimes {
 
     private void calcTotal1MonthWorkTimes(DailyWorkDataList dailyWorkDataList) {
         for (DailyWorkData data : dailyWorkDataList.getDailyWorkDataList()) {
-            total1MonthWorkTimes.AddTimes(data.getTotalWorkTimes().getTotal1DayWorkTimes().getMinutesDifference());
+            total1MonthWorkTimes.AddTimes(data.getTotalWorkTimes().getTotal1DayWorkTimes().getTimeMomentsDifference());
         }
     }
 
