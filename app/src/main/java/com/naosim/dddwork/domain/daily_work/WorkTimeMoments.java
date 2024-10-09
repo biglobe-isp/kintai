@@ -4,31 +4,34 @@ package com.naosim.dddwork.domain.daily_work;
  * 勤務時刻
  */
 public class WorkTimeMoments {
-    private final TimeMoment startWorkTime;
-    private final TimeMoment endWorkTime;
-    private final ScheduledWorkTimes scheduledWorkHours = new ScheduledWorkTimes();
+    private final ClockTime startWorkTime;
+    private final ClockTime endWorkTime;
 
-    public WorkTimeMoments(TimeMoment startWorkTime, TimeMoment endWorkTime) {
-        this.startWorkTime = new TimeMoment(startWorkTime);
-        // if(ValidateStartWorkTime()) System.err.println("勤務開始時間が不正な値です。");
+    public WorkTimeMoments(ClockTime startWorkTime, ClockTime endWorkTime) {
+        this.startWorkTime = new ClockTime(startWorkTime);
+        validateStartWorkTime();
 
-        this.endWorkTime = new TimeMoment(endWorkTime);
-        if(validateEndWorkTime()) System.err.println("勤務終了時間が不正な値です。");
+        this.endWorkTime = new ClockTime(endWorkTime);
+        validateEndWorkTime();
     }
 
-    private boolean validateStartWorkTime() {
-        return new TimeMomentsDifference(startWorkTime, scheduledWorkHours.getScheduledStartTime()).validateTimeMomentsDifference();
+    private void validateStartWorkTime() {
+        if (validateTimeMomentsDifference(new ClockTimesDuration(startWorkTime, new ScheduledWorkTimes().getScheduledStartTime()))) throw new IllegalArgumentException("勤務開始時間が9時00分を超えています。遅刻厳禁。");
     }
 
-    private boolean validateEndWorkTime() {
-        return new TimeMomentsDifference(endWorkTime, endWorkTime).validateTimeMomentsDifference();
+    private void validateEndWorkTime() {
+        if (validateTimeMomentsDifference(new ClockTimesDuration(startWorkTime, endWorkTime))) throw new IllegalArgumentException("勤務終了時刻が勤務開始時刻よりも前に設定されています");
     }
 
-    TimeMoment getStartWorkTime() {
-        return new TimeMoment(startWorkTime);
+    private boolean validateTimeMomentsDifference(ClockTimesDuration difference) {
+        return difference.getTimeMomentsDifference().toMinutes() < 0L;
     }
 
-    TimeMoment getEndWorkTime() {
-        return new TimeMoment(endWorkTime);
+    ClockTime getStartWorkTime() {
+        return new ClockTime(startWorkTime);
+    }
+
+    ClockTime getEndWorkTime() {
+        return new ClockTime(endWorkTime);
     }
 }

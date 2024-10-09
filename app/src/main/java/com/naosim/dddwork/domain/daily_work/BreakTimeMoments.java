@@ -4,14 +4,12 @@ package com.naosim.dddwork.domain.daily_work;
  * 休憩時刻
  */
 class BreakTimeMoments {
-    private final TimeMoment startBreakTime;
-    private final TimeMoment endBreakTime;
+    private final ClockTime startBreakTime;
+    private final ClockTime endBreakTime;
 
-    BreakTimeMoments(TimeMoment startBreakTime, TimeMoment endBreakTime) {
-        this.startBreakTime = new TimeMoment(startBreakTime);
-
-        this.endBreakTime = new TimeMoment(endBreakTime);
-        if(validateEndBreakTime()) System.err.println("休憩終了時間が不正な値です。");
+    BreakTimeMoments(ClockTime startBreakTime, ClockTime endBreakTime) {
+        this.startBreakTime = new ClockTime(startBreakTime);
+        this.endBreakTime = new ClockTime(endBreakTime);
     }
 
     BreakTimeMoments(BreakTimeMoments moments){
@@ -19,19 +17,15 @@ class BreakTimeMoments {
         this.endBreakTime = moments.endBreakTime;
     }
 
-    private boolean validateEndBreakTime() {
-        return new TimeMomentsDifference(startBreakTime, endBreakTime).validateTimeMomentsDifference();
+    ClockTime getStartBreakTime() {
+        return new ClockTime(startBreakTime);
     }
 
-    TimeMoment getStartBreakTime() {
-        return new TimeMoment(startBreakTime);
+    ClockTime getEndBreakTime() {
+        return new ClockTime(endBreakTime);
     }
 
-    TimeMoment getEndBreakTime() {
-        return new TimeMoment(endBreakTime);
-    }
-
-    TimeMomentsDifference getBreakTimeDifference() {
-        return new TimeMomentsDifference(startBreakTime, endBreakTime);
+    ClockTimesDuration getBreakTimeDifference() {
+        return new ClockTimesDuration(startBreakTime, endBreakTime);
     }
 }

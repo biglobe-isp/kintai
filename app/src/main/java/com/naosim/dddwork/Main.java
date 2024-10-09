@@ -1,10 +1,10 @@
 package com.naosim.dddwork;
 
+import com.naosim.dddwork.api.InputCommand;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +50,10 @@ public class Main {
 
             // methodTypeの値がStringの「input」と等しいかどうか判定
             if ("input".equals(methodType)) {
+                InputCommand inputCommand = new InputCommand();
+                String result = inputCommand.input(args);
+                System.out.println(result);
+                /*
                 // inputを実行する場合、実行機能名+入力項目で計4個以上必要なため、配列長が4より少ない場合、例外処理を実行
                 if (args.length < 4) {
                     throw new RuntimeException("引数が足りません");
@@ -124,7 +128,7 @@ public class Main {
                             overWorkMinutes,
                             now
                     ));
-                }
+                }*/
             }
             // methodTypeの値がStringの「total」と等しいかどうか判定
             else if ("total".equals(methodType)) {

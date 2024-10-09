@@ -6,7 +6,7 @@ package com.naosim.dddwork.domain.daily_work;
 public class WorkDate {
     private final DateMoments workDate;
 
-    WorkDate(int year, int month, int day){
+    public WorkDate(int year, int month, int day){
         this.workDate = new DateMoments(year, month, day);
     }
 

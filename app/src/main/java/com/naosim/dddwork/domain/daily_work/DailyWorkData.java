@@ -7,7 +7,7 @@ public class DailyWorkData {
     private final WorkDate workDate;
     private final Total1DayWorkTimes totalWorkTimes;
 
-    public DailyWorkData(WorkDate workDate, TimeMoment startTime, TimeMoment endTime) {
+    public DailyWorkData(WorkDate workDate, ClockTime startTime, ClockTime endTime) {
         this.workDate = new WorkDate(workDate.getDateMoments());
         totalWorkTimes = new Total1DayWorkTimes(new WorkTimeMoments(startTime, endTime));
     }
