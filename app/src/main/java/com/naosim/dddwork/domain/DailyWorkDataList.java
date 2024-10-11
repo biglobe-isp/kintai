@@ -26,7 +26,7 @@ public class DailyWorkDataList {
         if (workDataList.isEmpty()) return false;
 
         // 月末日=対象月の日数を超えていないかバリデーション
-        return workingDays > workDataList.get(0).getWorkDate().getDateMoments().getDate()
+        return workingDays > workDataList.get(0).getWorkDate().getValue()
                 .with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
     }
 

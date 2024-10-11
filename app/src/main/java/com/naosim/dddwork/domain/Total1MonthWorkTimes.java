@@ -2,25 +2,21 @@ package com.naosim.dddwork.domain;
 
 import com.naosim.dddwork.domain.daily_work.DailyWorkData;
 
+import java.time.Duration;
+
 /**
  * 総実働時間
  */
 class Total1MonthWorkTimes {
-    private final Total1MonthTimeMoments total1MonthWorkTimes;
+    Duration total1MonthWorkTimes = Duration.ZERO;
 
-    Total1MonthWorkTimes(DailyWorkDataList dailyWorkDataList) {
-        total1MonthWorkTimes = new Total1MonthTimeMoments();
-
-        calcTotal1MonthWorkTimes(dailyWorkDataList);
-    }
-
-    private void calcTotal1MonthWorkTimes(DailyWorkDataList dailyWorkDataList) {
+    public void calcTotal1MonthWorkTimes(DailyWorkDataList dailyWorkDataList) {
         for (DailyWorkData data : dailyWorkDataList.getDailyWorkDataList()) {
-            total1MonthWorkTimes.AddTimes(data.getTotalWorkTimes().getTotal1DayWorkTimes().getTimeMomentsDifference());
+            total1MonthWorkTimes = total1MonthWorkTimes.plus(data.getTotalWorkTimes().getValue());
         }
     }
 
-    Total1MonthTimeMoments getTotal1MonthWorkTimes() {
-        return new Total1MonthTimeMoments(total1MonthWorkTimes);
+    public Duration getValue() {
+        return total1MonthWorkTimes;
     }
 }

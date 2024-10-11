@@ -7,21 +7,21 @@ public class DailyWorkData {
     private final WorkDate workDate;
     private final Total1DayWorkTimes totalWorkTimes;
 
-    public DailyWorkData(WorkDate workDate, ClockTime startTime, ClockTime endTime) {
-        this.workDate = new WorkDate(workDate.getDateMoments());
-        totalWorkTimes = new Total1DayWorkTimes(new WorkTimeMoments(startTime, endTime));
+    public DailyWorkData(WorkDate workDate, StartWorkTime startTime, EndWorkTime endTime) {
+        this.workDate = new WorkDate(workDate.getValue());
+        totalWorkTimes = new Total1DayWorkTimes(startTime, endTime);
     }
 
     public DailyWorkData(DailyWorkData data) {
-        this.workDate = new WorkDate(data.workDate.getDateMoments());
-        this.totalWorkTimes = new Total1DayWorkTimes(data.totalWorkTimes);
+        this.workDate = new WorkDate(data.workDate.getValue());
+        this.totalWorkTimes = data.totalWorkTimes;
     }
 
     public WorkDate getWorkDate() {
-        return new WorkDate(workDate.getDateMoments());
+        return new WorkDate(workDate.getValue());
     }
 
     public Total1DayWorkTimes getTotalWorkTimes() {
-        return new Total1DayWorkTimes(totalWorkTimes);
+        return totalWorkTimes;
     }
 }

@@ -10,6 +10,6 @@ public class ScheduledWorkTimesTest {
 
         ScheduledWorkTimes actual = new ScheduledWorkTimes();
 
-        Assert.assertEquals(expected, actual.getScheduledWorkTimes().getTimeMomentsDifference().toMinutes());
+        Assert.assertEquals(expected, actual.getScheduledWorkTimes().toMinutes());
     }
 }

@@ -1,20 +1,23 @@
 package com.naosim.dddwork.domain.daily_work;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 /**
  * 所定労働時間
  */
 public class ScheduledWorkTimes {
-    private final ClockTime SCHEDULED_START_TIME = new ClockTime(9, 0);
-    private final ClockTime SCHEDULED_END_TIME = new ClockTime(18, 0);
-    private final ClockTimesDuration scheduledWorkTimes = new ClockTimesDuration(SCHEDULED_START_TIME, SCHEDULED_END_TIME);
+    private final StartWorkTime SCHEDULED_START_TIME = new StartWorkTime(LocalTime.of(9, 0));
+    private final EndWorkTime SCHEDULED_END_TIME = new EndWorkTime(LocalTime.of(18, 0));
+    private final Duration scheduledWorkTimes = CalculateWorkTimesDomainService.calcWorkTimes(SCHEDULED_START_TIME, SCHEDULED_END_TIME);
 
-    public ScheduledWorkTimes() {
-        excludeBreakTimes();
+    public Duration getScheduledWorkTimes() {
+        return scheduledWorkTimes;
     }
 
-
+    /*
     private void excludeBreakTimes(){
-        ExcludeBreakTimesDomainService.excludeBreakTimes(SCHEDULED_END_TIME, scheduledWorkTimes);
+        CalculateWorkTimesDomainService.excludeBreakTimes(SCHEDULED_END_TIME, scheduledWorkTimes);
         /*
         for(BreakTimeMoments chunkBreakTimeMoments : new BreakTimeMomentsList().getBreakTimeMomentsList()){
             if(checkExcludeBreakTimesNecessity(chunkBreakTimeMoments)) continue;
@@ -23,27 +26,23 @@ public class ScheduledWorkTimes {
                 continue;
             }
 
-            scheduledWorkTimes.subtractTimeMomentsDifference(new TimeMomentsDifference(chunkBreakTimeMoments.getStartBreakTime(),
+            scheduledWorkTimes.subtractTimeMomentsDifference(new TimeMomentsDifference(chunkBreakTimeMoments.getValue(),
                     this.SCHEDULED_END_TIME).getTimeMomentsDifference().toMinutes());
         }
-        */
     }
 
-    /*
+
     private boolean checkExcludeBreakTimesNecessity(BreakTimeMoments breakTimeMoments){
-        return new TimeMomentsDifference(breakTimeMoments.getStartBreakTime(), SCHEDULED_END_TIME).checkTimeMomentsHoursDifference();
+        return new TimeMomentsDifference(breakTimeMoments.getValue(), SCHEDULED_END_TIME).checkTimeMomentsHoursDifference();
     }
 
     private boolean checkExcludeChunkBreakTimes(BreakTimeMoments breakTimeMoments){
-        return new TimeMomentsDifference(SCHEDULED_END_TIME, breakTimeMoments.getEndBreakTime()).checkTimeMomentsHoursDifference();
+        return new TimeMomentsDifference(SCHEDULED_END_TIME, breakTimeMoments.getValue()).checkTimeMomentsHoursDifference();
     }
-    */
+
 
     public ClockTimesDuration getScheduledWorkTimes() {
         return new ClockTimesDuration(scheduledWorkTimes);
     }
-
-    ClockTime getScheduledStartTime() {
-        return new ClockTime(SCHEDULED_START_TIME);
-    }
+    */
 }

@@ -1,20 +1,18 @@
 package com.naosim.dddwork.domain.daily_work;
 
+import java.time.LocalDate;
+
 /**
  * 勤務実施年月日
  */
 public class WorkDate {
-    private final DateMoments workDate;
+    private final LocalDate workDate;
 
-    public WorkDate(int year, int month, int day){
-        this.workDate = new DateMoments(year, month, day);
+    public WorkDate(LocalDate workDate){
+        this.workDate = workDate;
     }
 
-    WorkDate(DateMoments workDate) {
-        this.workDate = new DateMoments(workDate);
-    }
-
-    public DateMoments getDateMoments() {
-        return new DateMoments(workDate);
+    public LocalDate getValue() {
+        return workDate;
     }
 }

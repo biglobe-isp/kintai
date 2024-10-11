@@ -1,13 +1,14 @@
 package com.naosim.dddwork.service;
 
-public interface ExecuteFunction {
-    boolean checkIsEnoughArguments(String[] commands);
+import com.naosim.dddwork.domain.WorkDataRepository;
 
-    String execute(String[] commands);
+/**
+ * 実行機能
+ */
+public interface ExecuteFunction {
+    String execute(InputInformation information);
 
     ExecutiveCommandType getExecutiveCommandType();
 
-    void setExecuteFunction();
-
-    void convertArgumentsToCorrectInputs(String[] commands);
+    void setExecuteFunction(WorkDataRepository repository);
 }

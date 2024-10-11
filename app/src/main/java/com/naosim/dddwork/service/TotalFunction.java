@@ -1,17 +1,17 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.FetchWorkDataRepository;
+import com.naosim.dddwork.datasource.LocalCSVWorkData;
+import com.naosim.dddwork.domain.WorkDataRepository;
 
+/**
+ * 勤怠集計機能
+ */
 public class TotalFunction implements ExecuteFunction {
-    FetchWorkDataRepository fetchWorkDataRepository;
+    WorkDataRepository fetchWorkDataRepository;
 
     @Override
-    public boolean checkIsEnoughArguments(String[] commands) {
-        return commands.length < 1;
-    }
-
-    @Override
-    public String execute(String[] commands) {
+    public String execute(InputInformation information) {
+        setExecuteFunction(new LocalCSVWorkData());
 
         return "現在未実装";
     }
@@ -22,12 +22,8 @@ public class TotalFunction implements ExecuteFunction {
     }
 
     @Override
-    public void setExecuteFunction() {
+    public void setExecuteFunction(WorkDataRepository repository) {
         // fetchWorkDataRepositoryを実装したCSVクラスを代入
-    }
-
-    @Override
-    public void convertArgumentsToCorrectInputs(String[] commands) {
-
+        fetchWorkDataRepository = repository;
     }
 }
