@@ -6,10 +6,10 @@ import java.time.LocalTime;
 /**
  * 所定労働時間
  */
-public class ScheduledWorkTimes {
+public class ScheduledWorkingMinutes {
     private final StartWorkTime SCHEDULED_START_TIME = new StartWorkTime(LocalTime.of(9, 0));
     private final EndWorkTime SCHEDULED_END_TIME = new EndWorkTime(LocalTime.of(18, 0));
-    private final Duration scheduledWorkTimes = CalculateWorkTimesDomainService.calcWorkTimes(SCHEDULED_START_TIME, SCHEDULED_END_TIME);
+    private final Duration scheduledWorkTimes = CalculateWorkingMinutesDomainService.calcWorkTimes(SCHEDULED_START_TIME, SCHEDULED_END_TIME);
 
     public Duration getScheduledWorkTimes() {
         return scheduledWorkTimes;

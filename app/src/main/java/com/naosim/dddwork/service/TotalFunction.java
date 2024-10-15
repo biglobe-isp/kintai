@@ -1,29 +1,31 @@
 package com.naosim.dddwork.service;
 
 import com.naosim.dddwork.datasource.LocalCSVWorkData;
-import com.naosim.dddwork.domain.WorkDataRepository;
+import com.naosim.dddwork.domain.*;
+import com.naosim.dddwork.domain.daily_work.AggregationYearMonth;
 
 /**
- * 勤怠集計機能
+ * 勤務記録集計機能
  */
-public class TotalFunction implements ExecuteFunction {
-    WorkDataRepository fetchWorkDataRepository;
+public class TotalFunction {
+    public static AggregationResult execute(InputInformation information) {
+        WorkDataRepository fetchWorkDataRepository = new LocalCSVWorkData();
 
-    @Override
-    public String execute(InputInformation information) {
-        setExecuteFunction(new LocalCSVWorkData());
+        DailyWorkDataList workDataList = getSearchedWorkDataList(fetchWorkDataRepository, information.getAggregationYearMonth());
 
-        return "現在未実装";
+        return aggregate(workDataList);
     }
 
-    @Override
-    public ExecutiveCommandType getExecutiveCommandType() {
-        return ExecutiveCommandType.total;
+    private static DailyWorkDataList getSearchedWorkDataList(WorkDataRepository repository, AggregationYearMonth aggregationYearMonth) {
+        return repository.fetchDailyWorkData(aggregationYearMonth);
     }
 
-    @Override
-    public void setExecuteFunction(WorkDataRepository repository) {
-        // fetchWorkDataRepositoryを実装したCSVクラスを代入
-        fetchWorkDataRepository = repository;
+    private static AggregationResult aggregate(DailyWorkDataList workDataList) {
+        MonthlyWorkingMinutes workingMinutes = new MonthlyWorkingMinutes(workDataList);
+        MonthlyOverworkingMinutes overworkingMinutes = new MonthlyOverworkingMinutes(workDataList, workingMinutes);
+        MonthlyNormalWorkingMinutes normalWorkingMinutes = new MonthlyNormalWorkingMinutes(workingMinutes, overworkingMinutes);
+
+        return new AggregationResult(overworkingMinutes,normalWorkingMinutes);
     }
 }
+

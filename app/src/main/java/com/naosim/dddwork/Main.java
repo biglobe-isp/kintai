@@ -2,13 +2,6 @@ package com.naosim.dddwork;
 
 import com.naosim.dddwork.api.InputCommand;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 /*
 「kintai_kadai.md」より以下の課題実施
  1. 以下の「Main」クラスを「api」、「service」、「datasource」、「domain」に分割してリファクタリング
@@ -40,6 +33,11 @@ public class Main {
     // args[1]以降：inputのみ存在。1:日付、2:開始時刻、3:終了時刻
     // フレックス無し&日付超えはサビ残扱いのため、2・3の取りうる値は0900-2359の範囲内にあるはず
     public static void main(String[] args) {
+        InputCommand inputCommand = new InputCommand();
+        String result = inputCommand.input(args);
+        System.out.println(result);
+
+        /*
         try {
             // 実行機能すら記載されていない場合の例外処理
             if (args.length < 1) {
@@ -128,7 +126,6 @@ public class Main {
                             overWorkMinutes,
                             now
                     ));
-                }*/
             }
             // methodTypeの値がStringの「total」と等しいかどうか判定
             else if ("total".equals(methodType)) {
@@ -207,9 +204,11 @@ public class Main {
                 // input、total以外の文字列をargs[0]の位置に入力した場合、不正コマンドとして例外処理
                 throw new RuntimeException("methodTypeが不正です");
             }
+
         } catch (Exception e) {
             // 処理中にどこかでエラーが発生した場合、エラー原因を出力
             e.printStackTrace();
         }
+         */
     }
 }

@@ -1,5 +1,6 @@
 package com.naosim.dddwork.service;
 
+import com.naosim.dddwork.domain.daily_work.AggregationYearMonth;
 import com.naosim.dddwork.domain.daily_work.EndWorkTime;
 import com.naosim.dddwork.domain.daily_work.StartWorkTime;
 import com.naosim.dddwork.domain.daily_work.WorkDate;
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class InputInformation {
     private ExecutiveCommandType executiveCommandType;
     private Optional<WorkDate> workDate;
+    private Optional<AggregationYearMonth> aggregationYearMonth;
     private Optional<StartWorkTime> startWorkTime;
     private Optional<EndWorkTime> endWorkTime;
 
@@ -21,6 +23,10 @@ public class InputInformation {
 
     public void setWorkDate(WorkDate workDate) {
         this.workDate = Optional.of(workDate);
+    }
+
+    public void setAggregationYearMonth(AggregationYearMonth aggregationYearMonth) {
+        this.aggregationYearMonth = Optional.of(aggregationYearMonth);
     }
 
     public void setStartWorkTime(StartWorkTime startWorkTime) {
@@ -37,6 +43,10 @@ public class InputInformation {
 
     public WorkDate getWorkDate() {
         return workDate.orElse(null);
+    }
+
+    public AggregationYearMonth getAggregationYearMonth() {
+        return aggregationYearMonth.orElse(null);
     }
 
     public StartWorkTime getStartWorkTime() {

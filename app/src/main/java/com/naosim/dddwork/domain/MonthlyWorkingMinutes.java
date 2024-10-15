@@ -5,10 +5,14 @@ import com.naosim.dddwork.domain.daily_work.DailyWorkData;
 import java.time.Duration;
 
 /**
- * 総実働時間
+ * 1ヶ月の総実働時間
  */
-class Total1MonthWorkTimes {
+public class MonthlyWorkingMinutes {
     Duration total1MonthWorkTimes = Duration.ZERO;
+
+    public MonthlyWorkingMinutes(DailyWorkDataList dailyWorkDataList) {
+        calcTotal1MonthWorkTimes(dailyWorkDataList);
+    }
 
     public void calcTotal1MonthWorkTimes(DailyWorkDataList dailyWorkDataList) {
         for (DailyWorkData data : dailyWorkDataList.getDailyWorkDataList()) {

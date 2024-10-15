@@ -5,15 +5,19 @@ import java.time.Duration;
 /**
  * 1日の実働時間
  */
-public class Total1DayWorkTimes {
+public class DailyWorkingHours {
     private final Duration total1DayWorkTimes;
 
-    public Total1DayWorkTimes(StartWorkTime startWorkTime, EndWorkTime endWorkTime) {
+    public DailyWorkingHours(StartWorkTime startWorkTime, EndWorkTime endWorkTime) {
         total1DayWorkTimes = CalcTotal1DayWorkTimes(startWorkTime, endWorkTime);
     }
 
+    public DailyWorkingHours(Duration minutes) {
+        total1DayWorkTimes = minutes;
+    }
+
     private Duration CalcTotal1DayWorkTimes(StartWorkTime startWorkTime, EndWorkTime endWorkTime) {
-        return CalculateWorkTimesDomainService.calcWorkTimes(startWorkTime, endWorkTime);
+        return CalculateWorkingMinutesDomainService.calcWorkTimes(startWorkTime, endWorkTime);
     }
 
     public Duration getValue() {

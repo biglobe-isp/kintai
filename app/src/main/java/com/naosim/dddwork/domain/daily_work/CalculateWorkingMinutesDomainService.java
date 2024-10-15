@@ -5,7 +5,7 @@ import java.time.Duration;
 /**
  * 労働時間計算ドメインサービス
  */
-public class CalculateWorkTimesDomainService {
+public class CalculateWorkingMinutesDomainService {
     public static Duration calcWorkTimes(StartWorkTime startWorkTime, EndWorkTime endWorkTime) {
         Duration workTimes = Duration.between(startWorkTime.getValue(), endWorkTime.getValue());
 

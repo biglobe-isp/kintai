@@ -9,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 
-public class CalculateWorkTimesDomainServiceTest {
+public class CalculateWorkingMinutesDomainServiceTest {
     @Test
     public void 勤務開始時間が勤務終了時間より後の場合に正しいエラーが出るか() {
         StartWorkTime inputStartTime = new StartWorkTime(LocalTime.of(9,0));
@@ -17,7 +17,7 @@ public class CalculateWorkTimesDomainServiceTest {
         String expectedMessage = "勤務終了時刻が勤務開始時刻よりも前に設定されています";
 
         try {
-            CalculateWorkTimesDomainService.calcWorkTimes(inputStartTime, inputEndTime);
+            CalculateWorkingMinutesDomainService.calcWorkTimes(inputStartTime, inputEndTime);
 
             fail("バリデーションが機能していない");
         }
@@ -32,7 +32,7 @@ public class CalculateWorkTimesDomainServiceTest {
         EndWorkTime inputEndTime = new EndWorkTime(LocalTime.of(11,59));
         long expected = 179L;
 
-        long actual = new Total1DayWorkTimes(inputStartTime, inputEndTime).getValue().toMinutes();
+        long actual = new DailyWorkingHours(inputStartTime, inputEndTime).getValue().toMinutes();
 
         Assert.assertEquals(expected, actual);
     }
@@ -43,7 +43,7 @@ public class CalculateWorkTimesDomainServiceTest {
         EndWorkTime inputEndTime = new EndWorkTime(LocalTime.of(12,1));
         long expected = 180L;
 
-        long actual = new Total1DayWorkTimes(inputStartTime, inputEndTime).getValue().toMinutes();
+        long actual = new DailyWorkingHours(inputStartTime, inputEndTime).getValue().toMinutes();
 
         Assert.assertEquals(expected, actual);
     }
@@ -54,7 +54,7 @@ public class CalculateWorkTimesDomainServiceTest {
         EndWorkTime inputEndTime = new EndWorkTime(LocalTime.of(13,1));
         long expected = 181L;
 
-        long actual = new Total1DayWorkTimes(inputStartTime, inputEndTime).getValue().toMinutes();
+        long actual = new DailyWorkingHours(inputStartTime, inputEndTime).getValue().toMinutes();
 
         Assert.assertEquals(expected, actual);
     }
