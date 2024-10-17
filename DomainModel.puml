@@ -1,0 +1,172 @@
+@startuml
+class com.naosim.dddwork.domain.daily_work.ClockTime {
+~ LocalTime moment
+}
+
+class com.naosim.dddwork.domain.Total1MonthOverworkTimes {
+- void calcTotal1MonthOverworkTimes(DailyWorkDataList,Total1MonthWorkTimes)
+- boolean checkCalcOverworkTimesNecessity(Total1MonthWorkTimes,Duration)
+- Duration calcOverworkTimes(Total1MonthWorkTimes,Duration)
+~ Total1MonthTimeMoments getTotalOverworkTimes()
+}
+
+class com.naosim.dddwork.datasource.WorkDataFilePath {
++ String getFilePath()
+}
+
+class com.naosim.dddwork.datasource.InputWorkDataToLocalCSV {
++ String writeDailyWorkData(DailyWorkData)
+}
+
+class com.naosim.dddwork.domain.daily_work.DailyWorkData {
++ WorkDate getWorkDate()
++ Total1DayWorkTimes getTotalWorkTimes()
+}
+
+interface com.naosim.dddwork.domain.InputWorkDataRepository {
+~ String writeDailyWorkData(DailyWorkData)
+}
+
+class com.naosim.dddwork.domain.Total1MonthTimeMoments {
+~ void AddTimes(Duration)
+~ Duration GetTotalTimes()
+}
+
+interface com.naosim.dddwork.service.ExecuteFunction {
+~ boolean checkIsEnoughArguments(String[])
+~ String execute(String[])
+~ ExecutiveCommandType getExecutiveCommandType()
+~ void setExecuteFunction()
+~ void convertArgumentsToCorrectInputs(String[])
+}
+
+class com.naosim.dddwork.domain.daily_work.ClockTimesDuration {
+~ boolean checkTimeMomentsHoursDifference()
+~ void subtractTimeMomentsDifference(long)
++ Duration getTimeMomentsDifference()
+}
+
+class com.naosim.dddwork.domain.daily_work.ScheduledWorkTimes {
+- void excludeBreakTimes()
++ ClockTimesDuration getScheduledWorkTimes()
+~ ClockTime getScheduledStartTime()
+}
+
+class com.naosim.dddwork.service.SelectExecuteFunction {
++ String executeFunction(String[])
++ void prepareExecuteFunction(String[])
+- void setExecuteFunction(String[])
+- ExecutiveCommandType convertStringToCommand(String)
+- void extractFunctionArguments(String[])
+}
+
+class com.naosim.dddwork.Main {
++ {static} void main(String[])
+}
+
+enum com.naosim.dddwork.service.ExecutiveCommandType {
++  input
++  total
+}
+
+interface com.naosim.dddwork.domain.FetchWorkDataRepository {
++ {static} DailyWorkDataList workDataList
+~ DailyWorkDataList fetchDailyWorkData()
+}
+
+
+class com.naosim.dddwork.domain.daily_work.WorkDate {
++ DateMoments getDateMoments()
+}
+
+class com.naosim.dddwork.domain.daily_work.BreakTimeMomentsList {
+~ List<BreakTimeMoments> getBreakTimeMomentsList()
+}
+
+class com.naosim.dddwork.domain.daily_work.BreakTimeMoments {
+~ ClockTime getStartBreakTime()
+~ ClockTime getEndBreakTime()
+~ ClockTimesDuration getBreakTimeDifference()
+}
+
+class com.naosim.dddwork.service.TotalFunction {
+~ FetchWorkDataRepository fetchWorkDataRepository
++ boolean checkIsEnoughArguments(String[])
++ String execute(String[])
++ ExecutiveCommandType getExecutiveCommandType()
++ void setExecuteFunction()
++ void convertArgumentsToCorrectInputs(String[])
+}
+
+
+class com.naosim.dddwork.domain.Total1MonthWorkTimes {
+- void calcTotal1MonthWorkTimes(DailyWorkDataList)
+~ Total1MonthTimeMoments getTotal1MonthWorkTimes()
+}
+
+class com.naosim.dddwork.domain.DailyWorkDataList {
+~ void updateWorkingDays()
+~ boolean validateWorkingDays()
+~ List<DailyWorkData> getDailyWorkDataList()
+~ int getWorkingDays()
+}
+
+class com.naosim.dddwork.domain.daily_work.ExcludeBreakTimesDomainService {
++ {static} void excludeBreakTimes(ClockTime,ClockTimesDuration)
+- {static} boolean checkExcludeBreakTimesNecessity(ClockTime,BreakTimeMoments)
+- {static} boolean checkExcludeChunkTotalBreakTimes(ClockTime,BreakTimeMoments)
+}
+
+class com.naosim.dddwork.domain.daily_work.DateMoments {
++ LocalDate getDate()
+}
+
+class com.naosim.dddwork.api.InputCommand {
++ String input(String[])
+}
+
+class com.naosim.dddwork.domain.Total1MonthNormalWorkTimes {
+- void calcTotalNormalWorkTimes(Total1MonthWorkTimes,Total1MonthOverworkTimes)
+}
+
+interface com.naosim.dddwork.domain.WorkDataRepository {
+}
+class com.naosim.dddwork.service.ExecuteFunctionInformation {
+~ ExecutiveCommandType executiveCommandType
+~ String[] argumentsArray
+}
+
+class com.naosim.dddwork.service.InputFunction {
+~ InputWorkDataRepository inputWorkDataRepository
+~ DailyWorkData inputWorkData
++ boolean checkIsEnoughArguments(String[])
++ String execute(String[])
++ ExecutiveCommandType getExecutiveCommandType()
++ void setExecuteFunction()
++ void convertArgumentsToCorrectInputs(String[])
+- WorkDate convertToWorkDate(String)
+- boolean validateWorkDate(String)
+- ClockTime convertToClockTime(String)
+- boolean validateClockTime(String)
+}
+
+
+class com.naosim.dddwork.domain.daily_work.WorkTimeMoments {
+- void validateStartWorkTime()
+- void validateEndWorkTime()
+- boolean validateTimeMomentsDifference(ClockTimesDuration)
+~ ClockTime getStartWorkTime()
+~ ClockTime getEndWorkTime()
+}
+
+class com.naosim.dddwork.domain.daily_work.Total1DayWorkTimes {
+- void excludeBreakTimes(WorkTimeMoments)
++ ClockTimesDuration getTotal1DayWorkTimes()
+}
+
+
+
+com.naosim.dddwork.domain.InputWorkDataRepository <|.. com.naosim.dddwork.datasource.InputWorkDataToLocalCSV
+com.naosim.dddwork.service.ExecuteFunction <|.. com.naosim.dddwork.service.TotalFunction
+com.naosim.dddwork.service.ExecuteFunction <|.. com.naosim.dddwork.service.InputFunction
+@enduml
