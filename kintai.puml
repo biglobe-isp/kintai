@@ -1,0 +1,82 @@
+@startuml "勤怠管理"
+package "api" as package_api {
+    class "勤怠入力API" as InputAPI {
+      - InputService inputService
+      + InputAPIResponseDTO get(InputAPIRequestDTO dto)
+    }
+    class "集計API" as TotalAPI {
+      - TotalService totalService
+      + TotalAPIResponseDTO get(TotalAPIRequestDTO dto)
+    }
+
+    package "dto" {
+        class "勤怠入力APIリクエストDTO" as InputAPIRequestDTO {
+          + LocalDate date
+          + LocalTime startTime
+          + LocalTime endTime
+        }
+        class "勤怠入力APIレスポンスDTO" as InputAPIResponseDTO {}
+
+        class "集計APIリクエストDTO" as TotalAPIRequestDTO {}
+        class "集計APIレスポンスDTO" as TotalAPIResponseDTO {
+          + Integer workMinutesSum
+          + Integer overWorkMinutesSum
+        }
+    }
+}
+package "service" as package_service {
+    class "勤怠入力サービス" as InputService {
+      - WorkRule rule
+      - WorkTimeDAO dao
+      + void registDailyWorkInfo(LocalDate date, LocalTime startTime, LocalTime endTime)
+    }
+    class "集計サービス" as TotalService {
+      - WorkRule rule
+      - WorkTimeDAO dao
+      + WorkTimeSpecification getMonthlyTotal()
+    }
+}
+package "domain" as package_domain {
+    class "就業規則" as WorkRule {
+      - LocalTime WORK_START_TIME
+      - LocalTime WORK_END_TIME
+      - ArrayList<RestTimeInfo> REST_TIME_INFO_ARRAY
+      - Integer MAX_DAILY_WORK_MINUTES
+      + Boolean isWorkInfoValid(LocalDate date, LocalTime startTime, LocalTime endTime)
+      + WorkTimeSpecification getWorkTimeSpecification(LocalDate date, LocalTime startTime, LocalTime endTime)
+    }
+    class "勤務時間明細" as WorkTimeSpecification{
+      + Integer workMinutes
+      + Integer overWorkMinutes
+    }
+    class "休憩時間情報" as RestTimeInfo {
+      + LocalTime startTime
+      + LocalTime endTime
+    }
+}
+package "datasource" as package_datasource {
+    class "勤怠DAO" as WorkTimeDAO {
+      - WorkTimeCSV csv
+      + WorkTimeEntity Regist(WorkTimeEntity entity)
+      + WorkTimeEntity Update(WorkTimeEntity entity)
+      + WorkTimeEntity SelectByDate(LocalDate date)
+      + WorkTimeEntity[] SelectByMonth(LocalDate date)
+    }
+    class "勤怠CSV" as WorkTimeCSV{
+      - String FILE_NAME
+      + WorkTimeEntity Regist(WorkTimeEntity entity)
+      + WorkTimeEntity Update(WorkTimeEntity entity)
+      + WorkTimeEntity SelectByDate(LocalDate date)
+      + WorkTimeEntity[] SelectByMonth(LocalDate date)
+    }
+    class "勤怠エンティティ" as WorkTimeEntity{
+      + LocalDate date
+      + LocalTime start
+      + LocalTime end
+      + Integer workMinutes
+      + Integer overWorkMinutes
+      + LocalDateTime now
+    }
+}
+
+@enduml
