@@ -4,20 +4,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class WorkTimeDAO {
-    private WorkTimeCSV csv;
+    private final WorkTimeCSV csv = new WorkTimeCSV();
 
 
-    public WorkTimeEntity Regist(WorkTimeEntity entity) throws Exception{
-        return csv.Regist(entity);
+    public WorkTimeEntity regist(WorkTimeEntity entity) throws Exception{
+        return csv.regist(entity);
     }
-    public WorkTimeEntity Update(WorkTimeEntity entity) throws Exception{
-        return csv.Update(entity);
+    public WorkTimeEntity update(WorkTimeEntity entity) throws Exception{
+        return csv.update(entity);
     }
-    public WorkTimeEntity SelectByDate(LocalDate date) throws Exception{
-        return csv.SelectByDate(date);
+    public WorkTimeEntity selectByDate(LocalDate date) throws Exception{
+        return csv.selectByDate(date);
     }
-    public ArrayList<WorkTimeEntity> SelectByMonth(LocalDate date) throws Exception{
-        return csv.SelectByMonth(date);
+    public ArrayList<WorkTimeEntity> selectByMonth(LocalDate date) throws Exception{
+        return csv.selectByMonth(date);
+    }
+    public ArrayList<WorkTimeEntity> selectAll() throws Exception{
+        return csv.selectAll();
     }
 
 }

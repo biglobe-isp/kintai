@@ -11,5 +11,7 @@ public class WorkTimeEntity {
     public Integer workMinutes;
     public Integer overWorkMinutes;
     public LocalDateTime now;
-    public WorkTimeEntity(LocalDate date, LocalTime startTime, LocalTime endTime, Integer workMinutes, Integer overWorkMinutes, LocalDateTime now) {}
+    public WorkTimeEntity(LocalDate date, LocalTime startTime, LocalTime endTime, Integer workMinutes, Integer overWorkMinutes, LocalDateTime now) {
+        this.date = date; this.startTime = startTime; this.endTime = endTime; this.workMinutes = workMinutes; this.overWorkMinutes = overWorkMinutes; this.now = now;
+    }
 }

@@ -1,4 +1,4 @@
 package com.naosim.dddwork.api.dto;
 
-public class InputAPIResponseDTO {
+public class InputAPIResponseDTO extends ResponseDTO{
 }

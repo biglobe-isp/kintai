@@ -1,0 +1,18 @@
+@startuml "ドメインモデル"
+object "就業規則" as WorkRule {
+    - 始業時刻
+    - 終業時刻
+    - 休憩時間
+    - 一日最大勤務時間
+    + Boolean 有効な勤務時間データか
+    + 勤務時間明細 勤務時間データから明細を取得
+}
+object "勤務時間明細" as WorkTimeSpecification {
+    + 勤務時間
+    + 残業時間
+}
+object "集計" as Total {
+    + 合計労働時間
+    + 合計残業時間
+}
+@enduml
