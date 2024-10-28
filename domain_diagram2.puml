@@ -1,0 +1,13 @@
+@startuml "勤怠管理ドメインモデル図"
+object "勤怠サービス" as AttendanceService {
+    + 入力()
+    + 集計()
+}
+object "勤怠情報" as AttendanceInfo {
+    日付
+    開始時刻
+    終了時刻
+    勤務時間
+    残業時間
+}
+@enduml

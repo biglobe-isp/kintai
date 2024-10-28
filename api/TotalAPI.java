@@ -1,7 +1,7 @@
 package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.api.dto.TotalAPIResponseDTO;
-import com.naosim.dddwork.domain.WorkTimeSpecification;
+import com.naosim.dddwork.service.TotalData;
 import com.naosim.dddwork.service.TotalService;
 
 public class TotalAPI {
@@ -13,9 +13,9 @@ public class TotalAPI {
         responseDTO.result_msg = "OK";
 
         try{
-             WorkTimeSpecification spec = service.getMonthlyTotal();
-             responseDTO.workMinutesSum = spec.workMinutes;
-             responseDTO.overWorkMinutesSum = spec.overWorkMinutes;
+             TotalData spec = service.getMonthlyTotal();
+             responseDTO.workMinutesSum = spec.workTimeMinutesSum;
+             responseDTO.overWorkMinutesSum = spec.overWorkTimeMinutesSum;
         }
         catch (Exception e){
             responseDTO.result_code = 400;

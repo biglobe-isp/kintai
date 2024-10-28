@@ -19,7 +19,7 @@ public class InputAPI {
             LocalTime startTime = LocalTime.of(Integer.parseInt(args[1].substring(0, 2)), Integer.parseInt(args[1].substring(2, 4)));
             LocalTime endTime = LocalTime.of(Integer.parseInt(args[2].substring(0, 2)), Integer.parseInt(args[2].substring(2, 4)));
 
-            service.registDailyWorkInfo(date, startTime, endTime);
+            service.input(date, startTime, endTime);
         }
         catch (Exception e){
             responseDTO.result_code = 400;
