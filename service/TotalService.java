@@ -1,20 +1,18 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.datasource.WorkTimeDAO;
-import com.naosim.dddwork.datasource.WorkTimeEntity;
-
-import java.util.ArrayList;
+import com.naosim.dddwork.domain.service.AttendanceService;
+import com.naosim.dddwork.domain.value_object.AttendanceTotalData;
+import com.naosim.dddwork.service.dto.total.GetMonthlyTotalResponseDTO;
 
 public class TotalService {
-    private final WorkTimeDAO dao = new WorkTimeDAO();
+    private final AttendanceService attendanceService = new AttendanceService();
 
-    public TotalData getMonthlyTotal() throws Exception{
-        TotalData data = new TotalData();
+    public GetMonthlyTotalResponseDTO getMonthlyTotal() throws Exception {
+        AttendanceTotalData data = attendanceService.getMonthlyTotal();
 
-        ArrayList<WorkTimeEntity> entityList = dao.selectAll();
-        data.workTimeMinutesSum = entityList.stream().mapToInt(e -> e.workMinutes).sum();
-        data.overWorkTimeMinutesSum = entityList.stream().mapToInt(e -> e.overWorkMinutes).sum();
-
-        return data;
+        return new GetMonthlyTotalResponseDTO(
+                data.getWorkTimeMinutesSum(),
+                data.getOverWorkTimeMinutesSum()
+        );
     }
 }
