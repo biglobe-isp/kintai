@@ -1,4 +1,4 @@
-package com.naosim.dddwork.domain.value_object;
+package com.naosim.dddwork.domain.attendance.input;
 
 public class OverWorkTimeMinutes {
     private static final Integer MAX_DAILY_WORK_MINUTES = 480;
