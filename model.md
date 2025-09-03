@@ -1,13 +1,13 @@
 ```mermaid
 classDiagram
-    workRule <|-- Bird
+    workRule <|-- Rest
     workRule <|-- Fish
     workRule <|-- Penguin
-    workRule : +String start
-    workRule : +String end
-    workRule:  +deleteRest()
-    workRule:  +deleteLateness()
-    class Bird{
+    workRule : -int businessStart
+    workRule : -int businessEnd
+    workRule : -int businessRestTime
+
+    class Rest{
         +String beakColor
         +fly()
     }
