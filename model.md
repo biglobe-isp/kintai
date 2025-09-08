@@ -1,49 +1,90 @@
 ```mermaid
 classDiagram
     namespace domain {
-        class WorkRule{
-            -workTime workingStartHours
-            -workTime workingStartMinutes
-            -workTime workingEndHours
-            -workTime workingEndMinutes
-            -workTime workingHours
-            -workTime workingMinutes
-        }
     
         class Rest{
-            -workTime lunchBreakStart
-            -workTime lunchBreakEnd
-            -workTime eveningBreakStart
-            -workTime eveningBreakEnd
-            -workTime nightBreakStart
-            -workTime nightBreakEnd
-            +calculateBreakTime()
+            -workTime lunchBreak
+            -workTime eveningBreak
+            -workTime nightBreak
+        } 
+        class RegisterTime{
+            -workTime workingDate
+            -workTime workingStart
+            -workTime workingEnd
+            -workTime workMinutes
+            -workTime overWorkMinutes
+            -Date inputDate
+        }
+        class TotalTime{
+            -Date yearMonth
+            -totalWorkTime totalWorkMonthMinutes
+            -totalWorkTime totalOverWorkMonthMinutes
+            +calculateTotalWorkMonthTime()
+            +calculateTotalOverWorkMonthTime()
+        }
+        class calculateWorkingTime{
+            -workTimeHours workTimeHour
+            -workTimeMinutes workTimeMinute
+            +parseWorkHours()
+            +calculateWorkTimeMinutes()
+        }
+        class calculateOverWorkingTime{
+            +calculateOverWorkTimeMinutes()
+        }
+        class IDataRepository{
+            +save()
+        }
+        }
+    namespace service {
+        class input{
+            -String workingDate
+            -String workingStart
+            -String workingEnd
+            -workTime workMinutes
+            -workTime overWorkMinutes
+            -Date inputDate
+            +registerInput()
+        }
+        class MethodType{
+            +String input
+            +String total
+        }
+        class Total{
+            +printTotalTime
+        }
+    }
+    namespace datasource {
+        class csvRegister{
+            -File file
+            +fileRegister()
+        } 
+        class csvReader{
+            -File file
+            +fileReader()
         } 
         }
-        namespace service {
-            class RegisterTime{
-                -String workingDate
-                -workTime inputWorkingStartHours
-                -workTime inputWorkingEndHours
-                -workTime inputWorkingStartMinutes
-                -workTime inputWorkingEndMinutes
-                -workTime totalWorkDateMinutes
-                -workTime totalOverWorkDateMinutes
-                -String inputDate
-                +create()
-                +calculateTotalWorkDateTime()
-                +calculateTotalOverWorkDateTime()
-            }
-            class TotalTime{
-                +totalWorkTime totalWorkMonthMinutes
-                +totalWorkTime totalOverWorkMonthMinutes
-                +calculateTotalWorkMonthTime()
-                +calculateTotalOverWorkMonthTime()
-            }
-            }
-        WorkRule <|-- Rest
-        WorkRule <.. RegisterTime
-        WorkRule <.. TotalTime
-
-
+    namespace api {
+        class Main{
+            
+        }
+        }
+        
+        Rest <.. calculateWorkingTime
+        RegisterTime <.. calculateWorkingTime
+        RegisterTime <.. calculateOverWorkingTime
+        RegisterTime <.. IDataRepository
+        RegisterTime <.. TotalTime
+        IDataRepository <.. input
+        IDataRepository <.. csvRegister
+        IDataRepository <.. csvReader
+        input <.. MethodType
+        Total <.. MethodType
+        calculateWorkingTime <.. calculateOverWorkingTime
+%%ロジックはドメイン層　手段とロジックは分ける
+%%ヒト：従業員
+%%モノ：就業規則、開始時間、終業時間、就業時間、休憩時間、休憩開始時刻、休憩終了時刻、CSV
+%%コト：登録する、計算する、入力する
+%%変数の型で依存しているかを判断する
+%%インターフェース
+%%サービス層はシナリオ
 ```
