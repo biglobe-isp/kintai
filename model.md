@@ -23,9 +23,10 @@ classDiagram
             +calculateTotalOverWorkMonthTime()
         }
         class calculateWorkingTime{
-            -workTimeHours workTimeHour
-            -workTimeMinutes workTimeMinute
-            +parseWorkHours()
+            -workTimeHours workTimeStartHour
+            -workTimeHours workTimeEndHour
+            -workTimeMinutes workTimeStartMinute
+            -workTimeMinutes workTimeEndMinute
             +calculateWorkTimeMinutes()
         }
         class calculateOverWorkingTime{
@@ -44,6 +45,8 @@ classDiagram
             -workTime overWorkMinutes
             -Date inputDate
             +registerInput()
+            +parseWorkHours()
+            +parseWorkMinutes()
         }
         class MethodType{
             +String input
@@ -74,6 +77,7 @@ classDiagram
         RegisterTime <.. calculateOverWorkingTime
         RegisterTime <.. IDataRepository
         RegisterTime <.. TotalTime
+        TotalTime <.. Total
         IDataRepository <.. input
         IDataRepository <.. csvRegister
         IDataRepository <.. csvReader
@@ -87,4 +91,11 @@ classDiagram
 %%変数の型で依存しているかを判断する
 %%インターフェース
 %%サービス層はシナリオ
+%%もしデータベースの実装を変更したい場合、
+%%サービスがデータソースに依存してしまう。
+%%ー＞インターフェースを経由
+%%重複している部分は何？
+%%それぞれが何をどう呼び出している？
+%%オブジェクト指向じゃない？
+%%変数だけのクラスは変では無い　責務が果たされているかどうか
 ```

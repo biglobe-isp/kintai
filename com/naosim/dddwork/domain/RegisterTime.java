@@ -1,6 +1,6 @@
 package com.naosim.dddwork.domain;
 
-public class Rest {
+public class RegisterTime {
     private workTime workingDate;
     private workTime workingStart;
     private workTime workingEnd;
