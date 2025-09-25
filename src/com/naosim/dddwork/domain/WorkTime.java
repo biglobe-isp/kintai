@@ -9,8 +9,6 @@ public class WorkTime {
     Minute workingStartMinute;
     Hour workingEndHour;
     Minute workingEndMinute;
-    //    WorkMinutes workMinutes;
-    //    WorkMinutes overWorkMinutes;
     LocalDateTime inputDate;
 
     public WorkTime(
@@ -23,13 +21,27 @@ public class WorkTime {
         this.workingStartMinute = workingStartMinute;
         this.workingEndHour = workingEndHour;
         this.workingEndMinute = workingEndMinute;
-//        this.workMinutes = workMinutes;
-//        this.overWorkMinutes = overWorkMinutes;
         this.inputDate = inputDate;
     }
 
     public LocalDate getWorkingDate() {
         return workingDate;
+    }
+
+    public Hour getWorkingStartHour() {
+        return workingStartHour;
+    }
+
+    public Minute getWorkingStartMinute() {
+        return workingStartMinute;
+    }
+
+    public Hour getWorkingEndHour() {
+        return workingEndHour;
+    }
+
+    public Minute getWorkingEndMinute() {
+        return workingEndMinute;
     }
 
     public LocalDateTime getInputDate() {

@@ -1,23 +1,26 @@
 ```mermaid
-classDiagram
+classDiagram 　
     namespace domain {
     
     　　class Hour{
             -int hour
-            +Hour()
+            +int getHour()
         }
         class Minute{
             -int minute
-            +Minute()
+            +int getMinute()
         }
         class WorkMinutes{
             -int workMinutes
-            +WorkMinutes()
+            +int getWorkMinutes()
         }
         class Rest{
             -Hour lunchBreak
             -Hour eveningBreak
             -Hour nightBreak
+            +Hour getLunchBreak()
+            +Hour getEveningBreak()
+            +Hour getNightBreak()
         } 
         class WorkTime{
             -LocalDate workingDate
@@ -26,8 +29,14 @@ classDiagram
             -Hour workingEndHour
             -Minute workingEndMinute
             -LocalDateTime inputDate
-            +WorkMinutes calculateWorkTimeMinutes(lunchBreak, eveningBreak, nightBreak)
-            +WorkMinutes calculateOverWorkTimeMinutes()
+            +LocalDate getWorkingDate()
+            +Hour getWorkingStartHour()
+            +Minute getWorkingStartMinute()
+            +Hour getWorkingEndHour()
+            +Minute getWorkingEndMinute()
+            +LocalDateTime getInputDate()
+            +WorkMinutes calculateWorkTimeMinutes(Hour lunchBreak, Hour eveningBreak, Hour nightBreak)
+            +WorkMinutes calculateOverWorkTimeMinutes(Hour lunchBreak, Hour eveningBreak, Hour nightBreak)
         }
         class TotalTime{
             +WorkMinutes calculateTotalWorkMonthTime()
@@ -35,36 +44,47 @@ classDiagram
         }
         class WorkDataRepository{
             <<Interface>>
-            +void save()
-            +List<WorkTime> sumMonthWorkTime()
+            +void save(WorkTime workTime, WorkMinutes workMinutes, WorkMinutes overWorkMinutes)
+            +List<WorkTime> findMonthWorkTime(YearMonth yearMonth)
         }
         }
     namespace service {
         class RegisterWorkTimeService{
-            +registerInput()
-            +parseWorkHours()
-            +parseWorkMinutes()
+            +WorkDataRepository workDataRepository
+            +void registerWorkTime(WorkTime workTime)
         }
+        class CalculateWorkMonthTimeService{
+            +WorkDataRepository workDataRepository
+            +StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth, TotalTime totalTime)
+        }
+        class StoreMonthWorkData{
+            +WorkMinutes totalWorkMinutes;
+            +WorkMinutes totalOverWorkMinutes;
+            +WorkMinutes getTotalWorkMinutes()
+            +WorkMinutes getTotalOverWorkMinutes()
+        }
+    }
+    namespace datasource {
+        class csvRegister{
+            -String filepath
+            +void save(WorkTime workTime, WorkMinutes workMinutes, WorkMinutes overWorkMinutes)
+            +List<WorkTime> findMonthWorkTime(YearMonth yearMonth)
+        }
+        }
+    namespace api {
         class MethodType{
             <<Enum>>
             +INPUT
             +Total
         }
-        class CalculateWorkMonthTimeService{
-            +printTotalTime
+        class RegisterWorkTimeController{
+            +RegisterWorkTimeService registerWorkTimeService
+            +void invoke(String workDate, String startTime, String endTime)
         }
-    }
-    namespace datasource {
-        class csvRegister{
-            -File file
-            +fileRegister()
-        } 
-        class csvReader{
-            -File file
-            +fileReader()
-        } 
+        class CalculateTotalWorkTimeController{
+            +CalculateWorkMonthTimeService calculateWorkMonthTimeService
+            +void callTotalMonthTime(String yearMonth)
         }
-    namespace api {
         class Main{
             
         }
@@ -81,9 +101,9 @@ classDiagram
         WorkDataRepository <.. CalculateWorkMonthTimeService
         WorkDataRepository <.. RegisterWorkTimeService
         WorkDataRepository <.. csvRegister
-        WorkDataRepository <.. csvReader
-        MethodType <.. RegisterWorkTimeService
-        MethodType <.. CalculateWorkMonthTimeService
+        RegisterWorkTimeService <.. RegisterWorkTimeController
+        StoreMonthWorkData <.. CalculateWorkMonthTimeService
+        CalculateWorkMonthTimeService <.. CalculateTotalWorkTimeController
 %%ロジックはドメイン層　手段とロジックは分ける
 %%ヒト：従業員
 %%モノ：就業規則、開始時間、終業時間、就業時間、休憩時間、休憩開始時刻、休憩終了時刻、CSV

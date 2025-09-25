@@ -16,7 +16,7 @@ public class CalculateWorkMonthTimeService {
         this.workDataRepository = workDataRepository;
     }
 
-    public WorkMinutes totalMonthWorkTime(YearMonth yearMonth, TotalTime totalTime) {
+    public StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth, TotalTime totalTime) {
         List<WorkTime> workTimeList = workDataRepository.findMonthWorkTime(yearMonth);
 
         WorkMinutes totalMonthWorkMinutes = totalTime.calculateTotalWorkMonthTime(
@@ -31,6 +31,7 @@ public class CalculateWorkMonthTimeService {
                 Rest.getEveningBreak(),
                 Rest.getNightBreak()
         );
+        return new StoreMonthWorkData(totalMonthWorkMinutes, totalMonthOverWorkMinutes);
     }
 }
 // 返り値が二つ...
