@@ -4,26 +4,19 @@ import java.util.List;
 
 public final class TotalTime {
     public WorkMinutes calculateTotalWorkMonthTime(
-            List<WorkTime> workTimes,
-            Hour lunchBreak,
-            Hour eveningBreak,
-            Hour nightBreak) {
+            List<StoreWorkTime> storeWorkTimeList) {
         int totalWorkTime = 0;
-        for (WorkTime workTime : workTimes) {
-            totalWorkTime += workTime.calculateWorkTimeMinutes(lunchBreak, eveningBreak, nightBreak).getWorkMinutes();
+        for (StoreWorkTime storeWorkTime : storeWorkTimeList) {
+            totalWorkTime += storeWorkTime.getWorkMinutes().getWorkMinutes();
         }
         return new WorkMinutes(totalWorkTime);
     }
 
     public WorkMinutes calculateTotalOverWorkMonthTime(
-            List<WorkTime> workOverTimes,
-            Hour lunchBreak,
-            Hour eveningBreak,
-            Hour nightBreak) {
+            List<StoreWorkTime> storeWorkTimeList) {
         int totalOverWorkTime = 0;
-        for (WorkTime workOverTime : workOverTimes) {
-            totalOverWorkTime += workOverTime.calculateOverWorkTimeMinutes(lunchBreak, eveningBreak, nightBreak)
-                    .getWorkMinutes();
+        for (StoreWorkTime storeWorkTime : storeWorkTimeList) {
+            totalOverWorkTime += storeWorkTime.getOvertimeMinutes().getWorkMinutes();
         }
         return new WorkMinutes(totalOverWorkTime);
     }

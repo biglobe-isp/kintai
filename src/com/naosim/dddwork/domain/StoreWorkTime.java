@@ -2,11 +2,11 @@ package com.naosim.dddwork.domain;
 
 public class StoreWorkTime {
     private final WorkMinutes workMinutes;
-    private final WorkMinutes overtimeMinutes;
+    private final WorkMinutes overTimeMinutes;
 
-    public StoreWorkTime(WorkMinutes workMinutes, WorkMinutes overtimeMinutes) {
+    public StoreWorkTime(WorkMinutes workMinutes, WorkMinutes overTimeMinutes) {
         this.workMinutes = workMinutes;
-        this.overtimeMinutes = overtimeMinutes;
+        this.overTimeMinutes = overTimeMinutes;
     }
 
     public WorkMinutes getWorkMinutes() {
@@ -14,6 +14,6 @@ public class StoreWorkTime {
     }
 
     public WorkMinutes getOvertimeMinutes() {
-        return overtimeMinutes;
+        return overTimeMinutes;
     }
 }

@@ -65,10 +65,14 @@ classDiagram 　
         }
     }
     namespace datasource {
-        class csvRegister{
+        class CsvRegister{
             -String filepath
+            +List<StoreWorkTime> specificMonthWorkTimes
             +void save(WorkTime workTime, WorkMinutes workMinutes, WorkMinutes overWorkMinutes)
             +List<WorkTime> findMonthWorkTime(YearMonth yearMonth)
+        }
+        class StoreTotalWorkMapData{
+            -
         }
         }
     namespace api {
@@ -100,7 +104,7 @@ classDiagram 　
         Rest <.. WorkTime
         WorkDataRepository <.. CalculateWorkMonthTimeService
         WorkDataRepository <.. RegisterWorkTimeService
-        WorkDataRepository <.. csvRegister
+        WorkDataRepository <.. CsvRegister
         RegisterWorkTimeService <.. RegisterWorkTimeController
         StoreMonthWorkData <.. CalculateWorkMonthTimeService
         CalculateWorkMonthTimeService <.. CalculateTotalWorkTimeController
