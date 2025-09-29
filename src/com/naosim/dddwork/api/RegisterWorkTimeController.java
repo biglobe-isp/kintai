@@ -8,6 +8,7 @@ import com.naosim.dddwork.service.RegisterWorkTimeService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RegisterWorkTimeController {
     RegisterWorkTimeService registerWorkTimeService;
@@ -19,7 +20,8 @@ public class RegisterWorkTimeController {
     // 値を受け取る
     public void invoke(String workDate, String startTime, String endTime) {
         // StringをパースしてWorkTimeにする
-        LocalDate parsingWorkDate = LocalDate.parse(workDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMdd");
+        LocalDate parsingWorkDate = LocalDate.parse(workDate, formatter);
         Hour startTimeHour = new Hour(Integer.parseInt(startTime.substring(0, 2)));
         Minute startTimeMinute = new Minute(Integer.parseInt(startTime.substring(2, 4)));
         Hour endTimeHour = new Hour(Integer.parseInt(endTime.substring(0, 2)));
@@ -35,7 +37,6 @@ public class RegisterWorkTimeController {
                 inputDate
         );
 
-        //　値をサービス層のメソッドに渡す
         registerWorkTimeService.registerWorkTime(workTime);
     }
 }

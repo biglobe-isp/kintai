@@ -26,15 +26,17 @@ public class CsvRegister implements WorkDataRepository {
     public void save(WorkTime workTime, StoreWorkTime storeWorkTime) {
         File file = new File(filePath);
         try (FileWriter filewriter = new FileWriter(file, true)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            String formattedDate = workTime.getWorkingDate().format(formatter);
             filewriter.write(String.format(
-                    "%s,%s,%s,%s,%s,%s\n",
-                    workTime.getWorkingDate(),
+                    "%s,%s,%s,%d,%d,%s\n",
+                    formattedDate,
                     String.format("%02d", workTime.getWorkingStartHour().getHour())
                             + String.format("%02d", workTime.getWorkingStartMinute().getMinute()),
                     String.format("%02d", workTime.getWorkingEndHour().getHour())
                             + String.format("%02d", workTime.getWorkingEndMinute().getMinute()),
-                    storeWorkTime.getWorkMinutes(),
-                    storeWorkTime.getOvertimeMinutes(),
+                    storeWorkTime.getWorkMinutes().getWorkMinutes(),
+                    storeWorkTime.getOvertimeMinutes().getWorkMinutes(),
                     workTime.getInputDate()
             ));
         } catch (IOException e) {
@@ -51,16 +53,13 @@ public class CsvRegister implements WorkDataRepository {
                 BufferedReader br = new BufferedReader(fr)
         ) {
             String line = br.readLine();
-//            Map<String, Integer> totalWorkMinutesMap = new HashMap<>();
-//            Map<String, Integer> totalOverWorkMinutesMap = new HashMap<>();
             while (line != null) {
                 String[] columns = line.split(",");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMM");
-                if (!columns[0].startsWith(yearMonth.format(formatter))) {
+                String yearMonthDate = yearMonth.format(formatter);
+                if (!columns[0].startsWith(yearMonthDate)) {
                     continue;
                 }
-//                totalWorkMinutesMap.put(columns[0], Integer.valueOf(columns[3]));
-//                totalOverWorkMinutesMap.put(columns[0], Integer.valueOf(columns[4]));
                 WorkMinutes totalWorkTime = new WorkMinutes(Integer.parseInt(columns[3]));
                 WorkMinutes totalOvertime = new WorkMinutes(Integer.parseInt(columns[4]));
                 StoreWorkTime totalWorkTimeObj = new StoreWorkTime(totalWorkTime, totalOvertime);
