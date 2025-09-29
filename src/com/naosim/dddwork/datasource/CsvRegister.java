@@ -52,8 +52,8 @@ public class CsvRegister implements WorkDataRepository {
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr)
         ) {
-            String line = br.readLine();
-            while (line != null) {
+            String line;
+            while ((line = br.readLine()) != null) {
                 String[] columns = line.split(",");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMM");
                 String yearMonthDate = yearMonth.format(formatter);
