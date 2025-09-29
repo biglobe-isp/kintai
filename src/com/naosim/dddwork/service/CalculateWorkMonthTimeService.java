@@ -1,5 +1,6 @@
 package com.naosim.dddwork.service;
 
+import com.naosim.dddwork.domain.StoreMonthWorkData;
 import com.naosim.dddwork.domain.StoreWorkTime;
 import com.naosim.dddwork.domain.TotalTime;
 import com.naosim.dddwork.domain.WorkDataRepository;

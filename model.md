@@ -53,6 +53,12 @@ classDiagram 　
             +WorkMinutes getWorkMinutes()
             +WorkMinutes getOvertimeMinutes()
         }
+        class StoreMonthWorkData{
+            +WorkMinutes totalWorkMinutes;
+            +WorkMinutes totalOverWorkMinutes;
+            +WorkMinutes getTotalWorkMinutes()
+            +WorkMinutes getTotalOverWorkMinutes()
+        }
         }
     namespace service {
         class RegisterWorkTimeService{
@@ -63,12 +69,6 @@ classDiagram 　
             +WorkDataRepository workDataRepository
             +TotalTime totalTime
             +StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth)
-        }
-        class StoreMonthWorkData{
-            +WorkMinutes totalWorkMinutes;
-            +WorkMinutes totalOverWorkMinutes;
-            +WorkMinutes getTotalWorkMinutes()
-            +WorkMinutes getTotalOverWorkMinutes()
         }
     }
     namespace datasource {
@@ -106,6 +106,7 @@ classDiagram 　
         WorkMinutes <.. WorkTime
         WorkMinutes <.. TotalTime
         WorkMinutes <.. StoreWorkTime
+        WorkMinutes <.. StoreMonthWorkData
         WorkMinutes <.. RegisterWorkTimeService
         WorkMinutes <.. CsvRegister
         StoreWorkTime <.. TotalTime

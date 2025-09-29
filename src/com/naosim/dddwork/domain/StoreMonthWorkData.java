@@ -1,6 +1,4 @@
-package com.naosim.dddwork.service;
-
-import com.naosim.dddwork.domain.WorkMinutes;
+package com.naosim.dddwork.domain;
 
 public class StoreMonthWorkData {
     private final WorkMinutes totalWorkMinutes;

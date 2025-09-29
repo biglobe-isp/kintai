@@ -1,8 +1,8 @@
 package com.naosim.dddwork.api;
 
+import com.naosim.dddwork.domain.StoreMonthWorkData;
 import com.naosim.dddwork.domain.WorkDataRepository;
 import com.naosim.dddwork.service.CalculateWorkMonthTimeService;
-import com.naosim.dddwork.service.StoreMonthWorkData;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
