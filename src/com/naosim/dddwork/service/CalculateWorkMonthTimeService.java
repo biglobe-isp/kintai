@@ -18,6 +18,7 @@ public class CalculateWorkMonthTimeService {
 
     public StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth) {
         List<StoreWorkTime> storeWorkTimeList = workDataRepository.findMonthWorkTime(yearMonth);
+
         WorkMinutes totalMonthWorkMinutes = totalTime.calculateTotalWorkMonthTime(
                 storeWorkTimeList
         );

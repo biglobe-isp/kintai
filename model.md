@@ -39,13 +39,19 @@ classDiagram 　
             +WorkMinutes calculateOverWorkTimeMinutes(Hour lunchBreak, Hour eveningBreak, Hour nightBreak)
         }
         class TotalTime{
-            +WorkMinutes calculateTotalWorkMonthTime()
-            +WorkMinutes calculateTotalOverWorkMonthTime()
+            +WorkMinutes calculateTotalWorkMonthTime(List<StoreWorkTime> storeWorkTimeList)
+            +WorkMinutes calculateTotalOverWorkMonthTime(List<StoreWorkTime> storeWorkTimeList)
         }
         class WorkDataRepository{
             <<Interface>>
             +void save(WorkTime workTime, WorkMinutes workMinutes, WorkMinutes overWorkMinutes)
             +List<WorkTime> findMonthWorkTime(YearMonth yearMonth)
+        }
+        class StoreWorkTime{
+            -WorkMinutes workMinutes
+            -WorkMinutes overTimeMinutes
+            +WorkMinutes getWorkMinutes()
+            +WorkMinutes getOvertimeMinutes()
         }
         }
     namespace service {
@@ -55,7 +61,8 @@ classDiagram 　
         }
         class CalculateWorkMonthTimeService{
             +WorkDataRepository workDataRepository
-            +StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth, TotalTime totalTime)
+            +TotalTime totalTime
+            +StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth)
         }
         class StoreMonthWorkData{
             +WorkMinutes totalWorkMinutes;
@@ -67,19 +74,15 @@ classDiagram 　
     namespace datasource {
         class CsvRegister{
             -String filepath
-            +List<StoreWorkTime> specificMonthWorkTimes
-            +void save(WorkTime workTime, WorkMinutes workMinutes, WorkMinutes overWorkMinutes)
-            +List<WorkTime> findMonthWorkTime(YearMonth yearMonth)
-        }
-        class StoreTotalWorkMapData{
-            -
+            +void save(WorkTime workTime, StoreWorkTime storeWorkTime)
+            +List<StoreWorkTime> findMonthWorkTime(YearMonth yearMonth)
         }
         }
     namespace api {
         class MethodType{
             <<Enum>>
             +INPUT
-            +Total
+            +TOTAL
         }
         class RegisterWorkTimeController{
             +RegisterWorkTimeService registerWorkTimeService
@@ -87,27 +90,51 @@ classDiagram 　
         }
         class CalculateTotalWorkTimeController{
             +CalculateWorkMonthTimeService calculateWorkMonthTimeService
-            +void callTotalMonthTime(String yearMonth)
+            +void callTotalMonthTime(String yearMonthString)
         }
         class Main{
-            
+            +MethodType methodType;
+            +WorkDataRepository workDataRepository
         }
         }
         
         Hour <.. WorkTime
         Hour <.. Rest
+        Hour <.. RegisterWorkTimeController
         Minute <.. WorkTime
+        Minute <.. RegisterWorkTimeController
         WorkMinutes <.. WorkTime
+        WorkMinutes <.. TotalTime
+        WorkMinutes <.. StoreWorkTime
+        WorkMinutes <.. RegisterWorkTimeService
+        WorkMinutes <.. CsvRegister
+        StoreWorkTime <.. TotalTime
+        StoreWorkTime <.. RegisterWorkTimeService
+        StoreWorkTime <.. CalculateWorkMonthTimeService
+        StoreWorkTime <.. CsvRegister
+        StoreWorkTime <.. WorkDataRepository
         WorkTime <.. WorkDataRepository
-        WorkDataRepository <.. TotalTime
-        WorkTime <.. TotalTime
+        WorkTime <.. RegisterWorkTimeService
+        WorkTime <.. CsvRegister
+        WorkTime <.. RegisterWorkTimeController
         Rest <.. WorkTime
+        Rest <.. RegisterWorkTimeService
+        WorkDataRepository <.. TotalTime
         WorkDataRepository <.. CalculateWorkMonthTimeService
         WorkDataRepository <.. RegisterWorkTimeService
         WorkDataRepository <.. CsvRegister
+        WorkDataRepository <.. RegisterWorkTimeController
+        WorkDataRepository <.. CalculateTotalWorkTimeController
+        WorkDataRepository <.. Main
         RegisterWorkTimeService <.. RegisterWorkTimeController
         StoreMonthWorkData <.. CalculateWorkMonthTimeService
+        StoreMonthWorkData <.. CalculateTotalWorkTimeController
         CalculateWorkMonthTimeService <.. CalculateTotalWorkTimeController
+        TotalTime <.. CalculateWorkMonthTimeService
+        CsvRegister <.. Main
+        MethodType <.. Main
+        RegisterWorkTimeController <.. Main
+        CalculateTotalWorkTimeController <.. Main
 %%ロジックはドメイン層　手段とロジックは分ける
 %%ヒト：従業員
 %%モノ：就業規則、開始時間、終業時間、就業時間、休憩時間、休憩開始時刻、休憩終了時刻、CSV
