@@ -53,6 +53,7 @@ public class CsvRegister implements WorkDataRepository {
                 BufferedReader br = new BufferedReader(fr)
         ) {
             String line;
+//            String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 String[] columns = line.split(",");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMM");
@@ -66,7 +67,7 @@ public class CsvRegister implements WorkDataRepository {
 
                 specificMonthWorkTimes.add(totalWorkTimeObj);
 
-                line = br.readLine();
+//                line = br.readLine();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
