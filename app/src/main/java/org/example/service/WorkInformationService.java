@@ -20,23 +20,23 @@ public class WorkInformationService {
     void register(WorkInformation workInformation) {
         workInformationRepository.persist(workInformation);
     }
-    TotalTime getTotalTime(Month month){
-        return new TotalTime(
-                new WorkingHours(
-                        workInformationRepository.findByMonth(month).orElse(List.of()).stream()
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .map(workInformation -> workInformation.getWorkTime()
-                ),
-                new Overtime(
-                        workInformationRepository.findByMonth(month).orElse(List.of()).stream()
-                                .filter(Optional::isPresent)
-                                .map(Optional::get)
-                                .map(WorkInformation::getOvertime)
-                                .map(overtime -> overtime.getHour() * 60 + overtime.getMinute())
-                                .reduce(0, Integer::sum)
-                )
-        );
-    };
+//    TotalTime getTotalTime(Month month){
+//        return new TotalTime(
+//                new WorkingHours(
+//                        workInformationRepository.findByMonth(month).orElse(List.of()).stream()
+//                                .filter(Optional::isPresent)
+//                                .map(Optional::get)
+//                                .map(workInformation -> workInformation.getWorkTime()
+//                ),
+//                new Overtime(
+//                        workInformationRepository.findByMonth(month).orElse(List.of()).stream()
+//                                .filter(Optional::isPresent)
+//                                .map(Optional::get)
+//                                .map(WorkInformation::getOvertime)
+//                                .map(overtime -> overtime.getHour() * 60 + overtime.getMinute())
+//                                .reduce(0, Integer::sum)
+//                )
+//        );
+//    };
 }
 //Optional<List<Optional<WorkInformation>>>
