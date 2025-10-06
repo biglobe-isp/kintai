@@ -2,7 +2,6 @@ package com.naosim.dddwork.datasource;
 
 import com.naosim.dddwork.domain.StoreWorkTime;
 import com.naosim.dddwork.domain.WorkDataRepository;
-import com.naosim.dddwork.domain.WorkMinutes;
 import com.naosim.dddwork.domain.WorkTime;
 
 import java.io.BufferedReader;
@@ -10,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -35,9 +35,9 @@ public class CsvRegister implements WorkDataRepository {
                             + String.format("%02d", workTime.getWorkingStartMinute().getMinute()),
                     String.format("%02d", workTime.getWorkingEndHour().getHour())
                             + String.format("%02d", workTime.getWorkingEndMinute().getMinute()),
-                    storeWorkTime.getWorkMinutes().getWorkMinutes(),
-                    storeWorkTime.getOvertimeMinutes().getWorkMinutes(),
-                    workTime.getInputDate()
+                    storeWorkTime.getWorkMinutes(),
+                    storeWorkTime.getOvertimeMinutes(),
+                    LocalDateTime.now()
             ));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -61,8 +61,8 @@ public class CsvRegister implements WorkDataRepository {
                 if (!columns[0].startsWith(yearMonthDate)) {
                     continue;
                 }
-                WorkMinutes totalWorkTime = new WorkMinutes(Integer.parseInt(columns[3]));
-                WorkMinutes totalOvertime = new WorkMinutes(Integer.parseInt(columns[4]));
+                int totalWorkTime = Integer.parseInt(columns[3]);
+                int totalOvertime = Integer.parseInt(columns[4]);
                 StoreWorkTime totalWorkTimeObj = new StoreWorkTime(totalWorkTime, totalOvertime);
 
                 specificMonthWorkTimes.add(totalWorkTimeObj);

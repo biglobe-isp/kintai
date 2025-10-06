@@ -1,27 +1,29 @@
 package com.naosim.dddwork.domain;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class WorkTime {
+    private static final int regularWorkingTime = 8;
     LocalDate workingDate;
     Hour workingStartHour;
     Minute workingStartMinute;
     Hour workingEndHour;
     Minute workingEndMinute;
-    LocalDateTime inputDate;
+    List<Integer> restHourList = new ArrayList<Integer>(Arrays.asList(12, 18, 21));
 
     public WorkTime(
             LocalDate workingDate,
             Hour workingStartHour, Minute workingStartMinute,
-            Hour workingEndHour, Minute workingEndMinute,
-            LocalDateTime inputDate) {
+            Hour workingEndHour, Minute workingEndMinute
+    ) {
         this.workingDate = workingDate;
         this.workingStartHour = workingStartHour;
         this.workingStartMinute = workingStartMinute;
         this.workingEndHour = workingEndHour;
         this.workingEndMinute = workingEndMinute;
-        this.inputDate = inputDate;
     }
 
     public LocalDate getWorkingDate() {
@@ -44,37 +46,26 @@ public class WorkTime {
         return workingEndMinute;
     }
 
-    public LocalDateTime getInputDate() {
-        return inputDate;
-    }
-
-    public WorkMinutes calculateWorkTimeMinutes(Hour lunchBreak, Hour eveningBreak, Hour nightBreak) {
+    public int calculateWorkTimeMinutes() {
         int endWorkTimeMinutes = workingEndHour.getHour() * 60 + workingEndMinute.getMinute();
         int startWorkTimeMinutes = workingStartHour.getHour() * 60 + workingStartMinute.getMinute();
         int workMinutes = endWorkTimeMinutes - startWorkTimeMinutes;
-        if (workingEndHour.getHour() == lunchBreak.getHour()) {
-            workMinutes -= workingEndMinute.getMinute();
-        } else if (workingEndHour.getHour() >= lunchBreak.getHour() + 1) {
-            workMinutes -= 60;
+        for (int restHour : restHourList) {
+            if (workingEndHour.getHour() == restHour) {
+                workMinutes -= workingEndMinute.getMinute();
+            } else if (workingEndHour.getHour() >= restHour + 1) {
+                workMinutes -= 60;
+            }
         }
+        if (workMinutes < 0)
+            throw new IllegalArgumentException("時間が不正です。");
 
-        if (workingEndHour.getHour() == eveningBreak.getHour()) {
-            workMinutes -= workingEndMinute.getMinute();
-        } else if (workingEndHour.getHour() >= eveningBreak.getHour() + 1) {
-            workMinutes -= 60;
-        }
-
-        if (workingEndHour.getHour() == nightBreak.getHour()) {
-            workMinutes -= workingEndMinute.getMinute();
-        } else if (workingEndHour.getHour() >= nightBreak.getHour() + 1) {
-            workMinutes -= 60;
-        }
-        return new WorkMinutes(workMinutes);
+        return workMinutes;
     }
 
-    public WorkMinutes calculateOverWorkTimeMinutes(Hour lunchBreak, Hour eveningBreak, Hour nightBreak) {
-        int workMinutes = this.calculateWorkTimeMinutes(lunchBreak, eveningBreak, nightBreak).getWorkMinutes();
-        int overMinutes = Math.max(workMinutes - 8 * 60, 0);
-        return new WorkMinutes(overMinutes);
+    public int calculateOverWorkTimeMinutes() {
+        int workMinutes = this.calculateWorkTimeMinutes();
+        int overMinutes = Math.max(workMinutes - regularWorkingTime * 60, 0);
+        return overMinutes;
     }
 }

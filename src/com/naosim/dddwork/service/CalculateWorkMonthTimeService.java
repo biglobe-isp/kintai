@@ -4,7 +4,6 @@ import com.naosim.dddwork.domain.StoreMonthWorkData;
 import com.naosim.dddwork.domain.StoreWorkTime;
 import com.naosim.dddwork.domain.TotalTime;
 import com.naosim.dddwork.domain.WorkDataRepository;
-import com.naosim.dddwork.domain.WorkMinutes;
 
 import java.time.YearMonth;
 import java.util.List;
@@ -20,10 +19,10 @@ public class CalculateWorkMonthTimeService {
     public StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth) {
         List<StoreWorkTime> storeWorkTimeList = workDataRepository.findMonthWorkTime(yearMonth);
 
-        WorkMinutes totalMonthWorkMinutes = totalTime.calculateTotalWorkMonthTime(
+        int totalMonthWorkMinutes = totalTime.calculateTotalWorkMonthTime(
                 storeWorkTimeList
         );
-        WorkMinutes totalMonthOverWorkMinutes = totalTime.calculateTotalOverWorkMonthTime(
+        int totalMonthOverWorkMinutes = totalTime.calculateTotalOverWorkMonthTime(
                 storeWorkTimeList
         );
         return new StoreMonthWorkData(totalMonthWorkMinutes, totalMonthOverWorkMinutes);

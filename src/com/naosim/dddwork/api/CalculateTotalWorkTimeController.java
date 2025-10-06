@@ -21,11 +21,9 @@ public class CalculateTotalWorkTimeController {
         //　値をサービス層のメソッドに渡す
 //        calculateWorkMonthTimeService.totalMonthWorkTime(yearMonth);
         int totalWorkMinutes = monthWorkData
-                .getTotalWorkMinutes()
-                .getWorkMinutes();
+                .getTotalWorkMinutes();
         int totalOverWorkMinutes = monthWorkData
-                .getTotalOvertimeMinutes()
-                .getWorkMinutes();
+                .getTotalOvertimeMinutes();
 
         System.out.println("勤務時間: " + totalWorkMinutes / 60 + "時間" + totalWorkMinutes % 60 + "分");
         System.out.println("残業時間: " + totalOverWorkMinutes / 60 + "時間" + totalOverWorkMinutes % 60 + "分");

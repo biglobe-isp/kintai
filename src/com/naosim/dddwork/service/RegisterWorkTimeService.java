@@ -1,9 +1,7 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.Rest;
 import com.naosim.dddwork.domain.StoreWorkTime;
 import com.naosim.dddwork.domain.WorkDataRepository;
-import com.naosim.dddwork.domain.WorkMinutes;
 import com.naosim.dddwork.domain.WorkTime;
 
 public class RegisterWorkTimeService {
@@ -14,16 +12,8 @@ public class RegisterWorkTimeService {
     }
 
     public void registerWorkTime(WorkTime workTime) {
-        WorkMinutes workMinutes = workTime.calculateWorkTimeMinutes(
-                Rest.getLunchBreak(),
-                Rest.getEveningBreak(),
-                Rest.getNightBreak()
-        );
-        WorkMinutes overWorkMinutes = workTime.calculateOverWorkTimeMinutes(
-                Rest.getLunchBreak(),
-                Rest.getEveningBreak(),
-                Rest.getNightBreak()
-        );
+        int workMinutes = workTime.calculateWorkTimeMinutes();
+        int overWorkMinutes = workTime.calculateOverWorkTimeMinutes();
         StoreWorkTime dailyWorkData = new StoreWorkTime(workMinutes, overWorkMinutes);
         workDataRepository.save(workTime, dailyWorkData);
     }

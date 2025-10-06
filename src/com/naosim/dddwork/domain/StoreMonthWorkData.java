@@ -1,20 +1,20 @@
 package com.naosim.dddwork.domain;
 
 public class StoreMonthWorkData {
-    private final WorkMinutes totalWorkMinutes;
-    private final WorkMinutes totalOvertimeMinutes;
+    private final int totalWorkMinutes;
+    private final int totalOvertimeMinutes;
 
-    public StoreMonthWorkData(WorkMinutes totalWorkMinutes, WorkMinutes totalOvertimeMinutes) {
+    public StoreMonthWorkData(int totalWorkMinutes, int totalOvertimeMinutes) {
         this.totalWorkMinutes = totalWorkMinutes;
         this.totalOvertimeMinutes = totalOvertimeMinutes;
     }
 
     // 値を取得するためのゲッター
-    public WorkMinutes getTotalWorkMinutes() {
+    public int getTotalWorkMinutes() {
         return totalWorkMinutes;
     }
 
-    public WorkMinutes getTotalOvertimeMinutes() {
+    public int getTotalOvertimeMinutes() {
         return totalOvertimeMinutes;
     }
 }

@@ -3,21 +3,21 @@ package com.naosim.dddwork.domain;
 import java.util.List;
 
 public final class TotalTime {
-    public WorkMinutes calculateTotalWorkMonthTime(
+    public int calculateTotalWorkMonthTime(
             List<StoreWorkTime> storeWorkTimeList) {
         int totalWorkTime = 0;
         for (StoreWorkTime storeWorkTime : storeWorkTimeList) {
-            totalWorkTime += storeWorkTime.getWorkMinutes().getWorkMinutes();
+            totalWorkTime += storeWorkTime.getWorkMinutes();
         }
-        return new WorkMinutes(totalWorkTime);
+        return totalWorkTime;
     }
 
-    public WorkMinutes calculateTotalOverWorkMonthTime(
+    public int calculateTotalOverWorkMonthTime(
             List<StoreWorkTime> storeWorkTimeList) {
         int totalOverWorkTime = 0;
         for (StoreWorkTime storeWorkTime : storeWorkTimeList) {
-            totalOverWorkTime += storeWorkTime.getOvertimeMinutes().getWorkMinutes();
+            totalOverWorkTime += storeWorkTime.getOvertimeMinutes();
         }
-        return new WorkMinutes(totalOverWorkTime);
+        return totalOverWorkTime;
     }
 }

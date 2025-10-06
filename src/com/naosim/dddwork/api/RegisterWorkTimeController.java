@@ -7,7 +7,6 @@ import com.naosim.dddwork.domain.WorkTime;
 import com.naosim.dddwork.service.RegisterWorkTimeService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class RegisterWorkTimeController {
@@ -26,15 +25,13 @@ public class RegisterWorkTimeController {
         Minute startTimeMinute = new Minute(Integer.parseInt(startTime.substring(2, 4)));
         Hour endTimeHour = new Hour(Integer.parseInt(endTime.substring(0, 2)));
         Minute endTimeMinute = new Minute(Integer.parseInt(endTime.substring(2, 4)));
-        LocalDateTime inputDate = LocalDateTime.now();
 
         WorkTime workTime = new WorkTime(
                 parsingWorkDate,
                 startTimeHour,
                 startTimeMinute,
                 endTimeHour,
-                endTimeMinute,
-                inputDate
+                endTimeMinute
         );
 
         registerWorkTimeService.registerWorkTime(workTime);
