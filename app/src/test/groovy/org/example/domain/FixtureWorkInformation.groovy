@@ -2,10 +2,10 @@ package org.example.domain
 
 class FixtureWorkInformation {
     static WorkInformation get(){
-        return  new WorkInformation(
+        new WorkInformation(
                 FixtureWorkTime.get(),
-                FixtureTargetDate.get(),
-                FixtureCreateTimestamp.get()
+                FixtureDateToRegister.get(),
+                FixtureTimestampOfTheRegistration.get()
         )
     }
 }

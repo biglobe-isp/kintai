@@ -4,14 +4,14 @@ import lombok.Value;
 
 @Value
 public class WorkTime {
-    WorkingHours workingHours;
-    Overtime overtime;
-    StartTime startTime;
-    EndTime endTime;
+    TotalWorkingHours totalWorkingHours;
+    TotalOverTimeHours totalOverTimeHours;
+    WorkStartTime workStartTime;
+    WorkEndTime workEndTime;
 
-    public static WorkTime of(StartTime startTime, EndTime endTime) {
-        int startMinutes = startTime.convertToMinutes().getValue();
-        int endMinutes = endTime.convertToMinutes().getValue();
+    public static WorkTime of(WorkStartTime workStartTime, WorkEndTime workEndTime) {
+        int startMinutes = workStartTime.convertToMinutes();
+        int endMinutes = workEndTime.convertToMinutes();
 
         int grossMinutes = endMinutes - startMinutes;
 
@@ -23,15 +23,15 @@ public class WorkTime {
         int overtimeMinutes = Math.max(0, totalMinutes - WorkRole.LEGAL_WORK_MINUTES);
 
         return new WorkTime(
-                new WorkingHours(new Time(legalWorkMinutes)),
-                new Overtime(new Time(overtimeMinutes)),
-                startTime,
-                endTime
+                new TotalWorkingHours(legalWorkMinutes),
+                new TotalOverTimeHours(overtimeMinutes),
+                workStartTime,
+                workEndTime
         );
     }
 
     private static int calculateBreakTime(int startMinutes, int endMinutes) {
-        return WorkRole.getAllBreak()
+        return BreakTimes.getAllBreak()
                 .stream()
                 .filter(breakTime -> breakTime.isInclude(startMinutes, endMinutes))
                 .mapToInt(

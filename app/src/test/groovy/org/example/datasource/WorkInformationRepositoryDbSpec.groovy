@@ -1,7 +1,7 @@
 package org.example.datasource
 
 import org.example.App
-import org.example.domain.FixtureMonth
+
 import org.example.domain.FixtureWorkInformation
 import org.example.service.WorkInformationRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,12 +11,12 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 import java.time.LocalDateTime
+import java.time.YearMonth
 
 @SpringBootTest
 @ActiveProfiles("test")
-@ContextConfiguration(classes = [App])
+@ContextConfiguration(classes = [WorkInformationCSVMapper, WorkInformationRepositoryDb])
 class WorkInformationRepositoryDbSpec extends Specification {
-
     @Autowired
     WorkInformationRepository workInformationRepository
 
@@ -33,7 +33,7 @@ class WorkInformationRepositoryDbSpec extends Specification {
 
     def "DBから勤務情報を取得できる"() {
         setup:
-        def month = FixtureMonth.get()
+        def month = YearMonth.parse("2023-02")
         when:
         def result = workInformationRepository.findByMonth(month)
 
@@ -41,9 +41,9 @@ class WorkInformationRepositoryDbSpec extends Specification {
         result.isPresent()
         def workInformation = result.get()
         workInformation.size() == 1
-        workInformation[0].get().workTime.workingHours.time.getValue() == 5 * 60
-        workInformation[0].get().workTime.overtime.time.getValue() == 0 * 60
-        workInformation[0].get().targetDate.date.getValue() == "20230205"
-        workInformation[0].get().createTimestamp.timestamp.getValue() == LocalDateTime.of(2023, 2, 5, 10, 0)
+        workInformation[0].get().workTime.totalWorkingHours.getValue() == 5 * 60
+        workInformation[0].get().workTime.totalOverTimeHours.getValue() == 0 * 60
+        workInformation[0].get().dateToRegister.getValue().toString() == "2023-02-05"
+        workInformation[0].get().timestampOfTheRegistration.getValue() == LocalDateTime.of(2023, 2, 5, 10, 0)
     }
 }

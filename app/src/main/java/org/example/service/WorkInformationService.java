@@ -1,42 +1,52 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.Month;
-import org.example.domain.Overtime;
-import org.example.domain.Time;
-import org.example.domain.TotalTime;
+import org.example.domain.TotalOverTimeHours;
+import org.example.domain.TotalWorkingHours;
+import org.example.domain.WorkEndTime;
 import org.example.domain.WorkInformation;
-import org.example.domain.WorkingHours;
-import org.springframework.stereotype.Component;
+import org.example.domain.WorkStartTime;
+import org.example.domain.WorkTime;
+import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class WorkInformationService {
     private final WorkInformationRepository workInformationRepository;
 
-    void register(WorkInformation workInformation) {
-        workInformationRepository.persist(workInformation);
+    public boolean register(WorkInformation workInformation) {
+        try {
+            workInformationRepository.persist(workInformation);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
-//    TotalTime getTotalTime(Month month){
-//        return new TotalTime(
-//                new WorkingHours(
-//                        workInformationRepository.findByMonth(month).orElse(List.of()).stream()
-//                                .filter(Optional::isPresent)
-//                                .map(Optional::get)
-//                                .map(workInformation -> workInformation.getWorkTime()
-//                ),
-//                new Overtime(
-//                        workInformationRepository.findByMonth(month).orElse(List.of()).stream()
-//                                .filter(Optional::isPresent)
-//                                .map(Optional::get)
-//                                .map(WorkInformation::getOvertime)
-//                                .map(overtime -> overtime.getHour() * 60 + overtime.getMinute())
-//                                .reduce(0, Integer::sum)
-//                )
-//        );
-//    };
+
+    public WorkTime getTotalWorkTime(YearMonth month) {
+        Optional<List<Optional<WorkInformation>>> workInformationList = workInformationRepository.findByMonth(month);
+
+        return new WorkTime(
+                new TotalWorkingHours(
+                        workInformationList.map(list -> list.stream()
+                                .mapToInt(wi -> wi.map(workInformation -> workInformation
+                                        .getWorkTime()
+                                        .getTotalWorkingHours()
+                                        .getValue()).orElse(0))
+                                .sum()).orElse(0)),
+                new TotalOverTimeHours(
+                        workInformationList.map(list -> list.stream()
+                                .mapToInt(wi -> wi.map(workInformation -> workInformation
+                                        .getWorkTime()
+                                        .getTotalOverTimeHours()
+                                        .getValue()).orElse(0))
+                                .sum()).orElse(0)),
+                WorkStartTime.of("00_00"),
+                WorkEndTime.of("00_00")
+        );
+    }
 }
-//Optional<List<Optional<WorkInformation>>>

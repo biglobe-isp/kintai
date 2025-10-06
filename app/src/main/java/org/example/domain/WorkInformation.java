@@ -5,6 +5,6 @@ import lombok.Value;
 @Value
 public class WorkInformation {
     WorkTime workTime;
-    TargetDate targetDate;
-    CreateTimestamp createTimestamp;
+    DateToRegister dateToRegister;
+    TimestampOfTheRegistration timestampOfTheRegistration;
 }
