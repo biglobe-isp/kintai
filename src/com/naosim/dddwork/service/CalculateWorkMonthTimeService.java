@@ -1,23 +1,23 @@
 package com.naosim.dddwork.service;
 
-import com.naosim.dddwork.domain.StoreMonthWorkData;
-import com.naosim.dddwork.domain.StoreWorkTime;
-import com.naosim.dddwork.domain.TotalTime;
+import com.naosim.dddwork.domain.MonthlySumWorkTime;
+import com.naosim.dddwork.domain.MonthlySumWorkTimeStorage;
 import com.naosim.dddwork.domain.WorkDataRepository;
+import com.naosim.dddwork.domain.WorkTimeStorage;
 
 import java.time.YearMonth;
 import java.util.List;
 
 public class CalculateWorkMonthTimeService {
     private final WorkDataRepository workDataRepository;
-    TotalTime totalTime = new TotalTime();
+    MonthlySumWorkTime totalTime = new MonthlySumWorkTime();
 
     public CalculateWorkMonthTimeService(WorkDataRepository workDataRepository) {
         this.workDataRepository = workDataRepository;
     }
 
-    public StoreMonthWorkData totalMonthWorkTime(YearMonth yearMonth) {
-        List<StoreWorkTime> storeWorkTimeList = workDataRepository.findMonthWorkTime(yearMonth);
+    public MonthlySumWorkTimeStorage totalMonthWorkTime(YearMonth yearMonth) {
+        List<WorkTimeStorage> storeWorkTimeList = workDataRepository.findMonthWorkTime(yearMonth);
 
         int totalMonthWorkMinutes = totalTime.calculateTotalWorkMonthTime(
                 storeWorkTimeList
@@ -25,7 +25,7 @@ public class CalculateWorkMonthTimeService {
         int totalMonthOverWorkMinutes = totalTime.calculateTotalOverWorkMonthTime(
                 storeWorkTimeList
         );
-        return new StoreMonthWorkData(totalMonthWorkMinutes, totalMonthOverWorkMinutes);
+        return new MonthlySumWorkTimeStorage(totalMonthWorkMinutes, totalMonthOverWorkMinutes);
     }
 }
 // 返り値が二つ...

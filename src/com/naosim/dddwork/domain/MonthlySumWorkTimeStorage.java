@@ -1,10 +1,10 @@
 package com.naosim.dddwork.domain;
 
-public class StoreMonthWorkData {
+public class MonthlySumWorkTimeStorage {
     private final int totalWorkMinutes;
     private final int totalOvertimeMinutes;
 
-    public StoreMonthWorkData(int totalWorkMinutes, int totalOvertimeMinutes) {
+    public MonthlySumWorkTimeStorage(int totalWorkMinutes, int totalOvertimeMinutes) {
         this.totalWorkMinutes = totalWorkMinutes;
         this.totalOvertimeMinutes = totalOvertimeMinutes;
     }

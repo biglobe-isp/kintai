@@ -1,6 +1,6 @@
 package com.naosim.dddwork.api;
 
-import com.naosim.dddwork.domain.StoreMonthWorkData;
+import com.naosim.dddwork.domain.MonthlySumWorkTimeStorage;
 import com.naosim.dddwork.domain.WorkDataRepository;
 import com.naosim.dddwork.service.CalculateWorkMonthTimeService;
 
@@ -17,7 +17,7 @@ public class CalculateTotalWorkTimeController {
     public void callTotalMonthTime(String yearMonthString) {
         // コントローラー層で年月ごとに分岐
         YearMonth yearMonth = YearMonth.parse(yearMonthString, DateTimeFormatter.ofPattern("uuuuMM"));
-        StoreMonthWorkData monthWorkData = calculateWorkMonthTimeService.totalMonthWorkTime(yearMonth);
+        MonthlySumWorkTimeStorage monthWorkData = calculateWorkMonthTimeService.totalMonthWorkTime(yearMonth);
         //　値をサービス層のメソッドに渡す
 //        calculateWorkMonthTimeService.totalMonthWorkTime(yearMonth);
         int totalWorkMinutes = monthWorkData

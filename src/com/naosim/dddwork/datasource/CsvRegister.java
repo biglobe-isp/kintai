@@ -1,8 +1,8 @@
 package com.naosim.dddwork.datasource;
 
-import com.naosim.dddwork.domain.StoreWorkTime;
 import com.naosim.dddwork.domain.WorkDataRepository;
 import com.naosim.dddwork.domain.WorkTime;
+import com.naosim.dddwork.domain.WorkTimeStorage;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +23,7 @@ public class CsvRegister implements WorkDataRepository {
     }
 
     @Override
-    public void save(WorkTime workTime, StoreWorkTime storeWorkTime) {
+    public void save(WorkTime workTime, WorkTimeStorage storeWorkTime) {
         File file = new File(filePath);
         try (FileWriter filewriter = new FileWriter(file, true)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -45,9 +45,9 @@ public class CsvRegister implements WorkDataRepository {
     }
 
     @Override
-    public List<StoreWorkTime> findMonthWorkTime(YearMonth yearMonth) {
+    public List<WorkTimeStorage> findMonthWorkTime(YearMonth yearMonth) {
         File file = new File(filePath);
-        List<StoreWorkTime> specificMonthWorkTimes = new ArrayList<>();
+        List<WorkTimeStorage> specificMonthWorkTimes = new ArrayList<>();
         try (
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr)
@@ -63,7 +63,7 @@ public class CsvRegister implements WorkDataRepository {
                 }
                 int totalWorkTime = Integer.parseInt(columns[3]);
                 int totalOvertime = Integer.parseInt(columns[4]);
-                StoreWorkTime totalWorkTimeObj = new StoreWorkTime(totalWorkTime, totalOvertime);
+                WorkTimeStorage totalWorkTimeObj = new WorkTimeStorage(totalWorkTime, totalOvertime);
 
                 specificMonthWorkTimes.add(totalWorkTimeObj);
 

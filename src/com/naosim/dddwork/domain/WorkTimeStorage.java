@@ -1,10 +1,10 @@
 package com.naosim.dddwork.domain;
 
-public class StoreWorkTime {
+public class WorkTimeStorage {
     private final int workMinutes;
     private final int overTimeMinutes;
 
-    public StoreWorkTime(int workMinutes, int overTimeMinutes) {
+    public WorkTimeStorage(int workMinutes, int overTimeMinutes) {
         this.workMinutes = workMinutes;
         this.overTimeMinutes = overTimeMinutes;
     }

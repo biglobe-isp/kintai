@@ -2,20 +2,20 @@ package com.naosim.dddwork.domain;
 
 import java.util.List;
 
-public final class TotalTime {
+public final class MonthlySumWorkTime {
     public int calculateTotalWorkMonthTime(
-            List<StoreWorkTime> storeWorkTimeList) {
+            List<WorkTimeStorage> storeWorkTimeList) {
         int totalWorkTime = 0;
-        for (StoreWorkTime storeWorkTime : storeWorkTimeList) {
+        for (WorkTimeStorage storeWorkTime : storeWorkTimeList) {
             totalWorkTime += storeWorkTime.getWorkMinutes();
         }
         return totalWorkTime;
     }
 
     public int calculateTotalOverWorkMonthTime(
-            List<StoreWorkTime> storeWorkTimeList) {
+            List<WorkTimeStorage> storeWorkTimeList) {
         int totalOverWorkTime = 0;
-        for (StoreWorkTime storeWorkTime : storeWorkTimeList) {
+        for (WorkTimeStorage storeWorkTime : storeWorkTimeList) {
             totalOverWorkTime += storeWorkTime.getOvertimeMinutes();
         }
         return totalOverWorkTime;
