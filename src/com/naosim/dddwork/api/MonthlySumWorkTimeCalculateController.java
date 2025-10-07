@@ -2,16 +2,16 @@ package com.naosim.dddwork.api;
 
 import com.naosim.dddwork.domain.MonthlySumWorkTimeStorage;
 import com.naosim.dddwork.domain.WorkDataRepository;
-import com.naosim.dddwork.service.CalculateWorkMonthTimeService;
+import com.naosim.dddwork.service.MonthlySumWorkTimeCalculateService;
 
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 
-public class CalculateTotalWorkTimeController {
-    CalculateWorkMonthTimeService calculateWorkMonthTimeService;
+public class MonthlySumWorkTimeCalculateController {
+    MonthlySumWorkTimeCalculateService calculateWorkMonthTimeService;
 
-    public CalculateTotalWorkTimeController(WorkDataRepository workDataRepository) {
-        this.calculateWorkMonthTimeService = new CalculateWorkMonthTimeService(workDataRepository);
+    public MonthlySumWorkTimeCalculateController(WorkDataRepository workDataRepository) {
+        this.calculateWorkMonthTimeService = new MonthlySumWorkTimeCalculateService(workDataRepository);
     }
 
     public void callTotalMonthTime(String yearMonthString) {

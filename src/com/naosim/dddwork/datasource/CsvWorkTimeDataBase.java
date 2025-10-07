@@ -15,10 +15,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvRegister implements WorkDataRepository {
+public class CsvWorkTimeDataBase implements WorkDataRepository {
     private final String filePath;
 
-    public CsvRegister(String filePath) {
+    public CsvWorkTimeDataBase(String filePath) {
         this.filePath = filePath;
     }
 

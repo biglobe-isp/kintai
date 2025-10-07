@@ -1,12 +1,12 @@
 package com.naosim.dddwork.api;
 
-import com.naosim.dddwork.datasource.CsvRegister;
+import com.naosim.dddwork.datasource.CsvWorkTimeDataBase;
 import com.naosim.dddwork.domain.WorkDataRepository;
 
 public class Main {
     public static void main(String[] args) {
         MethodType methodType;
-        WorkDataRepository workDataRepository = new CsvRegister("data.csv");
+        WorkDataRepository workDataRepository = new CsvWorkTimeDataBase("data.csv");
         try {
             if (args.length < 1) {
                 throw new RuntimeException("引数が足りません");
@@ -24,18 +24,18 @@ public class Main {
                     if (args.length < 4) {
                         throw new RuntimeException("引数が足りません");
                     }
-                    RegisterWorkTimeController registerWorkTimeController = new RegisterWorkTimeController(
+                    WorkTimeRegisterController workTimeRegisterController = new WorkTimeRegisterController(
                             workDataRepository);
-                    registerWorkTimeController.invoke(args[1], args[2], args[3]);
+                    workTimeRegisterController.invoke(args[1], args[2], args[3]);
                     break;
                 case TOTAL:
                     if (args.length < 2) {
                         throw new RuntimeException("引数が足りません");
                     }
                     String yearMonth = args[1];
-                    CalculateTotalWorkTimeController calculateTotalWorkTimeController = new CalculateTotalWorkTimeController(
+                    MonthlySumWorkTimeCalculateController monthlySumWorkTimeCalculateController = new MonthlySumWorkTimeCalculateController(
                             workDataRepository);
-                    calculateTotalWorkTimeController.callTotalMonthTime(yearMonth);
+                    monthlySumWorkTimeCalculateController.callTotalMonthTime(yearMonth);
                     break;
             }
         } catch (Exception e) {

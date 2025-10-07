@@ -4,16 +4,16 @@ import com.naosim.dddwork.domain.Hour;
 import com.naosim.dddwork.domain.Minute;
 import com.naosim.dddwork.domain.WorkDataRepository;
 import com.naosim.dddwork.domain.WorkTime;
-import com.naosim.dddwork.service.RegisterWorkTimeService;
+import com.naosim.dddwork.service.WorkTimeRegisterService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class RegisterWorkTimeController {
-    RegisterWorkTimeService registerWorkTimeService;
+public class WorkTimeRegisterController {
+    WorkTimeRegisterService registerWorkTimeService;
 
-    public RegisterWorkTimeController(WorkDataRepository workDataRepository) {
-        this.registerWorkTimeService = new RegisterWorkTimeService(workDataRepository);
+    public WorkTimeRegisterController(WorkDataRepository workDataRepository) {
+        this.registerWorkTimeService = new WorkTimeRegisterService(workDataRepository);
     }
 
     // 値を受け取る

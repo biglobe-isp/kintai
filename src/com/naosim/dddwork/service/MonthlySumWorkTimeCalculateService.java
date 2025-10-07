@@ -8,11 +8,11 @@ import com.naosim.dddwork.domain.WorkTimeStorage;
 import java.time.YearMonth;
 import java.util.List;
 
-public class CalculateWorkMonthTimeService {
+public class MonthlySumWorkTimeCalculateService {
     private final WorkDataRepository workDataRepository;
     MonthlySumWorkTime totalTime = new MonthlySumWorkTime();
 
-    public CalculateWorkMonthTimeService(WorkDataRepository workDataRepository) {
+    public MonthlySumWorkTimeCalculateService(WorkDataRepository workDataRepository) {
         this.workDataRepository = workDataRepository;
     }
 

@@ -4,10 +4,10 @@ import com.naosim.dddwork.domain.WorkDataRepository;
 import com.naosim.dddwork.domain.WorkTime;
 import com.naosim.dddwork.domain.WorkTimeStorage;
 
-public class RegisterWorkTimeService {
+public class WorkTimeRegisterService {
     private final WorkDataRepository workDataRepository;
 
-    public RegisterWorkTimeService(WorkDataRepository workDataRepository) {
+    public WorkTimeRegisterService(WorkDataRepository workDataRepository) {
         this.workDataRepository = workDataRepository;
     }
 
