@@ -20,7 +20,7 @@ public class RegisterCommandLine {
 
         if (dateToRegisterString == null || startTimeToRegisterString == null || endTimeToRegisterString == null) {
             throw new IllegalArgumentException(
-                    "Invalid argument format. Expected format: key-value (e.g., date-2023/10/01).");
+                    "Invalid argument format. Expected format: key:value (e.g., date:20231001).");
         }
 
         return new RegisterInput(

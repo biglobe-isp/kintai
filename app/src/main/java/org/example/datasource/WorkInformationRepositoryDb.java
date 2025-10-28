@@ -3,6 +3,7 @@ package org.example.datasource;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.TotalHours;
 import org.example.domain.WorkInformation;
+import org.example.domain.WorkYearMonth;
 import org.example.service.WorkInformationRepository;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class WorkInformationRepositoryDb implements WorkInformationRepository {
     }
 
     @Override
-    public Optional<List<Optional<TotalHours>>> findByMonth(YearMonth month) {
-        return workInformationCSVMapper.findByMonth(month);
+    public Optional<List<Optional<TotalHours>>> findByMonth(WorkYearMonth workYearMonth) {
+        return workInformationCSVMapper.findByMonth(workYearMonth);
     }
 }

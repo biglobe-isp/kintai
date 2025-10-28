@@ -15,7 +15,7 @@ public class DateToRegister {
             LocalDate localDate = LocalDate.parse(value, YEAR_MONTH_DAY);
             return new DateToRegister(localDate);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date-time format: " + value, e);
+            throw new IllegalArgumentException("Invalid date format. Expected format: yyyyMMdd (e.g., 20230815).");
         }
     }
 }

@@ -15,7 +15,7 @@ public class WorkEndTime {
             LocalTime localTime = LocalTime.parse(value, HOUR_HYPHEN_MINUTE);
             return new WorkEndTime(localTime);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid time format: " + value, e);
+            throw new IllegalArgumentException("Invalid work end time format. Expected format: HH_mm (e.g., 18_00).");
         }
     }
 }

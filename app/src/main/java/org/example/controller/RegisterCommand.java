@@ -12,14 +12,9 @@ public class RegisterCommand implements Command {
 
     @Override
     public void execute(String[] args) {
-        try {
-            RegisterInput registerInput = RegisterCommandLine.toRegisterInformation(args);
-            String result = workInformationService.register(registerInput) ? "success" : "fail";
-            System.out.println(result);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            System.out.println("Usage: java Main input -date:yyyyMMdd [options]");
-        }
+        RegisterInput registerInput = RegisterCommandLine.toRegisterInformation(args);
+        String result = workInformationService.register(registerInput) ? "success" : "fail";
+        System.out.println(result);
     }
 
     @Override

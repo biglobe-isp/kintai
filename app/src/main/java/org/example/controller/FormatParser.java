@@ -5,11 +5,13 @@ import java.util.Objects;
 
 public class FormatParser {
     public static String parseDataOfCoron(String data) {
-        final String[] split = data.split(":");
-        if(split[1] == null || split[1].isBlank()) {
-            throw new IllegalArgumentException("Value for " + split[0] + " is missing or empty.");
+        try{
+            final String[] split = data.split(":");
+            return split[1];
+        }catch(Exception e){
+            throw new IllegalArgumentException(
+                    "Invalid argument format. Expected format: key:value (e.g., date:20170101).");
         }
-        return split[1];
     }
 
     public static List<String> prepareWorkTimeArgs(String[] args) {

@@ -15,7 +15,7 @@ public class WorkStartTime {
             LocalTime localTime = LocalTime.parse(value, HOUR_HYPHEN_MINUTE);
             return new WorkStartTime(localTime);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid time format: " + value, e);
+            throw new IllegalArgumentException("Invalid work start time format. Expected format: HH_mm (e.g., 09_00).");
         }
     }
 }

@@ -6,6 +6,7 @@ import org.example.domain.TotalHours;
 import org.example.domain.TotalOverTimeHours;
 import org.example.domain.TotalWorkingHours;
 import org.example.domain.WorkInformation;
+import org.example.domain.WorkYearMonth;
 import org.springframework.stereotype.Service;
 
 import java.time.YearMonth;
@@ -20,18 +21,14 @@ public class WorkInformationService {
     private final WorkInformationRepository workInformationRepository;
 
     public boolean register(RegisterInput registerInput) {
-        try {
-            WorkInformation workInformation = registerInput.toWorkInformation();
-            workInformationRepository.persist(workInformation);
-            return true;
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
+        WorkInformation workInformation = registerInput.toWorkInformation();
+        workInformationRepository.persist(workInformation);
+        return true;
     }
 
     public TotalHours getTotalWorkTime(String month) {
-        YearMonth yearMonth = YearMonth.parse(month, YEAR_MONTH);
-        Optional<List<Optional<TotalHours>>> totalHoursList = workInformationRepository.findByMonth(yearMonth);
+        WorkYearMonth workYearMonth = WorkYearMonth.of(month);
+        Optional<List<Optional<TotalHours>>> totalHoursList = workInformationRepository.findByMonth(workYearMonth);
 
         return new TotalHours(
                 new TotalWorkingHours(

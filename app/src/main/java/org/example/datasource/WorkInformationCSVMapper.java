@@ -12,6 +12,7 @@ import org.example.domain.DateToRegister;
 import org.example.domain.WorkInformation;
 import org.example.domain.WorkTime;
 import org.example.domain.TotalWorkingHours;
+import org.example.domain.WorkYearMonth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,7 @@ public class WorkInformationCSVMapper {
         try {
             File csvFile = new File(csvFileName);
 
-            if(!csvFile.getParentFile().exists() && !csvFile.getParentFile().mkdirs()){
+            if (!csvFile.getParentFile().exists() && !csvFile.getParentFile().mkdirs()) {
                 throw new RuntimeException("Failed to create directories: " + csvFile.getParent());
             }
 
@@ -56,7 +57,7 @@ public class WorkInformationCSVMapper {
     }
 
     public Optional
-            <List<Optional<TotalHours>>> findByMonth(YearMonth month) {
+            <List<Optional<TotalHours>>> findByMonth(WorkYearMonth workYearMonth) {
         try {
             File csvFile = new File(csvFileName);
             if (!csvFile.exists()) {
@@ -69,7 +70,7 @@ public class WorkInformationCSVMapper {
                                            .filter(workInformation -> workInformation.getDateToRegister()
                                                    .getValue()
                                                    .format(YEAR_MONTH_DAY)
-                                                   .startsWith(month.format(YEAR_MONTH)))
+                                                   .startsWith(workYearMonth.getValue().format(YEAR_MONTH)))
                                            .collect(Collectors.groupingBy(
                                                    workInformation -> workInformation.getDateToRegister().getValue()
                                            ))

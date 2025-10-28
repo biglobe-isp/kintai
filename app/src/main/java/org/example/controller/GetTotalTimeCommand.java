@@ -12,14 +12,9 @@ public class GetTotalTimeCommand implements Command {
 
     @Override
     public void execute(String[] args) {
-        try {
-            String yearMonth = GetTotalTimeCommandLine.toYearMonth(args);
-            TotalHours totalHours = workInformationService.getTotalWorkTime(yearMonth);
-            System.out.println(GetTotalTimeCommandLine.getTotalTime(totalHours));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            System.out.println("Usage: java Main total -yearMonth:<yyyy_MM>");
-        }
+        String yearMonth = GetTotalTimeCommandLine.toYearMonth(args);
+        TotalHours totalHours = workInformationService.getTotalWorkTime(yearMonth);
+        System.out.println(GetTotalTimeCommandLine.getTotalTime(totalHours));
     }
 
     @Override

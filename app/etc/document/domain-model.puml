@@ -73,6 +73,11 @@ package "登録情報" {
     class TimestampOfTheRegistration <<ValueObject>> {
         + value: LocalDateTime
     }
+
+    class WorkYearMonth <<ValueObject>> {
+        + value: YearMonth
+        + {static} of(String): WorkYearMonth
+    }
 }
 
 class RegisterInput <<Input>> {
@@ -99,7 +104,9 @@ BreakTimes o-- BreakTime
 TotalHours ..> BreakTimes : <<uses>>
 
 RegisterInput ..> WorkTime : <<creates>>
+RegisterInput ..> TotalHours : <<creates>>
 RegisterInput ..> DateToRegister : <<creates>>
+RegisterInput ..> TimestampOfTheRegistration : <<creates>>
 RegisterInput ..> WorkInformation : <<assembles>>
 
 note right of WorkInformation
@@ -119,6 +126,12 @@ note top of BreakTimes
   ・午後休憩: 15:00-16:00
   ・夕方休憩: 18:00-19:00
   ・夜休憩: 21:00-22:00
+end note
+
+note left of WorkYearMonth
+  月別検索に使用
+  サービス層で文字列から生成
+  例: "202308" → YearMonth
 end note
 
 @enduml
