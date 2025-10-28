@@ -1,6 +1,7 @@
 package org.example.controller
 
 import org.example.domain.FixtureWorkTime
+import org.example.domain.RegisterInput
 import org.example.domain.WorkInformation
 import org.example.domain.WorkTime
 import org.example.service.WorkInformationService
@@ -12,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @SpringBootTest
-@ContextConfiguration(classes = [RegisterCommand, CommandDispatcher, GetTotalTimeCommand])
 class AppRunnerSpec extends Specification {
     @Autowired
     CommandDispatcher commandDispatcher
@@ -32,21 +32,21 @@ class AppRunnerSpec extends Specification {
         commandDispatcher.dispatch(["input", "date:20231001", "start:09_00", "end:18_00"] as String[])
 
         then:
-        1 * workInformationService.register( wi ->{
-            assert wi instanceof WorkInformation
-            assert wi.getDateToRegister().getValue().toString() == "2023-10-01"
-            assert wi.getWorkTime().getWorkStartTime().getValue().toString() == "09:00"
-            assert wi.getWorkTime().getTotalWorkingHours().getValue().toString() == "480"
+        1 * workInformationService.register( ri ->{
+            assert ri instanceof RegisterInput
+            assert ri.getDateToRegisterString() == "20231001"
+            assert ri.getStartTimeString() == "09_00"
+            assert ri.getEndTimeString() == "18_00"
         }) >> true
     }
 
     def "RegisterCommandのが正常に実行される"() {
         when:
-        def result = commandDispatcher.dispatch(["total", "-yearMonth:2023_02"] as String[])
+        def result = commandDispatcher.dispatch(["total", "-yearMonth:202302"] as String[])
 
         then:
         1 * workInformationService.getTotalWorkTime(ym -> {
-            assert ym.toString() == "2023-02"
+            assert ym == "202302"
         }) >> FixtureWorkTime.get()
 
     }

@@ -15,7 +15,6 @@ import java.time.YearMonth
 
 @SpringBootTest
 @ActiveProfiles("test")
-@ContextConfiguration(classes = [WorkInformationCSVMapper, WorkInformationRepositoryDb])
 class WorkInformationRepositoryDbSpec extends Specification {
     @Autowired
     WorkInformationRepository workInformationRepository
@@ -39,11 +38,9 @@ class WorkInformationRepositoryDbSpec extends Specification {
 
         then:
         result.isPresent()
-        def workInformation = result.get()
-        workInformation.size() == 1
-        workInformation[0].get().workTime.totalWorkingHours.getValue() == 5 * 60
-        workInformation[0].get().workTime.totalOverTimeHours.getValue() == 0 * 60
-        workInformation[0].get().dateToRegister.getValue().toString() == "2023-02-05"
-        workInformation[0].get().timestampOfTheRegistration.getValue() == LocalDateTime.of(2023, 2, 5, 10, 0)
+        def totalWork = result.get()
+        totalWork.size() == 1
+        totalWork[0].get().totalWorkingHours.getValue() == 5 * 60
+        totalWork[0].get().totalOverTimeHours.getValue() == 0 * 60
     }
 }

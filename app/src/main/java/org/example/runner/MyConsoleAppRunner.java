@@ -25,7 +25,7 @@ public class MyConsoleAppRunner implements CommandLineRunner {
                 if (line == null || line.trim().isEmpty()) {
                     continue;
                 }
-                String[] inputArgs = line.trim().split("\\s+");
+                String[] inputArgs = line.trim().split(" ");
 
                 if (Objects.equals(inputArgs[0], "exit")) {
                     System.out.println("Exiting application.");

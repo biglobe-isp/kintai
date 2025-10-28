@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.domain.TotalHours;
 import org.example.domain.WorkInformation;
 
 import java.time.YearMonth;
@@ -8,5 +9,5 @@ import java.util.Optional;
 
 public interface WorkInformationRepository {
     void persist(WorkInformation workInformation);
-    Optional<List<Optional<WorkInformation>>> findByMonth(YearMonth month);
+    Optional<List<Optional<TotalHours>>> findByMonth(YearMonth month);
 }

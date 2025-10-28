@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.TimestampOfTheRegistration;
+import org.example.domain.TotalHours;
 import org.example.domain.WorkEndTime;
 import org.example.domain.TotalOverTimeHours;
 import org.example.domain.WorkStartTime;
@@ -45,7 +46,7 @@ public class WorkInformationCSVMapper {
 
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFileName, true))) {
                 csvWriter.writeNext(toCVString(workInformation));
-            }catch (Exception err){
+            } catch (Exception err) {
                 throw new RuntimeException(err);
             }
         } catch (Exception e) {
@@ -54,7 +55,7 @@ public class WorkInformationCSVMapper {
     }
 
     public Optional
-            <List<Optional<WorkInformation>>> findByMonth(YearMonth month) {
+            <List<Optional<TotalHours>>> findByMonth(YearMonth month) {
         try {
             File csvFile = new File(csvFileName);
             if (!csvFile.exists()) {
@@ -69,10 +70,13 @@ public class WorkInformationCSVMapper {
                                                    .format(YEAR_MONTH_DAY)
                                                    .startsWith(month.format(YEAR_MONTH)))
                                            .collect(Collectors.groupingBy(
-                                                    workInformation -> workInformation.getDateToRegister().getValue()
+                                                   workInformation -> workInformation.getDateToRegister().getValue()
                                            ))
-                                           .values().stream().map(group -> group.stream()
-                                                   .max(Comparator.comparing(wi -> wi.getTimestampOfTheRegistration().getValue())))
+                                           .values().stream()
+                                           .map(group -> group.stream()
+                                                   .max(Comparator.comparing(wi -> wi.getTimestampOfTheRegistration()
+                                                           .getValue()))
+                                                   .map(this::toTotalHours))
                                            .toList());
             }
         } catch (Exception e) {
@@ -80,11 +84,20 @@ public class WorkInformationCSVMapper {
         }
     }
 
+    private static String[] toCVString(WorkInformation workInformation) {
+        return new String[]{
+                workInformation.getDateToRegister().getValue().format(YEAR_MONTH_DAY),
+                workInformation.getWorkTime().getWorkStartTime().getValue().format(HOUR_MINUTE),
+                workInformation.getWorkTime().getWorkEndTime().getValue().format(HOUR_MINUTE),
+                String.valueOf(workInformation.getTotalHours().getTotalWorkingHours().getValue()),
+                String.valueOf(workInformation.getTotalHours().getTotalOverTimeHours().getValue()),
+                workInformation.getTimestampOfTheRegistration().getValue().toString()
+        };
+    }
+
     private WorkInformation toWorkInformation(String[] values) {
         return new WorkInformation(
                 new WorkTime(
-                        new TotalWorkingHours(Integer.parseInt(values[3])),
-                        new TotalOverTimeHours(Integer.parseInt(values[4])),
                         new WorkStartTime(
                                 LocalTime.parse(values[1].substring(0, 4), HOUR_MINUTE)
                         ),
@@ -92,20 +105,20 @@ public class WorkInformationCSVMapper {
                                 LocalTime.parse(values[2].substring(0, 4), HOUR_MINUTE)
                         )
                 ),
+                new TotalHours(
+                        new TotalWorkingHours(Integer.parseInt(values[3])),
+                        new TotalOverTimeHours(Integer.parseInt(values[4]))
+                ),
                 new DateToRegister(LocalDate.parse(values[0], YEAR_MONTH_DAY)),
                 new TimestampOfTheRegistration(LocalDateTime.parse(values[5]))
 
         );
     }
 
-    private static String[] toCVString(WorkInformation workInformation) {
-        return new String[] {
-                workInformation.getDateToRegister().getValue().format(YEAR_MONTH_DAY),
-                workInformation.getWorkTime().getWorkStartTime().getValue().format(HOUR_MINUTE),
-                workInformation.getWorkTime().getWorkEndTime().getValue().format(HOUR_MINUTE),
-                String.valueOf(workInformation.getWorkTime().getTotalWorkingHours().getValue()),
-                String.valueOf(workInformation.getWorkTime().getTotalOverTimeHours().getValue()),
-                workInformation.getTimestampOfTheRegistration().getValue().toString()
-        };
+    private TotalHours toTotalHours(WorkInformation wi) {
+        return new TotalHours(
+                new TotalWorkingHours(wi.getTotalHours().getTotalWorkingHours().getValue()),
+                new TotalOverTimeHours(wi.getTotalHours().getTotalOverTimeHours().getValue())
+        );
     }
 }

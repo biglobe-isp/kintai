@@ -1,49 +1,30 @@
 package org.example.controller;
 
-import lombok.Value;
-import org.example.domain.DateToRegister;
-import org.example.domain.TimestampOfTheRegistration;
-import org.example.domain.WorkEndTime;
-import org.example.domain.WorkInformation;
-import org.example.domain.WorkStartTime;
-import org.example.domain.WorkTime;
+import org.example.domain.RegisterInput;
+import java.util.Arrays;
+import java.util.List;
 
-import java.time.LocalDateTime;
-
-import static org.example.controller.FormatParser.parseData;
+import static org.example.controller.FormatParser.parseDataOfCoron;
+import static org.example.controller.FormatParser.prepareWorkTimeArgs;
 
 public class RegisterCommandLine {
-    public static WorkInformation of(String[] args) {
-        if (args.length != 3) {
-            throw new IllegalArgumentException("Invalid number of arguments. Expected 3 arguments: name, age, position.");
-        }
-
+    public static RegisterInput toRegisterInformation(String[] args) {
         String inputDate = args[0];
-        String inputStartTime = args[1];
-        String inputEndTime = args[2];
 
-        String dateToRegister = parseData(inputDate);
-        String startTimeToRegister = parseData(inputStartTime);
-        String endTimeToRegister = parseData(inputEndTime);
-        LocalDateTime timeStampOfTheRegister = LocalDateTime.now();
+        String[] inputTimes = Arrays.copyOfRange(args, 1, args.length);
+        List<String> prepareworkTimeList = prepareWorkTimeArgs(inputTimes);
 
-        if (dateToRegister == null || startTimeToRegister == null || endTimeToRegister == null) {
+        String startTimeToRegisterString = prepareworkTimeList.get(0);
+        String endTimeToRegisterString = prepareworkTimeList.get(1);
+        String dateToRegisterString = parseDataOfCoron(inputDate);
+
+        if (dateToRegisterString == null || startTimeToRegisterString == null || endTimeToRegisterString == null) {
             throw new IllegalArgumentException(
                     "Invalid argument format. Expected format: key-value (e.g., date-2023/10/01).");
         }
 
-
-        return new WorkInformation(
-                        WorkTime.of(
-                                WorkStartTime.of(
-                                        startTimeToRegister
-                                ),
-                                WorkEndTime.of(
-                                        endTimeToRegister
-                                )
-                        ),
-                        DateToRegister.of(dateToRegister),
-                        new TimestampOfTheRegistration(timeStampOfTheRegister)
-                );
+        return new RegisterInput(
+                startTimeToRegisterString,endTimeToRegisterString, dateToRegisterString
+        );
     }
 }

@@ -1,7 +1,7 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.domain.WorkInformation;
+import org.example.domain.RegisterInput;
 import org.example.service.WorkInformationService;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +13,12 @@ public class RegisterCommand implements Command {
     @Override
     public void execute(String[] args) {
         try {
-            WorkInformation workInformation = RegisterCommandLine.of(args);
-            String result = workInformationService.register(workInformation) ? "success" : "fail";
+            RegisterInput registerInput = RegisterCommandLine.toRegisterInformation(args);
+            String result = workInformationService.register(registerInput) ? "success" : "fail";
             System.out.println(result);
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            System.out.println("Usage: java Main input -date:yyyyMMdd -start:HH_mm -end:HH_mm");
+            System.out.println("Usage: java Main input -date:yyyyMMdd [options]");
         }
     }
 

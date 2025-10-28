@@ -1,0 +1,124 @@
+@startuml
+'スタイル設定
+skinparam class {
+    BackgroundColor<<ValueObject>> LightYellow
+    BackgroundColor<<Entity>> LightBlue
+    BackgroundColor<<Input>> LightGreen
+    BorderColor Black
+    ArrowColor Black
+}
+
+skinparam classFontSize 11
+skinparam packageStyle rectangle
+
+left to right direction
+
+' 集約ルート
+class WorkInformation <<Entity>> {
+    + workTime: WorkTime
+    + totalHours: TotalHours
+    + dateToRegister: DateToRegister
+    + timestampOfTheRegistration: TimestampOfTheRegistration
+}
+
+package "勤務時間" {
+    class WorkTime <<ValueObject>> {
+        + workStartTime: WorkStartTime
+        + workEndTime: WorkEndTime
+    }
+
+    class WorkStartTime <<ValueObject>> {
+        + value: LocalTime
+    }
+
+    class WorkEndTime <<ValueObject>> {
+        + value: LocalTime
+    }
+}
+
+package "合計時間" {
+    class TotalHours <<ValueObject>> {
+        + totalWorkingHours: TotalWorkingHours
+        + totalOverTimeHours: TotalOverTimeHours
+        + {static} of(WorkTime): TotalHours
+    }
+
+    class TotalWorkingHours <<ValueObject>> {
+        + minutes: int
+    }
+
+    class TotalOverTimeHours <<ValueObject>> {
+        + minutes: int
+    }
+}
+
+package "休憩時間" {
+    class BreakTimes <<ValueObject>> {
+        + {static} getBreakTimes(): List<BreakTime>
+    }
+
+    class BreakTime <<ValueObject>> {
+        + breakStart: LocalTime
+        + breakEnd: LocalTime
+        + getBreakMinute(start, end): int
+    }
+}
+
+package "登録情報" {
+    class DateToRegister <<ValueObject>> {
+        + value: LocalDate
+        + {static} of(String): DateToRegister
+    }
+
+    class TimestampOfTheRegistration <<ValueObject>> {
+        + value: LocalDateTime
+    }
+}
+
+class RegisterInput <<Input>> {
+    + startTimeString: String
+    + endTimeString: String
+    + dateToRegisterString: String
+    + toWorkInformation(): WorkInformation
+}
+
+' 関連
+WorkInformation *-- WorkTime
+WorkInformation *-- TotalHours
+WorkInformation *-- DateToRegister
+WorkInformation *-- TimestampOfTheRegistration
+
+WorkTime *-- WorkStartTime
+WorkTime *-- WorkEndTime
+
+TotalHours *-- TotalWorkingHours
+TotalHours *-- TotalOverTimeHours
+TotalHours ..> WorkTime : <<creates from>>
+
+BreakTimes o-- BreakTime
+TotalHours ..> BreakTimes : <<uses>>
+
+RegisterInput ..> WorkTime : <<creates>>
+RegisterInput ..> DateToRegister : <<creates>>
+RegisterInput ..> WorkInformation : <<assembles>>
+
+note right of WorkInformation
+  **集約ルート**
+  勤怠情報のメインエンティティ
+end note
+
+note bottom of TotalHours
+  WorkTimeから自動計算される
+  法定労働時間: 8時間
+  休憩時間を考慮
+end note
+
+note top of BreakTimes
+  固定の休憩時間
+  ・昼休憩: 12:00-13:00
+  ・午後休憩: 15:00-16:00
+  ・夕方休憩: 18:00-19:00
+  ・夜休憩: 21:00-22:00
+end note
+
+@enduml

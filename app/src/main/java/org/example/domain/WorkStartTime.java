@@ -14,18 +14,9 @@ public class WorkStartTime {
     public static WorkStartTime of(String value) {
         try {
             LocalTime localTime = LocalTime.parse(value, HOUR_HYPHEN_MINUTE);
-
-            if (localTime.getHour() == 12 || localTime.getHour() == 18 || localTime.getHour() == 21) {
-                return new WorkStartTime(LocalTime.of(localTime.getHour() + 1, 0));
-            } else {
-                return new WorkStartTime(localTime);
-            }
+            return new WorkStartTime(localTime);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid time format: " + value, e);
         }
-    }
-
-    public int convertToMinutes() {
-        return value.getHour() * 60 + value.getMinute();
     }
 }

@@ -1,6 +1,10 @@
 package org.example.service
 
+import org.example.domain.FixtureTotalHours
 import org.example.domain.FixtureWorkInformation
+import org.example.domain.RegisterInput
+import org.example.domain.FixtureRegisterInput
+import org.example.domain.TotalHours
 import org.example.domain.WorkInformation
 import spock.lang.Specification
 import spock.lang.Subject
@@ -16,27 +20,33 @@ class WorkInformationServiceSpec extends Specification{
 
     def "勤務情報を登録できる"() {
         setup:
-        WorkInformation workInformation = FixtureWorkInformation.get()
+        RegisterInput registerInput = FixtureRegisterInput.get()
 
         when:
-        service.register(workInformation)
+        service.register(registerInput)
 
         then:
-        1 * workInformationRepository.persist({it == workInformation})
+        1 * workInformationRepository.persist(wi ->{
+            assert wi instanceof WorkInformation
+            assert wi.getWorkTime().getWorkStartTime() == registerInput.toWorkInformation().getWorkTime().getWorkStartTime()
+            assert wi.getWorkTime().getWorkEndTime() == registerInput.toWorkInformation().getWorkTime().getWorkEndTime()
+            assert wi.getTotalHours().getTotalWorkingHours() == registerInput.toWorkInformation().getTotalHours().getTotalWorkingHours()
+            assert wi.getTotalHours().getTotalOverTimeHours() == registerInput.toWorkInformation().getTotalHours().getTotalOverTimeHours()
+        })
     }
 
     def "特定の月の就業時間と残表時間を取得できる"() {
         setup:
-        def yearMonth = YearMonth.parse("2023-02")
-        def workInformationList = new ArrayList<Optional<WorkInformation>>()
-        workInformationList.add(Optional.of(FixtureWorkInformation.get()))
-        workInformationList.add(Optional.of(FixtureWorkInformation.get()))
+        def yearMonth = "202302"
+        def totalHoursList = new ArrayList<Optional<TotalHours>>()
+        totalHoursList.add(Optional.of(FixtureTotalHours.get()))
+        totalHoursList.add(Optional.of(FixtureTotalHours.get()))
 
         when:
         def result = service.getTotalWorkTime(yearMonth)
 
         then:
-        1 * workInformationRepository.findByMonth(_) >> Optional.of(workInformationList)
-        result.totalWorkingHours.getValue() == 10 * 60
+        1 * workInformationRepository.findByMonth(_) >> Optional.of(totalHoursList)
+        result.totalWorkingHours.getValue() == 8 * 60
     }
 }

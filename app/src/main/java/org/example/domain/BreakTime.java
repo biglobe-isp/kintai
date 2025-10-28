@@ -1,11 +1,33 @@
 package org.example.domain;
 
-public record BreakTime(int startMinutes, int endMinutes){
-    public int getTotalMinutes(){
-        return endMinutes - startMinutes;
-    }
+import lombok.Value;
 
-    public boolean isInclude(int workStartMinutes, int workEndMinutes){
-        return this.startMinutes > workStartMinutes && this.endMinutes < workEndMinutes;
+import java.time.LocalTime;
+
+@Value
+public class BreakTime {
+    LocalTime breakStartTime;
+    LocalTime breakEndTime;
+
+    public int getBreakMinute(LocalTime workStartTime, LocalTime workEndTime) {
+        if (breakStartTime.isAfter(workStartTime) &&
+                breakEndTime.isBefore(workEndTime)) {
+            return (breakEndTime.getHour() - breakStartTime.getHour()) * 60
+                    + (breakEndTime.getMinute() - breakStartTime.getMinute());
+        }
+
+        if (workEndTime.isAfter(breakStartTime) &&
+                workEndTime.isBefore(breakEndTime)) {
+            return (workEndTime.getHour() - breakStartTime.getHour()) * 60
+                    + (workEndTime.getMinute() - breakStartTime.getMinute());
+        }
+
+        if (workStartTime.isAfter(breakStartTime) &&
+                workStartTime.isBefore(breakEndTime)) {
+            return (breakEndTime.getHour() - workStartTime.getHour()) * 60
+                    + (breakEndTime.getMinute() - workStartTime.getMinute());
+        }
+
+        return 0;
     }
 }
