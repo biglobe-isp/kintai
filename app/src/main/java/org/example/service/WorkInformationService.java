@@ -25,7 +25,7 @@ public class WorkInformationService {
             workInformationRepository.persist(workInformation);
             return true;
         } catch (Exception e) {
-            return false;
+            throw new IllegalArgumentException(e);
         }
     }
 

@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +41,9 @@ public class WorkInformationCSVMapper {
         try {
             File csvFile = new File(csvFileName);
 
-            csvFile.getParentFile().mkdirs();
+            if(!csvFile.getParentFile().exists() && !csvFile.getParentFile().mkdirs()){
+                throw new RuntimeException("Failed to create directories: " + csvFile.getParent());
+            }
 
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFileName, true))) {
                 csvWriter.writeNext(toCVString(workInformation));

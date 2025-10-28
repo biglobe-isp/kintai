@@ -1,13 +1,8 @@
 package org.example.controller;
 
 import org.example.domain.TotalHours;
-import org.example.domain.WorkTime;
-
-import java.time.YearMonth;
 
 import static org.example.controller.FormatParser.parseDataOfCoron;
-import static org.example.utils.DateTimeFormatters.YEAR_HYPHEN_MONTH;
-import static org.example.utils.DateTimeFormatters.YEAR_MONTH;
 
 public class GetTotalTimeCommandLine {
     public static String toYearMonth(String[] inputYearMonth) {

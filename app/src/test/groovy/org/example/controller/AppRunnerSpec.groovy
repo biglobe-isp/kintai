@@ -42,7 +42,7 @@ class AppRunnerSpec extends Specification {
 
     def "RegisterCommandのが正常に実行される"() {
         when:
-        def result = commandDispatcher.dispatch(["total", "-yearMonth:202302"] as String[])
+        commandDispatcher.dispatch(["total", "-yearMonth:202302"] as String[])
 
         then:
         1 * workInformationService.getTotalWorkTime(ym -> {

@@ -3,7 +3,6 @@ package org.example.runner;
 import org.example.controller.CommandDispatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -16,7 +15,7 @@ public class MyConsoleAppRunner implements CommandLineRunner {
     private CommandDispatcher commandDispatcher;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
                 System.out.print("> ");

@@ -5,7 +5,6 @@ import lombok.Value;
 import java.time.LocalTime;
 
 import static org.example.utils.DateTimeFormatters.HOUR_HYPHEN_MINUTE;
-import static org.example.utils.DateTimeFormatters.HOUR_MINUTE;
 
 @Value
 public class WorkEndTime {
