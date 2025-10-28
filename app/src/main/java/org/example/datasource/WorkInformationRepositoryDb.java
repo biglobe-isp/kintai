@@ -7,7 +7,6 @@ import org.example.domain.WorkYearMonth;
 import org.example.service.WorkInformationRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 

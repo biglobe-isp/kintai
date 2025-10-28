@@ -9,11 +9,8 @@ import org.example.domain.WorkInformation;
 import org.example.domain.WorkYearMonth;
 import org.springframework.stereotype.Service;
 
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
-
-import static org.example.utils.DateTimeFormatters.YEAR_MONTH;
 
 @Service
 @RequiredArgsConstructor
