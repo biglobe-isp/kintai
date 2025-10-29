@@ -24,7 +24,8 @@ hs_err_pid*
 # IntelliJ
 .idea/
 
-app/src/main/java/data.csv
+.app/data.csv
+data.csv
 
 # Ignore Gradle project-specific cache directory
 .gradle

@@ -12,7 +12,8 @@ public class WorkTime {
     Minute workingStartMinute;
     Hour workingEndHour;
     Minute workingEndMinute;
-    List<Integer> restHourList = new ArrayList<Integer>(Arrays.asList(12, 18, 21));
+    List<Integer> restHourList = new ArrayList<Integer>(Arrays.asList(12, 15, 18, 21));
+//    List<Integer> restHourList = new ArrayList<Integer>(Arrays.asList());
 
     public WorkTime(
             LocalDate workingDate,
