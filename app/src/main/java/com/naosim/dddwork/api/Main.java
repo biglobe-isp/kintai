@@ -26,7 +26,27 @@ public class Main {
                     }
                     WorkTimeRegisterController workTimeRegisterController = new WorkTimeRegisterController(
                             workDataRepository);
-                    workTimeRegisterController.invoke(args[1], args[2], args[3]);
+
+                    String date = null;
+                    String startTime = null;
+                    String endTime = null;
+
+                    for (int i = 1; i < args.length; i++) {
+                        if (args[i].startsWith("-date:")) {
+                            date = args[i].replace("-date:", "");
+                        } else if (args[i].startsWith("-start:")) {
+                            startTime = args[i].replace("-start:", "").replace("_", "");
+                        } else if (args[i].startsWith("-end:")) {
+                            endTime = args[i].replace("-end:", "").replace("_", "");
+                        } else {
+                            throw new RuntimeException("形式に則ってくださいよ〜");
+                        }
+                    }
+
+                    if (date == null || startTime == null || endTime == null) {
+                        throw new RuntimeException("引数が空ですよ〜");
+                    }
+                    workTimeRegisterController.invoke(date, startTime, endTime);
                     break;
                 case TOTAL:
                     if (args.length < 2) {
